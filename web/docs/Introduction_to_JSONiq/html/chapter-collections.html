@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 6. Collections</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt02.html" title="Part II. Construction of Items and JSON Navigation" /><link rel="prev" href="ch05s04.html" title="5.4. Composing Constructors" /><link rel="next" href="chapter-selectors.html" title="Chapter 7. JSON Navigation" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-selectors.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-collections" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 6. Collections</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-collections.html#idm39242320">6.1. Collections Used Throughout This Book</a></span></dt></dl></div><div class="para">
+		Even though you can build your own JSON values with JSONiq by copying-and-pasting JSON documents, most of the time, your JSON data will be in a collection.
+	</div><div class="para">
+		We now introduce collections, because collections are perfect to illustrate the JSON navigation syntax which will be introduced in the next section.
+	</div><div class="para">
+		Collections are sequences of objects, identified by a name which is a string.
+	</div><div class="para">
+		Adding or deleting collections from the set of known collections to a query processor, and loading the data in a collection are implementation-dependent and outside of the scope of this book.
+	</div><div class="para">
+		We will just assume that there is a function named collection() that returns all objects associated with the provided collection name.
+	</div><div class="example"><h6>Example 6.1. Getting all objects from a collection.</h6><div class="example-contents"><pre class="programlisting">
+collection("one-object")
+</pre><div class="para">
+			Results:
+		</div><pre class="programlisting">{
+  "question" : "What NoSQL technology should I use?"
+}
+</pre></div></div><br class="example-break" /><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm39242320">6.1. Collections Used Throughout This Book</h2></div></div></div><div class="para">
+			For illustrative purposes, we will assume that we have the following collections:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<span class="emphasis"><em>collection("one-object")</em></span>
+				</div><div class="example"><h6>Example 6.2. The object in the one-object collection.</h6><div class="example-contents"><pre class="programlisting">
+collection("one-object")
+</pre><div class="para">
+						Results:
+					</div><pre class="programlisting">{
+  "question" : "What NoSQL technology should I use?"
+}
+</pre></div></div><br class="example-break" /></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>collection("faqs")</em></span> - this is a collection of StackOverflow FAQs.
+				</div><div class="example"><h6>Example 6.3. One object from the faqs collection.</h6><div class="example-contents"><pre class="programlisting">
+collection("faqs")[1]
+</pre><div class="para">
+						Results:
+					</div><pre class="programlisting">{
+  "_id" : "511C7C5C9A277C22D138802D",
+  "question_id" : 4419499,
+  "last_edit_date" : "2012-12-17T00:02:31",
+  "creation_date" : "2010-12-11T23:15:19",
+  "last_activity_date" : "2012-12-17T00:02:31",
+  "score" : 15,
+  "accepted_answer_id" : 4421601,
+  "title" : "MySQL and NoSQL: Help me to choose the right o
+ne",
+  "tags" : [ "php", "mysql", "nosql", "cassandra" ],
+  "view_count" : 3972,
+  "owner" : {
+    "user_id" : 279538,
+    "display_name" : "cedivad",
+    "reputation" : 430,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/b77fa
+dd2ba791134ac40a9c184be1eda?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/279538/cedivad
+",
+    "accept_rate" : 74
+  },
+  "link" : "http://stackoverflow.com/questions/4419499/mysq
+l-and-nosql-help-me-to-choose-the-right-one",
+  "is_answered" : true
+}
+</pre></div></div><br class="example-break" /></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>collection("answers")</em></span> - this is a collection of StackOverflow answers (to the previous FAQs).
+				</div><div class="example"><h6>Example 6.4. One object from the answers collection.</h6><div class="example-contents"><pre class="programlisting">
+collection("answers")[1]
+</pre><div class="para">
+						Results:
+					</div><pre class="programlisting">{
+  "_id" : "511C7C5D9A277C22D13880C3",
+  "question_id" : 37823,
+  "answer_id" : 37841,
+  "creation_date" : "2008-09-01T12:14:38",
+  "last_activity_date" : "2008-09-01T12:14:38",
+  "score" : 7,
+  "is_accepted" : false,
+  "owner" : {
+    "user_id" : 2562,
+    "display_name" : "Ubiguchi",
+    "reputation" : 1871,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/00b87
+a917ec763c0c051dc6b8c06f402?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/2562/ubiguchi"
+
+  }
+}
+</pre></div></div><br class="example-break" /></li></ul></div><div class="para">
+			Many queries in this book can be directly input into 28.io's try-it-now sandbox, as these collections are preloaded (this is real-world data).
+		</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s04.html"><strong>Prev</strong>5.4. Composing Constructors</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-selectors.html"><strong>Next</strong>Chapter 7. JSON Navigation</a></li></ul></body></html>

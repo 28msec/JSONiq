@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-equality-and-identity">
+  <title>Equality and identity</title>
+  <para>As in most language, one can distinguish between physical equality and logical equality.</para>
+  <para>Atomics can only be compared logically. Their physically identity is totally opaque to you.</para>
+  <example>
+    <title>Logical comparison of two atomics</title>
+    <programlisting>
+1 eq 1
+    </programlisting>
+  </example>
+  <example>
+    <title>Logical comparison of two atomics</title>
+    <programlisting>
+1 eq 2
+    </programlisting>
+  </example>
+  <example>
+    <title>Logical comparison of two atomics</title>
+    <programlisting>
+"foo" eq "bar"
+    </programlisting>
+  </example>
+  <example>
+    <title>Logical comparison of two atomics</title>
+    <programlisting>
+"foo" ne "bar"
+    </programlisting>
+  </example>
+  <para>Two objects or arrays can be tested for logical equality as well, using deep-equal(), which performs a recursive comparison.</para>
+  <example>
+    <title>Logical comparison of two JSON items</title>
+    <programlisting>
+deep-equal({ "foo" : "bar" }, { "foo" : "bar" })
+    </programlisting>
+  </example>
+  <example>
+    <title>Logical comparison of two JSON items</title>
+    <programlisting>
+deep-equal({ "foo" : "bar" }, { "bar" : "foo" })
+    </programlisting>
+  </example>
+  <para>The physical identity of objects and arrays is not exposed to the user in the core JSONiq language itself. Some library modules might be able to reveal it, though.</para>
+</chapter>

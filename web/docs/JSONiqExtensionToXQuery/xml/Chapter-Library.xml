@@ -1,0 +1,454 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-function-library" lang="en-US">
+	<title>Function library</title>
+	 <para>
+		This section defines a function library on top of JSONiq. These functions are not part of the JSONiq core, because the latter is intended to be minimal.
+	</para>
+	 <section>
+		<title>libjn:accumulate</title>
+		 <para>
+			This function dynamically builds an object, like jn:object, except that it does not throw an error upon pair collision. Instead, it accumulates them into an array. Non-object items in the input sequence are ignored.
+		</para>
+		 
+<programlisting>
+declare function libjn:accumulate($sequence as item()*) as object()
+{
+  {|
+    for $key in $sequence() return { $key : $sequence($key) }
+  |}
+};
+</programlisting>
+
+	</section>
+	
+	 <section>
+		<title>libjn:descendant-arrays</title>
+		 <para>
+			This function returns all arrays contained within the supplied items, regardless of depth.
+		</para>
+		 
+<programlisting>
+declare function libjn:descendant-arrays($sequence as item()*) as array()*
+{
+  for $item in $sequence
+  return typeswitch ($item)
+  case array() return (
+    $item,
+    libjn:descendant-arrays($item())
+  )
+  case object() return
+    libjn:descendant-arrays(libjn:values($item))
+  default return ()
+};
+</programlisting>
+		 <example>
+			<title>Accessing all descendant arrays</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:descendant-arrays(
+  (
+    { "foo" : { "bar" : [ 1, 2 ] } },
+    [ [ { "foo" : "bar", "bar" : "foo" } ] ],
+    true(),
+    1,
+    jn:null()
+  )
+)</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+[ 1, 2 ]
+[ [ { "foo" : "bar", "bar" : "foo" } ] ]
+[ { "foo" : "bar", "bar" : "foo" } ]
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:descendant-objects</title>
+		 <para>
+			This function returns all objects contained within the supplied items, regardless of depth.
+		</para>
+		 
+<programlisting>
+declare function libjn:descendant-objects($sequence as item()*) as object()*
+{
+  for $item in $sequence
+  return typeswitch ($item)
+  case object() return (
+    $item,
+    libjn:descendant-objects(libjn:values($item))
+  )
+  case array() return
+    libjn:descendant-objects($item())
+  default return ()
+};
+</programlisting>
+		 <example>
+			<title>Accessing all descendant objects</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:descendant-objects(
+  (
+    { "foo" : { "bar" : [ 1, 2 ] } },
+    [ [ { "foo" : "bar", "bar" : "foo" } ] ],
+    true(),
+    1,
+    jn:null()
+  )
+)</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "foo" : { "bar" : [ 1, 2 ] } }
+{ "bar" : [ 1, 2 ] }
+{ "foo" : "bar", "bar" : "foo" }
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:descendant-pairs</title>
+		 <para>
+			This function returns all descendant pairs within the supplied items.
+		</para>
+		 
+<programlisting>
+        declare function libjn:descendant-pairs($sequence as item()*)
+        {
+          for $item in $sequence
+          return typeswitch ($item)
+          case object() return
+            for $key in jn:keys($item)
+            let $value := $item($key)
+            return (
+              { $key : $value },
+              libjn:descendant-pairs($value)
+            )
+          case array() return
+            libjn:descendant-pairs($item())
+          default return ()
+        };
+</programlisting>
+		 <example>
+			<title>Accessing all descendant pairs</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:descendant-pairs(
+  (
+    { "foo" : { "bar" : [ 1, 2 ] } },
+    [ [ { "foo" : "bar", "bar" : "foo" } ] ],
+    true(),
+    1,
+    jn:null()
+  )
+)</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "foo" : { "bar" : [ 1, 2 ] } }
+{ "bar" : [ 1, 2 ] }
+{ "foo" : "bar" }
+{ "bar" : "foo" }
+</programlisting>
+
+		</example>
+		 <example>
+			<title>Query all pairs with a given name.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:descendant-pairs({
+  "first" : 1,
+  "second" : { 
+    "first" : "a", 
+    "second" : "b" 
+  }
+})("first")</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        1 a
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:flatten</title>
+		 <para>
+			This function recursively "flattens" the supplied (top-level) arrays, leaving non-arrays unchanged.
+		</para>
+		 
+<programlisting>
+declare function libjn:flatten($sequence as item()*) as item()*
+{
+  for $item in $sequence
+  return
+    typeswitch ($item)
+    case array() return libjn:flatten($item())
+    default return $item
+};
+</programlisting>
+		 <example>
+			<title>Flattening arrays.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:flatten(
+  (
+    { "foo" : { "bar" : [ 1, 2 ] } },
+    [ 1, 2, [ { "foo" : "bar", "bar" : "foo" } ], 3, 4 ],
+    true(),
+    1,
+    jn:null()
+  )
+)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "foo" : { "bar" : [ 1, 2 ] } } 1 2 { "foo" : "bar", "bar" : "foo" } 3 4 true 1 null
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:intersect</title>
+		 <para>
+			This function returns an object that only contains keys shared by all input objects, and associates to each of these keys the corresponding values in the input objects (wrapped in an array if more than one). Non-objects are ignored.
+		</para>
+		 
+<programlisting>
+declare function libjn:intersect($sequence as item()*) as object()
+{
+  {|
+    let $objects := $sequence[. instance of object()]
+    for $key in head($objects)()
+    where every $object in tail($objects)
+          satisfies exists(index-of($object(), $key))
+    return { $key : $objects($key) }
+  |}
+};
+</programlisting>
+		 <example>
+			<title>Intersecting objects.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:intersect(
+  (
+    { "foo" : { "bar" : [ 1, 2 ] } },
+    [ 1, 2, 3, 4 ],
+    { "foo" : "bar", "bar" : "foo" }
+    true(),
+    1,
+    jn:null()
+  )
+)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "foo" : [ { "bar" : [ 1, 2 ] }, "bar" ] }
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:project</title>
+		 <para>
+			This function iterates on the input sequence. It projects objects by filtering their pairs and leaves non-objects intact.
+		</para>
+		 
+<programlisting>
+declare function libjn:project($sequence as item()*, $keys as xs:string*) as item()*
+{
+  for $item in $sequence
+  return typeswitch ($item)
+         case $object as object() return
+         {|
+           for $key in $object()[ . = $keys ]
+           return { $key : $object($key) }
+         |}
+         default return $item
+};
+</programlisting>
+		 <example>
+			<title>Projecting objects.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:project(
+  (
+    {
+      "Captain" : "Kirk",
+      "First Officer" : "Spock",
+      "Engineer" : "Scott"
+    },
+    [ 1, 2, 3, 4 ]
+    {
+      "Captain" : "Archer",
+      "Engineer" : "Trip",
+    },
+    true(),
+    1,
+    jn:null()
+  ),
+  ("Captain", "First Officer", "XQuery Evangelist")
+)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "Captain" : "Kirk", "First Officer" : "Spock" }
+[ 1, 2, 3, 4 ] { "Captain" : "Archer" } true 1 null
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:remove-keys</title>
+		 <para>
+			This function iterates on the input sequence. It removes the pairs with the given keys from all objects and leaves non-objects intact.
+		</para>
+		 
+<programlisting>
+declare function libjn:remove-keys($sequence as item()*, $keys as xs:string*) as item()*
+{
+  for $item in $sequence
+  return typeswitch ($item)
+         case $object as object() return
+         {|
+           for $key in $object() [ not (. = $keys) ]
+           return { $key : $object($key) }
+         |}
+         default return $item
+};
+</programlisting>
+		 <example>
+			<title>Projecting objects.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:remove-keys(
+  (
+    {
+      "Captain" : "Kirk",
+      "First Officer" : "Spock",
+      "Engineer" : "Scott"
+    },
+    [ 1, 2, 3, 4 ]
+    {
+      "Captain" : "Archer",
+      "Engineer" : "Trip",
+    },
+    true(),
+    1,
+    jn:null()
+  ),
+  ("Captain", "First Officer", "XQuery Evangelist")
+)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "Engineer" : "Scott" } [ 1, 2, 3, 4 ] { "Engineer" : "Trip" } true 1 null
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>libjn:values</title>
+		 <para>
+			This function returns all values in the supplied objects. Non-objects are ignored.
+		</para>
+		 
+<programlisting>
+        declare function libjn:values($sequence as item()*) as item()* {
+          for $item in $sequence
+          return $item() ! $item(.)
+        };
+</programlisting>
+		 <example>
+			<title>Extracting all values from objects.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>libjn:values(
+  (
+    {
+      "Captain" : "Kirk",
+      "First Officer" : "Spock",
+      "Engineer" : "Scott"
+    },
+    [ 1, 2, 3, 4 ]
+    {
+      "Captain" : "Archer",
+      "Engineer" : "Trip",
+    },
+    true(),
+    1,
+    jn:null()
+  )
+)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+Kirk Spock Scott Archer Trip
+</programlisting>
+
+		</example>
+
+	</section>
+
+</chapter>
+

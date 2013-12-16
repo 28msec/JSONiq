@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<section id="chapter-control-flow">
+  <title>Control flow expressions</title>
+  <para>JSONiq supports control flow expressions such as if-then-else, switch and typeswitch.</para>
+  <section>
+    <title>Conditional expressions</title>
+    <figure>
+      <title>IfExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/IfExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A conditional expressions allows you to pick one or another value depending on a boolean value.</para>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (1 + 1 eq 2) then { "foo" : "yes" } else { "foo" : "false" }
+      </programlisting>
+    </example>
+    <para>The behavior of the expression inside the if is similar to that of logical operations (two-valued logics), meaning that non-boolean values get converted to a boolean.
+    </para>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (null) then { "foo" : "yes" } else { "foo" : "no" }
+      </programlisting>
+    </example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (1) then { "foo" : "yes" } else { "foo" : "no" }
+      </programlisting>
+    </example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (0) then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    </example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if ("foo") then { "foo" : "yes" } else { "foo" : "no" }
+      </programlisting>
+    </example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if ("") then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    </example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (()) then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    </example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (({ "foo" : "bar" }, [ 1, 2, 3, 4])) then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    </example>
+    <para>Note that the else clause is mandatory (but can be the empty sequence)</para>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (1+1 eq 2) then { "foo" : "yes" } else ()
+        </programlisting>
+    </example>
+  </section>
+  <section>
+    <title>Switch expressions</title>
+    <figure>
+      <title>SwitchExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/SwitchExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A switch expression evaluates the expression inside the switch. If it is an atomic, it compares it
+      in turn to the provided atomic values (with the semantics of the eq operator) and returns the value associated with the first matching case clause.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch ("foo")
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+        </programlisting>
+    </example>
+      <para>If it is not an atomic, an error is raised.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch ({ "foo" : "bar" })
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+        </programlisting>
+    </example>
+    <para>If no value matches, the default is used.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch ("no-match")
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+        </programlisting>
+    </example>
+    <para>The case clauses support composability of expressions as well.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch (2)
+case 1 + 1 return "foo"
+case 2 + 2 return "bar"
+default return "none"
+        </programlisting>
+    </example>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch (true)
+case 1 + 1 eq 2 return "1 + 1 is 2"
+case 2 + 2 eq 5 return "2 + 2 is 5"
+default return "none of the above is true"
+        </programlisting>
+    </example>
+  </section>
+  <section>
+    <title>Try-catch expressions</title>
+    <figure>
+      <title>TryCatchExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/TryCatchExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A try catch expression evaluates the expression inside the try block and returns its resulting value.</para>
+    <para>However, if an error is raised dynamically, the catch clause is evaluated and its result value returned.</para>
+    <example>
+      <title>A try catch expression</title>
+      <programlisting>
+try { 1 div 0 } catch * { "division by zero!" } 
+      </programlisting>
+    </example>
+    <para>Only errors raised within the lexical scope of the try block are caught.</para>
+    <example>
+      <title>A try catch expression</title>
+      <programlisting>
+let $x := 1 div 0
+return try { $x }
+       catch * { "division by zero!" } 
+      </programlisting>
+    </example>
+    <para>Errors that are detected statically within the try block are still reported statically.</para>
+    <example>
+      <title>A try catch expression</title>
+      <programlisting>
+try { x } catch * { "syntax error" } 
+      </programlisting>
+    </example>
+  </section>
+</section>

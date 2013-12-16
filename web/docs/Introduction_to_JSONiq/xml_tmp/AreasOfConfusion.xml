@@ -1,0 +1,267 @@
+<part>
+  <title>Advanced Notes</title>
+  <chapter>
+    <title>Errors</title>
+    <para>Builtin expressions, operators and functions may raise errors under various conditions. An example is a mismatching type.</para>
+    <para>The evaluation of a JSONiq expression either returns a sequence of items, or raises an error.</para>
+    <para>Errors can be reported statically, or dynamically (at runtime).</para>
+    <para>Errors can also be raised by hand.</para>
+    <example>
+      <title>Raising an error (failing).</title>
+      <programlisting>
+      error()
+    </programlisting>
+    <para>Error:</para><programlisting/></example>
+    <para>Lazy evaluation and optimizations with regard to errors are allowed. Raising errors is not always deterministic, as in some cases the processor might
+      (but is not required to) stop evaluating the operands of an expression if it determines that only one possible value can be returned by that expression.
+      The following expression may return true, or may raise an error.</para>
+    <example>
+      <title>Non-deterministic behavior (no guarantee of failure or success).</title>
+      <programlisting>
+      true or error()
+    </programlisting>
+    <para>Results:</para><programlisting>true
+</programlisting></example>
+  </chapter>
+  <chapter>
+      <title>Equality vs. Identity</title>
+      <para>As in most languages, one can distinguish between physical equality and logical equality.</para>
+      <para>Atomics can only be compared logically. Their physically identity is totally opaque to you.</para>
+      <example>
+        <title>Logical comparison of two atomics.</title>
+        <programlisting>
+1 eq 1
+    </programlisting>
+      <para>Results:</para><programlisting>true
+</programlisting></example>
+      <example>
+        <title>Logical comparison of two atomics.</title>
+        <programlisting>
+1 eq 2
+    </programlisting>
+      <para>Results:</para><programlisting>false
+</programlisting></example>
+      <example>
+        <title>Logical comparison of two atomics.</title>
+        <programlisting>
+"foo" eq "bar"
+    </programlisting>
+      <para>Results:</para><programlisting>false
+</programlisting></example>
+      <example>
+        <title>Logical comparison of two atomics.</title>
+        <programlisting>
+"foo" ne "bar"
+    </programlisting>
+      <para>Results:</para><programlisting>true
+</programlisting></example>
+      <para>Two objects or arrays can be tested for logical equality as well, using deep-equal(), which performs a recursive comparison.</para>
+      <example>
+        <title>Logical comparison of two JSON items.</title>
+        <programlisting>
+deep-equal({ "foo" : "bar" }, { "foo" : "bar" })
+    </programlisting>
+      <para>Results:</para><programlisting>true
+</programlisting></example>
+      <example>
+        <title>Logical comparison of two JSON items.</title>
+        <programlisting>
+deep-equal({ "foo" : "bar" }, { "bar" : "foo" })
+    </programlisting>
+      <para>Results:</para><programlisting>false
+</programlisting></example>
+      <para>The physical identity of objects and arrays is not exposed to the user in the core JSONiq language itself. Some library modules might be able to reveal it, though.</para>
+    
+</chapter>
+  <chapter>
+    <title>Sequences vs. Arrays</title>
+    <para>Even though JSON supports arrays, JSONiq uses a different construct as its first class citizens: sequences. Any value returned by or passed to an expression is a sequence.</para>
+    <para>The main difference between sequences and arrays is that sequences are completely flat, meaning they cannot contain other sequences.</para>
+    <para>Since sequences are flat, expressions of the JSONiq language just concatenate them to form bigger sequences.</para>
+    <para>This is very useful to stream and optimize -- for example, the runtime of the Zorba engine is iterator-based.</para>
+    <example>
+      <title>Flat sequences.</title>
+      <programlisting>
+( (1, 2), (3, 4) )
+      </programlisting>
+    <para>Results:</para><programlisting>1
+2
+3
+4
+</programlisting></example>
+    <para>Arrays on the other side can contain nested arrays, like in JSON.</para>
+    <example>
+      <title>Nesting arrays.</title>
+      <programlisting>
+[ [ 1, 2 ], [ 3, 4 ] ]
+      </programlisting>
+    <para>Results:</para><programlisting>[ [ 1, 2 ], [ 3, 4 ] ]
+</programlisting></example>
+    <para>Many expressions return single items - actually, they really return a singleton sequence, but a singleton sequence of one item is considered the same as the item itself.</para>
+    <example>
+      <title>Singleton sequences.</title>
+      <programlisting>
+1 + 1
+      </programlisting>
+    <para>Results:</para><programlisting>2
+</programlisting></example>
+    <para>This is different for arrays: a singleton array is distinct from its unique member, like in JSON.</para>
+    <example>
+      <title>Singleton sequences.</title>
+      <programlisting>
+[ 1 + 1 ]
+      </programlisting>
+    <para>Results:</para><programlisting>[ 2 ]
+</programlisting></example>
+    <para>An array is a single item. A (non-singleton) sequence is not. This can be observed by counting the number of items in a sequence.</para>
+    <example>
+      <title>count() on an array.</title>
+      <programlisting>
+count([ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ])
+      </programlisting>
+    <para>Results:</para><programlisting>1
+</programlisting></example>
+    <example>
+      <title>count() on a sequence.</title>
+      <programlisting>
+count( ( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ) )
+      </programlisting>
+    <para>Results:</para><programlisting>4
+</programlisting></example>
+    <para>Other than that, arrays and sequences can contain exactly the same members (atomics, arrays, objects).</para>
+    <example>
+      <title>Members of an array.</title>
+      <programlisting>
+[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+      </programlisting>
+    <para>Results:</para><programlisting>[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+</programlisting></example>
+    <example>
+      <title>Members of a sequence.</title>
+      <programlisting>
+( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } )
+      </programlisting>
+    <para>Results:</para><programlisting>1
+"foo"
+[ 1, 2, 3, 4 ]
+{
+  "foo" : "bar"
+}
+</programlisting></example>
+    <para>Arrays can be converted to sequences, and vice-versa.</para>
+    <example>
+      <title>Converting an array to a sequence.</title>
+      <programlisting>
+[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ][]
+      </programlisting>
+    <para>Results:</para><programlisting>1
+"foo"
+[ 1, 2, 3, 4 ]
+{
+  "foo" : "bar"
+}
+</programlisting></example>
+    <example>
+      <title>Converting a sequence to an array.</title>
+      <programlisting>
+[ ( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ) ]
+      </programlisting>
+    <para>Results:</para><programlisting>[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+</programlisting></example>
+  </chapter>
+  <chapter>
+    <title>Null vs. Empty Sequence</title>
+    <para>Null and the empty sequence are two different concepts.</para>
+    <para>Null is an item (an atomic value), and can be a member of an array or of a sequence, or
+      the value associated with a key in an object. Empty sequences cannot, as they represent the absence
+      of any item.</para>
+    <example>
+      <title>Null values in an array</title>
+      <programlisting>
+[ null, 1, null, 2 ]
+      </programlisting>
+    <para>Results:</para><programlisting>[ null, 1, null, 2 ]
+</programlisting></example>
+    <example>
+      <title>Null values in an object</title>
+      <programlisting>
+{ "foo" : null }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : null
+}
+</programlisting></example>
+    <example>
+      <title>Null values in a sequence</title>
+      <programlisting>
+(null, 1, null, 2)
+      </programlisting>
+    <para>Results:</para><programlisting>null
+1
+null
+2
+</programlisting></example>
+    <para>If an empty sequence is found as an object value, it is automatically converted to null.</para>
+    <example>
+      <title>Automatic conversion to null.</title>
+      <programlisting>
+{ "foo" : () }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : null
+}
+</programlisting></example>
+    <para>In an arithmetic opration or a comparison, if an operand is an empty sequence, an empty sequence is returned. If an operand is a null, an error is raised except for equality and inequality.</para>
+    <example>
+      <title>Empty sequence in an arithmetic operation.</title>
+      <programlisting>
+() + 2
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <example>
+      <title>Null in an arithmetic operation (failing).</title>
+      <programlisting>
+null + 2
+      </programlisting>
+    <para>Error:</para><programlisting>arithmetic operation not defined between types "js:null" an
+d "xs:integer"</programlisting></example>
+    <example>
+      <title>Null and empty sequence in an arithmetic operation.</title>
+      <programlisting>
+null + ()
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <example>
+      <title>Empty sequence in a comparison.</title>
+      <programlisting>
+() eq 2
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <example>
+      <title>Null in a comparison.</title>
+      <programlisting>
+null eq 2
+      </programlisting>
+    <para>Results:</para><programlisting>false
+</programlisting></example>
+    <example>
+      <title>Null in a comparison.</title>
+      <programlisting>
+null lt 2
+      </programlisting>
+    <para>Results:</para><programlisting>true
+</programlisting></example>
+    <example>
+      <title>Null and the empty sequence in a comparison.</title>
+      <programlisting>
+null eq ()
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <example>
+      <title>Null and the empty sequence in a comparison.</title>
+      <programlisting>
+null lt ()
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+  </chapter>
+</part>

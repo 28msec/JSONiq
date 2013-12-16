@@ -1,0 +1,705 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<section id="chapter-flwor" lang="en-US">
+	<title>FLWOR expressions</title>
+	 <figure>
+		<title>FLWORExpr</title>
+		 <mediaobject>
+			<imageobject>
+				<imagedata fileref="images/FLWORExpr.png" width="444" />
+			</imageobject>
+
+		</mediaobject>
+
+	</figure>
+	 <para>
+		FLWOR expressions are probably the most powerful JSONiq construct and correspond to SQL's SELECT-FROM-WHERE statements, but they are more general and more flexible. In particular, clauses can almost appear in any order (apart that it must begin with a for or let clause, and end with a return clause).
+	</para>
+	 <para>
+		Here is a bit of theory on how it works.
+	</para>
+	 <para>
+		A clause binds values to some variables according to its own semantics, possibly several times. Each time, a tuple of variable bindings (mapping variable names to sequences) is passed on to the next clause.
+	</para>
+	 <para>
+		This goes all the way down, until the return clause. The return clause is eventually evaluated for each tuple of variable bindings, resulting in a sequence of items for each tuple.
+	</para>
+	 <para>
+		These sequences of items are concatenated, in the order of the incoming tuples, and the obtained sequence is returned by the FLWOR expression.
+	</para>
+	 <para>
+		We are now giving practical examples with a hint on how it maps to SQL.
+	</para>
+	 <section>
+		<title>For clauses</title>
+		 <figure>
+			<title>ForClause</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/ForClause.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			For clauses allow iteration on a sequence.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the for clause is evaluated to a sequence. Each item in this sequence is in turn bound to the for variable. A tuple is hence produced for each incoming tuple, and for each item in the sequence produced by the for clause for this tuple.
+		</para>
+		 <para>
+			The order in which items are bound by the for clause can be relaxed with unordered expressions, as described later in this section.
+		</para>
+		 <para>
+			The following query, using a for and a return clause, is the counterpart of SQL's "SELECT name FROM captains". $x is bound in turn to each item in the captains collection.
+		</para>
+		 <example>
+			<title>A for clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+return $x.name
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					James T. Kirk Jean-Luc Picard Benjamin Sisko Kathryn Janeway Jonathan Archer Samantha Carter
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			For clause expressions are composable, there can be several of them.
+		</para>
+		 <example>
+			<title>Two for clauses.</title>
+			 
+<programlisting>
+for $x in ( 1, 2, 3 )
+for $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					11 12 13 21 22 23 31 32 33
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>A for clause.</title>
+			 
+<programlisting>
+for $x in ( 1, 2, 3 ), $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					11 12 13 21 22 23 31 32 33
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			A for variable is visible to subsequence bindings.
+		</para>
+		 <example>
+			<title>A for clause.</title>
+			 
+<programlisting>
+for $x in ( [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ), $y in $x[]
+return $y
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					1 2 3 4 5 6 7 8 9
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>A for clause.</title>
+			 
+<programlisting>
+for $x in collection("captains"), $y in $x.series[]
+return { "captain" : $x.name, "series" : $y }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "captain" : "James T. Kirk", "series" : "The original series" } { "captain" : "Jean-Luc Picard", "series" : "The next generation" } { "captain" : "Benjamin Sisko", "series" : "The next generation" } { "captain" : "Benjamin Sisko", "series" : "Deep Space 9" } { "captain" : "Kathryn Janeway", "series" : "The next generation" } { "captain" : "Kathryn Janeway", "series" : "Voyager" } { "captain" : "Jonathan Archer", "series" : "Entreprise" } { "captain" : null, "series" : "Voyager" }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			It is also possible to bind the position of the current item in the sequence to a variable.
+		</para>
+		 <example>
+			<title>A for clause.</title>
+			 
+<programlisting>
+for $x at $position in collection("captains")
+return { "captain" : $x.name, "id" : $position }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "captain" : "James T. Kirk", "id" : 1 } { "captain" : "Jean-Luc Picard", "id" : 2 } { "captain" : "Benjamin Sisko", "id" : 3 } { "captain" : "Kathryn Janeway", "id" : 4 } { "captain" : "Jonathan Archer", "id" : 5 } { "captain" : null, "id" : 6 } { "captain" : "Samantha Carter", "id" : 7 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			JSONiq supports joins. For example, the counterpart of "SELECT c.name AS captain, m.name AS movie FROM captains c JOIN movies m ON c.name = m.name" is:
+		</para>
+		 <example>
+			<title>A join</title>
+			 
+<programlisting>
+for $captain in collection("captains"), $movie in collection("movies")[ try { $$.captain eq $captain.name } catch * { false } ]
+return { "captain" : $captain.name, "movie" : $movie.name }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "captain" : "James T. Kirk", "movie" : "The Motion Picture" } { "captain" : "James T. Kirk", "movie" : "The Wrath of Kahn" } { "captain" : "James T. Kirk", "movie" : "The Search for Spock" } { "captain" : "James T. Kirk", "movie" : "The Voyage Home" } { "captain" : "James T. Kirk", "movie" : "The Final Frontier" } { "captain" : "James T. Kirk", "movie" : "The Undiscovered Country" } { "captain" : "Jean-Luc Picard", "movie" : "First Contact" } { "captain" : "Jean-Luc Picard", "movie" : "Insurrection" } { "captain" : "Jean-Luc Picard", "movie" : "Nemesis" }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Note how JSONiq handles semi-structured data in a flexible way.
+		</para>
+		 <para>
+			Outer joins are also possible with "allowing empty", i.e., output will also be produced if there is no matching movie for a captain. The following query is the counterpart of "SELECT c.name AS captain, m.name AS movie FROM captains c LEFT JOIN movies m ON c.name = m.captain".
+		</para>
+		 <example>
+			<title>A join</title>
+			 
+<programlisting>
+for $captain in collection("captains"), $movie allowing empty in collection("movies")[ try { $$.captain eq $captain.name } catch * { false } ]
+return { "captain" : $captain.name, "movie" : $movie.name }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "captain" : "James T. Kirk", "movie" : "The Motion Picture" } { "captain" : "James T. Kirk", "movie" : "The Wrath of Kahn" } { "captain" : "James T. Kirk", "movie" : "The Search for Spock" } { "captain" : "James T. Kirk", "movie" : "The Voyage Home" } { "captain" : "James T. Kirk", "movie" : "The Final Frontier" } { "captain" : "James T. Kirk", "movie" : "The Undiscovered Country" } { "captain" : "Jean-Luc Picard", "movie" : "First Contact" } { "captain" : "Jean-Luc Picard", "movie" : "Insurrection" } { "captain" : "Jean-Luc Picard", "movie" : "Nemesis" } { "captain" : "Benjamin Sisko", "movie" : null } { "captain" : "Kathryn Janeway", "movie" : null } { "captain" : "Jonathan Archer", "movie" : null } { "captain" : null, "movie" : null } { "captain" : "Samantha Carter", "movie" : null }
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Where clauses</title>
+		 <figure>
+			<title>WhereClause</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/WhereClause.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Where clauses are used for filtering (selection operator in the relational algebra).
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the where clause is evaluated to a boolean (possibly converting an atomic to a boolean). if this boolean is true, the tuple is forwarded to the next clause, otherwise it is dropped.
+		</para>
+		 <para>
+			The following query corresponds to "SELECT series FROM captains WHERE name = 'Kathryn Janeway'".
+		</para>
+		 <example>
+			<title>A where clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+where $x.name eq "Kathryn Janeway"
+return $x.series
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ "The next generation", "Voyager" ]
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Order clauses</title>
+		 <figure>
+			<title>OrderByClause</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/OrderByClause.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Order clauses are for reordering tuples.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the where clause is evaluated to an atomic. The tuples are then sorted based on the atomics they are associated with, and then forwarded to the next clause.
+		</para>
+		 <para>
+			Like for ordering comparisons, null values are always considered the smallest.
+		</para>
+		 <para>
+			The following query is the counterpart of SQL's "SELECT * FROM captains ORDER BY name".
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+order by $x.name
+return $x
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 } { "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 } { "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 } { "name" : "Jonathan Archer", "series" : [ "Entreprise" ], "century" : 22 } { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24 } { "name" : "Samantha Carter", "series" : [ ], "century" : 21 } { "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Multiple sorting criteria can be given - they are treated like a lexicographic order (most important criterium first).
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+order by size($x.series), $x.name
+return $x
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "name" : "Samantha Carter", "series" : [ ], "century" : 21 } { "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 } { "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 } { "name" : "Jonathan Archer", "series" : [ "Entreprise" ], "century" : 22 } { "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 } { "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 } { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			It can be specified whether the order is ascending or descending. Empty sequences are allowed and it can be chosen whether to put them first or last.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+order by $x.name descending empty greatest
+return $x
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 } { "name" : "Samantha Carter", "series" : [ ], "century" : 21 } { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24 } { "name" : "Jonathan Archer", "series" : [ "Entreprise" ], "century" : 22 } { "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 } { "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 } { "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			An error is raised if the expression does not evaluate to an atomic or the empty sequence.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+order by $x
+return $x.name
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: can not atomize an object item: an object has probably been passed where an atomic value is expected (e.g., as a key, or to a function expecting an atomic item)
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Collations can be used to give a specific way of how strings are to be ordered. A collation is identified by a URI.
+		</para>
+		 <example>
+			<title>Use of a collation in an order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+order by $x.name collation "http://www.w3.org/2005/xpath-functions/collation/codepoint"
+return $x.name
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					Benjamin Sisko James T. Kirk Jean-Luc Picard Jonathan Archer Kathryn Janeway Samantha Carter
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Group clauses</title>
+		 <figure>
+			<title>GroupByClause</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/GroupByClause.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Grouping is also supported, like in SQL.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the group clause is evaluated to an atomic (a grouping key). The incoming tuples are then grouped according to the key they are associated with.
+		</para>
+		 <para>
+			For each group, a tuple is output, with a binding from the grouping variable to the key of the group.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+group by $century := $x.century
+return { "century" : $century  }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "century" : 21 } { "century" : 22 } { "century" : 23 } { "century" : 24 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			As for the other (non-grouping) variables, their values within one group are all concatenated, keeping the same name. Aggregations can be done on these variables.
+		</para>
+		 <para>
+			The following query is equivalent to "SELECT century, COUNT(*) FROM captains GROUP BY century".
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+group by $century := $x.century
+return { "century" : $century, "count" : count($x) }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "century" : 21, "count" : 1 } { "century" : 22, "count" : 1 } { "century" : 23, "count" : 1 } { "century" : 24, "count" : 4 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			JSONiq's group by is more flexible than SQL and is fully composable.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+group by $century := $x.century
+return { "century" : $century, "captains" : [ $x.name ] }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "century" : 21, "captains" : [ "Samantha Carter" ] } { "century" : 22, "captains" : [ "Jonathan Archer" ] } { "century" : 23, "captains" : [ "James T. Kirk" ] } { "century" : 24, "captains" : [ "Jean-Luc Picard", "Benjamin Sisko", "Kathryn Janeway" ] }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Unlike SQL, JSONiq does not need a having clause, because a where clause works perfectly after grouping as well.
+		</para>
+		 <para>
+			The following query is the counterpart of "SELECT century, COUNT(*) FROM captains GROUP BY century HAVING COUNT(*) &gt; 1"
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+group by $century := $x.century
+where count($x) gt 1
+return { "century" : $century, "count" : count($x) }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "century" : 24, "count" : 4 }
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Let clauses</title>
+		 <figure>
+			<title>LetClause</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/LetClause.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Let bindings can be used to define aliases for any sequence, for convenience.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the let clause is evaluated to a sequence. A binding is added from this sequence to the let variable in each tuple. A tuple is hence produced for each incoming tuple.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+let $century := $x.century
+group by $century
+let $number := count($x)
+where $number gt 1
+return { "century" : $century, "count" : $number }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "century" : 24, "count" : 4 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Note that it is perfectly fine to reuse a variable name and hide a variable binding.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+let $century := $x.century
+group by $century
+let $number := count($x)
+let $number := count(distinct-values(for $series in $x.series
+                                     return typeswitch($series)
+                                            case array return $series()
+                                            default return $series ))
+where $number gt 1
+return { "century" : $century, "number of series" : $number }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "century" : 24, "number of series" : 3 }
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Count clauses</title>
+		 <figure>
+			<title>CountClause</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/CountClause.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			For each incoming tuple, a binding from the position of this tuple in the tuple stream to the count variable is added. The new tuple is then forwarded to the next clause.
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $x in collection("captains")
+order by $x.name
+count $c
+return { "id" : $c, "captain" : $x }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "id" : 1, "captain" : { "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 } } { "id" : 2, "captain" : { "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 } } { "id" : 3, "captain" : { "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 } } { "id" : 4, "captain" : { "name" : "Jonathan Archer", "series" : [ "Entreprise" ], "century" : 22 } } { "id" : 5, "captain" : { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24 } } { "id" : 6, "captain" : { "name" : "Samantha Carter", "series" : [ ], "century" : 21 } } { "id" : 7, "captain" : { "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 } }
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Map operator</title>
+		 <figure>
+			<title>SimpleMapExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/SimpleMapExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>ContextItemExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/ContextItemExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			JSONiq provides a shortcut for a for-return construct, automatically binding each item in the left-hand-side sequence to the context item.
+		</para>
+		 <example>
+			<title>A simple map</title>
+			 
+<programlisting>
+(1 to 10) ! ($$ * 2)
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					2 4 6 8 10 12 14 16 18 20
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>An equivalent query</title>
+			 
+<programlisting>
+for $i in 1 to 10
+return $i * 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					2 4 6 8 10 12 14 16 18 20
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Composing FLWOR expressions</title>
+		 <para>
+			Like all other expressions, FLWOR expressions can be composed. In the following examples, a FLWOR is nested in a function call, nested in a FLWOR, nested in an array constructor:
+		</para>
+		 <example>
+			<title>Nested FLWORs</title>
+			 
+<programlisting>
+        [
+          for $c in collection("captains")
+          where exists(for $m in collection("movies")
+                       where some $moviecaptain in let $captain := $m.captain
+                                                   return typeswitch ($captain)
+                                                          case array return $captain()
+                                                          default return $captain
+                             satisfies
+                             $moviecaptain eq $c.name
+                       return $m)
+          return $c.name
+        ]
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ "James T. Kirk", "Jean-Luc Picard" ]
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Ordered and Unordered expressions</title>
+		 <figure>
+			<title>OrderedExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/OrderedExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>UnorderedExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/UnorderedExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			By default, the order in which a for clause binds its items is important.
+		</para>
+		 <para>
+			This behaviour can be relaxed in order give the optimizer more leeway. An unordered expression relaxes ordering by for clauses within its operand scope:
+		</para>
+		 <example>
+			<title>An unordered expression.</title>
+			 
+<programlisting>
+unordered {
+  for $captain in collection("captains")
+  where $captain.century eq 24
+  return $captain
+}
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 } { "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 } { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24 } { "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			An ordered expression can be used to reactivate ordering behaviour in a subscope.
+		</para>
+		 <example>
+			<title>An ordered expression.</title>
+			 
+<programlisting>
+unordered {
+  for $captain in collection("captains")
+  where ordered { exists(for $movie at $i in collection("movies")
+                         where $i eq 5
+                         where $movie.captain eq $captain.name
+                         return $movie) }
+  return $captain
+}
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 }
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+
+</section>
+
+

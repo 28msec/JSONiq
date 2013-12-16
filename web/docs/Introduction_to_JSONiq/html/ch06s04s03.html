@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.4.3. Sequence predicates</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-selectors.html" title="6.4. Selectors" /><link rel="prev" href="ch06s04s02.html" title="6.4.2. Array member selector" /><link rel="next" href="chapter-control-flow.html" title="6.5. Control flow expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s04s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-control-flow.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9242944">6.4.3. Sequence predicates</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/Predicate.png" alt="Predicate" /></div></div><h6>Figure 6.30. Predicate</h6></div><br class="figure-break" /><div class="para">
+			A predicate allows filtering a sequence, keeping only items that fulfill it.
+		</div><div class="para">
+			The predicate is evaluated once for each item in the left-hand-side sequence, with the context item set to that item. The predicate expression can use $$ to access this context item.
+		</div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ContextItemExpr.png" alt="ContextItemExpr" /></div></div><h6>Figure 6.31. ContextItemExpr</h6></div><br class="figure-break" /><div class="para">
+			If the predicate evaluates to an integer, it is matched against the item position in the left-hand side sequence automatically
+		</div><div class="example"><h6>Example 6.79. Predicate expression</h6><div class="example-contents"><pre class="programlisting">
+(1 to 10)[2]
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">2
+</pre></div></div><br class="example-break" /><div class="para">
+			Otherwise, the result of the predicate is converted to a boolean.
+		</div><div class="para">
+			All items for which the converted predicate result evaluates to true are then output.
+		</div><div class="example"><h6>Example 6.80. Predicate expression</h6><div class="example-contents"><pre class="programlisting">
+(1 to 10)[$$ mod 2 eq 0]
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">2
+ 4
+ 6
+ 8
+ 10
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s04s02.html"><strong>Prev</strong>6.4.2. Array member selector</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-control-flow.html"><strong>Next</strong>6.5. Control flow expressions</a></li></ul></body></html>

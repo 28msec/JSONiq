@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 13. Modules</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt04.html" title="Part IV. Prolog, Modules and Functions" /><link rel="prev" href="ch12s04.html" title="12.4. User-Defined Functions" /><link rel="next" href="chapter-functions.html" title="Chapter 14. Function Library" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch12s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-functions.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-modules" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 13. Modules</h2></div></div></div><div class="para">
+		You can group functions and variables in separate units, called library modules.
+	</div><div class="para">
+		Up to now, everything we encountered were main modules, i.e., a prolog followed by a main query.
+	</div><div class="para">
+		A library module does not contain any query - just functions and variables that can be imported by other modules.
+	</div><div class="para">
+		A library module must be assigned to a namespace. For convenience, this namespace is bound to an alias in the module declaration. All variables and functions in a library module must be prefixed with this alias.
+	</div><div class="example"><h6>Example 13.1. A library module.</h6><div class="example-contents"><pre class="programlisting">
+module namespace my =
+    "http://www.example.com/my-module";
+
+declare variable $my:variable := { "foo" : "bar" };
+declare variable $my:n := 42;
+
+declare function my:function($i as integer)
+{
+  $i * $i
+};
+</pre></div></div><br class="example-break" /><div class="para">
+		Once you have defined a library module, you can import it in any other module (library or main). An alias must be given to the module namespace (my). Variables and functions from that module can be accessed by prefixing their names with this alias. The alias may be different than the internal alias defined in the imported module -- only the namespace really matters.
+	</div><div class="example"><h6>Example 13.2. Importing a library module into a main module.</h6><div class="example-contents"><pre class="programlisting">
+import module namespace other =
+    "http://www.example.com/my-module";
+other:function($other:n)
+</pre><div class="para">
+			Results:
+		</div><pre class="programlisting">1764
+</pre></div></div><br class="example-break" /><div class="para">
+		An engine may come with a number of builtin library modules. For example, there is the standardized math module.
+	</div><div class="example"><h6>Example 13.3. Using the math module.</h6><div class="example-contents"><pre class="programlisting">
+import module namespace math =
+    "http://www.w3.org/2005/xpath-functions/math";
+math:pi(),
+math:pow(2, 30),
+math:exp(1),
+math:exp10(2),
+math:log(1),
+math:log10(2),
+math:sqrt(4),
+math:sin(math:pi())
+</pre><div class="para">
+			Results:
+		</div><pre class="programlisting">3.1415926535897931
+1.073741824E9
+2.7182818284590451
+100
+0
+0.3010299956639812
+2
+1.2246467991473532E-16
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch12s04.html"><strong>Prev</strong>12.4. User-Defined Functions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-functions.html"><strong>Next</strong>Chapter 14. Function Library</a></li></ul></body></html>

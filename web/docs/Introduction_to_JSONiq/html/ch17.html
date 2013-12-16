@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 17. Sequences vs. Arrays</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt05.html" title="Part V. Advanced Notes" /><link rel="prev" href="ch16.html" title="Chapter 16. Equality vs. Identity" /><link rel="next" href="ch18.html" title="Chapter 18. Null vs. Empty Sequence" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch16.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch18.html"><strong>Next</strong></a></li></ul><div class="chapter" id="idm39436944"><div class="titlepage"><div><div><h2 class="title">Chapter 17. Sequences vs. Arrays</h2></div></div></div><div class="para">
+			Even though JSON supports arrays, JSONiq uses a different construct as its first class citizens: sequences. Any value returned by or passed to an expression is a sequence.
+		</div><div class="para">
+			The main difference between sequences and arrays is that sequences are completely flat, meaning they cannot contain other sequences.
+		</div><div class="para">
+			Since sequences are flat, expressions of the JSONiq language just concatenate them to form bigger sequences.
+		</div><div class="para">
+			This is very useful to stream and optimize -- for example, the runtime of the Zorba engine is iterator-based.
+		</div><div class="example"><h6>Example 17.1. Flat sequences.</h6><div class="example-contents"><pre class="programlisting">
+( (1, 2), (3, 4) )
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">1
+2
+3
+4
+</pre></div></div><br class="example-break" /><div class="para">
+			Arrays on the other side can contain nested arrays, like in JSON.
+		</div><div class="example"><h6>Example 17.2. Nesting arrays.</h6><div class="example-contents"><pre class="programlisting">
+[ [ 1, 2 ], [ 3, 4 ] ]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">[ [ 1, 2 ], [ 3, 4 ] ]
+</pre></div></div><br class="example-break" /><div class="para">
+			Many expressions return single items - actually, they really return a singleton sequence, but a singleton sequence of one item is considered the same as the item itself.
+		</div><div class="example"><h6>Example 17.3. Singleton sequences.</h6><div class="example-contents"><pre class="programlisting">
+1 + 1
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">2
+</pre></div></div><br class="example-break" /><div class="para">
+			This is different for arrays: a singleton array is distinct from its unique member, like in JSON.
+		</div><div class="example"><h6>Example 17.4. Singleton sequences.</h6><div class="example-contents"><pre class="programlisting">
+[ 1 + 1 ]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">[ 2 ]
+</pre></div></div><br class="example-break" /><div class="para">
+			An array is a single item. A (non-singleton) sequence is not. This can be observed by counting the number of items in a sequence.
+		</div><div class="example"><h6>Example 17.5. count() on an array.</h6><div class="example-contents"><pre class="programlisting">
+count([ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ])
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">1
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.6. count() on a sequence.</h6><div class="example-contents"><pre class="programlisting">
+count( ( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ) )
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">4
+</pre></div></div><br class="example-break" /><div class="para">
+			Other than that, arrays and sequences can contain exactly the same members (atomics, arrays, objects).
+		</div><div class="example"><h6>Example 17.7. Members of an array.</h6><div class="example-contents"><pre class="programlisting">
+[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.8. Members of a sequence.</h6><div class="example-contents"><pre class="programlisting">
+( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } )
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">1
+"foo"
+[ 1, 2, 3, 4 ]
+{
+  "foo" : "bar"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			Arrays can be converted to sequences, and vice-versa.
+		</div><div class="example"><h6>Example 17.9. Converting an array to a sequence.</h6><div class="example-contents"><pre class="programlisting">
+[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ][]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">1
+"foo"
+[ 1, 2, 3, 4 ]
+{
+  "foo" : "bar"
+}
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.10. Converting a sequence to an array.</h6><div class="example-contents"><pre class="programlisting">
+[ ( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ) ]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch16.html"><strong>Prev</strong>Chapter 16. Equality vs. Identity</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch18.html"><strong>Next</strong>Chapter 18. Null vs. Empty Sequence</a></li></ul></body></html>

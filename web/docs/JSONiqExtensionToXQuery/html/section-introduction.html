@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 2. Introduction</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="section-status.html" title="Chapter 1. Status" /><link rel="next" href="section-jsoniq-data-model.html" title="Chapter 3. JSONiq Data Model" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="section-status.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="section-jsoniq-data-model.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="section-introduction" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 2. Introduction</h2></div></div></div><div class="para">
+		JSON and XML are both widely used for data interchange on the Internet. In many applications, JSON is replacing XML in Web Service APIs and data feeds; other applications support both formats. XML adds significant overhead for namespaces, whitespace handling, the oddities of XML Schema, and other things that are simply not needed in many data-oriented applications that require no more than simple serialization of program structures. On the other hand, many applications do need these features, and the ability to use document data together with traditional program data is important.
+	</div><div class="para">
+		JSONiq is a small and simple set of extensions to XQuery that add support for JSON. For applications that need only JSON, we have defined a profile called XQ-- that removes all support for XML constructors, path expressions, user defined functions, and some other features considered unnecessary for most JSON queries. Syntax diagrams for XQ-- are available at <a href="http://jsoniq.org/grammars/xq--/ui.xhtml">http://jsoniq.org/grammars/xq--/ui.xhtml</a>.
+	</div><div class="para">
+		For applications that need to process XML together with JSON, we have defined a profile called XQ++ that adds these extensions to the full XQuery language. Syntax diagrams for XQ++ are available at <a href="http://jsoniq.org/grammars/xq++/ui.xhtml">http://jsoniq.org/grammars/xq++/ui.xhtml</a>.
+	</div><div class="para">
+		JSONiq consists of the following extensions to XQuery:
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				Extensions to the XQuery Data Model (XDM) to support JSON.
+			</div></li><li class="listitem"><div class="para">
+				Support for JSON's datatypes, with a mapping to equivalent XML Schema types.
+			</div></li><li class="listitem"><div class="para">
+				Navigation for JSON Objects and JSON Arrays.
+			</div></li><li class="listitem"><div class="para">
+				Constructors for JSON Objects, Pairs, and JSON Arrays, using the same syntax as JSON.
+			</div></li><li class="listitem"><div class="para">
+				Update primitives against JSON items as well as updating expressions which produce them.
+			</div></li><li class="listitem"><div class="para">
+				New item types, which extend sequence type matching to allow the type of JSONiq datatypes to be specified in function parameters, return types, and other expressions that specify XQuery types.
+			</div></li></ul></div><div class="para">
+		JSONiq is designed to seamlessly integrate in XQuery's full composability paradigm. In particular, JSON constructors can appear in any XQuery expression, and any XQuery expression can appear in a JSON constructor.
+	</div><div class="para">
+		The namespace <code class="code">http://jsoniq.org/functions</code> is used for functions defined by this specification. This namespace is exposed to the user and is bound by default to the prefix <code class="code">jn</code>. For instance, the function name <code class="code">jn:json-doc()</code> is in this namespace.
+	</div><div class="para">
+		The namespace <code class="code">http://jsoniq.org/types</code> is used for types defined by this specification. This namespace is exposed to the user and is bound by default to the prefix <code class="code">jn</code>. For instance, the type name <code class="code">js:null</code> is in this namespace.
+	</div><div class="para">
+		The namespace <code class="code">http://jsoniq.org/function-library</code> is used for library functions defined by this specification. This namespace is exposed to the user, however no prefix is predeclared for this namespace. For convenience, this document uses the prefix <code class="code">libjn:</code> for names in this namespace. For instance, the function name <code class="code">libjn:accumulate</code> is in this namespace.
+	</div><div class="para">
+		The namespace <code class="code">http://jsoniq.org/errors</code> is used for the names of errors defined by this specification. This namespace is exposed to the user, however no prefix is predeclared for this namespace. For convenience, this document uses the prefix <code class="code">jerr:</code> for names in this namespace. For instance, the error name <code class="code">jerr:JQTY0001</code> is in this namespace.
+	</div><div class="para">
+		The namespace <code class="code">http://jsoniq.org/updates</code> is used for the names of update primitives defined by this specification. This namespace is not exposed to the user. For convenience, this document uses the prefix <code class="code">jupd:</code> for names in this namespace. For instance, the update primitive <code class="code">jupd:delete-from-object</code> is in this namespace.
+	</div><div class="para">
+		Accessors used in JSONiq Data Model use the <code class="code">jdm:</code> prefix. These functions are not exposed to the user and are for explanatory purposes of the data model within this document only. The <code class="code">jdm:</code> prefix is not associated with a namespace.
+	</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="section-status.html"><strong>Prev</strong>Chapter 1. Status</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-jsoniq-data-model.html"><strong>Next</strong>Chapter 3. JSONiq Data Model</a></li></ul></body></html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>14.2.5.19. resolve-uri</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="ch14s02s05.html" title="14.2.5. Functions on Strings" /><link rel="prev" href="ch14s02s05s18.html" title="14.2.5.18. tokenize" /><link rel="next" href="ch14s02s05s20.html" title="14.2.5.20. encode-for-uri" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch14s02s05s18.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch14s02s05s20.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title" id="idm44423152">14.2.5.19. resolve-uri</h4></div></div></div><div class="para">
+					Resolves a relative URI against an absolute URI.
+				</div><div class="para">
+					<code class="code">resolve-uri(string?, string) as anyURI*</code>
+				</div><div class="example"><h6>Example 14.39. Resolving a URI.</h6><div class="example-contents"><pre class="programlisting">
+resolve-uri("types", "http://www.jsoniq.org/"),
+resolve-uri(
+    "http://www.example.com/types",
+    "http://www.jsoniq.org/"
+)
+</pre><pre class="programlisting">Result:
+ "http://www.jsoniq.org/types"
+ "http://www.example.com/types"
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch14s02s05s18.html"><strong>Prev</strong>14.2.5.18. tokenize</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch14s02s05s20.html"><strong>Next</strong>14.2.5.20. encode-for-uri</a></li></ul></body></html>

@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-json-updates">
+      <title>JSON updates</title>
+
+      <para>JSONiq introduces new update primitives for updating Objects and Arrays. Update primitives can be generated with new JSONiq updating expressions.</para>
+
+      <para>An individual function may create an invalid JSON instance; however, an updating query must produce a valid JSON instance once the entire query is evaluated, or an error is raised and the entire update fails, leaving the instance in its original state.</para>
+      
+      <section>
+        <title>JSON udpate primitives</title>
+        
+        <para>The following new update primitives are introduced.</para>
+        
+        <itemizedlist>
+          <listitem>
+            <para>
+          <code>jupd:insert-into-object($o as object(), $p as object())</code>
+        </para>
+            <para> Inserts all pairs of the object <code>$p</code> into the object $o. </para>
+          </listitem>
+        
+          <listitem>
+            <para>
+              <code>jupd:insert-into-array($a as array(), $i as xs:integer, $c as item()*)</code>
+            </para>
+            <para>
+              Inserts all items in the sequence $c before position $i into the array $a.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <code>jupd:delete-from-object($o as object(), $s as xs:string*)</code>
+            </para>
+            <para>
+              Removes the pairs the names of which appear in $s from the object $o.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <code>jupd:delete-from-array($a as array(), $i as xs:integer)</code>
+            </para>
+            <para>
+              Removes the item at position $i from the array $a (causes all following items in the array to move one position to the left).
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <code>jupd:replace-in-array($a as array(), $i as xs:integer, $v as item())</code>
+            </para>
+            <para>
+              Replaces the item at position $i in the array $a with the item $v (do nothing if $i is not comprised between 1 and jdm:size($a)).
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <code>jupd:replace-in-object($o as object(), $n as xs:string, $v as item())</code>
+            </para>
+            <para>
+              Replaces the value of the pair named $n in the object $o with the item $v (do nothing if there is no such pair).
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <code>jupd:rename-in-object($o as object(), $n as xs:string, $p as xs:string)</code>
+            </para>
+            <para>
+              Renames the pair originally named $n in the object $o as $p (do nothing if there is no such pair).
+            </para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Update primitives within a PUL are applied with strict snapshot semantics. For examples, the positions are resolved
+          against the array before the updates. Names are resolved on the object before the updates.</para>
+        
+        <para>In the middle of a program, several PULs can be produced against the same snapshot. They are then merged with <code>upd:mergeUpdates</code>,
+          which is extended as follows.</para>
+        <itemizedlist>
+          <listitem>
+            <para> Several deletes on the same object are replaced with a unique delete on that
+          object, with a list of all selectors (names) to be deleted, where duplicates have been
+          eliminated. </para>
+          </listitem>
+          <listitem>
+            <para>
+              Several deletes on the same array and selector (position) are replaced with a unique delete on that array
+              and with that selector.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Several inserts on the same array and selector (position) are equivalent to a unique insert on that array and selector
+              with the content of those original inserts appended in an implementation-dependent order (like XQUF).
+            </para>
+          </listitem>
+          <listitem>
+            <para> Several inserts on the same object are equivalent to a unique insert where the
+          objects containing the pairs to insert are merged.
+          An error <code>jerr:JNUP0005</code> is raised if a collision occurs.</para>
+          </listitem>
+          <listitem>
+            <para>
+              Several replaces on the same object or array and with the same selector raise an error <code>jerr:JNUP0009</code>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Several renames on the same object and with the same selector raise an error <code>jerr:JNUP0010</code>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              If there is a replace and a delete on the same object or array and with the same selector, the replace is omitted in the merged PUL.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              If there is a rename and a delete on the same object or array and with the same selector, the rename is omitted in the merged PUL.
+            </para>
+          </listitem>
+        </itemizedlist>
+
+        <para>At the end of an updating program, the resulting PUL is applied with <code>upd:applyUpdates</code>, which is extended as follows:</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+                First, before applying any update, each update primitive (except the jupd:insert-into-object primitives,
+                which do not have any target) locks onto its target by resolving the selector on the object or array it updates.
+                If the selector is resolved to the empty sequence, the update primitive is ignored in step 2. After this operation,
+                each of these update primitives will contain a reference to either the pair (for an object) or the value (for an array)
+                on or relatively to which it operates
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Then each update primitive is applied, using the target references that were resolved at step 1. The order in which they are applied
+                is not relevant and does not affect the final instance of the data model.
+                After applying all updates, an error <code>jerr:JNUP0006</code> is raised upon pair name collision within the same object.
+              </para>
+            </listitem>
+          </itemizedlist>
+      </section>
+      
+      <section>
+        <title>Update syntax: new updating expressions</title>
+        
+        <para>
+          The following syntax is introduced for updates.
+        </para>
+        
+        <section>
+          <title>Deleting expressions</title>
+          
+          <programlisting>
+            JSONDeleteExpr ::= "delete" "json" PrimaryExpr ( "(" ExprSingle ")" )+ 
+          </programlisting>
+          
+          <para>
+            PrimaryExpr followed by all "(" ExprSingle ")" except the last one, is evaluated according to the semantics
+            of dynamic function calls. It must return a single object $o or a single array $a. Otherwise,
+            <code>jerr:JNUP0008</code> is raised.
+            
+            After this evaluation, two cases can appear for interpreting the last "(" ExprSingle ")":
+          </para>
+          
+          <para>(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)</para>
+          
+          <itemizedlist>
+           <listitem>
+             <para><code>delete json $o($s)</code>
+             </para>
+             <para>
+               $s is atomized and cast to xs:string (<code>jerr:JNUP0007</code> is raised upon failure).
+             </para>
+             <para>
+               Creates the update primitive <code>jupd:delete-from-object($o, $s)</code>. An error <code>JNUP:0016</code> is raised
+               if $o does not contain a pair with the key $s.
+             </para>
+           </listitem>
+           <listitem>
+             <para><code>delete json $a($i)</code></para>
+             <para>
+               $i is atomized and cast to xs:integer (<code>jerr:JNUP0007</code> is raised upon failure).
+             </para>
+             <para>
+               Creates the update primitive <code>jupd:delete-from-array($a, $i)</code>. An error <code>JNUP:0016</code> is raised
+               if $i is out of the range of the array $a.
+             </para>
+           </listitem>
+         
+         </itemizedlist>
+           
+         <example>
+           <title>Deleting from an object and from an array</title>
+           
+           <programlisting>
+             delete json $o("foo")
+             delete json $a(2)
+           </programlisting>
+         </example>
+          
+          <para>Note:</para>
+          
+          <para>
+            If <code>$o($s)</code> or <code>$a($i)</code> resolves to an empty sequence, the produced update
+            primitive will have no effect.
+          </para>
+        </section>
+        
+        <section>
+          <title>Inserting expressions</title>
+          
+          <programlisting>
+            JSONInsertExpr ::= "insert" "json" ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
+                             | "insert" "json" PairConstructor ("," Pair Constructor)* "into" ExprSingle
+          </programlisting>
+        
+          <para>
+            (for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)
+          </para>
+          <para> The second variant corresponds to the insertion of a statically known number of
+        pairs: </para>
+          <para><code>insert json "foo" : "bar", "bar" : "foo" into $o</code></para>
+          <para>
+            is defined as being equivalent to:
+          </para>
+          <para><code>insert json { "foo" : "bar", "bar" : "foo" } into $o</code></para>
+          <para>
+            Inserting expressions are available in two flavors (object insertion, array insertion):
+          </para>
+          <itemizedlist>
+            <listitem>
+              <para><code>insert json $p into $o</code></para>
+              <para>
+                $o must be an object. Otherwise, <code>jerr:JNUP0008</code> is raised.
+              </para>
+              <para>
+                $p must be a sequence of objects. Otherwise, <code>jerr:JNUP0019</code> is raised.
+              </para>
+              <para>
+                $o is post-processed by invoking <code>jn:object</code>, which results in a single object containing all pairs to insert.
+                In particular, <code>jerr:JNDY0003</code> is raised upon a pair collision.
+              </para>
+              <para>
+                Makes a copy $p and creates the update primitive
+                <code>jupd:insert-into-object($o, $p)</code>
+              </para>
+            </listitem>
+            <listitem>
+              <para><code>insert json $c into $a at position $i</code></para>
+              <para>
+                $a must be an array. Otherwise, <code>jerr:JNUP0008</code> is raised.
+              </para>
+              <para>
+                $i is atomized and cast to xs:integer (<code>jerr:JNUP0007</code> is raised upon failure).
+              </para>
+              <para>
+                Makes a copy of all items in $c and creates the update primitive <code>jupd:insert-into-array($a, $i, $c)</code>
+              </para>
+            </listitem>
+          </itemizedlist>
+          
+          <example>
+            
+            <title>Inserting into an array or an object</title>
+            
+            <programlisting>
+              insert json (1, 2, 3) into $a at position 3
+              insert json { "foo": 3, "bar":4 } into $o
+            </programlisting>
+            
+          </example>
+        </section>
+        
+        <section>
+          <title>Renaming expressions</title>
+          <programlisting>
+            JSONRenameExpr ::= "rename" "json" PrimaryExpr  ( "(" ExprSingle ")" )+ "as" ExprSingle
+          </programlisting>
+          
+          <para>(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)</para>
+          
+          <para><code>rename json $o($s) as $n</code></para>
+          
+          <para>
+            PrimaryExpr followed by all "(" ExprSingle ")" except the last one, is evaluated according to the semantics
+            of dynamic function calls. It must return a single object $o. Otherwise,
+            <code>jerr:JNUP0008</code> is raised.
+            
+            After this evaluation, the last "(" ExprSingle ")" is interpreted as follows:
+          </para>
+
+          <para>
+            $s is atomized and cast to xs:string (<code>jerr:JNUP0007</code> is raised upon failure).
+          </para>
+          <para>
+            Creates the update primitive <code>jupd:rename-in-object($o, $s, $n)</code>. An error <code>JNUP:0016</code> is raised
+            if $o does not contain a pair with the key $s.
+          </para>
+          
+          <example>
+            <title>Renaming an object pair</title>
+            <programlisting>
+              rename json $o("foo") as "bar"
+            </programlisting>
+          </example>
+        </section>
+        
+        <section>
+          
+          <title>Replacing expressions</title>
+          
+          <programlisting>
+            JSONReplaceExpr ::= "replace" "json" "value" "of" PrimaryExpr ( "(" ExprSingle ")" )+ "with" ExprSingle
+          </programlisting>
+          
+          <para>
+            PrimaryExpr followed by all "(" ExprSingle ")" except the last one, is evaluated according to the semantics
+            of dynamic function calls. It must return a single object $o or a single array $a. Otherwise,
+            <code>jerr:JNUP0008</code> is raised.
+            
+            After this evaluation, two cases can appear for interpreting the last "(" ExprSingle ")":
+          </para>
+
+          <para>(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)</para>
+          
+          <itemizedlist>
+            <listitem>
+              <para><code>replace json value of $o($s) with $c</code></para>
+              <para>
+                $s is atomized and cast to xs:string (<code>jerr:JNUP0007</code> is raised upon failure).
+              </para>
+              <para>
+                $c is postprocessed in the same way as values in a pair constructor, i.e., if $c is the empty sequence, it is replaced
+                with the atomic value null, and if it is a sequence of more than one item, an array is created with all items in this sequence
+                and in the same order. Ultimately, in all cases, $c will be a single item.
+              </para>
+              <para>
+                Makes a copy of $c and creates the update primitive <code>jupd:replace-in-object($o, $s, $c)</code>. An error <code>JNUP:0016</code> is raised
+                if $o does not contain a pair with the key $s.
+              </para>
+            </listitem>
+            <listitem>
+              <para><code>replace json value of $a($i) with $c</code></para>
+              <para>
+                $i is atomized and cast to xs:integer (<code>jerr:JNUP0007</code> is raised upon failure).
+              </para>
+              <para>
+                $c is postprocessed in the same way as values in a pair constructor, i.e., if $c is the empty sequence, it is replaced
+                with the atomic value null, and if it is a sequence of more than one item, an array is created with all items in this sequence
+                and in the same order. Ultimately, in all cases, $c will be a single item.
+              </para>
+              <para>
+                Makes a copy of $c and creates the update primitive <code>jupd:replace-in-array($a, $i, $c)</code>.  An error <code>JNUP:0016</code> is raised
+                if $i is out of the range of array $a.
+              </para>
+            </listitem>
+          </itemizedlist>
+        
+          <example>
+            <title>Replace a value in an object or in an array</title>
+            
+            <programlisting>
+              replace json value of $o("foo") with 5
+              replace json value of $a(3) with 25
+            </programlisting>
+          </example>
+        </section>
+        
+        <section>
+          <title>Appending expressions</title>
+          
+          <programlisting>
+            JSONAppendExpr ::= "append" "json" ExprSingle "into" ExprSingle
+          </programlisting>
+          
+          <para>(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)</para>
+
+          <para><code>append json $c into $a</code></para>
+          <para>
+            $a must be an array. Otherwise, <code>jerr:JNUP0008</code> is raised.
+          </para>
+          <para>
+            Creates the update primitive <code>insert-into-array($a, $a()+1, $c)</code>
+          </para>
+          
+          <example>
+            <title>Appending values to an array</title>
+            <programlisting>
+              append json (1,2) into $a
+            </programlisting>
+          </example>
+      </section>
+    </section>
+      
+  </chapter>

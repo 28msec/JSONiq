@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chapter-collections" lang="en-US">
+	<title>Collections</title>
+	 <para>
+		Even though you can build your own JSON values with JSONiq by copying-and-pasting JSON documents, most of the time, your JSON data will be in a collection.
+	</para>
+	 <para>
+		We now introduce collections, because collections are perfect to illustrate the JSON navigation syntax which will be introduced in the next section.
+	</para>
+	 <para>
+		Collections are sequences of objects, identified by a name which is a string.
+	</para>
+	 <para>
+		Adding or deleting collections from the set of known collections to a query processor, and loading the data in a collection are implementation-dependent and outside of the scope of this book.
+	</para>
+	 <para>
+		We will just assume that there is a function named collection() that returns all objects associated with the provided collection name.
+	</para>
+	 <example>
+		<title>Getting all objects from a collection.</title>
+		 
+<programlisting>
+collection("one-object")
+</programlisting>
+		 <para>
+			Results:
+		</para>
+		
+<programlisting>{
+  "question" : "What NoSQL technology should I use?"
+}
+</programlisting>
+	</example>
+	 <section>
+		<title>Collections Used Throughout This Book</title>
+		 <para>
+			For illustrative purposes, we will assume that we have the following collections:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>collection("one-object")</emphasis>
+				</para>
+				 <example>
+					<title>The object in the one-object collection.</title>
+					 
+<programlisting>
+collection("one-object")
+</programlisting>
+					 <para>
+						Results:
+					</para>
+					
+<programlisting>{
+  "question" : "What NoSQL technology should I use?"
+}
+</programlisting>
+				</example>
+
+			</listitem>
+			 <listitem>
+				<para>
+					<emphasis>collection("faqs")</emphasis> - this is a collection of StackOverflow FAQs.
+				</para>
+				 <example>
+					<title>One object from the faqs collection.</title>
+					 
+<programlisting>
+collection("faqs")[1]
+</programlisting>
+					 <para>
+						Results:
+					</para>
+					
+<programlisting>{
+  "_id" : "511C7C5C9A277C22D138802D",
+  "question_id" : 4419499,
+  "last_edit_date" : "2012-12-17T00:02:31",
+  "creation_date" : "2010-12-11T23:15:19",
+  "last_activity_date" : "2012-12-17T00:02:31",
+  "score" : 15,
+  "accepted_answer_id" : 4421601,
+  "title" : "MySQL and NoSQL: Help me to choose the right o
+ne",
+  "tags" : [ "php", "mysql", "nosql", "cassandra" ],
+  "view_count" : 3972,
+  "owner" : {
+    "user_id" : 279538,
+    "display_name" : "cedivad",
+    "reputation" : 430,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/b77fa
+dd2ba791134ac40a9c184be1eda?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/279538/cedivad
+",
+    "accept_rate" : 74
+  },
+  "link" : "http://stackoverflow.com/questions/4419499/mysq
+l-and-nosql-help-me-to-choose-the-right-one",
+  "is_answered" : true
+}
+</programlisting>
+				</example>
+
+			</listitem>
+			 <listitem>
+				<para>
+					<emphasis>collection("answers")</emphasis> - this is a collection of StackOverflow answers (to the previous FAQs).
+				</para>
+				 <example>
+					<title>One object from the answers collection.</title>
+					 
+<programlisting>
+collection("answers")[1]
+</programlisting>
+					 <para>
+						Results:
+					</para>
+					
+<programlisting>{
+  "_id" : "511C7C5D9A277C22D13880C3",
+  "question_id" : 37823,
+  "answer_id" : 37841,
+  "creation_date" : "2008-09-01T12:14:38",
+  "last_activity_date" : "2008-09-01T12:14:38",
+  "score" : 7,
+  "is_accepted" : false,
+  "owner" : {
+    "user_id" : 2562,
+    "display_name" : "Ubiguchi",
+    "reputation" : 1871,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/00b87
+a917ec763c0c051dc6b8c06f402?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/2562/ubiguchi"
+
+  }
+}
+</programlisting>
+				</example>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			Many queries in this book can be directly input into 28.io's try-it-now sandbox, as these collections are preloaded (this is real-world data).
+		</para>
+
+	</section>
+
+</chapter>
+

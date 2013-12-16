@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>7.2.2. Inserting expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="ch07s02.html" title="7.2. Update syntax: new updating expressions" /><link rel="prev" href="ch07s02.html" title="7.2. Update syntax: new updating expressions" /><link rel="next" href="ch07s02s03.html" title="7.2.3. Renaming expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch07s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch07s02s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm42213024">7.2.2. Inserting expressions</h3></div></div></div><pre class="programlisting">
+            JSONInsertExpr ::= "insert" "json" ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
+                             | "insert" "json" PairConstructor ("," Pair Constructor)* "into" ExprSingle
+</pre><div class="para">
+				(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)
+			</div><div class="para">
+				The second variant corresponds to the insertion of a statically known number of pairs:
+			</div><div class="para">
+				<code class="code">insert json "foo" : "bar", "bar" : "foo" into $o</code>
+			</div><div class="para">
+				is defined as being equivalent to:
+			</div><div class="para">
+				<code class="code">insert json { "foo" : "bar", "bar" : "foo" } into $o</code>
+			</div><div class="para">
+				Inserting expressions are available in two flavors (object insertion, array insertion):
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						<code class="code">insert json $p into $o</code>
+					</div><div class="para">
+						$o must be an object. Otherwise, <code class="code">jerr:JNUP0008</code> is raised.
+					</div><div class="para">
+						$p must be a sequence of objects. Otherwise, <code class="code">jerr:JNUP0019</code> is raised.
+					</div><div class="para">
+						$o is post-processed by invoking <code class="code">jn:object</code>, which results in a single object containing all pairs to insert. In particular, <code class="code">jerr:JNDY0003</code> is raised upon a pair collision.
+					</div><div class="para">
+						Makes a copy $p and creates the update primitive <code class="code">jupd:insert-into-object($o, $p)</code>
+					</div></li><li class="listitem"><div class="para">
+						<code class="code">insert json $c into $a at position $i</code>
+					</div><div class="para">
+						$a must be an array. Otherwise, <code class="code">jerr:JNUP0008</code> is raised.
+					</div><div class="para">
+						$i is atomized and cast to xs:integer (<code class="code">jerr:JNUP0007</code> is raised upon failure).
+					</div><div class="para">
+						Makes a copy of all items in $c and creates the update primitive <code class="code">jupd:insert-into-array($a, $i, $c)</code>
+					</div></li></ul></div><div class="example"><h6>Example 7.2. Inserting into an array or an object</h6><div class="example-contents"><pre class="programlisting">
+              insert json (1, 2, 3) into $a at position 3
+              insert json { "foo": 3, "bar":4 } into $o
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch07s02.html"><strong>Prev</strong>7.2. Update syntax: new updating expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch07s02s03.html"><strong>Next</strong>7.2.3. Renaming expressions</a></li></ul></body></html>

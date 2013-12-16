@@ -1,0 +1,55 @@
+<chapter id="chapter-collections">
+  <title>Collections</title>
+  <para>Even though you can build your own JSON values with JSONiq by copying-and-pasting JSON
+    documents, most of the time, your JSON data will be in a collection. Collections are sequences
+    of objects, identified by a name which is a string.</para>
+  <para>Adding or deleting collections from the set of known collections to a query processor, and
+    loading the data in a collection are implementation-dependent and outside of the scope of this
+    specification.</para>
+  <para>The collection() function returns all objects associated with the provided collection
+    name.</para>
+  <example>
+    <title>Getting all objects from a collection</title>
+    <programlisting>
+collection("one-object")
+    </programlisting>
+  <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : "bar" }</para></formalpara></example>
+  <para>For illustrative purposes, we will assume that we have the following collections:</para>
+  <itemizedlist>
+    <listitem>
+      <para><emphasis>collection("one-object")</emphasis></para>
+      <programlisting>
+{ "foo" : "bar" }
+      </programlisting>
+    </listitem>
+    <listitem>
+      <para><emphasis>collection("captains")</emphasis></para>
+      <programlisting>
+      { "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 }
+      { "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 }
+      { "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 }
+      { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24  }
+      { "name" : "Jonathan Archer", "series" : [ "Entreprise" ], "century" : 22 }
+      { "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 }
+      { "name" : "Samantha Carter", "series" : [ ], "century" : 21 }
+      </programlisting>
+    </listitem>
+    <listitem>
+      <para><emphasis>collection("films")</emphasis></para>
+      <programlisting>
+        { "id" : "I", "name" : "The Motion Picture", "captain" : "James T. Kirk" }
+        { "id" : "II", "name" : "The Wrath of Kahn", "captain" : "James T. Kirk" }
+        { "id" : "III", "name" : "The Search for Spock", "captain" : "James T. Kirk" }
+        { "id" : "IV", "name" : "The Voyage Home", "captain" : "James T. Kirk" }
+        { "id" : "V", "name" : "The Final Frontier", "captain" : "James T. Kirk" }
+        { "id" : "VI", "name" : "The Undiscovered Country", "captain" : "James T. Kirk" }
+        { "id" : "VII", "name" : "Generations", "captain" : [ "James T. Kirk", "Jean-Luc Picard" ] }
+        { "id" : "VIII", "name" : "First Contact", "captain" : "Jean-Luc Picard" }
+        { "id" : "IX", "name" : "Insurrection", "captain" : "Jean-Luc Picard" }
+        { "id" : "X", "name" : "Nemesis", "captain" : "Jean-Luc Picard" }
+        { "id" : "XI", "name" : "Star Trek", "captain" : "Spock" }
+        { "id" : "XII", "name" : "Star Trek Into Darkness", "captain" : "Spock" }
+        </programlisting>
+    </listitem>
+  </itemizedlist>
+</chapter>

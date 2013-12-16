@@ -1,0 +1,43 @@
+<section id="chapter-function-calls">
+  <title>Function Calls</title>
+  <figure>
+    <title>FunctionCall</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/FunctionCall.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The syntax for function calls is similar to many other languages. JSONiq supports three sorts of functions:</para>
+  <itemizedlist>
+    <listitem>
+      <para>Builtin functions: these have no prefix and can be called without any import.</para>
+    </listitem>
+    <listitem>
+      <para>Local functions: they are defined in the prolog, to be used in the main query. They have the prefix <emphasis>local:</emphasis>. Chapter <xref linkend="chapter-prolog"/> describes how to define your own local functions.</para>
+    </listitem>
+    <listitem>
+      <para>Imported functions: they are defined in a library module. They have the prefix corresponding to the alias to which the imported module has been bound to. Chapter <xref linkend="chapter-modules"/> describes how to define your own modules.</para>
+    </listitem>
+  </itemizedlist>      
+  <example>
+    <title>A builtin function call.</title>
+    <programlisting>
+     keys({ "foo" : "bar", "bar" : "foo" })
+   </programlisting>
+  <formalpara><title>Result (run with Zorba):</title><para>foo bar</para></formalpara></example>
+  <example>
+    <title>A builtin function call.</title>
+    <programlisting>
+     concat("foo", "bar")
+   </programlisting>
+  <formalpara><title>Result (run with Zorba):</title><para>foobar</para></formalpara></example>
+  <para>An error is raised if the actual types do not match the expected types.
+  </para>
+  <example>
+    <title>A type error in a function call.</title>
+    <programlisting>
+     sum({ "foo" : "bar" })
+   </programlisting>
+  <formalpara><title>Result (run with Zorba):</title><para>An error was raised: can not atomize an object item: an object has probably been passed where an atomic value is expected (e.g., as a key, or to a function expecting an atomic item)</para></formalpara></example>
+</section>

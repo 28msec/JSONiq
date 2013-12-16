@@ -1,0 +1,14 @@
+/MANIFEST.MF/1.1/Fri Feb 22 22:40:46 2008//
+/build.bat/1.1/Fri Feb 22 22:40:46 2008//
+/build.xml/1.1/Fri Feb 22 22:40:46 2008//
+/lex.xsl/1.1/Fri Feb 22 22:40:46 2008//
+/test.xsl/1.1/Fri Feb 22 22:40:46 2008//
+/utils.xsl/1.1/Fri Feb 22 22:40:47 2008//
+/xqlalr.jar/1.1/Fri Feb 22 22:40:47 2008/-kb/
+/yacc.xsl/1.1/Fri Feb 22 22:40:47 2008//
+/ytree.xsl/1.1/Fri Feb 22 22:40:47 2008//
+D/JFlex////
+D/ast-src////
+D/byaccj1.1////
+D/toolsrc////
+D/xquery-src////

@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-json-navigation" lang="en-US">
+	<title>Navigation in JSON content</title>
+	 <para>
+		It is possible to navigate through JSON items using the dynamic function call syntax. The dynamic function call syntax is extended to handle object and array selection as follows:
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				An implicit iteration is performed on the left-hand-side sequence. <code>$sequence($params)</code> is equivalent to:
+			</para>
+			 
+<programlisting>
+        for $item in $sequence return $item($params)
+</programlisting>
+
+		</listitem>
+		 <listitem>
+			<para>
+				The semantics of the dynamic function call is then defined on a single item, depending on its type: 
+				<itemizedlist>
+					<listitem>
+						<para>
+							If it is a function, the semantics is the same as defined in XQuery 3.0.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							If it is an object, the dynamic function call is treated as an object lookup if unary, as a key listing if 0-ary. An error <code>jerr:JNTY0018</code> is raised if there is more than one parameter.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							If it is an array, the dynamic function call is treated as an array lookup if unary, as an array unboxing if 0-ary. An error <code>jerr:JNTY0018</code> is raised if there is more than one parameter.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							If it is an atomic or an XML node, the dynamic function call if unary or 0-ary always returns the empty sequence. An error <code>jerr:JNTY0018</code> is raised if there is more than one parameter.
+						</para>
+
+					</listitem>
+
+				</itemizedlist>
+
+			</para>
+
+		</listitem>
+
+	</itemizedlist>
+	 <section>
+		<title>Object lookup</title>
+		 <para>
+			If the dynamic function call is unary and the left-hand-side is an object, the semantics applied is that of object lookup and is as follows.
+		</para>
+		 <para>
+			The unique parameter is cast to a string $s (an error is raised according to the semantics of casting if this fails).
+		</para>
+		 <para>
+			If $s is in <code>jdm:keys($o)</code> then <code>$o($s)</code> returns the value of the pair with the name <code>$s</code>, i.e. <code>jdm:value($o, $s)</code>. Otherwise (i.e., it has no key matching <code>$s</code>), an empty sequence is returned.
+		</para>
+		 <example>
+			<title>Object lookup</title>
+			 <para>
+				Retrieving a Pair by its name:
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        let $map := { "eyes" : "blue", "hair" : "fuchsia" }
+        return $map("eyes")
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        blue
+</programlisting>
+			 <para>
+				Using Pairs from existing Objects to create a new Object:
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        let $x := { "eyes" : "blue", "hair" : "fuchsia" }
+        let $y := { "eyes" : brown, "hair" : "brown" }
+        return { "eyes" : $x("eyes"), "hair" : $y("hair") }
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+          { "eyes" : "blue", "hair" : "brown" }
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Object key listing</title>
+		 <para>
+			If the dynamic function call is 0-ary and the left-hand-side is an object, the semantics applied is that of key listing and is as follows.
+		</para>
+		 <para>
+			<code>jdm:keys($o)</code> is returned.
+		</para>
+		 <example>
+			<title>Object key listing</title>
+			 <para>
+				Retrieving the keys of an object:
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        let $map := { "eyes" : "blue", "hair" : "fuchsia" }
+        return $map()
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        eyes hair
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Array lookup</title>
+		 <para>
+			If the dynamic function call is unary and the left-hand-side is an array, the semantics applied is that of array lookup and is as follows.
+		</para>
+		 <para>
+			The unique parameter is cast to an integer $i (an error is raised according to the semantics of casting if this fails).
+		</para>
+		 <para>
+			If $i is comprised between 1 and <code>jdm:size($a)</code>, then <code>$a($i)</code> returns the value of the pair at position <code>$i</code>, i.e., <code>jdm:value($a, $i)</code>.
+		</para>
+		 <para>
+			Otherwise (i.e., if <code>$i</code> is an invalid position), an empty sequence is returned.
+		</para>
+		 <example>
+			<title>Array lookup</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        let $wd := ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        return $wd(1)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        Sunday
+</programlisting>
+			 <para>
+				For the following queries, assume the variable <code>$f</code> is bound to the following two dimensional array.
+			</para>
+			 <para>
+				Data:
+			</para>
+			 
+<programlisting>
+        [
+          [ "mercury", "venus", "earth", "mars" ],
+          [ "monday", "tuesday", "wednesday", "thursday" ]
+        ]
+</programlisting>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        $f(1)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        [ "mercury", "venus", "earth", "mars" ]
+</programlisting>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        $f(2)(2)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        tuesday
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Array unboxing</title>
+		 <para>
+			If the dynamic function call is 0-ary and the left-hand-side is an array, the semantics applied is that of array unboxing and is as follows.
+		</para>
+		 <para>
+			<code>for $i in 1 to jdm:size($a) return $a($i)</code> is returned.
+		</para>
+		 <example>
+			<title>Array unboxing</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        let $wd := ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        return $wd()
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        Sunday Mondy Tuesday Wednesday Thursday Friday Saturday
+</programlisting>
+			 <para>
+				For the following queries, assume the variable <code>$f</code> is bound to the following two dimensional array.
+			</para>
+			 <para>
+				Data:
+			</para>
+			 
+<programlisting>
+        [
+          [ "mercury", "venus", "earth", "mars" ],
+          [ "monday", "tuesday", "wednesday", "thursday" ]
+        ]
+</programlisting>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        $f()
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        [ "mercury", "venus", "earth", "mars" ] [ "monday", "tuesday", "wednesday", "thursday" ]
+</programlisting>
+
+		</example>
+
+	</section>
+	
+
+</chapter>
+

@@ -1,0 +1,209 @@
+<section id="chapter-selectors">
+  <title>Selectors</title>
+  <figure>
+    <title>PostfixExpr</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/PostfixExpr.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Like in JavaScript, it is possible to navigate through data.</para>
+  <para>JSONiq supports filtering items from a sequence, looking up the value associated with a given key in an object, and looking up the item at a given position in an array.</para>
+  <section>
+    <title>Object field selector</title>
+    <figure>
+      <title>ObjectLookup</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/ObjectLookup.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>The simplest way to navigate in an object is similar to JavaScript. This will work as soon
+      as you do not push it too much: alphanumerical characters, dashes, underscores - just like
+      unquoted keys in object constructors, any NCName is allowed.</para>
+    <example>
+      <title>Object lookup</title>
+      <programlisting>
+{ "foo" : "bar" }.foo
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+    <para>Since JSONiq expressions are composable, you can also use any expression for the left-hand
+      side. You might need parentheses depending on the precedence.</para>
+    <example>
+      <title>Lookup on a single-object collection.</title>
+      <programlisting>
+collection("one-object").foo
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <example>
+      <title>Object lookup with a nested expression</title>
+      <programlisting>
+{ "foo" : "bar" }.foo
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+    <para>The dot operator does an implicit mapping on the left-hand-side, i.e., it applies the
+      lookup in turn on each item. Lookup on any item which is not an object (arrays and atomics)
+      results in the empty sequence.</para>
+      <example>
+        <title>Object lookup with an iteration on several objects</title>
+        <programlisting>
+({ "foo" : "bar" }, { "foo" : "bar2" } ).foo
+        </programlisting>
+      <para>Results:</para><programlisting>"bar"
+"bar2"
+</programlisting></example>
+      <example>
+        <title>Object lookup with an iteration on a collection</title>
+        <programlisting>
+collection("captains").name
+      </programlisting>
+      <para>Error:</para><programlisting>"captains": collection does not exist</programlisting></example>
+    <example>
+      <title>Object lookup on an atomic (pending implementation in Zorba, should return the empty sequence)</title>
+      <programlisting>
+"foo".foo
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <example>
+      <title>Object lookup on a mixed sequence (pending implementation in Zorba, should return "bar1" "bar2")</title>
+      <programlisting>
+({ "foo" : "bar1" }, [ "foo", "bar" ], { "foo" : "bar2" }, "foo").foo
+      </programlisting>
+    <para>Results:</para><programlisting>"bar1"
+"bar2"
+</programlisting></example>
+    <para>Of course, unquoted keys will not work for strings that are not NCNames, e.g., if the
+      field contains a dot or begins with a digit. Then you will need quotes.</para>
+    <example>
+      <title>Quotes for object lookup</title>
+      <programlisting>
+{ "foo bar" : "bar" }."foo bar"
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+    <para>If you use an expression on the right side of the dot, it must always have parentheses. If
+      it does not evaluate to a single string, an error is raised.</para>
+    <example>
+      <title>Object lookup with a nested expression</title>
+      <programlisting>
+{ "foobar" : "bar" }.("foo" || "bar")
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+    <example>
+      <title>Object lookup with a nested expression</title>
+      <programlisting>
+{ "foobar" : "bar" }.("foo", "bar")
+      </programlisting>
+    <para>Error:</para><programlisting>sequence of more than one item can not be treated as type x
+s:string</programlisting></example>
+    <example>
+      <title>Object lookup with a nested expression</title>
+      <programlisting>
+{ "foobar" : "bar" }.(1)
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <para>Variables, or a context item reference, do not need parentheses. Variables are introduced
+      later, but here is a sneak peek:</para>
+    <example>
+      <title>Object lookup with a variable</title>
+      <programlisting>
+let $field := "foo" || "bar"
+return { "foobar" : "bar" }.$field
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+  </section>
+  <section>
+    <title>Array member selector</title>
+    <figure>
+      <title>ArrayLookup</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/ArrayLookup.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Array lookup uses normal parentheses - square brackets are for something else. If the operand does not evaluate to a single positive integer, an error is raised.
+      If the integer exceeds the size of the array, the empty sequence is returned.</para>
+    <example>
+      <title>Array lookup</title>
+      <programlisting>
+[ "foo", "bar" ](2)
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+    <example>
+      <title>Array lookup after an object lookup</title>
+      <programlisting>
+{ field : [ "one",  { "foo" : "bar" } ] }.field(2).foo
+      </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+    <para>The behavior on mixed sequences is similar to object lookup, i.e., an implicit iteration is done and an array lookup on
+    non-array items (objects, atomics) returns the empty sequence.</para>
+    <example>
+      <title>Array lookup on a mixed sequence (pending implementation in Zorba, should return "foo" "Jim")</title>
+      <programlisting>
+("foo", [ "foo", "bar" ], { "foo" : "bar" }, [ "Jim", "Kirk" ])(1)
+      </programlisting>
+    <para>Results:</para><programlisting>"foo"
+"Jim"
+</programlisting></example>
+    <para>You can also extract all items from an array (i.e., as a sequence) with an empty selector.</para>
+    <example>
+      <title>Extracting all items from an array</title>
+      <programlisting>
+[ "foo", "bar" ]()
+      </programlisting>
+    <para>Results:</para><programlisting>"foo"
+"bar"
+</programlisting></example>
+  </section>
+  <section>
+    <title>Sequence predicates</title>
+    <figure>
+      <title>Predicate</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/Predicate.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A predicate allows filtering a sequence, keeping only items that fulfill it.</para>
+    <para>The predicate is evaluated once for each item in the left-hand-side sequence, with the context item set to that item. The predicate expression can use $$ to access this context item.</para>
+    <figure>
+      <title>ContextItemExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/ContextItemExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>If the predicate evaluates to an integer, it is matched against the item position in the left-hand side sequence automatically</para>
+    <example>
+      <title>Predicate expression</title>
+      <programlisting>
+(1 to 10)[2]
+      </programlisting>
+    <para>Results:</para><programlisting>2
+</programlisting></example>
+    <para>Otherwise, the result of the predicate is converted to a boolean.</para>
+    <para>All items for which the converted predicate result evaluates to true are then output.</para>
+    <example>
+      <title>Predicate expression</title>
+      <programlisting>
+(1 to 10)[$$ mod 2 eq 0]
+      </programlisting>
+    <para>Results:</para><programlisting>2
+4
+6
+8
+10
+</programlisting></example>
+  </section>
+</section>

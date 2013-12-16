@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-introduction" lang="en-US">
+	<title>Introduction</title>
+	 <section>
+		<title>Why JSONiq?</title>
+		 <para>
+			JSONiq is a query and processing language specifically designed for the popular JSON data model. The main ideas behind JSONiq are based on lessons learned in more than 30 years of relational query systems and more than 15 years of experience with designing and implementing query languages for semi-structured data like XML and RDF.
+		</para>
+		 <para>
+			The main source of inspiration behind JSONiq is XQuery, which has been proven so far a successful and productive query language for semi-structured data (in particular XML). JSONiq borrowed a large numbers of ideas from XQuery, like the structure and semantics of a FLWOR construct, the functional aspect of the language, the semantics of comparisons in the face of data heterogeneity, the declarative, snapshot-based updates. However, unlike XQuery, JSON is not concerned with the peculiarities of XML, like mixed content, ordered children, the confusion between attributes and elements, the complexities of namespaces and QNames, or the complexities of XML Schema, and so on.
+		</para>
+		 <para>
+			The power of the XQuery's FLWOR construct and the functional aspect, combined with the simplicity of the JSON data model result in a clean, sleek and easy to understand data processing language. As a matter of fact, JSONiq is a language that can do more than queries: it can describe powerful data processing programs, from transformations, selections, joins of heterogeneous data sets, data enrichment, information extraction, information cleaning, and so on.
+		</para>
+		 <para>
+			Technically, the main characteristics of JSONiq (and XQuery) are the following:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					It is a <emphasis>set-oriented language</emphasis>. While most programming languages are designed to manipulate one object at a time, JSONiq is designed to process sets (actually, sequences) of data objects.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					It is a <emphasis>functional language</emphasis>. A JSONiq program is an expression; the result of the program is the result of the evaluation of the expression. Expressions have fundamental role in the language: every language construct is an expression, and expressions are fully composable.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					It is a <emphasis>declarative language</emphasis>. A program specifies what is the result being calculated, and does not specify low level algorithms like the sort algorithm, the fact that an algorithm is executed in main memory or is external, on a single machine or parallelized on several machines, or what access patterns (aka indexes) are being used during the evaluation of the program. Such implementation decisions should be taken automatically, by an optimizer, based on the physical characteristics of the data, and of the hardware environment. Just like a traditional database would do. The language has been designed from day one with optimizability in mind.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					It is designed for <emphasis>nested, heterogeneous, semi-structured data</emphasis>. Data structures in JSON can be nested with arbitrary depth, do not have a specific type pattern (i.e. are heterogeneous), and may or may not have one or more schemas that describe the data. Even in the case of a schema, such a schema can be open, and/or simply partially describe the data. Unlike SQL, which is designed to query tabular, flat, homogeneous structures. JSONiq has been designed from scratch as a query for nested and heterogeneous data.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+
+	</section>
+	
+	 <section>
+		<title>Structure of a JSONiq program.</title>
+		 <figure>
+			<title>Module</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/Module.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>MainModule</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/MainModule.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			A main JSONiq program is made of two parts: an optional prolog, and an expression, which is the main query.
+		</para>
+		 <para>
+			The result of the main JSONiq program is the result of its main query.
+		</para>
+		 <para>
+			In the prolog, it is possible to declare global variables and functions. Mostly, you will recognize a prolog declaration by the semi-colon it ends with. The main query does not contain semi-colons (at least in core JSONiq).
+		</para>
+		 <figure>
+			<title>LibraryModule</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/LibraryModule.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Library modules do not contain any main query, just global variables and functions. They can be imported by other modules.
+		</para>
+
+	</section>
+
+</chapter>
+

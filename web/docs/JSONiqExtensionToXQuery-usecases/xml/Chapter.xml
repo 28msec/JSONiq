@@ -1,0 +1,1026 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Usecases_for_the_JSONiq_Extension_to_XQuery.ent">
+%BOOK_ENTITIES;
+]>
+<chapter lang="en-US">
+	<title>JSONiq: Use Cases</title>
+	 <subtitle>XQuery for JSON, JSON for XQuery</subtitle>
+	 <para>
+		On the Internet, most data is exchanged and processed using JSON or XML, and displayed using HTML. These languages have a great deal in common: they are based on named structures that can be nested, using a Unicode-based representation that is both human-readable and machine-readable. HTML is optimized for representing web pages, XML is optimized for representing document data, and JSON is optimized for representing programming language structures. In many applications, programmers work with only one of these formats. In many others, programmers work with all three.
+	</para>
+	 <para>
+		JSON has been called a <quote>fat free alternative to XML</quote><footnote>
+		<para>
+			See <ulink url="http://www.json.org/fatfree.html">JSON: The Fat-Free Alternative to XML</ulink>.
+		</para>
+		</footnote>. Markup for programming structures does not need XML namespaces, whitespace-handling rules, the distinction between elements and attributes, or a structure designed to support document order. Markup for programming structures does need datatypes. XML can support datatypes via XML Schema, a very complex specification that does not correspond closely to the type system of most programming languages, or it can be used without datatype support. Neither is optimal for programming structures. For traditional programming structures, programming with JSON is significantly easier than programming with XML.
+	</para>
+	 <para>
+		There is currently no standard query language for JSON. XQuery is the standard query language for XML, and has been implemented in databases, streaming processors, data integration platforms, application integration platforms, XML message routing software, web browser plugins, and other environments. JSONiq is a query language based on XQuery; it is designed to allow an existing XQuery processor to be rewritten to support JSON with moderate effort. JSONiq defines a profile called XQ-- that is based on XQuery, removing expressions that support constructing and navigating XML, and adding expressions that support constructing and navigating JSON. Syntax diagrams for XQ-- are available at <ulink url="http://jsoniq.com/grammars/xq--/ui.xhtml">http://jsoniq.com/grammars/xq--/ui.xhtml</ulink>. Because JSON is so much simpler than XML, XQ-- is much simpler than XQuery, for both users and implementers. XQ-- also makes it much easier to write middleware using JSON as a logical model, because JSON more closely resembles the data typically processed in middleware, and allows a much simpler type system.
+	</para>
+	 <para>
+		But programmers who work with JSON often work with XML and HTML as well. In some applications, XML is used because it can better represent document-oriented data such as medical records, legal documents, pharmaceutical trial data, or news feeds. In other applications, standards or existing software systems may require data to be produced or consumed as XML. Many applications require data to be converted to HTML formats; some use HTML documents as source data. To support such applications, JSONiq defines a profile called XQ++ that includes the complete XQuery language, adding the same JSON extensions found in XQ--. Syntax diagrams for XQ++ are available at <ulink url="http://jsoniq.com/grammars/xq++/ui.xhtml">http://jsoniq.com/grammars/xq++/ui.xhtml</ulink>.
+	</para>
+	 <para>
+		JSONiq is useful for applications like these:
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				Queries and Transformations for JSON
+			</para>
+			 <para>
+				JSONiq can be used for queries on JSON that return JSON results. These queries have the full power of XQuery, including FLWOR expressions, grouping, windowing, updates, and full-text. But queries or implementations that do not use XML or produce XML can use a subset of XQuery, and need not deal with the additional complexity that XML requires. Used in this way, JSONiq adds significant value to NoSQL databases.
+			</para>
+			 <para>
+				Examples of these queries can be found in <xref linkend="json.joins" />, <xref linkend="jsongrouping" />, and <xref linkend="json2json" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				JSON Updates
+			</para>
+			 <para>
+				JSONiq provides updates for JSON, in the same way that the XQuery Update Facility provides updates for XML.
+			</para>
+			 <para>
+				An example of such a query can be found in <xref linkend="update.example" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				JSON to XML transformations
+			</para>
+			 <para>
+				The most stubborn JSON programmer is sometimes forced to use XML-based formats. JSONiq makes it easy to create XML by querying JSON data.
+			</para>
+			 <para>
+				An example of such a query can be found in <xref linkend="svg.example" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				XML to JSON transformations
+			</para>
+			 <para>
+				XQuery hides much of the complexity of XML, and simplifies the process of converting XML to JSON, while also providing a full featured query language to create any JSON result desired.
+			</para>
+			 <para>
+				An example of such a query can be found in <xref linkend="wikipedia.example" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				JSON to HTML transformations
+			</para>
+			 <para>
+				JSON is often used for data that is displayed in HTML. JSONiq makes it easy to transform JSON data into various views, creating the HTML needed to display results.
+			</para>
+			 <para>
+				An example of such a query can be found in <xref linkend="html.example" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Windowing and input sequences
+			</para>
+			 <para>
+				XQuery provides sliding windows and tumbling windows for processing events and input sequences.
+			</para>
+			 <para>
+				An example of such a query can be found in <xref linkend="windowing.example" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				JSON views in middleware
+			</para>
+			 <para>
+				XQuery is used in middleware systems to provide XML views of data sources. Because JSON is simpler than XQuery, JSON-based views are an attractive alternative to XML-based views in applications that use large scale relational, object, or semi-structured data. JSONiq provides a powerful query language for systems that provide such views.
+			</para>
+			 <para>
+				An example of such a query can be found in <xref linkend="rdb.example" />.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Adding missing functionality to XQuery
+			</para>
+			 <para>
+				JSON Objects and JSON Arrays are extremely convenient for intermediate results in XQuery programs, even if they query XML to create XML.
+			</para>
+			 <para>
+				XQuery currently has no way to create complex data structures without copying and atomization, and no way to nest Arrays. Objects and Arrays may be particularly useful for applications like:
+			</para>
+			 <itemizedlist>
+				<listitem>
+					<para>
+						Function parameters
+					</para>
+				</listitem>
+				 <listitem>
+					<para>
+						Returning results from functions
+					</para>
+				</listitem>
+				 <listitem>
+					<para>
+						Indexes
+					</para>
+				</listitem>
+				 <listitem>
+					<para>
+						Maps of function items
+					</para>
+				</listitem>
+				 <listitem>
+					<para>
+						Representing internal XQuery structures such as tuple streams or Pending Update Lists.
+					</para>
+				</listitem>
+
+			</itemizedlist>
+
+		</listitem>
+
+	</itemizedlist>
+	 <section>
+		<title>Sample Queries</title>
+		 <section id="json.joins">
+			<title>Joins</title>
+			 <para>
+				The following queries are based on a social media site that allows users to interact with their friends. <code>collection("users")</code> contains data on users and their friends:
+			</para>
+			 
+<programlisting>{
+  "name" : "Sarah",
+  "age" : 13,
+  "gender" : "female",
+  "friends" : [ "Jim", "Mary", "Jennifer"]
+}
+
+{
+  "name" : "Jim",
+  "age" : 13,
+  "gender" : "male",
+  "friends" : [ "Sarah" ]
+}
+</programlisting>
+			 <para>
+				The following query performs a join on Sarah's friend list to return the Object representing each of her friends:
+			</para>
+			 
+<programlisting>for $sarah in collection("users")
+    $friend in collection("users")
+where $sarah("name") = "Sarah"
+  and (some $name in libjn:members($sarah("friends"))
+       satisfies $friend("name") = $name)
+return $friend</programlisting>
+			 <para>
+				The query can be simplified using a filter. In the following expression, <code>[.("name") = "Sarah"]</code> is a filter that restricts the set of users to the one named "Sarah". The following query returns the same results as the previous one:
+			</para>
+			 
+<programlisting>let $sarah := collection("users")[.("name") = "Sarah"]
+for $friend in libjn:members($sarah("friends"))
+return collection("users")[.("name") = $friend]
+</programlisting>
+
+		</section>
+		
+		 <section id="jsongrouping">
+			<title>Grouping Queries for JSON<footnote>
+			<para>
+				These queries are based on similar queries in the XQuery 3.0 Use Cases.
+			</para>
+			</footnote></title>
+			 <para>
+				collection("sales") is an unordered sequence that contains the following objects:
+			</para>
+			 
+<programlisting>{ "product" : "broiler", "store number" : 1, "quantity" : 20  },
+{ "product" : "toaster", "store number" : 2, "quantity" : 100 },
+{ "product" : "toaster", "store number" : 2, "quantity" : 50 },
+{ "product" : "toaster", "store number" : 3, "quantity" : 50 },
+{ "product" : "blender", "store number" : 3, "quantity" : 100 },
+{ "product" : "blender", "store number" : 3, "quantity" : 150 },
+{ "product" : "socks", "store number" : 1, "quantity" : 500 },
+{ "product" : "socks", "store number" : 2, "quantity" : 10 },
+{ "product" : "shirt", "store number" : 3, "quantity" : 10 }
+</programlisting>
+			 <para>
+				We want to group sales by product, across stores.
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>jn:object(
+  for $sales in collection("sales")
+  let $pname := $sales("product")
+  group by $pname
+  return $pname : sum($sales("quantity"))
+)</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>{
+  "blender" : 250,
+  "broiler" : 20,
+  "shirt" : 10,
+  "socks" : 510,
+  "toaster" : 200
+}</programlisting>
+			 <para>
+				Now let's do a more complex grouping query, showing sales by category within each state. We need further data to describe the categories of products and the location of stores.
+			</para>
+			 <para>
+				collection("products") contains the following data:
+			</para>
+			 
+<programlisting>{ "name" : "broiler", "category" : "kitchen", "price" : 100, "cost" : 70 },
+{ "name" : "toaster", "category" : "kitchen", "price" : 30, "cost" : 10 },
+{ "name" : "blender", "category" : "kitchen", "price" : 50, "cost" : 25 },
+{ "name" : "socks", "category" : "clothes", "price" : 5, "cost" : 2 },
+{ "name" : "shirt", "category" : "clothes", "price" : 10, "cost" : 3 }</programlisting>
+			 <para>
+				collection("stores") contains the following data:
+			</para>
+			 
+<programlisting>{ "store number" : 1, "state" : CA },
+{ "store number" : 2, "state" : CA },
+{ "store number" : 3, "state" : MA },
+{ "store number" : 4, "state" : MA }
+</programlisting>
+			 <para>
+				The following query groups by state, then by category, then lists individual products and the sales associated with each.
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>jn:object(
+  for $store in collection("stores")
+  let $state := $store("state")
+  group by $state
+  return {
+    $state : jn:object(
+      for $product in collection("products")
+      let $category := $product("category")
+      group by $category
+      return {
+        $category : jn:object(
+          for $sales in collection("sales")
+          where $sales("store number") = $store("store number")
+            and $sales("product") = $product("name")
+          let $pname := $sales("product")
+          group by $pname
+          return $pname : sum( $sales("quantity") )
+        )
+      }
+    )
+  }
+)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>{
+  "CA" : {
+      "clothes" : {
+         "socks" :  510
+      },
+      "kitchen" : {
+         "broiler" : 20,
+         "toaster" : 150
+      }
+  },
+  "MA" : {
+      "clothes" : {
+         "shirt" : 10
+       },
+      "kitchen" : {
+         "blender" : 250,
+         "toaster" : 50
+      }
+  }
+}
+</programlisting>
+
+		</section>
+		
+		 <section id="json2json">
+			<title>JSON to JSON Transformations</title>
+			 <para>
+				The following query takes satellite data, and summarizes which satellites are visible. The data for the query is a simplified version of a Stellarium file that contains this information.
+			</para>
+			 <para>
+				<emphasis>Data:</emphasis>
+			</para>
+			 
+<programlisting>{
+  "creator" : "Satellites plugin version 0.6.4",
+  "satellites" : {
+    "AAU CUBESAT" : {
+      "tle1" : "1 27846U 03031G 10322.04074654  .00000056  00000-0  45693-4 0  8768",
+      "visible" : false
+    },
+    "AJISAI (EGS)" : {
+      "tle1" : "1 16908U 86061A 10321.84797408 -.00000083  00000-0  10000-3 0  3696",
+      "visible" : true
+    },
+    "AKARI (ASTRO-F)" : {
+      "tle1" : "1 28939U 06005A 10321.96319841  .00000176  00000-0  48808-4 0  4294",
+      "visible" : true
+    }
+  }
+}</programlisting>
+			 <para>
+				We want to query this data to return a summary that looks like this.
+			</para>
+			 <para>
+				<emphasis>Result:</emphasis>
+			</para>
+			 
+<programlisting>{
+  "visible" : [
+     "AJISAI (EGS)",
+     "AKARI (ASTRO-F)"
+  ],
+  "invisible" : [
+     "AAU CUBESAT"
+  ]
+}</programlisting>
+			 <para>
+				The following is a JSONiq query that returns the desired result.
+			</para>
+			 <para>
+				<emphasis>Query:</emphasis>
+			</para>
+			 
+<programlisting>let $sats := jn:json-doc("satellites.json")("satellites")
+return {
+  "visible" : [
+     for $sat in jn:keys($sats)
+     where $sats($sat)("visible")
+     return $sat
+  ],
+  "invisible" : [
+     for $sat in jn:keys($sats)
+     where not($sats($sat)("visible"))
+     return $sat
+  ]
+}</programlisting>
+
+		</section>
+		
+		 <section id="wikipedia.example">
+			<title>Converting XML to JSON</title>
+			 <para>
+				JSON programmers frequently need to convert XML to JSON. The following query is based on a Wikipedia XML export format, using data from the category "Origami". Here is an excerpt of this data:
+			</para>
+			 <para>
+				Data:
+			</para>
+			 
+<programlisting>&lt;mediawiki&gt;
+  &lt;siteinfo&gt;
+    &lt;sitename&gt;Wikipedia&lt;/sitename&gt;
+
+    &lt;page&gt;
+      &lt;title&gt;Kawasaki's theorem&lt;/title&gt;
+      &lt;id&gt;14511776&lt;/id&gt;
+      &lt;revision&gt;
+        &lt;id&gt;435519187&lt;/id&gt;
+        &lt;timestamp&gt;2011-06-21T20:08:56Z&lt;/timestamp&gt;
+        &lt;contributor&gt;
+          &lt;username&gt;Some jerk on the Internet&lt;/username&gt;
+          &lt;id&gt;6636894&lt;/id&gt;
+        &lt;/contributor&gt;
+
+!!! SNIP !!!
+
+    &lt;page&gt;
+      &lt;title&gt;Origami techniques&lt;/title&gt;
+      &lt;id&gt;193590&lt;/id&gt;
+      &lt;revision&gt;
+        &lt;id&gt;447687387&lt;/id&gt;
+        &lt;timestamp&gt;2011-08-31T17:21:49Z&lt;/timestamp&gt;
+        &lt;contributor&gt;
+          &lt;username&gt;Dmcq&lt;/username&gt;
+          &lt;id&gt;3784322&lt;/id&gt;
+        &lt;/contributor&gt;
+
+!!! SNIP !!!
+
+    &lt;page&gt;
+      &lt;title&gt;Mathematics of paper folding&lt;/title&gt;
+      &lt;id&gt;232840&lt;/id&gt;
+      &lt;revision&gt;
+        &lt;id&gt;440970828&lt;/id&gt;
+        &lt;timestamp&gt;2011-07-23T09:10:42Z&lt;/timestamp&gt;
+        &lt;contributor&gt;
+          &lt;username&gt;Tabletop&lt;/username&gt;
+          &lt;id&gt;173687&lt;/id&gt;
+        &lt;/contributor&gt;
+</programlisting>
+			 <para>
+				The following query converts this data to JSON:
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>for $page in doc("Wikipedia-Origami.xml")//page
+return {
+  "title": string($page/title),
+  "id" : string($page/id),
+  "last updated" : string($page/revision[1]/timestamp),
+  "authors" : [
+       for $a in $page/revision/contributor/username
+       return string($a)
+  ]
+}
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>{
+  "title" : "Kawasaki's theorem",
+  "id" : "14511776",
+  "last updated" : "2011-06-21T20:08:56Z",
+  "timestamp" : "2011-06-21T20:08:56Z",
+  "authors" : ["Some jerk on the Internet" ]
+},
+{
+  "title" : "Origami techniques",
+  "id" : "193590",
+  "last updated" : "2011-08-31T17:21:49Z",
+  "timestamp" : "2011-08-31T17:21:49Z",
+  "authors" : ["Dmcq" ]
+},
+{
+  "title" : "Mathematics of paper folding",
+  "id" : "232840",
+  "last updated" : "2011-07-23T09:10:42Z",
+  "timestamp" : "2011-07-23T09:10:42Z",
+  "authors" : ["Tabletop" ]
+}
+</programlisting>
+
+		</section>
+		
+		 <section id="svg.example">
+			<title>Transforming JSON to SVG</title>
+			 <para>
+				Suppose a JavaScript implementation provides an interface for JSONiq queries, and a JavaScript program contains the following data <footnote>
+				<para>
+					This example is based on an example on Stefan Goessner's JSONT site (<ulink url="http://goessner.net/articles/jsont/">http://goessner.net/articles/jsont/</ulink>).
+				</para>
+				</footnote>:
+			</para>
+			 
+<programlisting>var data = {
+   "color" : "blue",
+   "closed" : true,
+   "points" : [[10,10], [20,10], [20,20], [10,20]]
+   };
+</programlisting>
+			 <para>
+				This data can be converted to SVG by placing the text of a query in a JavaScript variable and calling the appropriate JavaScript function to invoke the query:
+			</para>
+			 
+<programlisting>
+var query =
+ "declare variable $input external;
+  declare variable $stroke := attribute $stroke { $input("color") };
+  declare variable $points := attribute $points { jn:flatten($input("points")) };
+  if ($input("closed")) then
+    &lt;svg&gt;&lt;polygon&gt;{ $stroke, $points }&lt;/polygon&gt;&lt;/svg&gt;
+  else
+    &lt;svg&gt;&lt;polyline&gt;{ $stroke, $points }&lt;/polyline&gt;&lt;/svg&gt;"</programlisting>
+			 <para>
+				This query can be invoked with a JavaScript API call:
+			</para>
+			 
+<programlisting>
+jsoniq(data, query)
+</programlisting>
+			 <para>
+				Here is the result of the above query:
+			</para>
+			 
+<programlisting>&lt;svg&gt;&lt;polygon stroke="blue" points="10 10 20 10 20 20 10 20" /&gt;&lt;/svg&gt;</programlisting>
+
+		</section>
+		
+		 <section id="html.example">
+			<title>Transforming Arrays to HTML Tables</title>
+			 <para>
+				The data in a JSON array is frequently displayed using HTML tables. The following query shows how to transform from the former to the latter.
+			</para>
+			 <para>
+				The following Object contains the labels desired for columns and rows, as well as the data for the table.
+			</para>
+			 
+<programlisting>{
+  "col labels" : ["singular", "plural"],
+  "row labels" : ["1p", "2p", "3p"],
+  "data" :
+     [
+        ["spinne", "spinnen"],
+        ["spinnst", "spinnt"],
+        ["spinnt", "spinnen"]
+     ]
+}</programlisting>
+			 <para>
+				The following query creates an HTML table, using the column headings and row labels as well as the data in the Object shown above.
+			</para>
+			 
+<programlisting>&lt;table&gt;
+  &lt;tr&gt; (: Column headings :)
+  {
+     &lt;th&gt; &lt;/th&gt;,
+     for $th in jn:members((jn:json-doc("table.json")("col labels")))
+     return &lt;th&gt;{ $th }&lt;/th&gt;
+  }
+  &lt;/tr&gt;
+  {  (: Data for each row :)
+     for $r at $i in jn:members((jn:json-doc("table.json")("data")))
+     return
+        &lt;tr&gt;
+         {
+           &lt;td&gt;{ jn:members(jn:json-doc("table.json")("row labels")($i)) }&lt;/td&gt;,
+           for $c in jn:members($r)
+           return &lt;td&gt;{ $c }&lt;/td&gt;
+         }
+        &lt;/tr&gt;
+  }
+&lt;/table&gt;</programlisting>
+
+		</section>
+		
+		 <section id="windowing.example">
+			<title>Windowing Queries</title>
+			 <para>
+				XQuery provides support for both sliding windows and tumbling windows, frequently used to analyze event streams or other sequential data. This simple windowing example converts a sequence of items to a table with three columns (using as many rows as necessary), and assigns a row number to each row.
+			</para>
+			 <para>
+				Data:
+			</para>
+			 
+<programlisting>[
+  { "color" : "Green" },
+  { "color" : "Pink" },
+  { "color" : "Lilac" },
+  { "color" : "Turquoise" },
+  { "color" : "Peach" },
+  { "color" : "Opal" },
+  { "color" : "Champagne" }
+]
+</programlisting>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+&lt;table&gt;{
+  for tumbling window $w in jn:members(jn:json-doc("colors.json"))
+    start at $x when fn:true()
+    end at $y when $y - $x = 2
+  return
+    &lt;tr&gt;{
+      for $i in $w
+      return
+        &lt;td&gt;{ $i }&lt;/td&gt;
+    }&lt;/tr&gt;
+}&lt;/table&gt;
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>&lt;table&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Green&lt;/td&gt;
+    &lt;td&gt;Pink&lt;/td&gt;
+    &lt;td&gt;Lilac&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Turquoise&lt;/td&gt;
+    &lt;td&gt;Peach&lt;/td&gt;
+    &lt;td&gt;Opal&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Champagne&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</programlisting>
+
+		</section>
+		
+		 <section id="rdb.example">
+			<title>JSON views in middleware</title>
+			 <para>
+				This example assumes a middleware system that presents relational tables as JSON arrays. The following two tables are used as sample data.
+			</para>
+			 <table>
+				<title>Users</title>
+				 <tgroup cols="3">
+					<colspec colname="c1"></colspec>
+					 <colspec colname="c2"></colspec>
+					 <colspec colname="lastname"></colspec>
+					 <thead>
+						<row>
+							<entry>
+								userid
+							</entry>
+							 <entry>
+								firstname
+							</entry>
+							 <entry>
+								lastname
+							</entry>
+
+						</row>
+
+					</thead>
+					 <tbody>
+						<row>
+							<entry>
+								W0342
+							</entry>
+							 <entry>
+								Walter
+							</entry>
+							 <entry>
+								Denisovich
+							</entry>
+
+						</row>
+						 <row>
+							<entry>
+								M0535
+							</entry>
+							 <entry>
+								Mick
+							</entry>
+							 <entry>
+								Goulish
+							</entry>
+
+						</row>
+
+					</tbody>
+
+				</tgroup>
+
+			</table>
+			 <para>
+				The JSON representation this particular implementation provides for the above table looks like this:
+			</para>
+			 
+<programlisting>[
+  { "userid" : "W0342", "firstname" : "Walter", "lastname" : "Denisovich" },
+  { "userid" : "M0535", "firstname" : "Mick", "lastname" : "Goulish" }
+]</programlisting>
+			 <table>
+				<title>Holdings</title>
+				 <tgroup cols="3">
+					<colspec colname="userid"></colspec>
+					 <colspec colname="stockticker"></colspec>
+					 <colspec colname="shares"></colspec>
+					 <thead>
+						<row>
+							<entry>
+								userid
+							</entry>
+							 <entry>
+								ticker
+							</entry>
+							 <entry>
+								shares
+							</entry>
+
+						</row>
+
+					</thead>
+					 <tbody>
+						<row>
+							<entry>
+								W0342
+							</entry>
+							 <entry>
+								DIS
+							</entry>
+							 <entry>
+								153212312
+							</entry>
+
+						</row>
+						 <row>
+							<entry>
+								M0535
+							</entry>
+							 <entry>
+								DIS
+							</entry>
+							 <entry>
+								10
+							</entry>
+
+						</row>
+						 <row>
+							<entry>
+								M0535
+							</entry>
+							 <entry>
+								AIG
+							</entry>
+							 <entry>
+								23412
+							</entry>
+
+						</row>
+
+					</tbody>
+
+				</tgroup>
+
+			</table>
+			 <para>
+				The JSON representation this particular implementation provides for the above table looks like this:
+			</para>
+			 
+<programlisting>[
+  { "userid" : "W0342", "ticker" : "DIS", "shares" : 153212312 },
+  { "userid" : "M0535", "ticker" : "DIS", "shares" : 10 },
+  { "userid" : "M0535", "ticker" : "AIG", "shares" : 23412 }
+]</programlisting>
+			 <para>
+				The following query uses the fictitious vendor's <function>vendor:table()</function> function to retrieve the values from a table, and creates an Object for each user, with a list of the user's holdings in the value of that Object.
+			</para>
+			 
+<programlisting>[
+  for $u in vendor:table("Users")
+  order by $u("userid")
+  return jn:object(
+    libjn:project($u, "userid"),
+    {
+      "first" :  $u("firstname"),
+      "last" :   $u("lastname"),
+      "holdings" : [
+        for $h in vendor:table("Holdings")
+        where $h("userid") = $u("userid")
+        order by $h("ticker")
+        return jn:object(
+          libjn:project($h, "ticker"),
+          { "share" : $h("shares") }
+        )
+      ]
+    }
+  )
+]</programlisting>
+
+		</section>
+		
+		 <section id="update.example">
+			<title>JSON Updates</title>
+			 <para>
+				The XQuery Update Facility allows XML data to be updated. JSONiq provides updating functions to allow JSON to be updated.
+			</para>
+			 <para>
+				Suppose an application receives an order that contains a credit card number, and needs to put the user on probation.
+			</para>
+			 <para>
+				Data for an order:
+			</para>
+			 
+<programlisting>{
+  "user" : "Deadbeat Jim",
+  "credit card" : VISA 4111 1111 1111 1111,
+  "product" : "lottery tickets",
+  "quantity" : 243
+}
+</programlisting>
+			 <para>
+				collection("users") contains the data for each individual user:
+			</para>
+			 
+<programlisting>{
+  "name" : "Deadbeat Jim",
+  "address" : "1 E 161st St, Bronx, NY 10451",
+  "risk tolerance" : "high"
+}
+</programlisting>
+			 <para>
+				The following query adds <code>"status" : "credit card declined"</code> to the user's record.
+			</para>
+			 
+<programlisting>let $dbj := collection("users")[ .("name") = "Deadbeat Jim" ]
+return insert json { "status" : "credit card declined" } into $dbj
+</programlisting>
+			 <para>
+				After the update is finished, the user's record looks like this:
+			</para>
+			 
+<programlisting>{
+  "name" : "Deadbeat Jim",
+  "address" : "1 E 161st St, Bronx, NY 10451",
+  "status" : "credit card declined",
+  "risk tolerance" : "high"
+}
+</programlisting>
+
+		</section>
+		
+		 <section>
+			<title>Data Transformations</title>
+			 <para>
+				Many applications need to modify data before forwarding it to another source. The XQuery Update Facility provides an expression called a tranform expression that can be used to create modified copies. The transform expression uses updating expressions to perform a transformation. JSONiq defines updating functions for JSON, which can be used in the XQuery transform expression.
+			</para>
+			 <para>
+				Suppose an application make videos available using feeds from Youtube. The following data comes from one such feed:
+			</para>
+			 
+<programlisting>{
+    "encoding" : "UTF-8",
+    "feed" : {
+        "author" : [
+            {
+                "name" : {
+                    "$t" : "YouTube"
+                },
+                "uri" : {
+                    "$t" : "http://www.youtube.com/"
+                }
+            }
+        ],
+        "category" : [
+            {
+                "scheme" : "http://schemas.google.com/g/2005#kind",
+                "term" : "http://gdata.youtube.com/schemas/2007#video"
+            }
+        ],
+        "entry" : [
+            {
+                "app$control" : {
+                    "yt$state" : {
+                        "$t" : "Syndication of this video was restricted by its owner.",
+                        "name" : "restricted",
+                        "reasonCode" : "limitedSyndication"
+                    }
+                },
+                "author" : [
+                    {
+                        "name" : {
+                            "$t" : "beyonceVEVO"
+                        },
+                        "uri" : {
+                            "$t" : "http://gdata.youtube.com/feeds/api/users/beyoncevevo"
+                        }
+                    }
+                ]
+!!! SNIP !!!</programlisting>
+			 <para>
+				The following query creates a modified copy of the feed by removing all entries that restrict syndication.
+			</para>
+			 
+<programlisting>let $feed := jn:json-doc("incoming.json")
+return
+   copy $out := $feed
+   modify
+      let $feed := $out("feed")
+      let $feed-entry := $feed("entry")
+      for $entry at $pos in jn:members( $feed-entry )
+      where $entry("app$control")("yt$state")("name") = "restricted"
+      return delete json $feed-entry($pos)
+   return $out</programlisting>
+
+		</section>
+		
+
+	</section>
+	
+	 <!-- 
+
+
+####################
+
+data is represented as XML because of XML-based standards or existing software systems.
+#### But XML is forever with us
+    ### standards
+    ### document data - just plain better - medical records, pharmaceutical applications, government, news feeds, publishing, etc.
+    ### legacy data
+#### And HTML is  pretty much XML
+
+    ##### A query language for JSON benefits from this
+
+
+
+
+
+Desperate Perl Hacker, write a parser in a weekend.
+
+
+XML is much harder to parse than JSON, and
+
+### bibref
+Namespaces, whitespace handling,
+problematic types: either none, or XML Schema's complexity
+
+XML 1.0
+http://www.w3.org/TR/xml/
+
+#### But you don't always get away with that.
+XML, Java, and the future of the Web
+Jon Bosak, Sun Microsystems
+Last revised 1997.03.10
+http://www.ibiblio.org/pub/sun-info/standards/xml/why/xmlapps.htm
+
+Database Desiderata for an XML Query Language
+David Maier
+http://www.w3.org/TandS/QL/QL98/pp/maier.html
+
+
+http://www.json.org/fatfree.html
+
+
+#### For paper: flash back to David Maier's desiderata, say they were good, XQuery has fulfilled them, and guess what - we have the same needs today!
+
+
+    ### XQuery is good
+        ### compositional
+	### feasible in many environments
+                - in memory
+		- from disk
+		- in flight
+		- databases
+	### query, transformation, reuse
+
+    ### developed by SQL people, middleware people, XML people,
+    full-text people, and programmers
+    ### widely implemented
+
+    ### Fat is bad for XQuery too
+        More optimizable without fat
+	Middleware also easier for humans to understand
+
+JSON's syntax is significantly simpler, so parsing is more efficient.
+
+The ability to represent the most general computer science data
+structures: records, lists and trees.
+
+This is the most significant difference. While there are
+transformations which allow XML to express these structures, JSON
+expresses them directly. JSON's simple values are the same as used in
+programming languages. JSON's structures look like conventional
+programming language structures. No restructuring is necessary. JSON's
+object is record, struct, object, dictionary, hash, or associative
+array. JSON's array is array, vector, sequence, or list.
+
+JSON doesn't have namespaces. Every object is a namespace: its set of
+keys is independent of all other objects, even exclusive of
+nesting. JSON uses context to avoid ambiguity, just as programming
+languages do.
+
+   <para>
+        JSON and XML are both widely used for data interchange on the
+        Internet. In many applications, JSON is replacing XML in Web
+        Service APIs and data feeds; other applications support both
+        formats. XML adds significant overhead for namespaces,
+        whitespace handling, the oddities of XML Schema, and other
+        things that are simply not needed in many data-oriented
+        applications that require no more than simple serialization of
+        program structures. On the other hand, many applications do
+        need these features, and the ability to use document data
+        together with traditional program data is important.
+      </para>
+ --><!-- 
+#### Point to Spec. Point to BNF.
+
+#### Heavy, heavy on Benefits
+ --><!-- 
+##########  HIT ME ##############
+
+       #### SIMPLE VERSION
+
+       #### XQuery
+       #### Take away element constructors, add much simpler JSON constructors
+       #### Take away path expressions, add much simpler navigation
+
+       #### COMPLETE VERSION
+
+       Add in XQuery  -->
+</chapter>
+

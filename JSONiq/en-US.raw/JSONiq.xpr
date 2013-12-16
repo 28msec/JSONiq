@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="14.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options>
+            <serialized version="14.1" xml:space="preserve">
+                <map>
+                    <entry>
+                        <String>validation.scenarios</String>
+                        <validationScenario-array/>
+                    </entry>
+                </map>
+            </serialized>
+        </options>
+    </meta>
+    <projectTree name="JSONiq.xpr">
+        <file name="AreasOfConfusion.xml"/>
+        <file name="Author_Group.xml"/>
+        <file name="BasicOperations.xml"/>
+        <file name="Book_Info.xml"/>
+        <file name="Collections.xml"/>
+        <file name="Construction.xml"/>
+        <file name="ControlFlow.xml"/>
+        <file name="DataModel.xml"/>
+        <file name="EqualityAndIdentity.xml"/>
+        <file name="Errors.xml"/>
+        <file name="Expressions.xml"/>
+        <file name="FLWORExpressions.xml"/>
+        <file name="FunctionCalls.xml"/>
+        <file name="FunctionLibrary.xml"/>
+        <file name="Introduction.xml"/>
+        <file name="JSONiq.xml"/>
+        <file name="Modules.xml"/>
+        <file name="OpenIssues.xml"/>
+        <file name="Prolog.xml"/>
+        <file name="Revision_History.xml"/>
+        <file name="Selectors.xml"/>
+        <file name="TypeExpressions.xml"/>
+        <file name="TypeSystem.xml"/>
+        <file name="Variables.xml"/>
+    </projectTree>
+</project>

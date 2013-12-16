@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 7. Modules</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="index.html" title="JSONiq" /><link rel="prev" href="ch06s03.html" title="6.3. Functions" /><link rel="next" href="chapter-functions.html" title="Chapter 8. Function Library" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-functions.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-modules" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 7. Modules</h2></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/Module.png" width="444" alt="Module" /></div></div><h6>Figure 7.1. Module</h6></div><br class="figure-break" /><div class="para">
+		You can group functions and variables in separate library modules.
+	</div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/MainModule.png" alt="MainModule" /></div></div><h6>Figure 7.2. MainModule</h6></div><br class="figure-break" /><div class="para">
+		Up to now, everything we encountered were main modules, i.e., a prolog followed by a main query.
+	</div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/LibraryModule.png" width="444" alt="LibraryModule" /></div></div><h6>Figure 7.3. LibraryModule</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ModuleDecl.png" alt="ModuleDecl" /></div></div><h6>Figure 7.4. ModuleDecl</h6></div><br class="figure-break" /><div class="para">
+		A library module does not contain any query - just functions and variables that can be imported by other modules.
+	</div><div class="para">
+		A library module must be assigned to a namespace. For convenience, this namespace is bound to an alias in the module declaration. All variables and functions in a library module must be prefixed with this alias.
+	</div><div class="example"><h6>Example 7.1. A library module</h6><div class="example-contents"><pre class="programlisting">
+module namespace my = "http://www.example.com/my-module";
+declare variable $my:variable := { "foo" : "bar" };
+declare variable $my:n := 42;
+declare function my:function($i as integer) { $i * $i };
+</pre></div></div><br class="example-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ModuleImport.png" width="444" alt="ModuleImport" /></div></div><h6>Figure 7.5. ModuleImport</h6></div><br class="figure-break" /><div class="para">
+		Here is a main module which imports the former library module. An alias is given to the module namespace (my). Variables and functions from that module can be accessed by prefixing their names with this alias. The alias may be different than the internal alias defined in the imported module.
+	</div><div class="example"><h6>Example 7.2. An importing main module</h6><div class="example-contents"><pre class="programlisting">
+import module namespace other= "http://www.example.com/my-module";
+other:function($other:n)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp56106512">Result (run with Zorba):</h5>
+				1764
+			</div></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s03.html"><strong>Prev</strong>6.3. Functions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-functions.html"><strong>Next</strong>Chapter 8. Function Library</a></li></ul></body></html>

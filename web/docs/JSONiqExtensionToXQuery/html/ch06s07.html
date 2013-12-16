@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.7. jn:encode-for-roundtrip</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-builtin-functions.html" title="Chapter 6. Builtin functions and operators" /><link rel="prev" href="ch06s06.html" title="6.6. jn:decode-from-roundtrip" /><link rel="next" href="ch06s08.html" title="6.8. jn:json-doc" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s06.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch06s08.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm32601392">6.7. jn:encode-for-roundtrip</h2></div></div></div><div class="para">
+			This function recursively encodes non-JSON types in such a way that they can be serialized as JSON while keeping roundtrip capability.
+		</div><div class="para">
+			The following computations are made with respect to the static context of the caller, so that the schema type definitions are available.
+		</div><div class="para">
+			<code class="code">jn:encode-for-roundtrip($items as item()*) as json-item()*</code>
+		</div><div class="para">
+			<code class="code">jn:encode-for-roundtrip($items as item()*, $options as object()) as json-item()*</code>
+		</div><div class="para">
+			Calling the unary version of the function defaults the value of the second parameter (<code class="code">$options</code>) to 
+<pre class="programlisting">
+        {
+          "prefix" : "Q{http://jsoniq.org/roundtrip}"
+          "serialization-parameters" : 
+            &lt;serialization-parameters xmlns="http://www.w3.org/2010/xslt-xquery-serialization"&gt;
+              &lt;omit-xml-declaration value="yes" /&gt;
+            &lt;/serialization-parameters&gt;
+        }
+</pre>
+
+		</div><div class="para">
+			<code class="code">$options("prefix")</code> must be atomizable and castable to a string.
+		</div><div class="para">
+			<code class="code">$options("serialization-parameters")</code> must be a node.
+		</div><div class="para">
+			Error <code class="code">jerr:JNTY0023</code> is raised if one of the above two type criteria is not met.
+		</div><div class="para">
+			This function maps each item of the input sequence to a new item in the output sequence, preserving order.
+		</div><div class="para">
+			For convenience, the map is defined recursively from item() to item(), even though the signature of the function expects JSON items in the output sequence. The map preserves JSON native atomic values in general, however if such a value appears at the top-level in the input sequence, it is not treated as such and is mapped to an object like any other atomic item.
+		</div><div class="para">
+			It maps an object to an object with the same keys, the associated values being obtained by a recursive call on the original values.
+		</div><div class="para">
+			It maps an array to an array the members of which are obtained by a recursive call on the members of the original array.
+		</div><div class="para">
+			JSON native atomic values (of type exactly xs:double (except infinites and NaN), xs:decimal (except integers), xs:integer, xs:string, xs:boolean or js:null) are mapped to themselves.
+		</div><div class="para">
+			XML nodes are mapped to an object with two pairs: 
+			<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the parameter $prefix) and with the value "document-node()", "element()", "text()", "comment()" or "processing-instruction()", depending on the node kind (note that if it is an attribute or namespace node, <code class="code">err:SENR0001</code> will be raised by the step below).
+					</div></li><li class="listitem"><div class="para">
+						A pair named "[$prefix]value" (where [$prefix] is replaced with the value of <code class="code">$options("prefix")</code>) and whose value is a serialization of the XML node according to the XML output method and with the serialization parameters specified by <code class="code">$options("serialization-parameters")</code>.
+					</div></li></ul></div>
+
+		</div><div class="para">
+			Non-native atomic values that are not qualified names (i.e., neither xs:QName nor xs:NOTATION nor subtypes) are mapped to an object with two pairs: 
+			<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the parameter $prefix) and whose value is the EQName of the atomic type (The XSD namespace may be simply output with the xs: prefix).
+					</div></li><li class="listitem"><div class="para">
+						A pair named "[$prefix]value" (where [$prefix] is replaced with the value of <code class="code">$options("prefix")</code> and whose value is the lexical representation of the atomic value.
+					</div></li></ul></div>
+
+		</div><div class="para">
+			Non-native atomic values that are qualified names (i.e., xs:QName or xs:NOTATION or subtypes) are mapped to an object with two or three pairs: 
+			<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the parameter $prefix) and whose value is the EQName of the atomic type (The XSD namespace may be simply output with the xs: prefix).
+					</div></li><li class="listitem"><div class="para">
+						A pair named "[$prefix]value" (where [$prefix] is replaced with the value of <code class="code">$options("prefix")</code> and whose value is the EQName corresponding to the qualified name (which includes namespace and local name).
+					</div></li><li class="listitem"><div class="para">
+						A pair named "[$prefix]prefix" (where [$prefix] is replaced with the value of <code class="code">$options("prefix")</code> and whose value is the prefix of the qualified name (only if there is such a prefix).
+					</div></li></ul></div>
+
+		</div><div class="example"><h6>Example 6.5. Mapping non-JSON values</h6><div class="example-contents"><div class="para">
+				Query:
+			</div><pre class="programlisting">
+        {
+          "serialized XML" :
+            jn:encode-for-roundtrip(&lt;para&gt;
+                 A pair named "[$prefix]value" (where [$prefix] is replaced with the
+                 value of the parameter $prefix) and whose value is a serialization
+                 of the XML node according to the XML output method and with the
+                 serialization parameters specified by $param.
+                 &lt;/para&gt;)
+        }
+        
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+        {
+          "serialized XML" : {
+              "Q{http://jsoniq.org/roundtrip}type" : "node()",
+              "Q{http://jsoniq.org/roundtrip}value" : "&lt;para&gt;
+                 A pair named "[$prefix]value" (where [$prefix] is replaced with the
+                 value of the parameter $prefix) and whose value is a serialization
+                 of the XML node according to the XML output method and with the
+                 serialization parameters specified by $param.
+                 &lt;/para&gt;"
+          }
+        }
+</pre><div class="para">
+				Query:
+			</div><pre class="programlisting">
+        jn:encode-for-roundtrip({ "nan" : xs:double("NaN"),
+                                  "inf" : xs:double("INF"),
+                                  "date" : xs:date("1066-10-14"),
+                                  "user" : hat:hatSize("M"),
+                                  "QName" : xs:QName("jn:encode-for-roundtrip"),
+                                  "EQName" : fn:QName("http://jsoniq.org/roundtrip", "value")
+                                })
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+        {
+          "nan" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:double",
+            "Q{http://jsoniq.org/roundtrip}value" : "NaN"
+          },
+          "inf" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:double",
+            "Q{http://jsoniq.org/roundtrip}value" : "INF"
+          },
+          "date" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:date",
+            "Q{http://jsoniq.org/roundtrip}value" : "1066-10-14"
+          },
+          "hat" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "Q{http://www.example.com/hat-shop}hatSize",
+            "Q{http://jsoniq.org/roundtrip}value" : "M"
+          },
+          "QName" : { 
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:QName", 
+            "Q{http://jsoniq.org/roundtrip}value" : "Q{http://jsoniq.org/functions}encode-for-roundtrip", 
+            "Q{http://jsoniq.org/roundtrip}prefix" : "jn" 
+          },
+          "EQName" : { 
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:QName", 
+            "Q{http://jsoniq.org/roundtrip}value" : "Q{http://jsoniq.org/roundtrip}value" 
+          }
+        }
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s06.html"><strong>Prev</strong>6.6. jn:decode-from-roundtrip</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch06s08.html"><strong>Next</strong>6.8. jn:json-doc</a></li></ul></body></html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.10. Ordered and Unordered Expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-FLWOR.html" title="Chapter 10. FLWOR Expressions" /><link rel="prev" href="ch10s09.html" title="10.9. Composing FLWOR Expressions" /><link rel="next" href="chapter-TypeExpressions.html" title="Chapter 11. Expressions Dealing with Types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s09.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-TypeExpressions.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm43893280">10.10. Ordered and Unordered Expressions</h2></div></div></div><div class="para">
+			By default, the order in which a for clause binds its items is important.
+		</div><div class="para">
+			This behaviour can be relaxed in order give the optimizer more leeway. An unordered expression relaxes ordering by for clauses within its operand scope:
+		</div><div class="example"><h6>Example 10.24. An unordered expression.</h6><div class="example-contents"><pre class="programlisting">
+unordered {
+  for $answer in collection("answers")
+  where $answer.score ge 4
+  count $c
+  where $c le 2
+  return $answer
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "_id" : "511C7C5D9A277C22D13880C3",
+  "question_id" : 37823,
+  "answer_id" : 37841,
+  "creation_date" : "2008-09-01T12:14:38",
+  "last_activity_date" : "2008-09-01T12:14:38",
+  "score" : 7,
+  "is_accepted" : false,
+  "owner" : {
+    "user_id" : 2562,
+    "display_name" : "Ubiguchi",
+    "reputation" : 1871,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/00b87
+a917ec763c0c051dc6b8c06f402?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/2562/ubiguchi"
+
+  }
+}
+{
+  "_id" : "511C7C5D9A277C22D13880C4",
+  "question_id" : 37823,
+  "answer_id" : 37844,
+  "creation_date" : "2008-09-01T12:16:40",
+  "last_activity_date" : "2008-09-01T12:16:40",
+  "score" : 4,
+  "is_accepted" : false,
+  "owner" : {
+    "user_id" : 2974,
+    "display_name" : "Rob Wells",
+    "reputation" : 17543,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/87692
+81d99f8fe9c208fd6a926c383d1?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/2974/rob-wells
+",
+    "accept_rate" : 94
+  }
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			An ordered expression can be used to reactivate ordering behaviour in a subscope.
+		</div><div class="example"><h6>Example 10.25. An ordered expression.</h6><div class="example-contents"><pre class="programlisting">
+unordered {
+  for $question in collection("faqs")
+  where exists(
+    ordered {
+      for $answer at $i in collection("answers")
+      where $i eq 5
+      where $answer.question_id
+          eq $question.question_id
+      return $answer
+    }
+  )
+  return $question
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "_id" : "511C7C5C9A277C22D138808A",
+  "question_id" : 4720508,
+  "creation_date" : "2011-01-18T04:32:30",
+  "last_activity_date" : "2011-01-19T06:46:34",
+  "score" : 13,
+  "accepted_answer_id" : 4720977,
+  "title" : "Redis, CouchDB or Cassandra?",
+  "tags" : [ "nosql", "couchdb", "cassandra", "redis" ],
+  "view_count" : 5620,
+  "owner" : {
+    "user_id" : 216728,
+    "display_name" : "nornagon",
+    "reputation" : 3114,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/13f27
+199f9bf9c9f1261dc8a49630a6b?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/216728/nornago
+n",
+    "accept_rate" : 86
+  },
+  "link" : "http://stackoverflow.com/questions/4720508/redi
+s-couchdb-or-cassandra",
+  "is_answered" : true
+}
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s09.html"><strong>Prev</strong>10.9. Composing FLWOR Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-TypeExpressions.html"><strong>Next</strong>Chapter 11. Expressions Dealing with Types</a></li></ul></body></html>

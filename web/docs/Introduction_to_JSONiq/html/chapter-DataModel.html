@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 3. The JSONiq Data Model</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt01.html" title="Part I. JSON and the JSONiq Data Model" /><link rel="prev" href="ch02s05.html" title="2.5. JSON Objects" /><link rel="next" href="ch03s02.html" title="3.2. Objects" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch02s05.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch03s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-DataModel" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 3. The JSONiq Data Model</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-DataModel.html#idm34438256">3.1. JSONiq Values: Items and Sequences</a></span></dt><dt><span class="section"><a href="ch03s02.html">3.2. Objects</a></span></dt><dt><span class="section"><a href="ch03s03.html">3.3. Arrays</a></span></dt><dt><span class="section"><a href="ch03s04.html">3.4. Atomics</a></span></dt></dl></div><div class="para">
+		Having a JSON document as pure syntax is not very useful in itself, except to send it over a network or to store it in a document store of course. To make use of it in a database or in other processing environments, you need to bring it to a higher level of abstraction and give semantics to the building blocks. This is what a Data Model is for.
+	</div><div class="para">
+		We now introduce the JSONiq data model.
+	</div><div class="para">
+		Let us begin with some good news first: the JSON syntax that we have just introduced is a subset of JSONiq. Concretely, this means that any of these syntactic JSON building blocks can be copy-and-pasted, and executed as a JSONiq query. The output will be the counterpart of this JSON building block in the Data Model. So, if you are familiar with JSON, then you already know some JSONiq.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm34438256">3.1. JSONiq Values: Items and Sequences</h2></div></div></div><div class="para">
+			In JSONiq, the JSON building blocks described in the former section, on a more abstract level, are referred to as items. JSONiq manipulates sequences of these items. Hence, a JSONiq value is a sequence of items. So, in particular, a JSONiq query returns sequences of items. Actually, even inside a JSONiq query, sequences of items are passed around between the JSONiq building blocks internal to a query (called expressions).
+		</div><div class="para">
+			Let us copy-and-paste a JSON Object and execute it as JSONiq:
+		</div><div class="example"><h6>Example 3.1. A sequence of just one item.</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : "bar"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			The above query generates a sequence of one item, an object item in this case. The result displayed above is the output of this query when run with the Zorba query processor, which is one of the JSONiq implementations.
+		</div><div class="para">
+			Commas are all you need to begin building your own sequences. You can mix and match!
+		</div><div class="example"><h6>Example 3.2. A sequence of various items.</h6><div class="example-contents"><pre class="programlisting">
+"foo", 2, true, { "foo", "bar" }, null, [ 1, 2, 3 ]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"foo"
+2
+true
+"foo"
+"bar"
+null
+[ 1, 2, 3 ]
+</pre></div></div><br class="example-break" /><div class="para">
+			There are three golden rules about sequences that are useful to keep in mind.
+		</div><div class="para">
+			Rule <a href="http://www.zorba-xquery.com/html/modules/w3c/xpath#-1">#1</a>: Sequences are flat and cannot be nested. This makes streaming possible, which is very powerful.
+		</div><div class="example"><h6>Example 3.3. Sequences are flat.</h6><div class="example-contents"><pre class="programlisting">
+( ("foo", 2), ( (true, 4, null), 6 ) )
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"foo"
+2
+true
+4
+null
+6
+</pre></div></div><br class="example-break" /><div class="para">
+			Rule <a href="http://www.zorba-xquery.com/html/modules/w3c/xpath#-2">#2</a>: A sequence can be empty. The empty sequence can be constructed with empty parentheses.
+		</div><div class="example"><h6>Example 3.4. The empty sequence.</h6><div class="example-contents"><pre class="programlisting">
+()
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting"></pre></div></div><br class="example-break" /><div class="para">
+			Rule <a href="http://www.zorba-xquery.com/html/modules/w3c/xpath#-3">#3</a>: A sequence of just one item is considered the same as this item itself. Whenever we say that an expression returns or takes one item, we really mean that it takes a singleton sequence of one item.
+		</div><div class="example"><h6>Example 3.5. A sequence of one item.</h6><div class="example-contents"><pre class="programlisting">
+("foo")
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"foo"
+</pre></div></div><br class="example-break" /><div class="para">
+			JSONiq classifies the items mentioned above in three categories:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					Objects: the counterparts of the syntactic JSON objects.
+				</div></li><li class="listitem"><div class="para">
+					Arrays: the counterparts of the syntactic JSON arrays.
+				</div></li><li class="listitem"><div class="para">
+					Atomics: the counterparts of JSON strings, JSON numbers, JSON booleans and JSON nulls - but with a very rich type system which includes dates, for example.
+				</div></li></ul></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch02s05.html"><strong>Prev</strong>2.5. JSON Objects</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch03s02.html"><strong>Next</strong>3.2. Objects</a></li></ul></body></html>

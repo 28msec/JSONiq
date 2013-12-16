@@ -1,0 +1,1735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "../../xpath-semantics-10/schema/xquery-semantics.dtd"[
+
+<!-- Fix the broken definition for prodrecap from the XML spec DTD - jpcs -->
+<!ENTITY % ref-req.att "ref    NMTOKEN    #REQUIRED">
+
+<!ENTITY doc.version "1.1">
+<!ENTITY doc.version-code "11">
+<!ENTITY doc.stage "WD">
+<!ENTITY doc.w3c-doctype "wd">
+<!ENTITY doc.w3c-doctype-full "Working Draft">
+<!ENTITY date.day "10">
+<!ENTITY date.DD "10">
+<!ENTITY date.month "July">
+<!ENTITY date.monthnum "07">
+<!ENTITY date.year "2013">
+<!ENTITY doc.date "&date.year;&date.monthnum;&date.DD;">
+<!ENTITY w3c.tr "http://www.w3.org/TR">
+<!ENTITY doc.shortname "xquery-sx-&doc.version-code;">
+<!ENTITY doc.w3c-designation "&doc.stage;-&doc.shortname;">
+<!ENTITY doc.publoc "&w3c.tr;/&date.year;/&doc.w3c-designation;-&doc.date;">
+<!ENTITY doc.latestloc "&w3c.tr;/&doc.shortname;/">
+<!ENTITY language "JSONiq Scripting Extension 1.1">
+
+<!ENTITY xqsx-xqueryx SYSTEM "xqsx-xqueryx.xml">
+<!ENTITY xqsx-xqueryx-schema SYSTEM "xqsx-schema.xml">
+<!ENTITY xqsx-xqueryx-redef-schema SYSTEM "xqsx-redef-schema.xml">
+<!ENTITY xqsx-xqueryx-stylesheet SYSTEM "xqsx-stylesheet.xml">
+<!ENTITY xqsx-xqueryx-xq-example1a SYSTEM "xqsx-example-1a.xml">
+<!ENTITY xqsx-xqueryx-xqx-example1b SYSTEM "xqsx-example-1b.xml">
+<!ENTITY xqsx-xqueryx-xq-trans-example1c SYSTEM "xqsx-example-1c.xml">
+
+<!ENTITY % status-entities SYSTEM "../../../etc/status-entities.dtd">
+%status-entities;
+
+<!ENTITY doc.WD-pubdate "21 January 2011">
+<!ENTITY doc.LC-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.LC-comments-due "TO BE SPECIFIED">
+<!ENTITY doc.CR-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.CR-comments-due "TO BE SPECIFIED">
+<!ENTITY doc.PR-expected "TO BE SPECIFIED">
+<!ENTITY doc.PR-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.PR-comments-due "TO BE SPECIFIED">
+<!ENTITY doc.REC-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.pubdate "&doc.WD-pubdate;">
+<!ENTITY doc.comments-due "$doc.WD-comments-due;">
+
+<!ENTITY status-section-id "status">
+<!ENTITY spec-devby "&devby.xquery;">
+<!ENTITY changelog-id "id-revisions-log">
+<!ENTITY changes-para "&post.WD.changes;">
+<!ENTITY implementation-report-location "">
+<!ENTITY implementation-report-availability "&report-public;">
+<!ENTITY implementation-report "&no-implementation-report-or-test-suite-yet;">
+<!ENTITY test-suite-location "TO BE PROVIDED">
+<!ENTITY disclosure.one "&disclosure.xquery;">
+<!ENTITY Bugzilla-key "SX">
+<!ENTITY patent-policy-paragraph "&ppp-one;">
+<!ENTITY documents-and-relationships "&not-set-of-documents;">
+<!ENTITY advancement.statement "&advance.1WG;">
+<!ENTITY doc-stability "&doc-stability-WD;">
+<!ENTITY features-at-risk-para "&no-features-at-risk;">
+<!ENTITY document-stage "&doc-stage-WD;">
+<!ENTITY customized-paragraph '<p>This is the last version of XQuery Scripting Extension that
+is aligned with XQuery Update Facility 1.0.  In future versions of this document, the Working Group
+intends to reposition XQuery Scripting Extension 1.0 against the <bibref ref="XQ11"/> set of
+specifications, and remove it from the <bibref ref="XQ10"/> publication track.</p>'>
+
+<!ENTITY status-section SYSTEM "../../../etc/status-general.xml">
+]>
+<spec id="spec-top" w3c-doctype="&doc.w3c-doctype;">
+  <header id="spec-header">
+    <title>&language;</title>
+    <w3c-designation>&doc.w3c-designation;</w3c-designation>
+    <w3c-doctype>W3C &doc.w3c-doctype-full;</w3c-doctype>
+    <pubdate>
+      <day>&date.day;</day>
+      <month>&date.month;</month>
+      <year>&date.year;</year>
+    </pubdate>
+    <publoc>
+      <loc href="&doc.publoc;">&doc.publoc;</loc>
+    </publoc>
+    <latestloc>
+      <loc href="&doc.latestloc;">&doc.latestloc;</loc>
+    </latestloc>
+    <prevlocs>
+		</prevlocs>
+    <authlist>
+      <author>
+        <name>Matthias Brantner</name>
+        <affiliation>28msec, Inc.</affiliation>
+        <email href="mailto:matthias.brantner@28msec.com">matthias.brantner@28msec.com</email>
+      </author>
+      <author>
+        <name>Daniela Florescu</name>
+        <affiliation>Oracle Corporation</affiliation>
+        <email href="mailto:daniela.florescu@oracle.com">daniela.florescu@oracle.com</email>
+      </author>
+      <author>
+        <name>Ghislain Fourny</name>
+        <affiliation>ETH Zurich</affiliation>
+        <email href="mailto:ghislain.fourny@inf.ethz.ch">ghislain.fourny@inf.ethz.ch</email>
+      </author>
+      <author>
+        <name>Josh Spiegel</name>
+        <affiliation>Oracle Corporation</affiliation>
+        <email href="mailto:josh.spiegel@oracle.com">josh.spiegel@oracle.com</email>
+      </author>
+    </authlist>
+
+    &status-section;
+
+    <abstract>
+      <p>This specification defines an extension to XQuery 3.0
+         and XQuery Update Facility 1.0.
+         It introduces statements including the apply, local variable declaration, assignment,
+         while, exit and block statements, as well as statement counterparts to FLWOR, If, Switch,
+         Typeswitch, Trycatch expressions. Statements do not return any value but can have side
+         effects such as applying a PUL or reassigning a variable.
+         It also introduces block expressions, which may contain statements and thus also have
+         side effects. Such expressions must be evaluated in a specific order, which is
+         described here. Subsequent expressions can see the effects of the expressions that came before them. 
+         Finally, fork expressions allow relaxing the evaluation order to avoid streaming when otherwise impossible.
+      </p>
+    </abstract>
+
+    <langusage>
+      <language id="en">English</language>
+    </langusage>
+
+    <revisiondesc id="id-revision-log">
+      <p>Fourny, 21 January 2011.  Initial draft.</p>
+    </revisiondesc>
+  </header>
+
+  <body>
+
+    <div1 id="Introduction">
+      <head>Introduction</head>
+      
+      <p>XQuery Scripting Extension Proposal extends XQuery 3.0, enabling it to
+        serve as a scripting language in order to satisfy <bibref ref="ScriptingRequirements"/>. 
+        A prerequisite for this extension is XQuery Update Facility 1.0. 
+        The following abbreviations are used in this specification: 
+        <termdef term="XQUF" id="dt-xquf"><term>XQUF</term> is an abbreviation for XQuery Update Facility 1.0.</termdef>
+        <termdef term="XQSX" id="dt-xqsx"><term>XQSX</term> is an abbreviation for XQuery Scripting Extension.</termdef></p>
+      
+      <p><termref def="dt-xqsx">XQSX</termref> has the following properties:</p>
+      <ulist>
+        <item>
+          <p>It is a strict superset of XQuery 3.0, in the
+            sense that all valid XQuery 3.0 expressions are also
+            valid <termref def="dt-xqsx">XQSX</termref> expressions and have the same meaning. 
+          </p>
+        </item>
+        <item>
+          <p>It is a strict superset of <termref def="dt-xquf">XQUF</termref>, in the
+            sense that all valid <termref def="dt-xquf">XQUF</termref> expressions are also
+            valid <termref def="dt-xqsx">XQSX</termref> expressions and have the same meaning. 
+          </p>
+        </item>
+      </ulist>
+      <p>This specification makes use of the prefix ann for some annotations, bound with the namespace http://www.zorba-xquery.com/annotations</p>
+    </div1>
+    
+    <div1 id="Changes">
+      <head>Changes</head>
+      
+      <p>This spec brings the following changes to its former version (known as the Zorba Scripting Extension) 1.0:</p>
+      <ulist>
+        <item>
+          <p>The final expression of a block expression is optional.</p>
+        </item>
+        <item>
+          <p>The use of block expressions was generalized to any place where curly braces appear (except direct object constructors).</p>
+        </item>
+        <item>
+          <p>Expressions and statements can be fully mixed in control flow expressions. Statements are considered to return the empty sequence.</p>
+        </item>
+        <item>
+          <p>The void statement (;) was introduced.</p>
+        </item>
+        <item>
+          <p>The semantics of "sequential" was cleaned up. Time elapsing was added as a side effect. Non-sequential expressions are
+            expressions without side effects, in particular time does not even elapse (a single snapshot).
+            An expression that assigns a variable is now considered sequential (because it triggers a time elapse)
+            even if the variable is local to it.</p>
+        </item>
+        <item>
+          <p>Fork expressions are introduced. They turn a potentially sequential expression
+          into a simple expression by evaluating it lazily and in parallel to the main timeline.</p>
+        </item>
+        <item>
+          <p>The else clause is optional in a conditional statement. In case of ambiguity (nested ifs), an else clause is attached to the nearest
+          if.</p>
+        </item>
+        <item>
+          <p>The grammar now has conflicts, but this is to make it easier to read and understand.
+          Ambiguities between expression and statement (example: BlockStatement vs. BlockExpression without final expression,
+          or IfStatement vs. IfExpr with only statements)
+          are resolved towards the statement.</p>
+        </item>
+      </ulist>
+    </div1>
+    
+    <div1 id="id-extensions-to-processing-model">
+        <head>Extensions to the Processing Model</head>
+
+        <p>
+          Expressions in XQSX may have side-effects that are visible to subsequent expressions (according to their
+          <termref def="dt-eval-order">evaluation order</termref>). This requires a number of extensions to the 
+          XQuery 3.0 and <termref def="dt-xquf">XQUF</termref> processing model.
+        </p>
+
+        <div2 id="id-statements">
+          <head>Statements</head>
+          <p><termdef term="statement" id="dt-statement">A <term>statement</term> is a grammatical construct which
+            does not return anything (no XDM, no PUL) but can have side-effects (including the flow of time).
+            Statements have to be executed
+            in the evaluation order defined in XQSX.</termdef></p>
+          <p>XQSX introduces the following statements:
+            <ulist>
+              <item><p>Apply statements</p></item>
+              <item><p>Variable declaration statements</p></item>
+              <item><p>Variable assignment statements</p></item>
+              <item><p>Control flow statements: While, Break, Continue and Exit</p></item>
+              <item><p>Statements which have expression counterparts:
+                If-Then-Else, FLWOR, Try-Catch, Switch, Typeswitch and Block.</p></item>
+            </ulist>
+          </p>
+        </div2>
+        
+        <div2 id="id-expressions">
+          <head>Expressions</head>
+        <div3 id="id-updating-constraint">
+          <head>Updating Expressions</head>
+          <p>
+            <termref def="dt-xqsx">XQSX</termref> builds on top of XQuery 3.0 and XQuery Update 1.0, so that it keeps
+            the same constraints about an expression being simple (if it returns an empty PUL), updating (if it
+            returns an empty XDM) or vacuous (if both are empty).</p>
+            <p>This specification takes into account the fact that the XQUF specification might evolve and allow an updating
+            expression to return both a PUL and an XDM. We use the terminology of "non-updating" for simple expressions.</p>
+          <p>The composability constraints and category rules for updating expressions are inherited
+            from the XQUF specification. Composability constraints are given for updating expressions in new expressions as well
+          as for sequential expressions.</p>
+        </div3>
+        <div3 id="id-sequential">
+          <head>Sequential Expressions</head>
+          <p>
+            In addition to the updating/non-updating categorization, XQSX
+            introduces another dimension to classify expressions: sequential/non-sequential expressions.</p>
+          <olist>
+            <item>
+              <p>
+                <termdef term="sequential expression" id="dt-sequential-expr">A <term>sequential expression</term>
+                  is an expression that can have side effects other than constructing a new node or raising an error.</termdef>
+                Side effects include applying updates to an XDM instance,
+                altering the dynamic context, or affecting the flow of control, or even just letting time elapse.</p>
+              <p>An expression is sequential if it contains, directly or nested:</p>
+              <ulist>
+                <item>
+                  <p>a call to a sequential function.</p>
+                </item>
+                <item>
+                  <p>an assign statement.</p>
+                </item>
+                <item>
+                  <p>an apply statement, the operand of which is updating.</p>
+                </item>
+                <item>
+                  <p>a break or continue statement without FLWOR or while statement inbetween in the expression tree.</p>
+                </item>
+                <item>
+                  <p>an exit statement.</p>
+                </item>
+              </ulist>
+              <p>
+                The side effects of a sequential expression are immediately effective
+                and are visible to subsequent expressions. 
+                Because of their side effects, sequential expressions must be evaluated
+                in evaluation order, as defined in this specification.
+                In addition to its side effects, a sequential expression may return
+                an XDM instance.</p>
+            </item>
+            <item>
+              <p>
+                <termdef term="pure expression" id="dt-pure-expr">A <term>non-sequential expression</term>
+                  is an expression that is is not sequential.</termdef></p>
+            </item>
+          </olist>
+          <p>The classification of each expression into one of the above categories is
+            performed by static analysis.</p>
+          <p>
+            Note that updating/non-updating and sequential/non-sequential are two orthogonal classification dimensions.
+            Hence, an expression can be non-updating and non-sequential, non-updating and sequential,
+            or updating and non-sequential.
+          </p>
+        </div3>
+      </div2>
+        
+        <div2 id="id-evaluation-order">
+          <head>Evaluation Order</head>
+          <p>
+            <termdef term="evaluation order" id="dt-eval-order"><termref def="dt-xqsx">XQSX</termref> defines an <term>evaluation order</term> on
+              many kinds of XQuery expressions, which is the order that operand expressions must be evaluated in order
+              to determine what side-effects are visible to later expressions.</termdef></p>
+          <p>Unless otherwise stated, in an evaluation of a sequential expression or of a statement,
+            the operand expressions or statements must be evaluated exactly once, from left to right.</p>
+          <p>
+            An implementation may use any execution strategy as long as the result complies with
+            the semantics of this ordering.</p>
+        </div2>
+        
+      <div2 id="id-snapshot-scope">
+        <head>Snapshots</head>
+        <p>The term <term>snapshot</term> is defined in <bibref ref="XQueryUpdate"/> as follows:
+           <termdef term="snapshot" id="dt-snapshot">A <term>snapshot</term> is a scope
+           within which expressions are evaluated with respect to a fixed
+           XDM instance, accessible through the dynamic context's bindings,
+           and updates are held pending.</termdef>
+           A snapshot is terminated by invocation of the <code>upd:applyUpdates</code> operation.
+           Unlike <termref def="dt-xquf">XQUF</termref>, <termref def="dt-xqsx">XQSX</termref>
+           permits an XQuery program to contain more than one snapshot.</p>
+
+<!--        <p>In XQSX, each of the following expressions is a snapshot:
+           <ulist>
+             <item><p>an updating SimpleExpr which is operand of an ApplyStatement,</p></item>
+             <item><p>an updating Program.</p></item>
+           </ulist>
+        </p>
+-->
+        <p>
+          <bibref ref="FO"/> defines certain functions as <xtermref spec="FO" ref="stable">stable</xtermref>. Stable functions
+          such as <code>fn:current-time</code> and <code>fn:doc</code> are defined to return the same result given the same
+          arguments within an <xtermref spec="FO" ref="execution-scope">execution scope</xtermref>.
+          <termref def="dt-xqsx">XQSX</termref> permits an XQuery program to contain more than one execution scope.</p>
+
+<!--        <p>In XQSX, each of the following constructs has its own execution scope:
+        <ulist>
+          <item><p>apply, variable assignment, variable declaration, exit statements,</p></item>
+          <item><p>the final expression in a block expression,</p></item>
+          <item><p>the test expression in a while, conditional, switch or typeswitch expr.</p></item>
+          <item><p>each non-return clause in a FLWOR statement,</p></item>
+        </ulist>
+          </p>
+-->
+        <p>In XQSX, a snapshot and execution scope is defined as the lapse between two side effects to the environment, reachable
+          through the dynamic context, on which
+        the XQuery program operates.</p>
+        <p>Each of the following events marks the end of the current snapshot and execution scope, and the beginning of a new one:</p>
+        <ulist>
+          <item><p>The invocation of upd:applyUpdates,</p></item>
+          <item><p>Calling an external, sequential function,</p></item>
+          <item><p>Assigning a new value to a variable.</p></item>
+        </ulist>
+        
+      </div2>
+        <div2 id="id-nested-snapshots">
+          <head>Nested Snapshots</head>
+
+        <p>
+          To avoid nested snapshots, it is forbidden for an expression to be both updating and sequential. If such is the case,
+          a static error is raised.
+        </p>
+        
+      </div2>
+
+        <div2 id="id-variable-revalidation">
+        <head>Variable Binding Revalidation</head>
+        <p>
+          To ensure type soundness, variable bindings are revalidated at the end of each scope to check that
+          any updates applied have not made them invalid with repect to their declared types. It is a dynamic
+          error <errorref code="0003" class="DY"/> if, after applying a pending update list (using <code>upd:applyUpdates</code>),
+          the XDM instance bound to any in-scope variable does not match the static type of that variable according
+          to SequenceType matching rules.
+        </p>
+      </div2>
+
+        <div2 id="id-query-body">
+          <head>Main module</head>
+          <scrap><head/>
+            <prodrecap ref="MainModule"/>
+            <prodrecap ref="Program"/>
+            <prodrecap ref="StatementsAndOptionalExpr"/>
+          </scrap>
+          <p>A main module is redefined to be be a prolog followed by a program.</p>
+          <p>A program corresponds to the body of a block expression, except that the final expression
+            may be omitted. If such is the case, the final expression is considered to be the empty sequence.
+          </p>
+          <p>The program is evaluated like a block expression. The semantics are those of XQuery 3.0 or
+            XQuery Update Facility 1.0, i.e.,
+            its XDM value is the result of the program and the PUL it returns is applied</p>
+          <note>
+            <p>The current XQUF specification only allows either a non-empty XDM or a non-empty PUL to be returned.</p>
+          </note>
+        </div2>
+        
+      </div1>
+
+
+
+
+
+
+
+
+      <div1 id="id-extensions-to-prolog">
+        <head>Extensions to the Prolog</head>
+
+        <div2 id="id-assignable-global-var">
+          <head>Global Variable Declarations</head>
+          <scrap><head/>
+            <prodrecap ref="AnnotatedDecl"/>
+            <prodrecap ref="Annotation"/>
+            <prodrecap ref="VarDecl"/>
+          </scrap>
+          <glist>
+            <gitem>
+              <label>Definitions:</label>
+              <def>
+                <p>
+                  <termref def="dt-xqsx">XQSX</termref> allows the built-in annotations <code>%ann:assignable</code> and <code>%ann:nonassignable</code>
+                  to be used in a Prolog variable declaration. If both annotations are used, a static error is raised.</p>
+                <p><termdef term="assignable" id="dt-assignable">An <term>assignable prolog variable</term> is a global
+                  variable whose declaration specifies %ann:assignable, and
+                  may have its
+                  value changed by an assign statement.</termdef></p>
+                <p><termdef term="unassignable" id="dt-unassignable">An <term>unassignable prolog variable</term> is a global
+                  variable whose declaration specifies %ann:nonassignable, and may not have its
+                  value changed by an assign statement.</termdef></p>
+                <p>If an assignment qualifier is not used, the default is <code>unassignable</code>.
+                </p>
+              </def>
+            </gitem>
+            <gitem>
+              <label>Composability Constraints:</label>
+              <def>
+                <p diff="add">The initializing expression of a prolog variable (whether assignable or not)
+                  must be a non-updating and non-sequential expression <errorref code="0001" class="ST"/>.</p>
+              </def>
+            </gitem>
+            <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p diff="add">The semantics of declaring assignable variables are the same as the semantics of unassignable variables, except that
+            the static type of an assignable variable without a declared type is always <code>item()*</code>.
+              </p>
+            </def>
+          </gitem>
+          </glist>
+        </div2>
+
+
+        <div2 id="id-function-decl">
+          <head>Function Declarations</head>
+          <scrap><head/>
+            <prodrecap id="FunctionDecl" ref="FunctionDecl"/>
+            <prodrecap id="Annotation" ref="Annotation"/>
+            <prodrecap id="BuiltinAnnotation" ref="BuiltinAnnotation"/>
+            <prodrecap ref="StatementsAndOptionalExpr"/>
+          </scrap>
+          <glist>
+            <gitem>
+              <label>Definitions:</label>
+              <def>
+                <p>
+                  <termref def="dt-xqsx">XQSX</termref> allows the built-in annotations <code>%ann:sequential</code> and <code>%ann:nonsequential</code>
+                  to be used in a Prolog function declaration. If both annotations are used, a static error is raised.</p>
+                <p>
+                  <termdef term="non-sequential function" id="dt-non-sequential-function">A <term>non-sequential function</term>
+                  is a function whose declaration specifies <code>%ann:nonsequential </code>.
+                    </termdef>
+                  </p>
+                <p>
+                  <termdef term="sequential function" id="dt-sequential-function">A <term>sequential function</term>
+                    is a function whose declaration specifies the annotation <code>%ann:sequential</code>.</termdef>
+                </p>
+                <p>If a qualifier is not used, the default is non-sequential.</p>
+              </def>
+            </gitem>
+            <gitem>
+              <label>Composability Constraints:</label>
+              <def>
+                <p>A function body corresponds to a block expression, except that the final expression may be omitted
+                  (i.e., there are only statements). If such is the case,
+                  the final expression is considered to be the empty sequence. Therefore in the following explanations,
+                  we identify the function body with a block expression.</p>
+                <p>
+                  The body of an <termref def="dt-non-sequential-function">non-sequential function</termref>
+                  must be a non-sequential expression, except if the only reason why the expression
+                  is sequential is that it contains an exit statement. Otherwise,
+                  a static error is raised.</p>
+              </def>
+            </gitem>
+            <gitem>
+              <label>Semantics:</label>
+              <def>
+                <p>The semantics of functions
+                  are as follows. The function body is evaluated like a block expression.
+                  Its result is determined
+                  by the first exit statement encountered during evaluation of the Block. 
+                  If no exit statement is encountered, the result of the function is the value returned by the block expression
+                  (an empty XDM and an empty PUL if the final expression is omitted).
+                  Other than that, the semantics is as defined
+                  in XQuery Update Facility 1.0.</p>
+              </def>
+            </gitem>
+          </glist>
+        </div2>
+        
+      </div1>
+    
+
+
+
+
+
+
+
+
+
+
+    <div1 id="id-new-statements">
+      <head>Statements</head>
+      <p><termref def="dt-xqsx">XQSX</termref> extends the XQuery 1.0 syntax
+        by adding statements to the grammar. A statement may or may not have
+        side effects, and does not return anything.
+        There are the following kinds of statements:</p>
+      <scrap><head/>
+        <prodrecap ref="Statement"/>
+      </scrap>
+      
+      <p>This part presents the statements that have no expression counterpart because they provide
+        new semantic features.</p>
+      
+      <div2 id="id-apply">
+        <head>Apply Statement</head>
+        <scrap><head/>
+          <prodrecap id="ApplyStatement" ref="ApplyStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>(none).</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>
+                After the evaluation of SimpleExpr, the
+                pending update list returned by
+                this expression is applied (by <code>upd:applyUpdates</code>).
+                The XDM instance
+                returned by this expression is discarded.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>
+                SimpleExpr is evaluated exactly once before the semantics of the Apply Statement is applied.
+              </p>
+            </def>
+          </gitem>
+        <gitem>
+          <label>Example:</label>
+          <def>
+            <eg>
+delete nodes ($user, $items, $bids);
+            </eg>
+          </def>
+        </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-assignment">
+        <head>Assignment Statement</head>
+        <scrap><head/>
+          <prodrecap id="AssignStatement" ref="AssignStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>The operand must be non-updating.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The variable on the left-hand side of the assignment must be in scope and declared assignable, otherwise a
+                static error <errorref code="0007" class="ST"/> is raised. In particular, it must have been declared
+                by a variable declaration, local or in the prolog.</p>
+              <note>
+                <p>Variables bound in FLWOR, typeswitch, or quantified expressions or statements, as well as function
+                  parameters, may not appear
+                  on the left-hand side of an assignment.</p>
+              </note>
+              <p>
+                The expression on the right-hand side is evaluated,
+                resulting in an XDM instance.
+              </p>
+              <p>If the XDM instance
+                returned by the expression on the right-hand side does not match the declared type
+                of the variable according to SequenceType matching rules,
+                a type error is raised <xerrorref spec="XQ" code="0004" class="TY"/>. 
+                If the types match, the XDM instance
+                returned by the expression is bound to the variable (added to <emph>variable values</emph>
+                in the <emph>dynamic context</emph>.)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>
+                The operand expression is evaluated exactly once before the semantics of the Assignment Statement is applied.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+$result := "Bidding exceeded 60000";
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+
+      
+      <div2 id="id-break">
+        <head>Break Statement</head>
+        <scrap><head/>
+          <prodrecap id="BreakStatement" ref="BreakStatement"/>
+        </scrap>
+        
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>A break statement interrupts the execution of the innermost while or FLWOR statement. The execution
+              of the program continues as if the execution of the while or FLWOR statement had properly finished.</p>
+              <p>A static error is raised if there is no enclosing while or FLWOR statement.</p>
+              <note>
+                <p>A break statement does not interfere with a FLWOR expression, only with FLWOR statements.</p>
+              </note>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+break loop;              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      
+      
+      <div2 id="id-continue">
+        <head>Continue Statement</head>
+        <scrap><head/>
+          <prodrecap id="ContinueStatement" ref="ContinueStatement"/>
+        </scrap>
+        
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>A continue statement interrupts the current execution of the operand or return statement of the
+                innermost while or FLWOR statement.
+                In the case of a while statement, the resumes with a new evaluation of the test expression and,
+                possibly, of the inner statement. In the case of a FLWOR statement, the execution resumes with
+                the next tuple.
+              </p>
+              <note>
+                <p>A continue statement does not interfere with a FLWOR expression, only with FLWOR statements.</p>
+              </note>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+continue loop;              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      
+      
+      <div2 id="id-exit">
+        <head>Exit Statement</head>
+        <scrap><head/>
+          <prodrecap id="ExitStatement" ref="ExitStatement"/>
+        </scrap>
+        
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>An exit statement serves to define the result of the enclosing function or query body.</p>
+              <p>
+                The operand expression of the exit expression is evaluated, resulting in an
+                XDM instance
+                and a pending update list.
+              </p>
+              <p>If an exit statement is evaluated within the body of a function,
+                further evaluation of the function body is interrupted and the
+                XDM instance and
+                pending update list returned by
+                the operand expression are returned as the result of the function call.</p>
+              <p>If an exit statement is evaluated within a query body
+                (i.e., not within the body of a function), further evaluation of the query
+                is interrupted and the XDM instance and
+                pending update list
+                returned by the operand expression are returned as the result of the query.</p>
+              <note>
+                <p>An exit statement in a block terminates evaluation of the
+                  enclosing function body or program, not just the immediately enclosing block.</p>
+              </note>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>
+                The operand expression is evaluated exactly once before the semantics of the Exit Statement is applied.
+                Subsequent expressions or statements within the enclosing function body or query are not evaluated at all.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+exit returning local:error(concat("You cannot use the ",
+                                  $request/method,
+                                  " method with this URL."));              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+
+      <div2 id="id-vardecl-statement">
+        <head>Variable Declaration Statement</head>
+        <scrap><head/>
+          <prodrecap id="VarDeclStatement" ref="VarDeclStatement"/>
+        </scrap>
+        <p><termdef term="initializing expression" id="dt-initializing-expr">The expression on
+          the right-hand side of a variable declaration is called an
+          <term>initializing expression</term>.</termdef></p>
+        <p><termdef term="scope expression" id="dt-scope-expr">The <term>scope expression</term> of a variable declaration
+          is the innermost block expression, control flow clause (then/else clause,
+          Switch/Typeswitch/FLWOR return clause, while body clause), function body or program
+          containing the variable declaration expression.</termdef></p>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+             <p>The initializing expression must be non-updating.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>A variable declaration defines a local variable whose scope
+                is the remainder of its scope expression (not including its <termref def="dt-initializing-expr">initializing expression</termref>). 
+                The variable defined in a variable declaration occludes (hides)
+                any variable of the same name that is in scope at the location where the innermost block appears.</p>
+              <p>The variable may be annotated as assignable or as unassignable. By default, it is assignable.
+                It may only be modified by assignment
+                statements if it is assignable.</p>
+              <note>
+                <p>The default for local variable declarations is different from variables declared in the prolog.
+                The latter are unassignable if there is no annotation.</p>
+              </note>
+              <p>It is a static error <errorref code="0005" class="ST"/> if two or more variables declared in the same scope expression
+                have the same expanded QName.</p>
+              <p>The type of each declared variable is added to <emph>in-scope variables</emph>
+                in the <emph>static context</emph> of subsequent expressions in the enclosing block, function body or program. 
+                If a variable has both an explicit type declaration and an
+                <termref def="dt-initializing-expr">initializing expression</termref>,
+                the value of the <termref def="dt-initializing-expr">initializing expression</termref> must match
+                the declared type according to SequenceType matching rules; otherwise a type error is raised <xerrorref spec="XQ" code="0004" class="TY"/>.
+                If no explicit type is declared and the variable is assignable, the type of the variable is <code>item()*</code>.
+                If no explicit type is declared and the variable is unassignable, the type is statically inferred from the initializing expression.</p>
+              <p>The block variable declaration evaluates its <termref def="dt-initializing-expr">initializing expression</termref>
+                and binds the resulting XDM instance to the <emph>variable values</emph> in
+                the <emph>dynamic context</emph> of subsequent expressions in the enclosing block, function body or program.
+                If no <termref def="dt-initializing-expr">initializing expression</termref> is present, the variable has no initial value. 
+                A reference to a variable, other than on the left-hand side of an assignment expression,
+                is an error if the variable has no value in <emph>variable values</emph>
+                when the reference is evaluated <errorref code="0006" class="TY"/>.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>
+                The operand expression is evaluated exactly once before the semantics of the Declaration Statement is applied.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+variable $uid := doc("users.xml")/users/user_tuple
+                 [name = "Roger Smith"]/userid;              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      
+      
+      <div2 id="id-while-statement">
+        <head>While Statement</head>
+        <scrap><head/>
+          <prodrecap id="WhileStatement" ref="WhileStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p><termdef term="test expression" id="dt-test-expr">The expression enclosed in the
+                parentheses of a while expression is called a <term>test expression</term>.</termdef></p>
+              <p>The <termref def="dt-test-expr">test expression</termref> must be non-updating.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The while statement is used for conditional iteration.  It is evaluated as follows:</p>
+              <p>
+                The <termref def="dt-test-expr">test expression</termref> is evaluated, resulting in an
+                XDM instance.
+              </p>
+              <p>
+                If the effective Boolean value of the <termref def="dt-test-expr">test expression</termref>
+                is false, the block is not evaluated. If the effective Boolean value of the
+                <termref def="dt-test-expr">test expression</termref> is true, the statement is evaluated repeatedly. 
+                Each evaluation of the statement may cause side effects that affect the result of re-evaluating the
+                <termref def="dt-test-expr">test expression</termref>. 
+                The <termref def="dt-test-expr">test expression</termref> is re-evaluated after each evaluation of the statement. 
+                This process continues until the effective Boolean value of the <termref def="dt-test-expr">test expression</termref>
+                is evaluated to be false.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>
+                The test expression is evaluated once. Then if the EBV of the test expression is true, the statement is executed exactly once and the test expression is evaluated again. These steps are repeated until the EBV of the test expression is false.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <p>In the following query, a while statement is used to compute a sequence
+                containing all the Fibonacci numbers that are less than 100.</p>
+              <eg>
+                variable $a as xs:integer := 0;
+                variable $b as xs:integer := 1;  
+                variable $c as xs:integer := $a + $b;
+                variable $fibseq as xs:integer* := ($a, $b);
+                
+                while ($c &lt; 100) { 
+                $fibseq := ($fibseq, $c);
+                $a := $b;
+                $b := $c;
+                $c := $a + $b;
+                }
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-void-statement">
+        <head>Void Statement</head>
+        <scrap><head/>
+          <prodrecap id="VoidStatement" ref="VoidStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>None.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The void statement does nothing. It is equivalent to an empty block statement.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>
+                None.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <p>The void statement can be used as an empty body of a while loop (like the empty block statement).</p>
+              <eg>
+                while (condition-not-met())
+                  ;
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+    </div1>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <div1 id="id-statements-expressions">
+      <head>Statement counterparts of existing expressions</head>
+      <p><termref def="dt-xqsx">XQSX</termref> defines statement counterparts for control flow
+      expressions (FLWOR, IfThenElse, Switch, Typeswitch, Trycatch). It also defines an evaluation order
+      for statements and sequential expressions. An expression or statement following another according
+      to this evaluation order sees the side effects of this other expression or statement.</p>
+
+      <p>Composability Contraints for updating expressions that are operands of any expressions defined in XQUF
+        are extended to
+        operand expressions of their statement counterparts (non-return expressions in FLWOR statements, test expressions in
+        conditional statements, switch statements and typeswitch statements).</p>
+      
+      <div2 id="id-flwor-statement">
+        <head>FLWOR Statements and Expressions</head>
+          <p>In addition to FLWOR Expressions, XQSX introduces FLWOR Statements,
+            defined like FLWOR Expressions except that the final clause is
+            a statement.</p>
+          <scrap><head/>
+          <prodrecap id="FLWORStatement" ref="FLWORStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <note>
+                <p>
+                  The XQUF specification currently forbids clauses other than return clauses of a FLWOR expression to be updating.
+                  Furthermore, it specifies that the category (updating or not) of a FLWOR expression is
+                  the same as that of its return clause.
+                </p>
+              </note>
+              <p>The expressions in the window-start, window-end, order-by, group-by, where and count clauses must be
+              non-sequential.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The semantics of FLWOR Expressions is unchanged.</p>
+              <p>For FLWOR Statements, the input tuple stream is generated as described in XQuery 3.0.
+                The return statement is then executed for each tuple in its input tuple stream,
+                using the variable bindings in the respective tuples.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>Each FLWOR clause is evaluated exactly once, one after the other, from left to right.
+                In the evaluation of the first clause, the operand expression is evaluated exactly once.
+                In the evaluation of each other clause, the operand expression is evaluated exactly once for every tuple in the input stream produced
+                by the former clause, in the exact same order as in the stream.
+                </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+for $book in book:search($eventNode/preceding-sibling::xhtml:input[1])
+return 
+insert node
+&lt;xhtml:tr>
+  &lt;xhtml:td>{data($book/title)}&lt;/xhtml:td>
+  &lt;xhtml:td>{data($book/isbn)}&lt;/xhtml:td>
+  &lt;xhtml:td/>
+&lt;/xhtml:tr>
+as last into $table;
+              </eg>
+              <p>The same with bulk updates:</p>
+              <eg>
+(for $book in book:search($eventNode/preceding-sibling::xhtml:input[1])
+return 
+insert node
+&lt;xhtml:tr>
+  &lt;xhtml:td>{data($book/title)}&lt;/xhtml:td>
+  &lt;xhtml:td>{data($book/isbn)}&lt;/xhtml:td>
+  &lt;xhtml:td/>
+&lt;/xhtml:tr>
+as last into $table);
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-if-statement">
+        <head>Conditional Statements and Expressions</head>
+        <p>In addition to Conditional Expressions, XQSX introduces Conditional Statements,
+          defined like Conditional Expressions except that the then and the else clause are
+          statements.</p>
+        <p>Also, XQSX allows Conditional Expressions to contain a mix of statements and expressions. In case of an ambiguity between
+          a Conditional Expression and a Conditional Statement while parsing, which happens if there are only statements,
+          the conflict is resolved towards a Conditional Statement.</p>
+        <scrap><head/>
+          <prodrecap id="IfStatement" ref="IfStatement"/>
+          <prodrecap id="IfExpr" ref="IfExpr"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <note>
+                <p>
+                  The XQUF specification currently forbids the test expression to be updating.
+                </p>
+              </note>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The semantics of Conditional Expressions is unchanged except that if one of the branches
+              is a statement S, it is considered as { S () }, i.e., it is wrapped into a block expression with ()
+              as a final expression.</p>
+              <p>For Conditional Statements, the test expression is evaluated.
+                If the EBV of its returned XDM is true, then the then statement is executed,
+                otherwise the else statement is executed. If there is no else statement, it is considered
+                to be the void statement.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The test expression is evaluated exactly once. Then, depending on the EBV of the test expression, either the then clause or the
+                else clause (but not both) is evaluated, exactly once.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+if($newbid &lt;= 60000) then {
+  insert nodes
+  &lt;bid_tuple>
+    { $uid, $item/itemno }
+    &lt;bid>{ $newbid }&lt;/bid> 
+    &lt;bid_date>{ fn:current-date() }&lt;/bid_date> 
+  &lt;/bid_tuple>
+  into doc("bids.xml")/bids;
+  $result := concat("What a bargain! You got a helicopter for ",
+                    $newbid);
+} else {
+  $result := "Bidding exceeded 60000";
+  $maximumExceeded := true();
+}
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+
+      <div2 id="id-switch-statement">
+        <head>Switch Statements and Expressions</head>
+        <p>In addition to Switch Expressions, XQSX introduces Switch Statements,
+          defined like Switch Expressions except that the return clauses are
+          statements.</p>
+        <p>Also, XQSX allows Switch Expressions to contain a mix of statements and expressions. In case of an ambiguity between
+          a Switch Expression and a Switch Statement while parsing, which happens if there are only statements,
+          the conflict is resolved towards a Switch Statement.</p>
+        <scrap><head/>
+          <prodrecap id="SwitchStatement" ref="SwitchStatement"/>
+          <prodrecap id="SwitchCaseStatement" ref="SwitchCaseStatement"/>
+          <prodrecap id="SwitchExpr" ref="SwitchExpr"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <note>
+                <p>The XQUF specification does not yet take into account the switch expressions introduced in XQuery 3.0.
+                  It is outside of the scope of this XQuery Scripting specification to do so, but until the XQUF 3.0 specification
+                  is ready we consider that all operand expressions must be non-updating.</p>
+              </note>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The semantics of Switch Expressions is unchanged, except that, if a statement S is present,
+                it is considered as { S () }, i.e., it is wrapped into a block expression with ()
+                as a final expression.</p>
+              <p>For Switch Statements, the return statement in the effective
+                case is executed.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The test expression is evaluated exactly once. Then, only the return clause in the effective case is evaluated, exactly once.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-trycatch-statement">
+        <head>Try-Catch Statements and Expressions</head>
+        <p>In addition to Try-Catch Expressions, XQSX introduces Try-Catch Statements,
+          defined like Try-Catch Expressions except that the try and catch clauses are
+          block statements.</p>
+        <p>The try clause and catch clause of a Try-Catch expression are extended to support any block expression.</p>
+        <p>If all block expressions have no final expression, the ambiguity will be resolved at the block level to block statements,
+        so that the overall expression will be resolved as a Try-Catch statement.</p>
+        <scrap><head/>
+          <prodrecap id="TryCatchStatement" ref="TryCatchStatement"/>
+          <prodrecap id="CatchStatement" ref="CatchStatement"/>
+          <prodrecap id="TryCatchExpr" ref="TryCatchExpr"/>
+          <prodrecap id="CatchClause" ref="CatchClause"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <note>
+                <p>The XQUF specification does not yet take into account the try-catch expressions introduced in XQuery 3.0.
+                  It is outside of the scope of this XQuery Scripting specification to do so, but until XQUF 3.0 is ready
+                  we will consider that try and catch expressions must be either all updating or all non-updating.</p>
+              </note>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The semantics of Try-Catch Expressions is unchanged, except that, if a statement S is present,
+                it is considered as { S () }, i.e., it is wrapped into a block expression with ()
+                as a final expression.</p>
+              <p>For Try-Catch Statements, the try statement is executed.
+                If this execution raises a dynamic error or a type error, the first catch statement
+                that "matches" the error value is executed.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+           <def>
+             <p>If no error is dynamic or type error is raised during the evaluation of the try clause,
+             no catch clause gets executed. Otherwise, the execution of the try clause is interrupted when
+             this error is raised, and only the first catch statement that "matches" the error value is executed,
+             exactly once.</p>
+           </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-typeswitch-statement">
+        <head>Typeswitch Statements and Expressions</head>
+        <p>In addition to Typeswitch Expressions, XQSX introduces Typeswitch Statements,
+          defined like Typeswitch Expressions except that the clauses are
+          statements.</p>
+        <p>Also, XQSX allows Typeswitch Expressions to contain a mix of statements and expressions. In case of an ambiguity between
+          a Typeswitch Expression and a Typeswitch Statement while parsing, which happens if there are only statements,
+          the conflict is resolved towards a Typeswitch Statement.</p>
+        <scrap><head/>
+          <prodrecap id="TypeswitchStatement" ref="TypeswitchStatement"/>
+          <prodrecap id="CaseStatement" ref="CaseStatement"/>
+          <prodrecap id="TypeswitchExpr" ref="TypeswitchExpr"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <note>
+                <p>
+                  The XQUF specification currently forbids the operand expressions of a typeswitch expression to be updating.
+                </p>
+              </note>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The semantics of Typeswitch Expressions is unchanged, except that, if a statement S is present,
+                it is considered as { S () }, i.e., it is wrapped into a block expression with ()
+                as a final expression.</p>
+              <p>For Typeswitch Statements, the return statement in the effective
+                case is executed.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The test expression is evaluated exactly once. Then, only the return clause in the effective case is evaluated, exactly once.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-block-statement">
+        <head>Block Statements and Expressions</head>
+        <p>A block statement is a concatenation of zero, one or more statements, surrounded by curly braces.</p>
+        <p>A block expression is a concatenation of zero, one or more statements and one optional expression, surrounded by curly braces.</p>
+        <p>There is a grammatical ambiguity between block statements and block expressions with no final expression. In case of a conflict while parsing,
+          it is resolved towards a block statement.</p>
+        <scrap><head/>
+          <prodrecap ref="PrimaryExpr"/>
+          <prodrecap id="BlockExpr" ref="BlockExpr"/>
+          <prodrecap id="StatementsAndExpr" ref="StatementsAndExpr"/>
+          <prodrecap id="Statements" ref="Statements"/>
+          <prodrecap id="BlockStatement" ref="BlockStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+                <p>If the final expression is non-updating, the block expression is non-updating.
+                If the final expression is updating, the block expression is updating.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>Each statement, as well as the final expression if any, is evaluated.</p>
+              <p>The result of a block expression is the XDM and PUL returned by its final expression, or the empty sequence if there is no final expression.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The statements (and the optional final expression for a Block Expression) are evaluated in the order they appear.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+{
+variable $uid := doc("users.xml")/users/user_tuple[name = "Roger Smith"]/userid;
+variable $topbid := max(doc("bids.xml")/bids/bid_tuple[itemno = 1002]/bid);
+variable $newbid := $topbid * 1.1;
+
+insert nodes
+&lt;bid_tuple> 
+  &lt;userid>{ data($uid) }&lt;/userid> 
+  &lt;itemno>1002&lt;/itemno> 
+  &lt;bid>{ $newbid }&lt;/bid> 
+  &lt;bid_date>1999-03-03&lt;/bid_date> 
+&lt;/bid_tuple>
+into doc("bids.xml")/bids;
+
+&lt;new_bid>{ $newbid }&lt;/new_bid>
+}
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+    </div1>
+
+
+
+
+    <div1 id="id-expr-changes">
+      <head>Changes to existing expressions</head>
+      
+      <div2 id="id-node-constructors-statements">
+        <head>Expressions with nested block expressions</head>
+        <p>The following expressions are extended to allow statements in their curly-braced content (i.e., block expressions).</p>
+        <scrap> 
+          <head></head>
+          <prodrecap id="CommonContent" ref="CommonContent"/>
+          <prodrecap id="CompDocConstructor" ref="CompDocConstructor"/>
+          <prodrecap id="CompElemConstructor" ref="CompElemConstructor"/>
+          <prodrecap id="CompAttrConstructor" ref="CompAttrConstructor"/>
+          <prodrecap id="CompPIConstructor" ref="CompPIConstructor"/>
+          <prodrecap id="CompCommentConstructor" ref="CompCommentConstructor"/>
+          <prodrecap id="CompTextConstructor" ref="CompTextConstructor"/>
+          <prodrecap id="CompNamespaceConstructor" ref="CompNamespaceConstructor"/>
+          <prodrecap id="ValidateExpr" ref="ValidateExpr"/>
+          <prodrecap id="ExtensionExpr" ref="ExtensionExpr"/>
+          <prodrecap id="OrderedExpr" ref="OrderedExpr"/>
+          <prodrecap id="UnorderedExpr" ref="UnorderedExpr"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>(none)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The semantics are the same as in XQuery 3.0.</p>
+              <p>The block expression is evaluated as such and its results are used
+                as specified in XQuery 3.0.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The operands are evaluated from left to right.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-fork-expression">
+        <head>Fork Expressions</head>
+        <p>A new fork expression is introduced to provide the ability to relax evaluation order.</p>
+        <scrap> 
+          <head></head>
+          <prodrecap id="ForkExpr" ref="ForkExpr"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>The operand may not be updating.</p>
+              <p>Even if the block expression is sequential, a fork expression is always non-sequential -- it can be seen
+              as instantly returning a placeholder for a sequence that will be evaluated lazily later.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The fork expression returns the output of its operand block expression.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The evaluation order that would normally require the fork expression to be completely evaluated
+              before expressions following it is relaxed, i.e., the block expression operand may be evaluated lazily
+              and in parallel to the evaluation of expressions subsequent to the fork expression.</p>
+              <p>The consequence is that the block expression might see (and its results may be affected by) side effects caused by subsequent expressions even though
+                it lexically precedes them, and
+                subsequent expressions may see the side effects of a partial evaluation of the block expression as its results are consumed.</p>
+              <p>Fork expressions must be used with care and parsimoniously, mostly when streaming is desired but would be incompatible 
+                with evaluation order (e.g., sequential FLWORs).</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-predicate-quantified">
+        <head>Filter and quantified expressions.</head>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>
+                The expression in square brackets in a filter expression, as well as the conditional expression (second operand) in a quantified expression, must be non-sequential.
+              </p>
+              <note>
+                <p>
+                  The motivation behind this restriction is that their operands can be converted to where clauses in FLWOR expressions in the query plan.
+                </p>
+              </note>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation order:</label>
+            <def>
+              <p>The base expression in a filter expression is evaluated exactly once.</p>
+              <p>The base expression (first operand) in a quantified expression is evaluated exactly once.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-other-expr">
+        <head>Other Expressions</head>
+        <p>
+          All expressions not listed above are extended as follows.
+          This includes the following kinds of expressions:
+        </p>
+        <ulist>
+          <item>
+            <p>Path expressions</p>
+          </item>
+          <item>
+            <p>Concatenation expressions</p>
+          </item>
+          <item>
+            <p>Function calls</p>
+          </item>
+          <item>
+            <p>Range expressions</p>
+          </item>
+          <item>
+            <p>Transform expressions</p>
+          </item>
+          <item>
+            <p>Union, intersect, and except expressions</p>
+          </item>
+          <item>
+            <p>Arithmetic, comparison, and logical expressions</p>
+          </item>
+          <item>
+            <p>Instance of, cast, castable, and treat expressions</p>
+          </item>
+        </ulist>
+        <glist>
+          <gitem>
+            <label>Composability Constraints:</label>
+            <def>
+              <p>(node)</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                Operand expressions are evaluated from left to right, bottom-up in the expression tree (i.e., in a function call,
+                the parameters are evaluated before the function body is evaluated).
+              </p>
+            </def>
+          </gitem>
+        </glist>
+        <note>
+          <p>
+            Since insert, delete, replace and rename are updating expressions, their operands must be non-effecting,
+            such that the evaluation order is irrelevant
+            for them.
+          </p>
+        </note>
+        <note>
+          <p>
+            In transform expressions, since the modify clause must be updating (or vacuous) according to XQUF,
+            it must also be non-sequential. Furthermore, XQUF specifies that the return clause sees that the side-effect
+            of applying the PUL returned by the modify expression is visible to the return expression.
+          </p>
+        </note>
+      </div2>
+    </div1>
+    
+    <div1 id="id-example">
+      <head>Example</head>
+      <p>The following function returns <code>true</code> or <code>false</code>
+         according to whether its parameter is a known user name, and logs the event:</p>
+      <eg>declare %ann:sequential function validate-and-log($username as xs:string)
+    as xs:boolean {
+  variable $log as document-node() := fn:doc("log.xml"); 
+
+  variable $entry as element() :=
+    &lt;access-attempt&gt;
+      &lt;timestamp&gt;{fn:current-dateTime()}&lt;/timestamp&gt;
+      &lt;user-name&gt;{$username}&lt;/user-name&gt;
+      &lt;access-allowed/&gt;
+    &lt;/access-attempt&gt; ;
+
+  variable  $result as xs:boolean;
+
+  if ($username = doc("users.xml")/current-users/user/name )
+  then {
+    replace value of node $entry/access-allowed with "Yes";
+    $result := true();
+  } else {
+    replace value of node $entry/access-allowed with "No";
+   $result := false();
+  }
+  
+  insert node $entry as last into $log; 
+  
+  fn:put($log, "log.xml"); 
+  
+  $result
+} 
+</eg>
+    </div1>
+    
+    <div1 id="id-extra-grammatical">
+      <head>Extra-Grammatical Constraints</head>
+      <p>Although the grammar allows syntactically an empty program, this is now allowed.</p>
+      <p>A program must consist of at least one statement, or at least an expression.</p>
+    </div1>
+    
+  <div1 id ="id-lookahead">
+    <head>Alternative simplified grammar for LL-Parsers</head>
+    <p>For implementors using LL-parsers, the grammar described in this specification (which is LR(1)) needs
+      an arbitrary lookahead (as opposed to a lookahead of 1 for LR-parsers).
+      This arbitrary lookahead can be removed
+    by using a subset of this proposal specified by the following changes. This makes the grammar LL(2).</p>
+    <p>In a nutshell, block expressions are not available, and statements that could be mistaken for the beginning of
+      an expression (with a lookahead of 2) need to be put in block statements.
+      This happens in function bodies, node constructors and block expressions.</p>
+    <scrap><head/>
+      <prodrecap id="Alternative" ref="Alternative"/>
+    </scrap>
+  </div1>
+    
+  </body>
+
+  <back>
+<div1 id="id-grammar">
+		<head>EBNF for XQuery 1.0 Grammar with Scripting Extensions</head>
+
+<p>The EBNF in this document and in this section is aligned with
+the current XML Query 1.0 grammar (see <bibref ref="XQ10"/>).</p>
+
+		<scrap role="non-terminal-structure-expand"><head></head>
+<prodrecap ref="BNF-Grammar-prods" role="BNF-Grammar-prods" at="../build/temp-xquery-grammar.xml"/>
+</scrap>
+
+<div2 id="id-terminal-symbols"><head>Terminal Symbols</head><scrap headstyle="show">
+		    
+		  <head></head><prodrecap ref="DefinedLexemes" role="DefinedLexemes" at="../build/temp-xquery-grammar.xml"/> 
+		   
+		</scrap>
+<p>The following symbols are used only in the definition of
+  terminal symbols; they are not terminal symbols in the
+  grammar of <specref ref="id-grammar"/>.</p><scrap headstyle="show">
+		    
+		  <head></head><prodrecap ref="LocalTerminalSymbols" at="../build/temp-xquery-grammar.xml" role="LocalTerminalSymbols"/> 
+		   
+		</scrap>
+</div2>
+
+<div2 id="id-extra-grammatical-constraints" diff="add"><head>Extra-grammatical Constraints</head>
+  <p>This section contains XQuery SX specific constraints on the EBNF productions, which are required to parse legal sentences.
+  The notes below are referenced from the right side of the production, with the notation: <emph>/* gn: &lt;id&gt; */</emph>.</p>
+  <constraintnote id="parse-note-sx-reserved-function-names" type="xgc"><head>sx-reserved-function-names</head><p>
+  XQuery SX adds the term "while" to the list of names in
+  <xspecref spec="XQ" ref="id-reserved-fn-names"><?xm-replace_text {xspecref}?></xspecref>.
+  <note><p>This is a backwards incompatibility with <bibref ref="XQ10"/>.</p></note>
+</p></constraintnote>
+</div2>
+</div1>
+
+    &xqsx-xqueryx;
+
+    <div1 id="id-implementation-defined-items">
+      <head>Implementation-Defined Items</head>
+      <p>The following items in this specification are implementation-defined:</p>
+      <olist>
+        <item>
+          <p>The effects of <termref def="dt-snapshot">snapshot semantics</termref> on persistent storage. 
+             For example, it is implementation-defined whether the effects of an <code>fn:put</code> function
+             are visible to an <code>fn:doc</code>, <code>fn:doc-available</code>, or <code>fn:collection</code>
+             function executed in a subsequent <termref def="dt-snapshot">snapshot</termref>.</p>
+        </item>
+        <item>
+          <p>The mechanism (if any) by which the XQuery environment exchanges parameters and results
+             with an external function.</p>
+        </item>
+      </olist>
+    </div1>
+    <div1 id="id-references">
+      <head>References</head>
+      <blist>
+        <bibl id="XQ10" key="XQuery 1.0" href="http://www.w3.org/TR/xquery">
+          <loc href="http://www.w3.org/TR/xquery/">XQuery 1.0: An XML Query Language</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl id="XQX10" key="XML Syntax for XQuery 1.0" href="http://www.w3.org/TR/xqueryx">
+          <loc href="http://www.w3.org/TR/xqueryx/">XML Syntax for XQuery 1.0</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl id="XDM" key="XQuery Data Model" href="http://www.w3.org/TR/xpath-datamodel/">
+          <loc href="http://www.w3.org/TR/xpath-datamodel/">XQuery 1.0 and XPath 2.0 Data Model (XDM)</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl id="FO" key="XQuery 1.0 and XPath 2.0 Functions and Operators" href="http://www.w3.org/TR/xpath-functions/">
+          <loc href="http://www.w3.org/TR/xpath-functions/">XQuery 1.0 and XPath 2.0 Functions and Operators</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl href="http://www.w3.org/TR/xquery-update-10/" id="XQueryUpdate" key="XQuery Update Facility">
+          <loc href="http://www.w3.org/TR/xquery-update-10/">XQuery Update Facility 1.0</loc>,
+          W3C Candidate Recommendation, March 2008.</bibl>
+        <bibl href="http://www.w3.org/TR/xquery-sx-10-requirements/" id="ScriptingRequirements" key="XQuery Scripting Requirements">
+          <loc href="http://www.w3.org/TR/xquery-sx-10-requirements/">XQuery Scripting Extension 1.0 Requirements</loc>,
+          W3C Working Draft, 23 March 2007.</bibl>
+        <bibl href="http://www.w3.org/TR/xquery-sx-10-use-cases/" id="ScriptingUseCases" key="XQuery Scripting Use Cases">
+          <loc href="http://www.w3.org/TR/xquery-sx-10-use-cases/">XQuery Scripting Extension 1.0 Use Cases</loc>,
+          W3C Working Draft 23 March 2007.</bibl>
+        <bibl id="XQ11" key="XQuery 1.1" href="http://www.w3.org/TR/xquery">
+          <loc href="http://www.w3.org/TR/xquery-11/">XQuery 1.1: An XML Query Language</loc>,
+          W3C Working Draft, 15 December 2009.</bibl>
+      </blist>
+    </div1>
+    <div1 id="id-errors">	
+      <head>Error Conditions</head>	
+
+      <div2 id="id-new-error-codes">
+        <head>New Error Codes</head>
+        <error-list>
+          <error spec="SX" code="0002" class="ST" type="static">
+            <p>
+              It is a static error to mix both updating and
+              <termref def="dt-sequential-expr">sequential</termref> operands in an expression.
+            </p>
+          </error>
+          <error spec="SX" code="0003" class="DY" type="dynamic">
+            <p>
+              It is a dynamic
+              error if, after applying a pending update list (using <code>upd:applyUpdates</code>),
+              the XDM instance bound to any in-scope variable does not match the static type of that variable according
+              to SequenceType matching rules.
+            </p>
+          </error>
+          <error spec="SX" code="0004" class="DY" type="dynamic">
+            <p>
+              It is an dynamic error for an external sequential function to return a non-empty pending update list.
+            </p>
+          </error>
+          <error spec="SX" code="0005" class="ST" type="static">
+            <p>
+              It is a static error if two or more variables declared in the same block expression
+              have the same expanded QName.
+            </p>
+          </error>
+          <error spec="SX" code="0006" class="TY" type="type">
+            <p>
+              A reference to a variable, other than on the left-hand side of an assignment expression,
+              is an error if the variable has no value in <emph>variable values</emph>
+              when the reference is evaluated.
+            </p>
+          </error>
+          <error spec="SX" code="0007" class="ST" type="static">
+            <p>
+              The variable on the left-hand side of an assignment must have been declared in one of the following ways:
+            </p>
+            <ulist>
+              <item><p>By a block variable declaration</p></item>
+              <item><p>As a parameter to a sequential function</p></item>
+              <item><p>By a variable declaration in the Prolog <phrase diff="add">declared as <termref def="dt-assignable">assignable</termref></phrase></p></item>
+            </ulist>
+          </error>
+          <error spec="SX" code="0008" class="ST" type="static">
+            <p>
+              It is a static error if the body of a function violates the category rules for it's declared category.
+            </p>
+          </error>
+          <error spec="SX" code="0009" class="ST" type="static">
+            <p>
+              A static error is raised if the value for a
+              <code>xqsx:query-mode</code> option or pragma is not either <code>sequential</code> or <code>simple</code>.
+            </p>
+          </error>
+        </error-list>
+      </div2>
+      <div2 id="id-amended-error-codes">
+        <head>Amendments to Existing Error Codes</head>
+        <error-list>
+          <error spec="XU" code="0001" class="ST" type="static">
+            <p>
+              It is a static error for an updating or
+              <termref def="dt-sequential-expr">sequential expression</termref> to occur in the following places:
+            </p>
+            <olist>
+              <item>
+                <p>
+                  As the initializing expression of a prolog variable.
+                </p>
+              </item>
+              <item>
+                <p>
+                  As a StepExpr in a RelativePathExpr when query mode is <code>simple</code>.
+                </p>
+              </item>
+              <item>
+                <p>
+                  As the primary expression or a predicate expression of a FilterExpr or AxisStep
+                  when query mode is <code>simple</code>.
+                </p>
+              </item>
+              <item>
+                <p>
+                  In the <code>for</code>, <code>let</code>, <code>where</code>, or <code>order by</code>
+                  clauses of a FLWOR expression when query mode is <code>simple</code>.
+                </p>
+              </item>
+              <item>
+                <p>
+                  In a quantified expression clause or as the satisfies expression of a quantified expression
+                  when query mode is <code>simple</code>.
+                </p>
+              </item>
+            </olist>
+          </error>
+        </error-list>
+      </div2>
+    </div1>
+
+    <inform-div1 id="id-glossary">
+      <head>Glossary</head>
+      <?glossary ?>
+    </inform-div1>
+  </back>
+</spec>

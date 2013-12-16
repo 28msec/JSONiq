@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-introduction">
+  <title>Introduction</title>
+  
+  <para>
+    JSON and XML are both widely used for data interchange on the
+    Internet. In many applications, JSON is replacing XML in Web
+    Service APIs and data feeds; other applications support both
+    formats. XML adds significant overhead for namespaces,
+    whitespace handling, the oddities of XML Schema, and other
+    things that are simply not needed in many data-oriented
+    applications that require no more than simple serialization of
+    program structures. On the other hand, many applications do
+    need these features, and the ability to use document data
+    together with traditional program data is important.
+  </para>
+  
+  
+  <para>
+    JSONiq is a small and simple set of extensions to XQuery that
+    add support for JSON. For applications that need only JSON, we have defined a profile called XQ--
+    that removes all support for XML constructors, path expressions, user defined functions, and some other
+    features considered unnecessary for most JSON queries. Syntax diagrams for XQ-- are available at
+    <ulink url="http://jsoniq.org/grammars/xq--/ui.xhtml">http://jsoniq.org/grammars/xq--/ui.xhtml</ulink>.
+  </para>
+  
+  <para>
+    For applications that need to process XML together with
+    JSON, we have defined a profile called XQ++ that adds these
+    extensions to the full XQuery language. Syntax diagrams for
+    XQ++ are available at
+    <ulink url="http://jsoniq.org/grammars/xq++/ui.xhtml">http://jsoniq.org/grammars/xq++/ui.xhtml</ulink>.
+  </para>
+  
+  
+  <para>JSONiq consists of the following extensions to XQuery:</para>
+  
+  <itemizedlist>
+    <listitem><para>Extensions to the XQuery Data Model (XDM) to support JSON.</para></listitem>
+    <listitem><para>Support for JSON's datatypes, with a mapping to equivalent XML Schema types.</para></listitem>
+    <listitem><para>Navigation for JSON Objects and JSON Arrays.</para></listitem>
+    <listitem><para>Constructors for JSON Objects, Pairs, and JSON Arrays, using the same syntax as JSON.</para></listitem>
+    <listitem><para>Update primitives against JSON items as well as updating expressions which produce them.</para></listitem>
+    <listitem><para>New item types, which extend sequence type matching to allow the type of JSONiq datatypes to be specified in function
+      parameters, return types, and other expressions that specify XQuery types.</para></listitem>
+  </itemizedlist>
+  
+  <para>JSONiq is designed to seamlessly integrate in XQuery's full composability paradigm. In particular, JSON constructors can appear in any XQuery expression, and
+    any XQuery expression can appear in a JSON constructor.</para>
+
+  <para>The namespace <code>http://jsoniq.org/functions</code> is used for functions defined by
+    this specification. This namespace is exposed to the user and is bound by default to the prefix <code>jn</code>.
+    For instance, the function name <code>jn:json-doc()</code> is in this namespace.</para>
+  
+  <para>The namespace <code>http://jsoniq.org/types</code> is used for types defined by
+    this specification. This namespace is exposed to the user and is bound by default to the prefix <code>jn</code>.
+    For instance, the type name <code>js:null</code> is in this namespace.</para>
+  
+  <para>The namespace <code>http://jsoniq.org/function-library</code> is used for library functions defined by
+    this specification. This namespace is exposed to the user, however no prefix is predeclared for this namespace.
+    For convenience, this document uses the prefix
+    <code>libjn:</code> for names in this namespace. For instance, the function name <code>libjn:accumulate</code> is
+    in this namespace.</para>
+  
+  <para>The namespace <code>http://jsoniq.org/errors</code> is used for the names of errors defined by this
+    specification.  This namespace is exposed to the user, however no prefix is predeclared for this namespace.
+    For convenience, this document uses the prefix
+    <code>jerr:</code> for names in this namespace. For instance, the error name <code>jerr:JQTY0001</code> is
+    in this namespace.</para>
+  
+  <para>The namespace <code>http://jsoniq.org/updates</code> is used for the names of update primitives defined by this
+    specification. This namespace is not exposed to the user.
+    For convenience, this document uses the prefix
+    <code>jupd:</code> for names in this namespace. For instance, the update primitive <code>jupd:delete-from-object</code> is
+    in this namespace.</para>
+  
+  <para>Accessors used in JSONiq Data Model use the <code>jdm:</code> prefix. These functions are not exposed to the user
+    and are for explanatory purposes of the data model within this document only.
+    The <code>jdm:</code> prefix is not associated with a namespace.</para>
+  
+</chapter>

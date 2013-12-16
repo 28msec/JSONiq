@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Concepts">
+	<title>Concepts</title>
+  <section>
+    <title>Instance</title>
+    <para>
+      This is the JSON document which may or not be valid against a Schema.
+    </para>
+  </section>
+  <section>
+    <title>Schema</title>
+    <para>
+      This is the JSON document which describes a Schema against which Instances are being validated. A Schema
+      must be valid against the Meta Schema.
+    </para>
+  </section>
+  <section>
+    <title>Meta Schema</title>
+    <para>
+      This is the JSON document which describes a Schema against which all Schemas (which are also JSON documents)
+      are valid. Including itself.
+    </para>
+  </section>
+  <section>
+    <title>Schema Type</title>
+    <para>
+      A Schema defines schema types, which may or may be anonymous. A JSON value may or may not be valid against a
+      Schema Type.
+    </para>
+  </section>
+  <section>
+    <title>Validation</title>
+    <para>
+      An Instance can be validated against a Schema Type.
+      The Validation action takes an Instance, a set of Schemas and a named Schema Type. It results in a boolean that describes
+      whether the Instance is valid against the Schema type, given its definition in the set of Schemas.
+      If the Instance is not valid, a list of errors is provided, which describes how the
+      Instance is not conforming to the Schema Type.
+    </para>
+  </section>
+  <section>
+    <title>Annotation</title>
+    <para>
+      The Annotation is the action of passing through the Instance, given a named Schema Type, in a set of of Schemas
+      and recursively annotating each JSON value (object, array, leaf value) in turn with the Schema Type
+      determined by processing its parent.
+      Note that this action is independent of Validation: The two actions can be performed in tandem but
+      they are not required. As the Validation action, the Annotation action takes an Instance, a named Schema Type
+      and a set of Schemas and results in a set of annotations on the Instance that describe the Schema Types which
+      they match.
+      This action also works on Instances which validate partially. When a Schema Type cannot be found which matches
+      a given JSON value, a special annotation is used.
+    </para>
+  </section>
+  <section>
+    <title>Meta-keys</title>
+    <para>
+      Schema definitions mix keys that are describing actual data fields (actual keys) and keys that define
+      the schema (meta keys).
+      To make the distinction between the two, we use the $ (dollar sign) to represent the meta keys. In order to
+      use $ in actual keys one should use the escaped version by doubling the $ character.
+      This is consistent with other JSON meta languages.</para>
+  </section>
+  
+</chapter>

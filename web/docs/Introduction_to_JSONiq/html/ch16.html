@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 16. Equality vs. Identity</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt05.html" title="Part V. Advanced Notes" /><link rel="prev" href="ch15.html" title="Chapter 15. Errors" /><link rel="next" href="ch17.html" title="Chapter 17. Sequences vs. Arrays" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch15.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch17.html"><strong>Next</strong></a></li></ul><div class="chapter" id="idm45076416"><div class="titlepage"><div><div><h2 class="title">Chapter 16. Equality vs. Identity</h2></div></div></div><div class="para">
+			As in most languages, one can distinguish between physical equality and logical equality.
+		</div><div class="para">
+			Atomics can only be compared logically. Their physically identity is totally opaque to you.
+		</div><div class="example"><h6>Example 16.1. Logical comparison of two atomics.</h6><div class="example-contents"><pre class="programlisting">
+1 eq 1
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 16.2. Logical comparison of two atomics.</h6><div class="example-contents"><pre class="programlisting">
+1 eq 2
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 16.3. Logical comparison of two atomics.</h6><div class="example-contents"><pre class="programlisting">
+"foo" eq "bar"
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 16.4. Logical comparison of two atomics.</h6><div class="example-contents"><pre class="programlisting">
+"foo" ne "bar"
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="para">
+			Two objects or arrays can be tested for logical equality as well, using deep-equal(), which performs a recursive comparison.
+		</div><div class="example"><h6>Example 16.5. Logical comparison of two JSON items.</h6><div class="example-contents"><pre class="programlisting">
+deep-equal({ "foo" : "bar" }, { "foo" : "bar" })
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 16.6. Logical comparison of two JSON items.</h6><div class="example-contents"><pre class="programlisting">
+deep-equal({ "foo" : "bar" }, { "bar" : "foo" })
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">false
+</pre></div></div><br class="example-break" /><div class="para">
+			The physical identity of objects and arrays is not exposed to the user in the core JSONiq language itself. Some library modules might be able to reveal it, though.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch15.html"><strong>Prev</strong>Chapter 15. Errors</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch17.html"><strong>Next</strong>Chapter 17. Sequences vs. Arrays</a></li></ul></body></html>

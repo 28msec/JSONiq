@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 9. Control Flow Expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt03.html" title="Part III. JSONiq Expressions" /><link rel="prev" href="ch08s08.html" title="8.8. Builtin Functions" /><link rel="next" href="ch09s02.html" title="9.2. Switch expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s08.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch09s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-controlFlow" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 9. Control Flow Expressions</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-controlFlow.html#idp3410016">9.1. Conditional Expressions</a></span></dt><dt><span class="section"><a href="ch09s02.html">9.2. Switch expressions</a></span></dt><dt><span class="section"><a href="ch09s03.html">9.3. Try-Catch expressions</a></span></dt></dl></div><div class="para">
+		JSONiq supports control flow expressions such as conditional expressions (if then else), switch, and typeswitch. At least the first two should be familiar to any programmer.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp3410016">9.1. Conditional Expressions</h2></div></div></div><div class="para">
+			A conditional expression allows you to pick the one or the other value depending on a boolean value.
+		</div><div class="example"><h6>Example 9.1. A conditional expression.</h6><div class="example-contents"><pre class="programlisting">
+if (1 + 1 eq 2)
+then { "foo" : "yes" }
+else { "foo" : "false" }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : "yes"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			The behavior of the expression inside the if is similar to that of logical operations (two-valued logics), meaning that non-boolean values get converted to a boolean. The exists() builtin function can be useful to know if a sequence is empty or not.
+		</div><div class="example"><h6>Example 9.2. A conditional expression.</h6><div class="example-contents"><pre class="programlisting">
+if (null) then { "foo" : "yes" }
+          else { "foo" : "no" },
+if (1) then { "foo" : "yes" }
+       else { "foo" : "no" },
+if (0) then { "foo" : "yes" }
+       else { "foo" : "no" },
+if ("foo") then { "foo" : "yes" }
+           else { "foo" : "no" },
+if ("") then { "foo" : "yes" }
+        else { "foo" : "no" },
+if (()) then { "foo" : "yes" }
+        else { "foo" : "no" },
+if (exists(collection("faqs"))) then { "foo" : "yes" }
+                               else { "foo" : "no" }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : "no"
+}
+{
+  "foo" : "yes"
+}
+{
+  "foo" : "no"
+}
+{
+  "foo" : "yes"
+}
+{
+  "foo" : "no"
+}
+{
+  "foo" : "no"
+}
+{
+  "foo" : "yes"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			Note that the else clause is mandatory (but can be the empty sequence)
+		</div><div class="example"><h6>Example 9.3. A conditional expression.</h6><div class="example-contents"><pre class="programlisting">
+if (1+1 eq 2) then { "foo" : "yes" } else ()
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : "yes"
+}
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s08.html"><strong>Prev</strong>8.8. Builtin Functions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch09s02.html"><strong>Next</strong>9.2. Switch expressions</a></li></ul></body></html>

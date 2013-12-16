@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.5. Group Clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-FLWOR.html" title="Chapter 10. FLWOR Expressions" /><link rel="prev" href="ch10s04.html" title="10.4. Order Clauses" /><link rel="next" href="ch10s06.html" title="10.6. Let Clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch10s06.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm47388400">10.5. Group Clauses</h2></div></div></div><div class="para">
+			Grouping is also supported, like in SQL.
+		</div><div class="para">
+			For each incoming tuple, the expression in the group clause is evaluated to an atomic. The value of this atomic is called a grouping key. The incoming tuples are then grouped according to the grouping key -- one group for each value of the grouping key.
+		</div><div class="para">
+			For each group, a tuple is output, in which:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					Each grouping variable (appearing in the group clause) is bound to the group's key corresponding to this variable.
+				</div></li><li class="listitem"><div class="para">
+					Each other (non-grouping) variable is bound to the sequence obtained by concatenating all original values of the variable within the group. Aggregations can then be done on these variables in further clauses.
+				</div></li></ul></div><div class="para">
+			Here is an example:
+		</div><pre class="programlisting">
+for $i in (1, 2),
+    $j in (3, 4)
+group by $j
+...
+</pre><div class="para">
+			The first for clause produces four tuples (this is again an ad-hoc syntax for illustrative purposes):
+		</div><pre class="programlisting">
+"$i" : 1, "$j" : 3
+"$i" : 1, "$j" : 4
+"$i" : 2, "$j" : 3
+"$i" : 2, "$j" : 4
+</pre><div class="para">
+			Then the group clause groups according the value of $j. There are two distinct values (3 and 4), so that this results in two groups.
+		</div><pre class="programlisting">
+Group 1 (key $j : 3)
+$i : 1, $j : 3
+$i : 2, $j : 3
+
+Group 2 (key $j : 4)
+$i : 1, $j : 4
+$i : 2, $j : 4
+</pre><div class="para">
+			In each output tuple, $j is the grouping variable and is bound to the key of the group. $i is non-grouping and is bound to the sequence of all values in the group.
+		</div><pre class="programlisting">
+$i : (1, 2), $j : 3
+$i : (1, 2), $j : 4
+</pre><div class="para">
+			The following query is equivalent to "SELECT question_id FROM answers GROUP BY question_id".
+		</div><div class="example"><h6>Example 10.13. A group by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return { "question" : $question }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : 5453872
+}
+{
+  "question" : 6183352
+}
+{
+  "question" : 4720508
+}
+{
+  "question" : 4419499
+}
+{
+  "question" : 37823
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			The following query is equivalent to "SELECT question_id, COUNT(*) FROM answers GROUP BY question_id".
+		</div><div class="example"><h6>Example 10.14. A group by clause using count aggregation.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return {
+  "question" : $question,
+  "count" : count($answer)
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : 5453872,
+  "count" : 1
+}
+{
+  "question" : 6183352,
+  "count" : 2
+}
+{
+  "question" : 4720508,
+  "count" : 1
+}
+{
+  "question" : 4419499,
+  "count" : 2
+}
+{
+  "question" : 37823,
+  "count" : 2
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			The following query is equivalent to "SELECT question_id, AVG(score) FROM answers GROUP BY question_id".
+		</div><div class="example"><h6>Example 10.15. A group by clause using average aggregation.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return {
+  "question" : $question,
+  "average score" : avg($answer.score)
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : 5453872,
+  "average score" : 6
+}
+{
+  "question" : 6183352,
+  "average score" : 0.5
+}
+{
+  "question" : 4720508,
+  "average score" : 34
+}
+{
+  "question" : 4419499,
+  "average score" : 9
+}
+{
+  "question" : 37823,
+  "average score" : 5.5
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			JSONiq's group by is more flexible than SQL and is fully composable.
+		</div><div class="example"><h6>Example 10.16. A group by clause with a nested expression.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return {
+  "question" : $question,
+  "scores" : [ $answer.score ]
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : 5453872,
+  "scores" : [ 6 ]
+}
+{
+  "question" : 6183352,
+  "scores" : [ 0, 1 ]
+}
+{
+  "question" : 4720508,
+  "scores" : [ 34 ]
+}
+{
+  "question" : 4419499,
+  "scores" : [ 17, 1 ]
+}
+{
+  "question" : 37823,
+  "scores" : [ 7, 4 ]
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			Unlike SQL, JSONiq does not need a having clause, because a where clause works perfectly after grouping as well.
+		</div><div class="para">
+			The following query is the counterpart of "SELECT question_id, COUNT(*) FROM answers GROUP BY question_id HAVING COUNT(*) &gt; 1"
+		</div><div class="example"><h6>Example 10.17. A group by clause with a post-grouping condition.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+group by $question := $answer.question_id
+where count($answer) gt 1
+return {
+  "question" : $question,
+  "count" : count($answer)
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : 6183352,
+  "count" : 2
+}
+{
+  "question" : 4419499,
+  "count" : 2
+}
+{
+  "question" : 37823,
+  "count" : 2
+}
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s04.html"><strong>Prev</strong>10.4. Order Clauses</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch10s06.html"><strong>Next</strong>10.6. Let Clauses</a></li></ul></body></html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 3. Collections</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="index.html" title="JSONiq" /><link rel="prev" href="ch02s05.html" title="2.5. Atomics" /><link rel="next" href="chapter-type-system.html" title="Chapter 4. JSONiq types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch02s05.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-type-system.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-collections" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 3. Collections</h2></div></div></div><div class="para">
+		Even though you can build your own JSON values with JSONiq by copying-and-pasting JSON documents, most of the time, your JSON data will be in a collection. Collections are sequences of objects, identified by a name which is a string.
+	</div><div class="para">
+		Adding or deleting collections from the set of known collections to a query processor, and loading the data in a collection are implementation-dependent and outside of the scope of this specification.
+	</div><div class="para">
+		The collection() function returns all objects associated with the provided collection name.
+	</div><div class="example"><h6>Example 3.1. Getting all objects from a collection</h6><div class="example-contents"><pre class="programlisting">
+collection("one-object")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp53074608">Result (run with Zorba):</h5>
+				{ "foo" : "bar" }
+			</div></div></div><br class="example-break" /><div class="para">
+		For illustrative purposes, we will assume that we have the following collections:
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				<span class="emphasis"><em>collection("one-object")</em></span>
+			</div><pre class="programlisting">
+{ "foo" : "bar" }
+</pre></li><li class="listitem"><div class="para">
+				<span class="emphasis"><em>collection("captains")</em></span>
+			</div><pre class="programlisting">
+      { "name" : "James T. Kirk", "series" : [ "The original series" ], "century" : 23 }
+      { "name" : "Jean-Luc Picard", "series" : [ "The next generation" ], "century" : 24 }
+      { "name" : "Benjamin Sisko", "series" : [ "The next generation", "Deep Space 9" ], "century" : 24 }
+      { "name" : "Kathryn Janeway", "series" : [ "The next generation", "Voyager" ], "century" : 24  }
+      { "name" : "Jonathan Archer", "series" : [ "Entreprise" ], "century" : 22 }
+      { "codename" : "Emergency Command Hologram", "surname" : "The Doctor", "series" : [ "Voyager" ], "century" : 24 }
+      { "name" : "Samantha Carter", "series" : [ ], "century" : 21 }
+</pre></li><li class="listitem"><div class="para">
+				<span class="emphasis"><em>collection("films")</em></span>
+			</div><pre class="programlisting">
+        { "id" : "I", "name" : "The Motion Picture", "captain" : "James T. Kirk" }
+        { "id" : "II", "name" : "The Wrath of Kahn", "captain" : "James T. Kirk" }
+        { "id" : "III", "name" : "The Search for Spock", "captain" : "James T. Kirk" }
+        { "id" : "IV", "name" : "The Voyage Home", "captain" : "James T. Kirk" }
+        { "id" : "V", "name" : "The Final Frontier", "captain" : "James T. Kirk" }
+        { "id" : "VI", "name" : "The Undiscovered Country", "captain" : "James T. Kirk" }
+        { "id" : "VII", "name" : "Generations", "captain" : [ "James T. Kirk", "Jean-Luc Picard" ] }
+        { "id" : "VIII", "name" : "First Contact", "captain" : "Jean-Luc Picard" }
+        { "id" : "IX", "name" : "Insurrection", "captain" : "Jean-Luc Picard" }
+        { "id" : "X", "name" : "Nemesis", "captain" : "Jean-Luc Picard" }
+        { "id" : "XI", "name" : "Star Trek", "captain" : "Spock" }
+        { "id" : "XII", "name" : "Star Trek Into Darkness", "captain" : "Spock" }
+</pre></li></ul></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch02s05.html"><strong>Prev</strong>2.5. Atomics</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-type-system.html"><strong>Next</strong>Chapter 4. JSONiq types</a></li></ul></body></html>

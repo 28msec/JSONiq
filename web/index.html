@@ -1,0 +1,257 @@
+<!DOCTYPE HTML SYSTEM "about:legacy-compat">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JSONiq - The JSON Query Language</title>
+    <meta name="description" content="JSONiq - The JSON Query Language">
+    <meta name="author" content="FLWOR Foundation">
+    <!-- Le styles -->
+    <link href="http://jsoniq.s3.amazonaws.com/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="http://jsoniq.s3.amazonaws.com/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="http://jsoniq.s3.amazonaws.com/css/main.css" rel="stylesheet">
+    <link href="http://jsoniq.s3.amazonaws.com/css/prettify.css" rel="stylesheet">
+    <!-- Le javascript -->
+    <script type="text/javascript" src="http://jsoniq.s3.amazonaws.com/js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="http://jsoniq.s3.amazonaws.com/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://jsoniq.s3.amazonaws.com/js/prettify.js"></script>
+    <script type="text/javascript" src="http://jsoniq.s3.amazonaws.com/js/main.js"></script>
+    <script type="text/javascript">//
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-33773373-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+    //</script>
+	<style>
+#jsoniq-book {
+	margin-top: 70px;
+}
+
+#jsoniq-cover {
+	background-image: url(/img/book/cover.png);
+  background-size: 300px 481px;
+	width: 300px;
+	height: 481px;
+	border: 1px solid #666;
+	display: block;
+}
+
+.title {
+	margin-bottom: 0px;
+}
+
+.author {
+
+}
+
+@media (min--moz-device-pixel-ratio: 1.5),
+       (-o-min-device-pixel-ratio: 3/2),
+       (-webkit-min-device-pixel-ratio: 1.5),
+       (min-device-pixel-ratio: 1.5),
+       (min-resolution: 144dpi),
+       (min-resolution: 1.5dppx) {
+  #jsoniq-cover {
+    background-image: url(/img/book/cover@2x.png);
+  }
+}
+
+	</style>
+  </head>
+  <body data-spy="scroll" data-target=".sidebar">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="brand">JSONiq</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">The JSONiq Language<b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="docs/JSONiq/html-single/index.html">Specification - Single HTML</a></li>
+                  <li><a href="docs/JSONiq/html/index.html">Specification - HTML</a></li>
+                  <li><a href="docs/JSONiq/pdf/JSONiq_-_the_SQL_of_NoSQL-1.0-JSONiq-en-US.pdf">Specification - PDF</a></li>
+                  <li><a href="docs/JSONiq-usecases/html-single/index.html">Use cases - Single HTML</a></li>
+                  <li><a href="docs/JSONiq-usecases/html/index.html">Use cases - HTML</a></li>
+                  <li><a href="docs/JSONiq-usecases/pdf/JSONiq_-_the_SQL_of_NoSQL-1.0-JSONiq_Use_Cases-en-US.pdf">Use cases - PDF</a></li>
+                  <li><a href="grammars/jsoniq.ebnf">The JSONiq Core Grammar - EBNF</a></li>
+                  <li><a href="grammars/jsoniq.xhtml">The JSONiq Core Grammar - XHTML</a></li>
+                  <li><a href="grammars/jq++.ebnf">The Complete JSONiq++ Grammar (JSON+XML, Updates, Scripting, Full-Text) - EBNF</a></li>
+                  <li><a href="grammars/jq++.xhtml">The Complete JSONiq++ Grammar (JSON+XML, Updates, Scripting, Full-Text) - XHTML</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="http://www.28.io/jsoniq-the-sql-of-nosql">JSONiq Book</a>
+              <li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">JSONiq Extension to XQuery<b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="docs/JSONiqExtensionToXQuery/html-single/index.html">Specification - Single HTML</a></li>
+                  <li><a href="docs/JSONiqExtensionToXQuery/html/index.html">Specification - HTML</a></li>
+                  <li><a href="docs/JSONiqExtensionToXQuery/pdf/JSONiq_Extension_to_XQuery-1.0-Specification-en-US.pdf">Specification - PDF</a></li>
+                  <li><a href="docs/JSONiqExtensionToXQuery/pdf/Language_Specification-0.4.42-JSONiq-en-US.pdf">Specification 0.4.42 (WebSphere)- PDF</a></li>
+                  <li><a href="docs/JSONiqExtensionToXQuery-usecases/html-single/index.html">Use cases - Single HTML</a></li>
+                  <li><a href="docs/JSONiqExtensionToXQuery-usecases/html/index.html">Use cases - HTML</a></li>
+                  <li><a href="docs/JSONiqExtensionToXQuery-usecases/pdf/JSONiq_Extension_to_XQuery-1.0-Usecases_for_the_JSONiq_Extension_to_XQuery-en-US.pdf">Use cases - PDF</a></li>
+                  <li><a href="grammars/extension.xhtml">The Core JSONiq Extension to XQuery Grammar - User-friendly</a></li>
+                  <li><a href="grammars/xq++.ebnf">The Complete XQuery++ Grammar (XML+JSON, Updates, Scripting, Full-Text) - EBNF</a></li>
+                  <li><a href="grammars/xq++.xhtml">The Complete XQuery++ Grammar (XML+JSON, Updates, Scripting, Full-Text) - XHTML</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Implementations  <b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="http://www.28.io/">28.io</a></li>
+                  <li><a href="http://www.zorba-xquery.com/">Zorba</a></li>
+                  <li><a href="http://pic.dhe.ibm.com/infocenter/wsdatap/v6r0m0/topic/com.ibm.dp.xi.doc/relnotesXI.html">IBM WebSphere DataPower Integration Appliance</a></li>
+                  <li><a href="http://www.benibela.de/sources_en.html#internettools">Pascal XQuery engine</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Live Sandbox <b class="caret"> </b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="http://portal.28.io/trynow/start">28.io</a></li>
+                  <li><a href="http://www.zorba-xquery.com/html/demo">Zorba</a></li>
+                </ul>
+              </li>
+            </ul>
+            <div><a class="btn btn-info" href="https://groups.google.com/forum/?fromgroups#!forum/jsoniq">Mailing-List</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="top-header"><div id="header"><h1>{ "codename" : [ "<span id="jsoniq">JSON<span id="iq">iq</span></span>" ] }</h1></div></div><div class="container" id="container"><div class="marketing">
+    <style scoped>
+ol.linenums li {
+  padding-left: 0px !important;
+  color: #bebec5;
+  line-height: 36px !important;
+  font-size: 28px !important;
+  text-shadow: 0 1px 0 #fff;
+}
+
+ol.linenums {
+  margin: 0 0 0 55px !important; /* IE indents via margin-left */
+} 
+
+    </style>
+    <h1>The JSON Query Language</h1>
+    <hr class="soften">
+    <div class="row-fluid">
+      <div class="span4">
+        <img src="http://jsoniq.s3.amazonaws.com/img/tagname.png" alt="Decades of Lessons Learnt">
+        <h2>Decades of Lessons Learnt</h2>
+        <p class="c-align">
+JSONiq is a query and processing language specifically designed for the popular JSON data model. The main ideas behind JSONiq are based on lessons learnt in more than 
+    30 years of relational query systems and more than 15 years of experience with designing  and implementing query languages for semi-structured data.
+        </p>
+      </div>
+      <div class="span4">
+        <img src="http://jsoniq.s3.amazonaws.com/img/cog.png" alt="Complex Processing">
+        <h2>Complex Processing</h2>
+        <p class="c-align">
+A JSONiq program is an expression; the result of the program is the result of the evaluation of the expression. Expressions have fundamental 
+    role in the language: every language construct is an expression, and expressions are fully composable.
+        Project, Filter, Join, Group... Like SQL, JSONiq can do all that.
+        </p>
+      </div>
+      <div class="span4">
+        <img src="http://jsoniq.s3.amazonaws.com/img/nosql.png" alt="The SQL of NoSQL">
+        <h2>The SQL of NoSQL</h2>
+        <p class="c-align">
+        JSOniq is an expressive and highly optimizable language to query and update NoSQL stores.
+        It enables developers to leverage the same productive high-level language across a variety of NoSQL products.
+        </p>
+      </div>
+    </div>
+    <hr class="soften">
+    <h1>The Syntax</h1>
+    <div class="row-fluid">
+      <pre class="span8 prettyprint linenums" id="editor"><ol class="linenums"><li class="L0"><span class="kwd">let</span> <span class="var">$stats</span> <span class="pun">:=</span> <span class="pln tip" id="tip1" rel="popover" data-original-title="Data Sources">collection</span><span class="pun">(</span><span class="str">"stats"</span><span class="pun">)</span></li><li class="L1"><span class="kwd">for</span><span class="var"> $access </span><span class="kwd">in</span><span class="var"> $stats</span></li><li class="L2"><span class="kwd tip" id="tip2" rel="popover" data-original-title="FLWOR Power">group by</span><span class="var"> $url </span><span class="pun">:=</span> <span class="var">$access</span><span class="pun">.</span><span class="str tip" id="tip3" rel="popover" data-original-title="Objects and Array Navigation">url</span></li><li class="L3"><span class="kwd">return</span><span class="pln"> </span></li><li class="L4"><span class="pun tip" id="tip4" rel="popover" data-original-title="Objects and Arrays Constructors">{</span></li><li class="L5"><span class="pln">  </span><span class="str">"url"</span><span class="pun">:</span><span class="var"> $url</span><span class="pun">,</span></li><li class="L6"><span class="pln">  </span><span class="str">"avg"</span><span class="pun">:</span> <span class="pln tip" id="tip5" rel="popover" data-original-title="Functions &amp; Operators">avg</span><span class="pun">(</span><span class="var">$access</span><span class="pun">.</span><span class="str">response_time</span><span class="pun">),</span></li><li class="L7"><span class="pln">  </span><span class="str">"hits"</span><span class="pun">:</span><span class="pln"> count</span><span class="pun">(</span><span class="var">$access</span><span class="pun">)</span></li><li class="L8"><span class="pun">}</span></li></ol></pre>
+          <div class="span4" style="margin-top: 20px;">
+            <p><em>Hint</em>: hover over <code class="tip" rel="popover" data-content="Place your mouse over highlighted areas in the code for explanations." data-original-title="Hover">me</code>.</p>
+            <p>
+              The JSONiq syntax enables to dynamically construct objects and arrays using a syntax close to JSON.
+              Nesting of expressions inside these constructors are allowed.
+              JSONiq also provides a syntax for updating JSON objects and array.
+            </p>
+          </div>
+        </div>
+	<hr class="soften">
+	<h1>The Book</h1>
+	<div class="row">
+		<div class="span4">
+			<a id="jsoniq-cover" href="http://www.amazon.com/JSONiq-The-NoSQL-Ghislain-Fourny/dp/1489530371/" target="_blank">
+			</a>
+		</div>
+		<div class="span8">
+			<h3 class="title">JSONiq - The SQL of NoSQL</h3>
+			<p class="author">Ghislain Fourny</p>
+ 			<hr class="soften" />
+			<div ng-show="!expanded">
+				<p>
+				JSONiq is a query and processing language specifically designed for the popular JSON data model. The main ideas behind JSONiq are based on lessons learned in more than 30 years of relational query systems and more than 15 years of experience with designing and implementing query languages for semi-structured data. As a result, JSONiq is an expressive and highly optimizable language to query and update any kind of JSONiq store or resource. It enables developers to leverage the same productive high-level language across a variety of NoSQL products. This book gives a complete introduction to the JSONiq language. It does so by giving examples for all types of expressions and functions. Those examples can be immediately used because they work standalone, which allows the interested reader to start diving into the language.
+				</p>
+				<p>
+				The electronic version of this book is available for free.
+				</p>
+				<a href="http://28.io/jsoniq-the-sql-of-nosql" class="btn btn-info">Get Free Electronic Version</a>
+			</div>
+		</div>	
+	</div>	
+        <hr class="soften">
+        <h1>The JSONiq Core Language</h1>
+        <p>The main source of inspiration behind JSONiq is XQuery, which has been proven so far a successful and productive query language for semi-structured data (in particular XML).
+    JSONiq borrowed a large numbers of ideas from XQuery, like the structure and semantics of a FLWOR construct, the functional aspect of the language, 
+    the semantics of comparisons in the face of data heterogeneity, the declarative, snapshot-based updates. However, unlike XQuery, JSONiq is not concerned 
+    with the peculiarities of XML, like mixed content, ordered children, the confusion between attributes and elements, the complexities of namespaces and QNames, 
+    or the complexities of XML Schema, and so on. </p>
+        <h1>JSONiq Extension To XQuery</h1>
+        <p>On this Web site, you will also find an extension, based on JSONiq, which adds JSON support to XQuery. The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax. For example, object lookup is done with a function invocation syntax, all keys must be quoted, and escaping is done with ampersands instead of backslashes, builtin atomic types must be prefixed with xs:, true, false and null must be created with functions, structured item types must be followed by parentheses.</p>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p style="color: lightgray">
+          JSONiq is licensed under a <a style="color: gray"  rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>
+by jsoniq.org:
+          <br>
+          Jonathan Robie, Ghislain Fourny, Matthias Brantner, Daniela Florescu, Till Westmann and Markos Zaharioudakis.
+          <br>
+          This work is independent of the companies we work for.
+        </p>
+      </div>
+      </footer>
+<script type="text/javascript">
+(function() {
+  var didInit = false;
+  function initMunchkin() {
+    if(didInit === false) {
+      didInit = true;
+      Munchkin.init('772-AKE-210');
+    }
+  }
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+  s.onreadystatechange = function() {
+    if (this.readyState == 'complete' || this.readyState == 'loaded') {
+      initMunchkin();
+    }
+  };
+  s.onload = initMunchkin;
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script>
+  </body>
+</html>

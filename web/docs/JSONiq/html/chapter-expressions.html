@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 5. Expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="index.html" title="JSONiq" /><link rel="prev" href="ch04s02.html" title="4.2. Sequence types" /><link rel="next" href="chapter-basic-operations.html" title="5.2. Basic operations" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-basic-operations.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-expressions" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 5. Expressions</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-expressions.html#chapter-construction">5.1. Construction of items</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-expressions.html#idp9619824">5.1.1. Atomic literals</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idp9568768">5.1.2. Object constructors</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idp9895856">5.1.3. Array constructors</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idp8460960">5.1.4. Composing constructors</a></span></dt></dl></dd><dt><span class="section"><a href="chapter-basic-operations.html">5.2. Basic operations</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-basic-operations.html#idp12695184">5.2.1. Construction of sequences</a></span></dt><dt><span class="section"><a href="ch05s02s02.html">5.2.2. Parenthesized expression</a></span></dt><dt><span class="section"><a href="ch05s02s03.html">5.2.3. Arithmetics</a></span></dt><dt><span class="section"><a href="ch05s02s04.html">5.2.4. String concatenation</a></span></dt><dt><span class="section"><a href="ch05s02s05.html">5.2.5. Comparison</a></span></dt><dt><span class="section"><a href="ch05s02s06.html">5.2.6. Logics</a></span></dt></dl></dd><dt><span class="section"><a href="chapter-function-calls.html">5.3. Function Calls</a></span></dt><dt><span class="section"><a href="chapter-selectors.html">5.4. Selectors</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-selectors.html#idp9506048">5.4.1. Object field selector</a></span></dt><dt><span class="section"><a href="ch05s04s02.html">5.4.2. Array member selector</a></span></dt><dt><span class="section"><a href="ch05s04s03.html">5.4.3. Sequence predicates</a></span></dt></dl></dd><dt><span class="section"><a href="chapter-control-flow.html">5.5. Control flow expressions</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-control-flow.html#idp7929152">5.5.1. Conditional expressions</a></span></dt><dt><span class="section"><a href="ch05s05s02.html">5.5.2. Switch expressions</a></span></dt><dt><span class="section"><a href="ch05s05s03.html">5.5.3. Try-catch expressions</a></span></dt></dl></dd><dt><span class="section"><a href="chapter-flwor.html">5.6. FLWOR expressions</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-flwor.html#idp7465984">5.6.1. For clauses</a></span></dt><dt><span class="section"><a href="ch05s06s02.html">5.6.2. Where clauses</a></span></dt><dt><span class="section"><a href="ch05s06s03.html">5.6.3. Order clauses</a></span></dt><dt><span class="section"><a href="ch05s06s04.html">5.6.4. Group clauses</a></span></dt><dt><span class="section"><a href="ch05s06s05.html">5.6.5. Let clauses</a></span></dt><dt><span class="section"><a href="ch05s06s06.html">5.6.6. Count clauses</a></span></dt><dt><span class="section"><a href="ch05s06s07.html">5.6.7. Map operator</a></span></dt><dt><span class="section"><a href="ch05s06s08.html">5.6.8. Composing FLWOR expressions</a></span></dt><dt><span class="section"><a href="ch05s06s09.html">5.6.9. Ordered and Unordered expressions</a></span></dt></dl></dd><dt><span class="section"><a href="section-type-expressions.html">5.7. Expressions dealing with types</a></span></dt><dd><dl><dt><span class="section"><a href="section-type-expressions.html#idp1496480">5.7.1. Instance-of expressions</a></span></dt><dt><span class="section"><a href="ch05s07s02.html">5.7.2. Treat expressions</a></span></dt><dt><span class="section"><a href="ch05s07s03.html">5.7.3. Castable expressions</a></span></dt><dt><span class="section"><a href="ch05s07s04.html">5.7.4. Cast expressions</a></span></dt><dt><span class="section"><a href="ch05s07s05.html">5.7.5. Typeswitch expressions</a></span></dt></dl></dd></dl></div><div xml:lang="en-US" class="section" id="chapter-construction" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="chapter-construction">5.1. Construction of items</h2></div></div></div><div class="para">
+		This will not come as a surprise since JSONiq is tailor-made: the items mentioned in the former section are constructed... exactly as they are constructed in JSON. Yes, you already know some JSONiq: any JSON document is also a valid JSONiq query which just "returns itself"!
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9619824">5.1.1. Atomic literals</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/Literal.png" alt="Literal" /></div></div><h6>Figure 5.1. Literal</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/NumericLiteral.png" alt="NumericLiteral" /></div></div><h6>Figure 5.2. NumericLiteral</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/IntegerLiteral.png" alt="IntegerLiteral" /></div></div><h6>Figure 5.3. IntegerLiteral</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/DecimalLiteral.png" alt="DecimalLiteral" /></div></div><h6>Figure 5.4. DecimalLiteral</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/DoubleLiteral.png" width="444" alt="DoubleLiteral" /></div></div><h6>Figure 5.5. DoubleLiteral</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/StringLiteral.png" alt="StringLiteral" /></div></div><h6>Figure 5.6. StringLiteral</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/BooleanLiteral.png" alt="BooleanLiteral" /></div></div><h6>Figure 5.7. BooleanLiteral</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/NullLiteral.png" alt="NullLiteral" /></div></div><h6>Figure 5.8. NullLiteral</h6></div><br class="figure-break" /><div class="para">
+			The syntax for creating strings, numbers, booleans and nulls is identical to that of JSON (it is actually a more flexible superset, for example leading 0s are allowed, and a decimal literal can begin with a dot). Note that JSONiq distinguishes between integers (no dot, no scientific notation), decimals (dot but no scientific notation) and doubles (scientific notation). As expected, an integer literal creates an atomic of type integer, and so on. No surprises. JSON's backslash escaping is supported in string literals. Also, like in JSON, double quotes are required and single quotes are forbidden.
+		</div><div class="example"><h6>Example 5.1. String literals</h6><div class="example-contents"><pre class="programlisting">
+"foo"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9596928">Result (run with Zorba):</h5>
+					foo
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.2. String literals with escaping</h6><div class="example-contents"><pre class="programlisting">
+"This is a line\nand this is a new line"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9593952">Result (run with Zorba):</h5>
+					This is a line and this is a new line
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.3. String literals with Unicode character escaping</h6><div class="example-contents"><pre class="programlisting">
+"\u0001"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9591040">Result (run with Zorba):</h5>
+					&amp;#x1;
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.4. String literals with a nested quote</h6><div class="example-contents"><pre class="programlisting">
+"This is a nested \"quote\""
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9588064">Result (run with Zorba):</h5>
+					This is a nested "quote"
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.5. Integer literals</h6><div class="example-contents"><pre class="programlisting">
+42
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9585168">Result (run with Zorba):</h5>
+					42
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.6. Decimal literals</h6><div class="example-contents"><pre class="programlisting">
+3.14
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9581904">Result (run with Zorba):</h5>
+					3.14
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.7. Double literals</h6><div class="example-contents"><pre class="programlisting">
++6.022E23
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9579488">Result (run with Zorba):</h5>
+					6.022E23
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.8. Boolean literals (true)</h6><div class="example-contents"><pre class="programlisting">
+true
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9576640">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.9. Boolean literals (false)</h6><div class="example-contents"><pre class="programlisting">
+false
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9573776">Result (run with Zorba):</h5>
+					false
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.10. Null literals</h6><div class="example-contents"><pre class="programlisting">
+null
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9570880">Result (run with Zorba):</h5>
+					null
+				</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9568768">5.1.2. Object constructors</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ObjectConstructor.png" alt="ObjectConstructor" /></div></div><h6>Figure 5.9. ObjectConstructor</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/PairConstructor.png" alt="PairConstructor" /></div></div><h6>Figure 5.10. PairConstructor</h6></div><br class="figure-break" /><div class="para">
+			The syntax for creating objects is identical to that of JSON. You can use for an object key any string literal, and for an object value any literal, object constructor or array constructor.
+		</div><div class="example"><h6>Example 5.11. Empty object constructors</h6><div class="example-contents"><pre class="programlisting">
+{}
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9561488">Result (run with Zorba):</h5>
+					{ }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.12. Object constructors 1</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9558000">Result (run with Zorba):</h5>
+					{ "foo" : "bar" }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.13. Object constructors 2</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : [ 1, 2, 3, 4, 5, 6 ] }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11575488">Result (run with Zorba):</h5>
+					{ "foo" : [ 1, 2, 3, 4, 5, 6 ] }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.14. Object constructors 3</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : true, "bar" : false }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11572576">Result (run with Zorba):</h5>
+					{ "foo" : true, "bar" : false }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.15. Nested object constructors</h6><div class="example-contents"><pre class="programlisting">
+{ "this is a key" : { "value" : "a value" } }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11569744">Result (run with Zorba):</h5>
+					{ "this is a key" : { "value" : "a value" } }
+				</div></div></div><br class="example-break" /><div class="para">
+			Oh, and like in JavaScript, if your key is simple enough (like alphanumerics, underscores, dashes, this kind of things), you are welcome to omit the quotes. The strings for which quotes are not mandatory are called NCNames. This class of strings can be used for unquoted keys, for variable and function names, and for module aliases.
+		</div><div class="example"><h6>Example 5.16. Object constructors with unquoted key 1</h6><div class="example-contents"><pre class="programlisting">
+{ foo : "bar" }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11566336">Result (run with Zorba):</h5>
+					{ "foo" : "bar" }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.17. Object constructors with unquoted key 2</h6><div class="example-contents"><pre class="programlisting">
+{ foo : [ 1, 2, 3, 4, 5, 6 ] }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11563472">Result (run with Zorba):</h5>
+					{ "foo" : [ 1, 2, 3, 4, 5, 6 ] }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.18. Object constructors with unquoted key 3</h6><div class="example-contents"><pre class="programlisting">
+{ foo : "bar", bar : "foo" }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11560576">Result (run with Zorba):</h5>
+					{ "foo" : "bar", "bar" : "foo" }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.19. Object constructors with needed quotes around the key</h6><div class="example-contents"><pre class="programlisting">
+{ "but you need the quotes here" : null }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9896176">Result (run with Zorba):</h5>
+					{ "but you need the quotes here" : null }
+				</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9895856">5.1.3. Array constructors</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ArrayConstructor.png" alt="ArrayConstructor" /></div></div><h6>Figure 5.11. ArrayConstructor</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/Expr.png" alt="Expr" /></div></div><h6>Figure 5.12. Expr</h6></div><br class="figure-break" /><div class="para">
+			The syntax for creating arrays is identical to that of JSON: square brackets, comma separated literals, object constructors and arrays constructors.
+		</div><div class="example"><h6>Example 5.20. Empty array constructors</h6><div class="example-contents"><pre class="programlisting">
+[]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp24235856">Result (run with Zorba):</h5>
+					[ ]
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.21. Array constructors</h6><div class="example-contents"><pre class="programlisting">
+[ 1, 2, 3, 4, 5, 6 ]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp24232992">Result (run with Zorba):</h5>
+					[ 1, 2, 3, 4, 5, 6 ]
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.22. Nested array constructors</h6><div class="example-contents"><pre class="programlisting">
+[ "foo", 3.14, [ "Go", "Boldly", "When", "No", "Man", "Has", "Gone", "Before" ], { "foo" : "bar" }, true, false, null ]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8463072">Result (run with Zorba):</h5>
+					[ "foo", 3.14, [ "Go", "Boldly", "When", "No", "Man", "Has", "Gone", "Before" ], { "foo" : "bar" }, true, false, null ]
+				</div></div></div><br class="example-break" /><div class="para">
+			Square brackets are mandatory. Do not push it.
+		</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp8460960">5.1.4. Composing constructors</h3></div></div></div><div class="para">
+			Of course, JSONiq would not be very interesting if all you could do is copy and paste JSON documents.
+		</div><div class="para">
+			Because JSONiq expressions are fully composable, in objects and arrays constructors, you can put way more than just atomic literals, object constructors and array constructors: you can put any JSONiq expression.
+		</div><div class="para">
+			The following examples are just a few of many operators you can use: "to" for creating arithmetic sequences, "||" for concatenating strings, "+" for adding numbers, "," for appending sequences.
+		</div><div class="para">
+			In an array, the operand expression will evaluated to a sequence of items, and these items will be copied and become members of the newly created array.
+		</div><div class="example"><h6>Example 5.23. Composable array constructors</h6><div class="example-contents"><pre class="programlisting">
+  [ 1 to 10 ]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8902576">Result (run with Zorba):</h5>
+					[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+				</div></div></div><br class="example-break" /><div class="para">
+			In an object, the expression you use for the key must evaluate to an atomic - if it is not a string, it will just be cast to it.
+		</div><div class="example"><h6>Example 5.24. Composable object keys</h6><div class="example-contents"><pre class="programlisting">
+  { "foo" || "bar" : true }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1718976">Result (run with Zorba):</h5>
+					{ "foobar" : true }
+				</div></div></div><br class="example-break" /><div class="para">
+			An error is raised if the key expressions is not an atomic.
+		</div><div class="example"><h6>Example 5.25. Non-atomic object keys</h6><div class="example-contents"><pre class="programlisting">
+  { [ 1, 2 ] : true }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp18687072">Result (run with Zorba):</h5>
+					An error was raised: can not atomize an array item: an array has probably been passed where an atomic value is expected (e.g., as a key, or to a function expecting an atomic item)
+				</div></div></div><br class="example-break" /><div class="para">
+			And do not worry about the value expression: if it is is empty, null will be used as a value, and if it contains two items or more, they will be wrapped into an array.
+		</div><div class="example"><h6>Example 5.26. Composable object values</h6><div class="example-contents"><pre class="programlisting">
+  { "foo" : 1 + 1 }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1720544">Result (run with Zorba):</h5>
+					{ "foo" : 2 }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.27. Composable object values and automatic conversion</h6><div class="example-contents"><pre class="programlisting">
+  { "foo" : (), "bar" : (1, 2) }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7292128">Result (run with Zorba):</h5>
+					{ "foo" : null, "bar" : [ 1, 2 ] }
+				</div></div></div><br class="example-break" /><div class="para">
+			The {| |} syntax can be used to merge several objects.
+		</div><div class="example"><h6>Example 5.28. Merging object constructor</h6><div class="example-contents"><pre class="programlisting">
+  {| { "foo" : "bar" }, { "bar" : "foo" } |}
+</pre><div class="formalpara"><h5 class="formalpara" id="idp16442608">Result (run with Zorba):</h5>
+					{ "foo" : "bar", "bar" : "foo" }
+				</div></div></div><br class="example-break" /><div class="para">
+			An error is raised if the operand expression does not evaluate to a sequence of objects.
+		</div><div class="example"><h6>Example 5.29. Merging object constructor with a type error</h6><div class="example-contents"><pre class="programlisting">
+  {| 1 |}
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9613104">Result (run with Zorba):</h5>
+					An error was raised: xs:integer can not be treated as type object()*
+				</div></div></div><br class="example-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s02.html"><strong>Prev</strong>4.2. Sequence types</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-basic-operations.html"><strong>Next</strong>5.2. Basic operations</a></li></ul></body></html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-JSON">
+  <title>The JSON Syntax</title>
+  <para>The JSONiq query language was specifically designed for querying and processing JSON.</para>
+  <para>
+    As stated on its home page <emphasis>http://www.json.org/</emphasis>, JSON is a
+    <quote>lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate.</quote>
+  </para>
+  <para>JSON itself is only about syntax: a string may or may not match the JSON grammar. If it does, then it is well-formed JSON.
+  The JSON syntax is made of the following building blocks: objects, arrays, strings, numbers, booleans and nulls. Let us begin with
+  a quick overview of all these building blocks.</para>
+  <section>
+    <title>JSON Strings</title>
+    <para>Strings are double-quoted. To put it simply, they are sequences of Unicode characters with absolutely no restriction:</para>
+    <programlisting>
+"foo",
+"What NoSQL solutions are out there?"
+    </programlisting>
+    <para>However, syntactically, some of these characters must be escaped with backslashes (escape sequence). This includes double quotes, escaped as \" 
+    -- because otherwise they could be confused with the end of a string -- and backslahes themselves, escaped as \\ -- because otherwise you would
+    not know if you mean a backslash character, or if you are escaping the following character.</para>
+    <programlisting>
+"What \"NoSQL\" solutions are out there?"
+    </programlisting>
+    <para>Finally, all Unicode control characters (null, new line, form feed, delete...) are not allowed directly and must be built with an
+    escape sequence.
+    Any Unicode character, including control characters, can be built with \u followed by the four hexadecimal digits that identify it
+    within Unicode. The most frequent control characters even have their own shortcuts: \n (new line), \t (tab), \r (carriage return),
+    \b (backspace), \f (form feed). The slash can also be obtained with \/, although it is fine too if it appears alone. This is useful
+    in JSON-hosting environments where slashes are special.</para>
+    <programlisting>
+"What \"NoSQL\" solutions are out there:\n"
+"MapReduce\u000AMongoDB\n\u0085"
+    </programlisting>
+  </section>
+  <section>
+    <title>JSON Numbers</title>
+    <para>Numbers cover the entire decimal space. There is no range restriction. Although there is no formal distinction in
+    JSON, numbers can be grouped into three subcategories. These subcategories play an important role in JSONiq.</para>
+    <itemizedlist>
+      <listitem>
+        <para>Integers, possibly with a negative sign and not beginning with a leading 0 (except 0 itself):</para>
+        <programlisting>
+0
+9
+42
+-96
+123456789012345678901234567890123456789012345
+        </programlisting>
+      </listitem>
+      <listitem>
+        <para>"Plain" decimals, with a dot, both followed and preceded by at least by one digit (no leading dot):</para>
+        <programlisting>
+0.3
+9.6
+42.2346902834
+-96.01345023400
+        </programlisting>
+      </listitem>
+      <listitem>
+        <para>Decimals in scientific notation, i.e., a plain decimal followed by an E (case does not matter) and by a power of ten (an integer with an optional sign):</para>
+        <programlisting>
+0.3e0
+9.6E+24
+42.2346902834e-2
+-96.01345023400E-02345
+        </programlisting>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
+    <title>JSON Booleans</title>
+    <para>Booleans cover the two logical truth values true and false, unquoted. There is not much more to say about them...</para>
+    <programlisting>
+true
+false
+    </programlisting>
+  </section>
+  <section>
+    <title>JSON Null</title>
+    <para>Null is a special value that can be used to denote the absence of value.</para>
+    <programlisting>
+null
+    </programlisting>
+  </section>
+  <section>
+    <title>JSON Objects</title>
+    <para>Objects are unordered sets of key/value pairs. A key is any JSON string as described above. A value is any JSON building block.</para>
+    <para>According to the JSON RFC, keys (the strings) should be unique within the same object -- and JSONiq does consider them unique.</para>
+    <para>You can see in the following examples that values can be also nested objects or arrays.</para>
+    <programlisting>
+{
+  "_id" : "511C7C5C9A277C22D138802D",
+  "question_id" : 4419499,
+  "last_edit_date" : "2012-12-17T00:02:31",
+  "creation_date" : "2010-12-11T23:15:19",
+  "last_activity_date" : "2012-12-17T00:02:31",
+  "score" : 15,
+  "accepted_answer_id" : 4421601,
+  "title" : "MySQL and NoSQL: Help me to choose the right o
+ne",
+  "tags" : [ "php", "mysql", "nosql", "cassandra" ],
+  "view_count" : 3972,
+  "owner" : {
+    "user_id" : 279538,
+    "display_name" : "cedivad",
+    "reputation" : 430,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/b77fa
+dd2ba791134ac40a9c184be1eda?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/279538/cedivad
+",
+    "accept_rate" : 74
+  },
+  "link" : "http://stackoverflow.com/questions/4419499/mysq
+l-and-nosql-help-me-to-choose-the-right-one",
+  "is_answered" : true
+}
+    </programlisting>
+    <para>In the NoSQL world, top-level JSON objects are often referred to as JSON documents.</para>
+  </section>
+</chapter>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.7. Expressions dealing with types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-expressions.html" title="Chapter 5. Expressions" /><link rel="prev" href="ch05s06s09.html" title="5.6.9. Ordered and Unordered expressions" /><link rel="next" href="ch05s07s02.html" title="5.7.2. Treat expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s06s09.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s07s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="section" id="section-type-expressions" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="section-type-expressions">5.7. Expressions dealing with types</h2></div></div></div><div class="para">
+		This section describes JSONiq types as well as the sequence type syntax.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp1496480">5.7.1. Instance-of expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/InstanceofExpr.png" width="444" alt="InstanceofExpr" /></div></div><h6>Figure 5.47. InstanceofExpr</h6></div><br class="figure-break" /><div class="para">
+			An instance expression can be used to tell whether a JSONiq value matches a given sequence type.
+		</div><div class="example"><h6>Example 5.126. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+1 instance of integer
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7314816">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.127. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+1 instance of string
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7932048">Result (run with Zorba):</h5>
+					false
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.128. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+"foo" instance of string
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9914512">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.129. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" } instance of object
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10616560">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.130. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+({ "foo" : "bar" }, { "bar" : "foo" }) instance of json-item+
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10085584">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.131. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+[ 1, 2, 3 ] instance of array?
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7960992">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.132. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+() instance of ()
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1679616">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s06s09.html"><strong>Prev</strong>5.6.9. Ordered and Unordered expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s07s02.html"><strong>Next</strong>5.7.2. Treat expressions</a></li></ul></body></html>

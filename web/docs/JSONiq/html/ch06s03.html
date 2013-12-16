@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.3. Functions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-prolog.html" title="Chapter 6. Prologs" /><link rel="prev" href="ch06s02.html" title="6.2. Global variables" /><link rel="next" href="chapter-modules.html" title="Chapter 7. Modules" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-modules.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp54867296">6.3. Functions</h2></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/FunctionDecl.png" width="444" alt="VarDecl" /></div></div><h6>Figure 6.10. VarDecl</h6></div><br class="figure-break" /><div class="para">
+			You can define your own functions in the prolog. These user-defined functions must be prefixed with <span class="emphasis"><em>local:</em></span>, both in the declaration and when called.
+		</div><div class="para">
+			Remember than types are optional, and if you do not specify any, item* is assumed, both for parameters and for the return type.
+		</div><div class="example"><h6>Example 6.6. An external global variable with a default value</h6><div class="example-contents"><pre class="programlisting">
+declare function local:say-hello($x) { "Hello, " || $x || "!" };
+local:say-hello("Mister Spock")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp54873552">Result (run with Zorba):</h5>
+					Hello, Mister Spock!
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 6.7. An external global variable with a default value</h6><div class="example-contents"><pre class="programlisting">
+declare function local:say-hello($x as string) { "Hello, " || $x || "!" };
+local:say-hello("Mister Spock")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp23230368">Result (run with Zorba):</h5>
+					Hello, Mister Spock!
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 6.8. An external global variable with a default value</h6><div class="example-contents"><pre class="programlisting">
+declare function local:say-hello($x as string) as string { "Hello, " || $x || "!" };
+local:say-hello("Mister Spock")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp23233248">Result (run with Zorba):</h5>
+					Hello, Mister Spock!
+				</div></div></div><br class="example-break" /><div class="para">
+			If you do specify types, an error is raised in case of a mismatch
+		</div><div class="example"><h6>Example 6.9. An external global variable with a default value</h6><div class="example-contents"><pre class="programlisting">
+declare function local:say-hello($x) { "Hello, " || $x || "!" }; 
+local:say-hello(1)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp23236448">Result (run with Zorba):</h5>
+					Hello, 1!
+				</div></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s02.html"><strong>Prev</strong>6.2. Global variables</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-modules.html"><strong>Next</strong>Chapter 7. Modules</a></li></ul></body></html>

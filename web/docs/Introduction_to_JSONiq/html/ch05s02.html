@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.2. Object Constructors</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-Construction.html" title="Chapter 5. Construction of Items" /><link rel="prev" href="chapter-Construction.html" title="Chapter 5. Construction of Items" /><link rel="next" href="ch05s03.html" title="5.3. Array Constructors" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-Construction.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm47100688">5.2. Object Constructors</h2></div></div></div><div class="para">
+			The syntax for creating objects is also identical to that of JSON. You can use for an object key any string literal, and for an object value any literal, object constructor or array constructor.
+		</div><div class="example"><h6>Example 5.5. Object constructors.</h6><div class="example-contents"><pre class="programlisting">
+{},
+{ "foo" : "bar" },
+{ "foo" : [ 1, 2, 3, 4, 5, 6 ] },
+{ "foo" : true, "bar" : false },
+{ "this is a key" : { "value" : "a value" } }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+}
+{
+  "foo" : "bar"
+}
+{
+  "foo" : [ 1, 2, 3, 4, 5, 6 ]
+}
+{
+  "foo" : true,
+  "bar" : false
+}
+{
+  "this is a key" : {
+    "value" : "a value"
+  }
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			Again, JSONiq is more flexible here. Like in JavaScript, if your key is simple enough (like alphanumerics, underscores, dashes, these kinds of things), you are welcome to omit the quotes. The strings for which quotes are not mandatory are called <span class="emphasis"><em>unquoted names</em></span>. This class of strings can be used for unquoted keys, but also in later sections for variable and function names, and for module aliases.
+		</div><div class="example"><h6>Example 5.6. Object constructors with unquoted keys.</h6><div class="example-contents"><pre class="programlisting">
+{ foo : "bar" },
+{ foo : [ 1, 2, 3, 4, 5, 6 ] },
+{ foo : "bar", bar : "foo" },
+{ "but you need the quotes here" : null }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : "bar"
+}
+{
+  "foo" : [ 1, 2, 3, 4, 5, 6 ]
+}
+{
+  "foo" : "bar",
+  "bar" : "foo"
+}
+{
+  "but you need the quotes here" : null
+}
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-Construction.html"><strong>Prev</strong>Chapter 5. Construction of Items</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s03.html"><strong>Next</strong>5.3. Array Constructors</a></li></ul></body></html>

@@ -1,0 +1,162 @@
+<chapter id="chapter-control-flow">
+  <title>Control flow expressions</title>
+  <para>JSONiq supports control flow expressions such as if-then-else, switch and typeswitch.</para>
+  <section>
+    <title>Conditional expressions</title>
+    <figure>
+      <title>IfExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/IfExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A conditional expressions allows you to pick one or another value depending on a boolean value.</para>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (1 + 1 eq 2) then { "foo" : "yes" } else { "foo" : "false" }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "yes"
+}
+</programlisting></example>
+    <para>The behavior of the expression inside the if is similar to that of logical operations, meaning that non-boolean get converted to a boolean.
+    </para>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (null) then { "foo" : "yes" } else { "foo" : "no" }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "no"
+}
+</programlisting></example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (1) then { "foo" : "yes" } else { "foo" : "no" }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "yes"
+}
+</programlisting></example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (0) then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "no"
+}
+</programlisting></example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if ("foo") then { "foo" : "yes" } else { "foo" : "no" }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "yes"
+}
+</programlisting></example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if ("") then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "no"
+}
+</programlisting></example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (()) then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "no"
+}
+</programlisting></example>
+    <example>
+      <title>A conditional expression</title>
+      <programlisting>
+if (({ "foo" : "bar" }, [ 1, 2, 3, 4])) then { "foo" : "yes" } else { "foo" : "no" }
+        </programlisting>
+    <para>Error:</para><programlisting>"[JSONXQType object]": invalid argument type for function f
+n:boolean()</programlisting></example>
+  </section>
+  <section>
+    <title>Switch expressions</title>
+    <figure>
+      <title>SwitchExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/SwitchExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A switch expression evaluates the expression inside the switch. If it is an atomic, it compares it
+      in turn to the provided atomic values (with the semantics of the eq operator) and returns the value associated with the first matching case clause.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch ("foo")
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+        </programlisting>
+      <para>If it is not an atomic, an error is raised.</para>
+      <programlisting>
+switch ({ "foo" : "bar" })
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+        </programlisting>
+    <para>Error:</para><programlisting>invalid expression: syntax error, unexpected end of file, t
+he query body should not be empty</programlisting></example>
+    <para>If no value matches, the default is used.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch ("no-match")
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+        </programlisting>
+    <para>Results:</para><programlisting>"none"
+</programlisting></example>
+    <para>The case clauses support composability of expressions as well.</para>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch (2)
+case 1 + 1 return "foo"
+case 2 + 2 return "bar"
+default return "none"
+        </programlisting>
+    <para>Results:</para><programlisting>"foo"
+</programlisting></example>
+    <example>
+      <title>A switch expression</title>
+      <programlisting>
+switch (true)
+case 1 + 1 eq 2 return "1 + 1 is 2"
+case 2 + 2 eq 5 return "2 + 2 is 5"
+default return "none of the above is true"
+        </programlisting>
+    <para>Results:</para><programlisting>"1 + 1 is 2"
+</programlisting></example>
+  </section>
+  <section>
+    <title>Typeswitch expressions</title>
+    <figure>
+      <title>TypeswitchExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/TypeswitchExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para/>
+  </section>
+</chapter>

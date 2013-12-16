@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.2.5. Comparison</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-basic-operations.html" title="5.2. Basic operations" /><link rel="prev" href="ch05s02s04.html" title="5.2.4. String concatenation" /><link rel="next" href="ch05s02s06.html" title="5.2.6. Logics" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s02s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s02s06.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp18092432">5.2.5. Comparison</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ComparisonExpr.png" width="444" alt="ComparisonExpr" /></div></div><h6>Figure 5.20. ComparisonExpr</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ValueComp.png" alt="ValueComp" /></div></div><h6>Figure 5.21. ValueComp</h6></div><br class="figure-break" /><div class="para">
+			Atomics can be compared with the usual six comparison operators (equality, non-equality, lower-than, greater-than, lower-or-equal, greater-or-equal), and with the same two-letter symbols as in MongoDB.
+		</div><div class="example"><h6>Example 5.43. Equality comparison</h6><div class="example-contents"><pre class="programlisting">
+1 + 1 eq 2, 1 lt 2
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8604624">Result (run with Zorba):</h5>
+					true true
+				</div></div></div><br class="example-break" /><div class="para">
+			Comparison is only possible between two compatible types, otherwise, an error is raised.
+		</div><div class="example"><h6>Example 5.44. Comparisons with a type mismatch</h6><div class="example-contents"><pre class="programlisting">
+"foo" eq 1
+</pre><div class="formalpara"><h5 class="formalpara" id="idp4354496">Result (run with Zorba):</h5>
+					An error was raised: "xs:string": invalid type: can not compare for equality to type "xs:integer"
+				</div></div></div><br class="example-break" /><div class="para">
+			null can be compared for equality or inequality to anything - it is only equal to itself so that false is returned when comparing if for equality with any non-null atomic. True is returned when comparing it with non-equality with any non-null atomic.
+		</div><div class="example"><h6>Example 5.45. Equality and non-equality comparison with null</h6><div class="example-contents"><pre class="programlisting">
+1 eq null, "foo" ne null, null eq null
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1511936">Result (run with Zorba):</h5>
+					false true true
+				</div></div></div><br class="example-break" /><div class="para">
+			For ordering operators (lt, le, gt, ge), null is considered the smallest possible value (like in JavaScript).
+		</div><div class="example"><h6>Example 5.46. Ordering comparison with null</h6><div class="example-contents"><pre class="programlisting">
+1 lt null
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8565088">Result (run with Zorba):</h5>
+					false
+				</div></div></div><br class="example-break" /><div class="para">
+			Like for arithmetic operations, if an operand is the empty sequence, the empty sequence is returned as well.
+		</div><div class="example"><h6>Example 5.47. Comparison with the empty sequence</h6><div class="example-contents"><pre class="programlisting">
+() eq 1
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7573520">Result (run with Zorba):</h5>
+				</div></div></div><br class="example-break" /><div class="para">
+			Comparisons and logic operators are fundamental for a query language and for the implementation of a query processor as they impact query optimization greatly. The current comparison semantics for them is carefully chosen to have the right characteristics as to enable optimization.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s02s04.html"><strong>Prev</strong>5.2.4. String concatenation</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s02s06.html"><strong>Next</strong>5.2.6. Logics</a></li></ul></body></html>

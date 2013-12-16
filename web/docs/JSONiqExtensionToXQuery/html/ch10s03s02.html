@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.3.2. Serialization of individual JSON values</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="ch10s03.html" title="10.3. The JSON output method" /><link rel="prev" href="ch10s03.html" title="10.3. The JSON output method" /><link rel="next" href="ch10s03s03.html" title="10.3.3. Influence of other serialization parameters upon the JSON output method" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch10s03s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm36064672">10.3.2. Serialization of individual JSON values</h3></div></div></div><div class="para">
+				This section specifies how JSON items as well as JSON atomic values are serialized.
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						Object
+					</div><div class="para">
+						An object is serialized as an opening curly brace {, followed by the comma-separated serializations of all its pairs, followed by a closing curly brace.
+					</div><div class="para">
+						A pair is serialized as the serialization of its name, followed by a colon, followed by the serialization of its value.
+					</div></li><li class="listitem"><div class="para">
+						Array
+					</div><div class="para">
+						An array is serialized as an opening square brace, followed by the comma-separated serializations of all its member values, followed by a closing square brace.
+					</div></li><li class="listitem"><div class="para">
+						<code class="code">xs:string</code>
+					</div><div class="para">
+						An atomic value of type xs:string is serialized between double quotes and with the escaping specified in http://www.ietf.org/rfc/rfc4627.txt.
+					</div></li><li class="listitem"><div class="para">
+						<code class="code">xs:double</code>, <code class="code">xs:float</code> (except Nan, positive/negative infinity), <code class="code">xs:decimal</code> or subtype
+					</div><div class="para">
+						An atomic value of a numeric type (<code class="code">xs:double</code>, <code class="code">xs:float</code>, <code class="code">xs:decimal</code> or subtype) is serialized as its lexical representation, i.e., is cast to <code class="code">xs:string</code>, not surrounded by quotes. This corresponds to the JSON number notation, but with a few exceptions which must be fixed before serializing:
+					</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+								The leading + sign must be removed if present.
+							</div></li><li class="listitem"><div class="para">
+								A zero must be added in front of and/or after the dot if no digit is present in front of and/or after the dot.
+							</div></li><li class="listitem"><div class="para">
+								Unnecessary zeros in front of the number (except if the only digit in front of the dot is 0) must be removed.
+							</div></li><li class="listitem"><div class="para">
+								Values of type xs:decimal that have a lexical representation without dot must be suffixed with ".0" (so that it parses back as a decimal).
+							</div></li><li class="listitem"><div class="para">
+								Values of type xs:double that have a lexical representation without E must be suffixed with "E0" (so that it parses back as a double).
+							</div></li></ul></div></li><li class="listitem"><div class="para">
+						<code class="code">xs:boolean</code> or subtype
+					</div><div class="para">
+						An atomic value matching the type <code class="code">xs:boolean</code> is serialized as <code class="code">true</code> or <code class="code">false</code>, not surrounded by quotes.
+					</div></li><li class="listitem"><div class="para">
+						<code class="code">js:null</code> or subtype
+					</div><div class="para">
+						The atomic value null matching the type <code class="code">js:null</code> is serialized as <code class="code">null</code>, not surrounded by quotes.
+					</div></li><li class="listitem"><div class="para">
+						All other atomic values are output as if they were of value <code class="code">xs:string</code> (i.e., as a JSON string).
+					</div></li><li class="listitem"><div class="para">
+						An error jerr:JNSE0014 is raised if an XML node or a function is encountered.
+					</div></li></ul></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s03.html"><strong>Prev</strong>10.3. The JSON output method</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch10s03s03.html"><strong>Next</strong>10.3.3. Influence of other serialization paramete...</a></li></ul></body></html>

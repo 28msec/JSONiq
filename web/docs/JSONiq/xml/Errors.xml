@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-errors" lang="en-US">
+	<title>Errors</title>
+	 <para>
+		Builtin expressions, operators and functions may raise errors under various conditions. An example is a mismatching type.
+	</para>
+	 <para>
+		The evaluation of a JSONiq expression either returns a sequence of items, or raises an error.
+	</para>
+	 <para>
+		Errors can be reported statically, or dynamically (at runtime).
+	</para>
+	 <para>
+		Errors can also be raised by hand.
+	</para>
+	 <example>
+		<title>Raising an error.</title>
+		 
+<programlisting>
+      error()
+</programlisting>
+		 <formalpara>
+			<title>Result (run with Zorba):</title>
+			<para>
+				An error was raised:
+			</para>
+		</formalpara>
+	</example>
+	 <para>
+		Lazy evaluation and optimizations with regard to errors are allowed. Raising errors is not always deterministic, as in some cases the processor might (but is not required to) stop evaluating the operands of an expression if it determines that only one possible value can be returned by that expression. The following expression may return true, or may raise an error.
+	</para>
+	 <example>
+		<title>Non-deterministic behavior.</title>
+		 
+<programlisting>
+      true or error()
+</programlisting>
+		 <formalpara>
+			<title>Result (run with Zorba):</title>
+			<para>
+				true
+			</para>
+		</formalpara>
+	</example>
+</chapter>
+

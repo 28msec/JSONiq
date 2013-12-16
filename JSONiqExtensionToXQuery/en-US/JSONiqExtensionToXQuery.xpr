@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="14.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options>
+            <serialized version="14.1" xml:space="preserve">
+                <map>
+                    <entry>
+                        <String>validation.scenarios</String>
+                        <validationScenario-array/>
+                    </entry>
+                </map>
+            </serialized>
+        </options>
+    </meta>
+    <projectTree name="JSONiqExtensionToXQuery.xpr">
+        <file name="Appendix-Formal.xml"/>
+        <file name="Appendix-Updates.xml"/>
+        <file name="Appendix-XDM.xml"/>
+        <file name="Author_Group.xml"/>
+        <file name="Book_Info.xml"/>
+        <file name="Chapter-Builtin.xml"/>
+        <file name="Chapter-Combining.xml"/>
+        <file name="Chapter-Construction.xml"/>
+        <file name="Chapter-Error-Codes.xml"/>
+        <file name="Chapter-Grammar.xml"/>
+        <file name="Chapter-Implementation.xml"/>
+        <file name="Chapter-Introduction.xml"/>
+        <file name="Chapter-JDM.xml"/>
+        <file name="Chapter-Library.xml"/>
+        <file name="Chapter-Navigation.xml"/>
+        <file name="Chapter-Serialization.xml"/>
+        <file name="Chapter-Status.xml"/>
+        <file name="Chapter-Updates.xml"/>
+        <file name="Chapter.xml"/>
+        <file name="JSONiq.xml"/>
+        <file name="Preface.xml"/>
+        <file name="Revision_History.xml"/>
+        <file name="schemas.xml"/>
+        <file name="XQueryWithJSONiqExtensions.ent"/>
+        <file name="XQueryWithJSONiqExtensions.xml"/>
+    </projectTree>
+</project>

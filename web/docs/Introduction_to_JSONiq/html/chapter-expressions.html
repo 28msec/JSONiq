@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 11. Expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="index.html" title="Introduction to JSONiq" /><link rel="prev" href="ch10s09.html" title="10.9. Ordered and Unordered expressions" /><link rel="next" href="chapter-prolog.html" title="Chapter 12. Prologs" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s09.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-prolog.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-expressions" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 11. Expressions</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-expressions.html#section-type-expressions">11.1. Expressions dealing with types</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-expressions.html#idm34122912">11.1.1. Instance-of expressions</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idm61536">11.1.2. Treat expressions</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idm66800">11.1.3. Castable expressions</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idm41718288">11.1.4. Cast expressions</a></span></dt><dt><span class="section"><a href="chapter-expressions.html#idp4388464">11.1.5. Typeswitch expressions</a></span></dt></dl></dd></dl></div><div xml:lang="en-US" class="section" id="section-type-expressions" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="section-type-expressions">11.1. Expressions dealing with types</h2></div></div></div><div class="para">
+		We have already introduced the sequence type syntax. It is now time to introduce the expressions that deal with types.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm34122912">11.1.1. Instance-of expressions</h3></div></div></div><div class="para">
+			A quick glimpse on this expression was already given. An instance expression can be used to tell whether a JSONiq value matches a given sequence type, like in Java.
+		</div><div class="example"><h6>Example 11.1. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+1 instance of integer,
+1 instance of string,
+"foo" instance of string,
+{ "foo" : "bar" } instance of object,
+({ "foo" : "bar" }, { "bar" : "foo" }) instance of json-item+,
+[ 1, 2, 3 ] instance of array?,
+() instance of ()
+</pre><pre class="programlisting">Result:
+ true
+ false
+ true
+ true
+ true
+ true
+ true
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm61536">11.1.2. Treat expressions</h3></div></div></div><div class="para">
+			A treat expression just forwards its operand value, but only after checking that a JSONiq value matches a given sequence type. If it is not the case, an error is raised.
+		</div><div class="example"><h6>Example 11.2. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+1 treat as integer,
+"foo" treat as string,
+{ "foo" : "bar" } treat as object,
+({ "foo" : "bar" }, { "bar" : "foo" }) treat as json-item+,
+[ 1, 2, 3 ] treat as array?,
+() treat as ()
+</pre><pre class="programlisting">Result:
+ 1
+ "foo"
+ {
+   "foo" : bar
+ }
+ {
+   "foo" : bar
+ }
+ {
+   "bar" : foo
+ }
+ "[ 1, 2, 3 ]"
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 11.3. Treat as expression (failing).</h6><div class="example-contents"><pre class="programlisting">
+1 treat as string
+</pre><pre class="programlisting">Result:
+ An error was raised: "xs:integer" cannot be treated as type xs:string</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm66800">11.1.3. Castable expressions</h3></div></div></div><div class="para">
+			A castable expression checks whether a JSONiq value can be cast to a given atomic type and returns true or false accordingly. It can be used before actually casting to that type.
+		</div><div class="para">
+			The question mark allows for an empty sequence.
+		</div><div class="example"><h6>Example 11.4. Castable as expression</h6><div class="example-contents"><pre class="programlisting">
+"1" castable as integer,
+"foo" castable as integer,
+"2013-04-02" castable as date,
+() castable as date,
+("2013-04-02", "2013-04-03") castable as date,
+() castable as date?
+</pre><pre class="programlisting">Result:
+ true
+ false
+ true
+ false
+ false
+ true
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm41718288">11.1.4. Cast expressions</h3></div></div></div><div class="para">
+			A cast expression casts a JSONiq value to a given atomic type. The resulting value is annotated with this type.
+		</div><div class="para">
+			Also here, the question mark allows for an empty sequence.
+		</div><div class="example"><h6>Example 11.5. Cast as expression.</h6><div class="example-contents"><pre class="programlisting">
+"1" cast as integer,
+"2013-04-02" cast as date,
+("2013-04-02", "2013-04-03") cast as date,
+() cast as date?,
+"2013-04-02" cast as date?
+</pre><pre class="programlisting">Result:
+ An error was raised: sequence of more than one item can not be cast to type with quantifier '1' or '?'</pre></div></div><br class="example-break" /><div class="example"><h6>Example 11.6. Cast as expression (failing).</h6><div class="example-contents"><pre class="programlisting">
+"foo" cast as integer,
+() cast as date
+</pre><pre class="programlisting">Result:
+ An error was raised: "foo": value of type xs:string is not castable to type xs:integer</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp4388464">11.1.5. Typeswitch expressions</h3></div></div></div><div class="para">
+			A typeswitch expressions tests if the value resulting from the first operand matches a given list of types. The expression corresponding to the first matching case is finally evaluated. If there is no match, the expression in the default clause is evaluated.
+		</div><div class="example"><h6>Example 11.7. Typeswitch expression</h6><div class="example-contents"><pre class="programlisting">
+typeswitch("foo")
+  case integer return "integer"
+  case string return "string"
+  case object return "object"
+  default return "other"
+</pre><pre class="programlisting">Result:
+ "string"
+</pre></div></div><br class="example-break" /><div class="para">
+			In each clause, it is possible to bind the value of the first operand to a variable.
+		</div><div class="example"><h6>Example 11.8. Typeswitch expression</h6><div class="example-contents"><pre class="programlisting">
+typeswitch("foo")
+  case $i as integer return $i + 1
+  case $s as string return $s || "foo"
+  case $o as object return [ $o ]
+  default $d return $d
+</pre><pre class="programlisting">Result:
+ "foofoo"
+</pre></div></div><br class="example-break" /><div class="para">
+			The vertical bar can be used to allow several types in the same case clause.
+		</div><div class="example"><h6>Example 11.9. Typeswitch expression</h6><div class="example-contents"><pre class="programlisting">
+typeswitch("foo")
+  case $a as integer | string return { "integer or string" : $a }
+  case $o as object return [ $o ]
+  default $d return $d
+</pre><pre class="programlisting">Result:
+ {
+   "integer or string" : foo
+ }
+</pre></div></div><br class="example-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s09.html"><strong>Prev</strong>10.9. Ordered and Unordered expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-prolog.html"><strong>Next</strong>Chapter 12. Prologs</a></li></ul></body></html>

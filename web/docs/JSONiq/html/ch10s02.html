@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.2. Null vs. empty sequence</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-areas-of-confusion.html" title="Chapter 10. Notes" /><link rel="prev" href="chapter-areas-of-confusion.html" title="Chapter 10. Notes" /><link rel="next" href="chapter-open-issues.html" title="Chapter 11. Open Issues" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-areas-of-confusion.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-open-issues.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp50312256">10.2. Null vs. empty sequence</h2></div></div></div><div class="para">
+			Null and the empty sequence are two different concepts.
+		</div><div class="para">
+			Null is an item (an atomic value), and can be a member of an array or of a sequence, or the value associated with a key in an object. Sequences cannot, as they represent the absence of any item.
+		</div><div class="example"><h6>Example 10.11. Null values in an array</h6><div class="example-contents"><pre class="programlisting">
+[ null, 1, null, 2 ]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp50315536">Result (run with Zorba):</h5>
+					[ null, 1, null, 2 ]
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.12. Null values in an object</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : null }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9340848">Result (run with Zorba):</h5>
+					{ "foo" : null }
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.13. Null values in a sequence</h6><div class="example-contents"><pre class="programlisting">
+(null, 1, null, 2)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9343632">Result (run with Zorba):</h5>
+					null 1 null 2
+				</div></div></div><br class="example-break" /><div class="para">
+			If an empty sequence is found as an object value, it is automatically converted to null.
+		</div><div class="example"><h6>Example 10.14. Automatic conversion to null.</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : () }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9346864">Result (run with Zorba):</h5>
+					{ "foo" : null }
+				</div></div></div><br class="example-break" /><div class="para">
+			In an arithmetic opration or a comparison, if an operand is an empty sequence, an empty sequence is returned. If an operand is a null, an error is raised except for equality and inequality.
+		</div><div class="example"><h6>Example 10.15. Empty sequence in an arithmetic operation.</h6><div class="example-contents"><pre class="programlisting">
+() + 2
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9350304">Result (run with Zorba):</h5>
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.16. Null in an arithmetic operation.</h6><div class="example-contents"><pre class="programlisting">
+null + 2
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9353120">Result (run with Zorba):</h5>
+					An error was raised: arithmetic operation not defined between types "js:null" and "xs:integer"
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.17. Null and empty sequence in an arithmetic operation.</h6><div class="example-contents"><pre class="programlisting">
+null + ()
+</pre><div class="formalpara"><h5 class="formalpara" id="idp57073120">Result (run with Zorba):</h5>
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.18. Empty sequence in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+() eq 2
+</pre><div class="formalpara"><h5 class="formalpara" id="idp57075936">Result (run with Zorba):</h5>
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.19. Null in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null eq 2
+</pre><div class="formalpara"><h5 class="formalpara" id="idp57078784">Result (run with Zorba):</h5>
+					false
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.20. Null in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null lt 2
+</pre><div class="formalpara"><h5 class="formalpara" id="idp57081632">Result (run with Zorba):</h5>
+					true
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.21. Null and the empty sequence in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null eq ()
+</pre><div class="formalpara"><h5 class="formalpara" id="idp57084448">Result (run with Zorba):</h5>
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 10.22. Null and the empty sequence in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null lt ()
+</pre><div class="formalpara"><h5 class="formalpara" id="idp57087264">Result (run with Zorba):</h5>
+				</div></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-areas-of-confusion.html"><strong>Prev</strong>Chapter 10. Notes</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-open-issues.html"><strong>Next</strong>Chapter 11. Open Issues</a></li></ul></body></html>

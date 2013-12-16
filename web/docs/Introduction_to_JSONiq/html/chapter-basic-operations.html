@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.2. Basic operations</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-expressions.html" title="Chapter 6. Expressions" /><link rel="prev" href="chapter-expressions.html" title="Chapter 6. Expressions" /><link rel="next" href="ch06s02s02.html" title="6.2.2. Parenthesized expression" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-expressions.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch06s02s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="section" id="chapter-basic-operations" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="chapter-basic-operations">6.2. Basic operations</h2></div></div></div><div class="para">
+		We now introduce the most basic operations you can perform in JSONiq.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp49455440">6.2.1. Construction of sequences</h3></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title" id="idp53341952">6.2.1.1. Comma operator</h4></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/Expr.png" alt="Expr" /></div></div><h6>Figure 6.13. Expr</h6></div><br class="figure-break" /><div class="para">
+				Use a comma to concatenate two sequences, or even single items. This operator has the lowest precedence of all.
+			</div><div class="example"><h6>Example 6.30. Comma</h6><div class="example-contents"><pre class="programlisting">
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+</pre><div class="para">
+					Result:
+				</div><pre class="programlisting">1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+ 10
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.31. Comma</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" }, [ 1  ]
+</pre><div class="para">
+					Result:
+				</div><pre class="programlisting">"{ "foo" : "bar" }"
+ "[ 1 ]"
+</pre></div></div><br class="example-break" /><div class="para">
+				Sequences do not nest. You need to use arrays in order to nest.
+			</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title" id="idp6975792">6.2.1.2. Range operator</h4></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/RangeExpr.png" alt="RangeExpr" /></div></div><h6>Figure 6.14. RangeExpr</h6></div><br class="figure-break" /><div class="para">
+				With the binary operator "to", you can generate larger sequences with just two integer operands.
+			</div><div class="example"><h6>Example 6.32. Range operator</h6><div class="example-contents"><pre class="programlisting">
+1 to 10
+</pre><div class="para">
+					Result:
+				</div><pre class="programlisting">1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+ 10
+</pre></div></div><br class="example-break" /><div class="para">
+				If one operand evaluates to the empty sequence, then the range operator returns the empty sequence.
+			</div><div class="example"><h6>Example 6.33. Range operator with the empty sequence</h6><div class="example-contents"><pre class="programlisting">
+() to 10, 1 to ()
+</pre><div class="para">
+					Result:
+				</div><pre class="programlisting"></pre></div></div><br class="example-break" /><div class="para">
+				Otherwise, if an operand evaluates to something else than a single integer or an empty sequence, an error is raised.
+			</div><div class="example"><h6>Example 6.34. Range operator with a type inconsistency</h6><div class="example-contents"><pre class="programlisting">
+(1, 2) to 10
+</pre><div class="para">
+					Result:
+				</div><pre class="programlisting">An error was raised: sequence of more than one item can not be promoted to parameter type xs:integer? of function to()</pre></div></div><br class="example-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-expressions.html"><strong>Prev</strong>Chapter 6. Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch06s02s02.html"><strong>Next</strong>6.2.2. Parenthesized expression</a></li></ul></body></html>

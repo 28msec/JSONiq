@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<bookinfo id="book-JSONiq-JSONiq" lang="en-US">
+	<title>JSONiq</title>
+	 <subtitle>The complete reference</subtitle>
+	 <productname>JSONiq - the SQL of NoSQL</productname>
+	 <productnumber>1.0</productnumber>
+	 <edition>1.0.11</edition>
+	 <pubsnumber>1</pubsnumber>
+	 <abstract>
+		<para>
+			This document provides a complete reference of the core of JSONiq, the JSON query language.
+		</para>
+
+	</abstract>
+	 <corpauthor>
+		<inlinemediaobject>
+			<imageobject>
+				<imagedata contentwidth="111" fileref="images/28.png" format="PNG" width="444" />
+			</imageobject>
+
+		</inlinemediaobject>
+
+	</corpauthor>
+	<!-- 	<xi:include href="Common_Content/Legal_Notice.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  --> <xi:include href="Author_Group.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</bookinfo>
+

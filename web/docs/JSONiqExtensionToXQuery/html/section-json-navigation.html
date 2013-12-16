@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 5. Navigation in JSON content</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="ch04s07.html" title="4.7. Boolean and null literals" /><link rel="next" href="ch05s02.html" title="5.2. Object key listing" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s07.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="section-json-navigation" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 5. Navigation in JSON content</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="section-json-navigation.html#idm44061584">5.1. Object lookup</a></span></dt><dt><span class="section"><a href="ch05s02.html">5.2. Object key listing</a></span></dt><dt><span class="section"><a href="ch05s03.html">5.3. Array lookup</a></span></dt><dt><span class="section"><a href="ch05s04.html">5.4. Array unboxing</a></span></dt></dl></div><div class="para">
+		It is possible to navigate through JSON items using the dynamic function call syntax. The dynamic function call syntax is extended to handle object and array selection as follows:
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				An implicit iteration is performed on the left-hand-side sequence. <code class="code">$sequence($params)</code> is equivalent to:
+			</div><pre class="programlisting">
+        for $item in $sequence return $item($params)
+</pre></li><li class="listitem"><div class="para">
+				The semantics of the dynamic function call is then defined on a single item, depending on its type: 
+				<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+							If it is a function, the semantics is the same as defined in XQuery 3.0.
+						</div></li><li class="listitem"><div class="para">
+							If it is an object, the dynamic function call is treated as an object lookup if unary, as a key listing if 0-ary. An error <code class="code">jerr:JNTY0018</code> is raised if there is more than one parameter.
+						</div></li><li class="listitem"><div class="para">
+							If it is an array, the dynamic function call is treated as an array lookup if unary, as an array unboxing if 0-ary. An error <code class="code">jerr:JNTY0018</code> is raised if there is more than one parameter.
+						</div></li><li class="listitem"><div class="para">
+							If it is an atomic or an XML node, the dynamic function call if unary or 0-ary always returns the empty sequence. An error <code class="code">jerr:JNTY0018</code> is raised if there is more than one parameter.
+						</div></li></ul></div>
+
+			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm44061584">5.1. Object lookup</h2></div></div></div><div class="para">
+			If the dynamic function call is unary and the left-hand-side is an object, the semantics applied is that of object lookup and is as follows.
+		</div><div class="para">
+			The unique parameter is cast to a string $s (an error is raised according to the semantics of casting if this fails).
+		</div><div class="para">
+			If $s is in <code class="code">jdm:keys($o)</code> then <code class="code">$o($s)</code> returns the value of the pair with the name <code class="code">$s</code>, i.e. <code class="code">jdm:value($o, $s)</code>. Otherwise (i.e., it has no key matching <code class="code">$s</code>), an empty sequence is returned.
+		</div><div class="example"><h6>Example 5.1. Object lookup</h6><div class="example-contents"><div class="para">
+				Retrieving a Pair by its name:
+			</div><div class="para">
+				Query:
+			</div><pre class="programlisting">
+        let $map := { "eyes" : "blue", "hair" : "fuchsia" }
+        return $map("eyes")
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+        blue
+</pre><div class="para">
+				Using Pairs from existing Objects to create a new Object:
+			</div><div class="para">
+				Query:
+			</div><pre class="programlisting">
+        let $x := { "eyes" : "blue", "hair" : "fuchsia" }
+        let $y := { "eyes" : brown, "hair" : "brown" }
+        return { "eyes" : $x("eyes"), "hair" : $y("hair") }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+          { "eyes" : "blue", "hair" : "brown" }
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s07.html"><strong>Prev</strong>4.7. Boolean and null literals</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s02.html"><strong>Next</strong>5.2. Object key listing</a></li></ul></body></html>

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chapter-acknowledgements" lang="en-US">
+	<title>Acknowledgements</title>
+	 <para>
+		The design and implementation of JSONiq is a team effort involving Dana Florescu (Oracle), Jonathan Robie (EMC), Matthias Brantner (28msec), Markos Zaharioudakis (Oracle), Till Westmann (Oracle) and myself (28msec).
+	</para>
+	 <para>
+		This book was carefully reviewed by Matthias Brantner and Federico Cavalieri (28msec).
+	</para>
+	 <para>
+		A significant part of the introduction ("Why JSONiq?") was written by Dana Florescu.
+	</para>
+</chapter>
+

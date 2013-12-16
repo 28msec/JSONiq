@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.2. Sequence Types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-TypeSystem.html" title="Chapter 4. The JSONiq Type System" /><link rel="prev" href="chapter-TypeSystem.html" title="Chapter 4. The JSONiq Type System" /><link rel="next" href="pt02.html" title="Part II. Construction of Items and JSON Navigation" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-TypeSystem.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="pt02.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm46730832">4.2. Sequence Types</h2></div></div></div><div class="para">
+			All sequences match the sequence type <span class="emphasis"><em>item*</em></span>.
+		</div><div class="example"><h6>Example 4.8. The most general sequence type: item*.</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" } instance of item*,
+() instance of item*,
+([ 1, 2, 3 ], 2, { "foo" : "bar" }, 4)
+    instance of item*
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+true
+true
+</pre></div></div><br class="example-break" /><div class="para">
+			But sequence types can be much more precise than that. In general, a sequence type is made of an item type, as presented above, followed by an occurrence indicator among the following:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					* stands for a sequence of any length (zero or more)
+				</div></li><li class="listitem"><div class="para">
+					+ stands for a non-empty sequence (one or more)
+				</div></li><li class="listitem"><div class="para">
+					? stands for an empty or a singleton sequence (zero or one)
+				</div></li><li class="listitem"><div class="para">
+					The absence of indicator stands for a singleton sequence (one).
+				</div></li></ul></div><div class="example"><h6>Example 4.9. Further sequence types.</h6><div class="example-contents"><pre class="programlisting">
+( { "foo" : "bar" } , {} ) instance of object*,
+() instance of object*,
+( [ 1, 2, 3 ] , {} ) instance of json-item+,
+[ 1, 2, 3 ] instance of array?,
+() instance of array?,
+"foo" instance of string
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+true
+true
+true
+true
+true
+</pre></div></div><br class="example-break" /><div class="para">
+			There is also a special type that matches only empty sequences, denoted () as well:
+		</div><div class="example"><h6>Example 4.10. Empty sequence type: ()</h6><div class="example-contents"><pre class="programlisting">
+() instance of ()
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-TypeSystem.html"><strong>Prev</strong>Chapter 4. The JSONiq Type System</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="pt02.html"><strong>Next</strong>Part II. Construction of Items and JSON Navigation</a></li></ul></body></html>

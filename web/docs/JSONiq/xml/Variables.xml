@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="type-system" lang="en-US">
+	<title>Variables</title>
+	 <figure>
+		<title>VarRef</title>
+		 <mediaobject>
+			<imageobject>
+				<imagedata fileref="images/VarRef.png" />
+			</imageobject>
+
+		</mediaobject>
+
+	</figure>
+	 <para>
+		Values can be bound to variables within a certain scope. Variable references always begin with a dollar sign.
+	</para>
+	 <para>
+		Variables are immutables, but variable bindings can be hidden with a binding to a variable with the same name.
+	</para>
+	 <para>
+		Variables can be declared with global variable declarations, FLWOR expressions, typeswitch expressions.
+	</para>
+	 <para>
+		There is a special variable which is called the context item and which is denoted with a double dollar. The context item is used in predicate expressions to refer to the current item.
+	</para>
+	 <figure>
+		<title>ContextItemExpr</title>
+		 <mediaobject>
+			<imageobject>
+				<imagedata fileref="images/ContextItemExpr.png" />
+			</imageobject>
+
+		</mediaobject>
+
+	</figure>
+</chapter>
+

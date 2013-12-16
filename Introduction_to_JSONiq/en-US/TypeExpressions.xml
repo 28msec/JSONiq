@@ -1,0 +1,158 @@
+<chapter id="chapter-TypeExpressions">
+  <title>Expressions Dealing with Types</title>
+    <para>We have already introduced the sequence type syntax. It is now time to introduce the expressions that deal with
+    types.</para>
+  <section>
+    <title>Instance-of Expressions</title>
+    <para>A quick glimpse on this expression was already given.
+    An instance expression can be used to tell whether a sequence matches a given sequence type, like in Java.</para>
+    <example>
+      <title>Instance of expression.</title>
+      <programlisting>
+1 instance of integer,
+1 instance of string,
+"foo" instance of string,
+{ "foo" : "bar" } instance of object,
+({ "foo" : "bar" }, { "bar" : "foo" })
+    instance of json-item+,
+[ 1, 2, 3 ] instance of array?,
+() instance of ()
+      </programlisting>
+    <para>Results:</para><programlisting>true
+false
+true
+true
+true
+true
+true
+</programlisting></example>
+  </section>
+  <section>
+    <title>Treat Expressions</title>
+    <para>A treat expression just forwards its operand value, but only after checking that a JSONiq value matches a given sequence type.
+          If it is not the case, an error is raised.</para>
+    <example>
+      <title>Treat as expression.</title>
+      <programlisting>
+1 treat as integer,
+"foo" treat as string,
+{ "foo" : "bar" } treat as object,
+({ "foo" : "bar" }, { "bar" : "foo" })
+    treat as json-item+,
+[ 1, 2, 3 ] treat as array?,
+() treat as ()
+      </programlisting>
+    <para>Results:</para><programlisting>1
+"foo"
+{
+  "foo" : "bar"
+}
+{
+  "foo" : "bar"
+}
+{
+  "bar" : "foo"
+}
+[ 1, 2, 3 ]
+</programlisting></example>
+    <example>
+      <title>Treat as expression (failing).</title>
+      <programlisting>
+1 treat as string
+      </programlisting>
+    <para>Error:</para><programlisting>"xs:integer" cannot be treated as type xs:string</programlisting></example>
+  </section>
+  <section>
+    <title>Castable Expressions</title>
+    <para>A castable expression checks whether a JSONiq value can be cast to a given atomic type
+    and returns true or false accordingly. It can be used before actually casting to that type.</para>
+    <para>The question mark allows for an empty sequence.</para>
+    <example>
+      <title>Castable as expression.</title>
+      <programlisting>
+"1" castable as integer,
+"foo" castable as integer,
+"2013-04-02" castable as date,
+() castable as date,
+("2013-04-02", "2013-04-03") castable as date,
+() castable as date?
+      </programlisting>
+    <para>Results:</para><programlisting>true
+false
+true
+false
+false
+true
+</programlisting></example>
+  </section>
+  <section>
+    <title>Cast Expressions</title>
+    <para>A cast expression casts a (single) JSONiq value to a given atomic type. The resulting value is annotated with this type.</para>
+    <para>Also here, the question mark allows for an empty sequence. An error is raised if the cast is unsuccessful.</para>
+    <example>
+      <title>Cast as expression.</title>
+      <programlisting>
+"1" cast as integer,
+"2013-04-02" cast as date,
+() cast as date?,
+"2013-04-02" cast as date?
+      </programlisting>
+    <para>Results:</para><programlisting>1
+"2013-04-02"
+"2013-04-02"
+</programlisting></example>
+    <example>
+      <title>Cast as expression (failing).</title>
+      <programlisting>
+("2013-04-02", "2013-04-03") cast as date,
+"foo" cast as integer,
+() cast as date
+      </programlisting>
+    <para>Error:</para><programlisting>sequence of more than one item can not be cast to type with
+ quantifier '1' or '?'</programlisting></example>
+  </section>
+  <section id="section-typeswitch">
+    <title>Typeswitch Expressions</title>
+    <para>A typeswitch expressions tests if the value resulting from the first operand matches a given list of types. The expression corresponding to
+      the first matching case is finally evaluated. If there is no match, the expression in the default clause is evaluated.</para>
+    <example>
+      <title>Typeswitch expression.</title>
+      <programlisting>
+typeswitch("foo")
+  case integer return "integer"
+  case string return "string"
+  case object return "object"
+  default return "other"
+      </programlisting>
+    <para>Results:</para><programlisting>"string"
+</programlisting></example>
+    <para>In each clause, it is possible to bind the value of the first operand to a variable.</para>
+    <example>
+      <title>Typeswitch expression.</title>
+      <programlisting>
+typeswitch("foo")
+  case $i as integer return $i + 1
+  case $s as string return $s || "foo"
+  case $o as object return [ $o ]
+  default $d return $d
+      </programlisting>
+    <para>Results:</para><programlisting>"foofoo"
+</programlisting></example>
+    <para>The vertical bar can be used to allow several types in the same case clause.</para>
+    <example>
+      <title>Typeswitch expression.</title>
+      <programlisting>
+typeswitch("foo")
+  case $a as integer | string
+      return { "integer or string" : $a }
+  case $o as object
+      return [ $o ]
+  default $d
+      return $d
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "integer or string" : "foo"
+}
+</programlisting></example>
+  </section>
+</chapter>

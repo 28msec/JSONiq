@@ -1,0 +1,379 @@
+<chapter id="chapter-functions">
+  <title>Function Library</title>
+  <para>JSONiq provides a rich set of functions.</para>
+  <section>
+    <title>JSON specific functions.</title>
+    <para>Some functions are specific to JSON.</para>
+    <section>
+      <title>keys</title>
+      <para>
+        This function returns the distinct keys of all objects in the supplied sequence, in an implementation-dependent order.
+      </para>
+      <para>
+        <code>keys($o as item*) as string*</code>
+      </para>
+      <example>
+        <title>Getting all distinct key names in the supplied objects, ignoring non-objects.</title>
+        <programlisting>
+let $o := ("foo", [ 1, 2, 3 ], { "a" : 1, "b" : 2 }, { "a" : 3, "c" : 4 })
+return keys($o)
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>a b c</para></formalpara></example>
+      <example>
+        <title>Retrieving all Pairs from an Object:</title>
+        <programlisting>
+let $map := { "eyes" : "blue", "hair" : "fuchsia" }
+for $key in keys($map)
+return { $key : $map.$key }
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>{ "eyes" : "blue" } { "hair" : "fuchsia" }</para></formalpara></example>
+    </section>
+    <section>
+      <title>members</title>
+      <para>This functions returns all members of all arrays of the supplied sequence.</para>
+      <para>
+        <code>members($a as item*) as item*</code>
+      </para>
+      <example>
+        <title>Retrieving the members of all supplied arrays, ignoring non-arrays.</title>
+        <programlisting>
+let $planets :=  ( "foo", { "foo" : "bar "}, [ "mercury", "venus", "earth", "mars" ], [ 1, 2, 3 ])
+return members($planets)
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>mercury venus earth mars 1 2 3</para></formalpara></example>
+    </section>
+    <section>
+      <title>null</title>
+      <para>
+        This function returns the JSON null.
+      </para>
+      <para>
+        <code>null() as null</code>
+      </para>
+    </section>
+    <section>
+      <title>parse-json</title>
+      <para> This function parses its first parameter (a string) as JSON, and returns the resulting
+        sequence of objects and arrays. </para>
+      <para>
+        <code>parse-json($arg as string?) as json-item*</code>
+      </para>
+      <para>
+        <code>parse-json($arg as string?, $options as object) as json-item*</code>
+      </para>
+      <para>The object optionally supplied as the second parameter may contain additional options:</para>
+      <itemizedlist>
+        <listitem>
+          <para><code>jsoniq-multiple-top-level-items</code> (boolean): indicates whether parsing to zero, or several objects is allowed.
+          An error is raised if this value is false and there is not exactly one object that was parsed.</para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        If parsing is not successful, an error is raised. Parsing is considered in particular to be non-successful if
+        the boolean associated with "jsoniq-multiple-top-level-items" in the additional parameters is false and there is
+        extra content after parsing a single abject or array.
+      </para>
+      <example>
+        <title>Parsing a JSON document</title>
+        <programlisting>
+parse-json("{ \"foo\" : \"bar\" }", { "jsoniq-multiple-top-level-items" : false })
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : "bar" }</para></formalpara></example>
+      <example>
+        <title>Parsing multiple, whitespace-separated JSON documents</title>
+        <programlisting>
+parse-json("{ \"foo\" : \"bar\" } { \"bar\" : \"foo\" }")
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : "bar" } { "bar" : "foo" }</para></formalpara></example>
+    </section>
+    <section>
+      <title>size</title>
+      <para>
+        This function returns the size of the supplied array, or the empty sequence if the empty sequence is provided.
+      </para>
+      <para>
+        <code>size($a as array?) as integer?</code>
+      </para>
+      <example>
+        <title>Retrieving the size of an array</title>
+        <programlisting>
+let $a := [1 to 10]
+return size($a)
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>10</para></formalpara></example>
+    </section>
+    <section>
+      <title>accumulate</title>
+      <para> This function dynamically builds an object, like the {| |} syntax, except that it does not throw
+        an error upon pair collision. Instead, it accumulates them, wrapping into an array if necessary. Non-objects are ignored.</para>
+      <programlisting>
+declare function accumulate($seq as item*) as object
+{
+  {|
+    keys($seq) ! { $$ : $seq.$$ }
+  |}
+};
+      </programlisting>
+    </section>
+    <section>
+      <title>descendant-arrays</title>
+      <para> This function returns all arrays contained within the supplied items, regardless of depth.</para>
+      <programlisting>
+declare function descendant-arrays($seq as item*) as array*
+{
+  for $i in $seq
+  return typeswitch ($i)
+  case array return ($i, descendant-arrays($i[])
+  case object return return descendant-arrays(values($i))
+  default return ()
+};
+      </programlisting>
+    </section>
+    <section>
+      <title>descendant-objects</title>
+      <para> This function returns all objects contained within the supplied items, regardless of depth.</para>
+      <programlisting>
+declare function descendant-objects($seq as item*) as object*
+{
+  for $i in $seq
+  return typeswitch ($i)
+  case object return ($i, descendant-objects(values($i)))
+  case array return return descendant-objects($i[])
+  default return ()
+};
+      </programlisting>
+    </section>
+    <section>
+      <title>descendant-pairs</title>
+      <para>
+        This function returns all descendant pairs within the supplied items.
+      </para>
+      <programlisting>
+declare function descendant-pairs($seq as item*)
+{
+  for $i in $seq
+  return typeswitch ($i)
+  case object return
+    for $k in keys($o)
+    let $v := $o.$k
+    return ({ $k : $v }, descendant-pairs($v))
+  case array return descendant-pairs($i[])
+  default return ()
+};
+      </programlisting>
+      <example>
+        <title>Accessing all descendant pairs</title>
+        <programlisting>
+let $o := 
+{
+  "first" : 1,
+  "second" : { 
+    "first" : "a", 
+    "second" : "b" 
+  }
+}
+return descendant-pairs($o)
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>An error was raised: "descendant-pairs": function with arity 1 not declared</para></formalpara></example>
+    </section>
+    <section>
+      <title>flatten</title>
+      <para>This function recursively flattens arrays in the input sequence, leaving non-arrays intact.</para>
+      <programlisting>
+declare function flatten($seq as item*) as item*
+{
+  for $value in $seq
+  return typeswitch ($value)
+         case array return flatten($value[])
+         default return $value
+};
+	  </programlisting>
+    </section>
+    <section>
+      <title>intersect</title>
+      <para>This function returns the intersection of the supplied objects, and aggregates values corresponding
+        to the same name into an array. Non-objects are ignored.</para>
+      <programlisting>
+declare function intersect($seq as item*)
+{
+  {|
+    let $objects := $seq[. instance of object()]
+    for $key in keys(head($objects))
+    where every $object in tail($objects)
+          satisfies exists(index-of(keys($object), $key))
+    return { $key : $objects.$key }
+  |}
+};
+      </programlisting>
+    </section>
+    <section>
+      <title>project</title>
+      <para>This function iterates on the input sequence. It projects objects by filtering their pairs and leaves non-objects intact.</para>
+      <programlisting>
+declare function project($seq as item*, $keys as string*) as item*
+{
+  for $item in $seq
+  return typeswitch ($item)
+         case $object as object return
+         {|
+           for $key in keys($object)
+           where some $to-project in $keys satisfies $to-project eq $key
+           let $value := $object.$key
+           return { $key : $value }
+         |}
+         default return $item
+};
+      </programlisting>
+      <example>
+        <title>Projecting an object 1</title>
+        <programlisting>
+let $o := {
+  "Captain" : "Kirk",
+  "First Officer" : "Spock",
+  "Engineer" : "Scott"
+  }
+return project($o, ("Captain", "First Officer"))
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>{ "Captain" : "Kirk", "First Officer" : "Spock" }</para></formalpara></example>
+      <example>
+        <title>Projecting an object 2</title>
+        <programlisting>
+let $o := {
+  "Captain" : "Kirk",
+  "First Officer" : "Spock",
+  "Engineer" : "Scott"
+  }
+return project($o, "XQuery Evangelist")
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>{  }</para></formalpara></example>
+    </section>
+    <section>
+      <title>remove-keys</title>
+      <para>This function iterates on the input sequence. It removes the pairs with the given keys from all objects and leaves non-objects intact.</para>
+      <programlisting>
+declare function remove-keys($seq as item*, $keys as string*) as item*
+{
+  for $item in $seq
+  return typeswitch ($item)
+         case $object as object return
+         {|
+           for $key in keys($object)
+           where every $to-remove in $keys satisfies $to-remove ne $key
+           let $value := $object.$key
+           return { $key : $value }
+         |}
+         default return $item
+};
+      </programlisting>
+      <example>
+        <title>Removing keys from an object (not implemented yet)</title>
+        <programlisting>
+let $o := {
+  "Captain" : "Kirk",
+  "First Officer" : "Spock",
+  "Engineer" : "Scott"
+  }
+return remove-keys($o, ("Captain", "First Officer"))
+        </programlisting>
+      <formalpara><title>Result (run with Zorba):</title><para>An error was raised: "remove-keys": function with arity 2 not declared</para></formalpara></example>
+    </section>
+    <section>
+      <title>values</title>
+      <para>This function returns all values in the supplied objects. Non-objects are ignored.</para>
+      <programlisting>
+declare function values($seq as item*) as item* {
+  for $i in $seq
+  for $k in jn:keys($i)
+  return $i($k)
+};
+      </programlisting>
+    </section>
+    <section>
+      <title>encode-for-roundtrip</title>
+      <para>
+        This function encodes any sequence of items, even containing non-JSON types, to a sequence of JSON items that can be serialized as pure JSON, in a way that it can be
+        parsed and decoded back using decode-from-roundtrip. JSON features are left intact, while atomic items annotated with a non-JSON type are converted to objects embedding all necessary information.
+      </para>
+      <para>
+        <code>encode-for-roundtrip($items as item*) as json-item*</code>
+      </para>
+    </section>
+    <section>
+      <title>decode-from-roundtrip</title>
+      <para>
+        This function decodes a sequence previously encoded with encode-for-roundtrip.
+      </para>
+      <para>
+        <code>decode-from-roundtrip($items as json-item*) as item*</code>
+      </para>
+    </section>
+  </section>
+  <section>
+    <title>Functions taken from XQuery</title>
+    <itemizedlist>
+      <listitem>
+        <para>Access to the external environment: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#collection-1">collection#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Function to turn atomics into booleans for use in two-valued logics: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#boolean-1">boolean#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Raising errors: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#error-0">error#0</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#error-1">error#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#error-2">error#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#error-3">error#3</ulink>.</para>
+      </listitem>
+      <listitem>
+        <para>Functions on numeric values: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#abs-1">abs#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#ceilingabs-1">ceilingabs#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#floorabs-1">floorabs#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#roundabs-1">roundabs#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#round-half-to-even-1">round-half-to-even#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Parsing numbers: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#number-0">number#0</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#number-1">number#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Formatting integers: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#format-integer-2">format-integer#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#format-integer-3">format-integer#3</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Formatting numbers: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#format-number-2">format-number#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#format-number-3">format-number#3</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Trigonometric and exponential functions: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#pi-0">pi#0</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#exp-1">exp#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#exp10-1">exp10#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#log-1">log#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#log10-1">log10#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#pow-2">pow#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#sqrt-1">sqrt#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#sin-1">sin#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#cos-1">cos#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#tan-1">tan#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#asin-1">asin#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#acos-1">acos#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#atan-1">atan#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#atan2-1">atan2#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Functions to assemble and disassemble strings: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#codepoints-to-string-1">codepoints-to-string#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#string-to-codepoints-1">string-to-codepoints#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Comparison of strings: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#compare-2">compare#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#compare-3">compare#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#codepoint-equal-2">codepoint-equal#2</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Functions on string values: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#concat-2">concat#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#string-join-1">string-join#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#string-join-2">string-join#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#substring-2">substring#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#substring-3">substring#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#string-length-0">string-length#0</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#string-length-1">string-length#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#normalize-space-0">normalize-space#0</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#normalize-space-1">normalize-space#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#normalize-unicode-1">normalize-unicode#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#normalize-unicode-2">normalize-unicode#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#upper-case-1">upper-case#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#lower-case-1">lower-case#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#translate-3">translate#3</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Functions based on substring matching: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#contains-2">contains#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#contains-3">contains#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#starts-with-2">starts-with#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#starts-with-3">starts-with#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#ends-with-2">ends-with#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#ends-with-3">ends-with#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#substring-before-2">substring-before#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#substring-before-3">substring-before#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#substring-after-2">substring-after#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#substring-after-3">substring-after#3</ulink></para>
+      </listitem>
+      <listitem>
+        <para>String functions that use regular expressions: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#matches-2">matches#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#matches-3">matches#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#replace-3">replace#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#replace-4">replace#4</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#tokenize-2">tokenize#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#tokenize-3">tokenize#3</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Functions that manipulate URIs: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#resolve-uri-1">resolve-uri#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#resolve-uri-2">resolve-uri#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#encode-for-uri-1">encode-for-uri#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#iri-to-uri-1">iri-to-uri#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#escape-html-uri-1">escape-html-uri#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>General functions on sequences:  <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#empty-1">empty#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#exists-1">exists#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#head-1">head#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#tail-1">tail#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#insert-before-3">insert-before#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#remove-2">remove#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#reverse-1">reverse#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#subsequence-2">subsequence#2</ulink>,  <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#subsequence-3">subsequence#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#unordered-1">unordered#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Function that compare values in sequences: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#distinct-values-1">distinct-values#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#distinct-values-2">distinct-values#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#index-of-2">index-of#2</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#index-of-3">index-of#3</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#deep-equal-2">deep-equal#2</ulink>. <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#deep-equal-3">deep-equal#3</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Functions that test the cardinality of sequences: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#zero-or-one-1">zero-or-one#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#one-or-more-1">one-or-more#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#exactly-one-1">exactly-one#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Aggregate functions: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#count-1">count#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#avg-1">avg#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#max-1">max#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#min-1">min#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#sum-1">sum#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Serializing functions: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#serialize-1">serialize#1</ulink> (unary)</para>
+      </listitem>
+      <listitem>
+        <para>Context information: <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#current-dateTime-1">current-dateTime#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#current-date-1">current-date#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#current-time-1">current-time#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#implicit-timezone-1">implicit-timezone#1</ulink>, <ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#default-collation-1">default-collation#1</ulink></para>
+      </listitem>
+      <listitem>
+        <para>Constructor functions: for all builtin types, with the name of the builtin type and unary. Equivalent to a cast expression.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+</chapter>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<book>
+  <xi:include href="Book_Info.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Status.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Introduction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-JDM.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Construction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Navigation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Builtin.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Updates.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Library.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Combining.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Serialization.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Error-Codes.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Grammar.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Chapter-Implementation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="Revision_History.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />	<index />
+</book>
+

@@ -1,0 +1,31 @@
+<book>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Book_Info.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Introduction.xml"/>
+  <part>
+    <title>JSON and the JSONiq Data Model</title>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="JSON.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="JSONiqDataModel.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="JSONiqTypeSystem.xml"/>
+  </part>
+  <part>
+    <title>Construction of Items and JSON Navigation</title>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Construction.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Collections.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Navigation.xml"/>
+  </part>
+  <part>
+    <title>JSONiq Expressions</title>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="BasicOperations.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ControlFlow.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="FLWORExpressions.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="TypeExpressions.xml"/>
+  </part>
+  <part>
+    <title>Prolog, Modules and Functions</title>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Prolog.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Modules.xml"/>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="FunctionLibrary.xml"/>
+  </part>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="AreasOfConfusion.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Reference.xml"/>
+</book>

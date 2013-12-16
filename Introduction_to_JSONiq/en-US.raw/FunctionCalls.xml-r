@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<section id="chapter-function-calls">
+  <title>Function Calls</title>
+  <figure>
+    <title>FunctionCall</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/FunctionCall.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The syntax for function calls is similar to many other languages. JSONiq supports three sorts of functions:</para>
+  <itemizedlist>
+    <listitem>
+      <para>Builtin functions: these have no prefix and can be called without any import.</para>
+    </listitem>
+    <listitem>
+      <para>Local functions: they are defined in the prolog, to be used in the main query. They have the prefix <emphasis>local:</emphasis>. Chapter <xref linkend="chapter-prolog"/> describes how to define your own local functions.</para>
+    </listitem>
+    <listitem>
+      <para>Imported functions: they are defined in a library module. They have the prefix corresponding to the alias to which the imported module has been bound to. Chapter <xref linkend="chapter-modules"/> describes how to define your own modules.</para>
+    </listitem>
+  </itemizedlist>      
+  <example>
+    <title>A builtin function call.</title>
+    <programlisting>
+     keys({ "foo" : "bar", "bar" : "foo" })
+   </programlisting>
+  </example>
+  <example>
+    <title>A builtin function call.</title>
+    <programlisting>
+     concat("foo", "bar")
+   </programlisting>
+  </example>
+  <para>An error is raised if the actual types do not match the expected types.
+  </para>
+  <example>
+    <title>A type error in a function call.</title>
+    <programlisting>
+     sum({ "foo" : "bar" })
+   </programlisting>
+  </example>
+</section>

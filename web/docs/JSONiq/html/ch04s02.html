@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.2. Sequence types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-type-system.html" title="Chapter 4. JSONiq types" /><link rel="prev" href="chapter-type-system.html" title="Chapter 4. JSONiq types" /><link rel="next" href="chapter-expressions.html" title="Chapter 5. Expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-type-system.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-expressions.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp52634416">4.2. Sequence types</h2></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/SequenceType.png" alt="SequenceType" /></div></div><h6>Figure 4.4. SequenceType</h6></div><br class="figure-break" /><div class="para">
+			A sequence is an ordered list of items.
+		</div><div class="para">
+			All sequences match the sequence type <span class="emphasis"><em>item*</em></span>.
+		</div><div class="para">
+			A sequence type is made of an item type followed by an occurrence indicator:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					* stands for a sequence of any length (zero or more)
+				</div></li><li class="listitem"><div class="para">
+					+ stands for a non-empty sequence (one or more)
+				</div></li><li class="listitem"><div class="para">
+					? stands for an empty or a singleton sequence (zero or one)
+				</div></li><li class="listitem"><div class="para">
+					The absence of indicator stands for a singleton sequence (one).
+				</div></li></ul></div><div class="para">
+			Examples:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					string matches any singleton sequence containing a string.
+				</div></li><li class="listitem"><div class="para">
+					item+ matches any non-empty sequence.
+				</div></li><li class="listitem"><div class="para">
+					object? matches the empty sequence and any sequence containing one object.
+				</div></li></ul></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-type-system.html"><strong>Prev</strong>Chapter 4. JSONiq types</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-expressions.html"><strong>Next</strong>Chapter 5. Expressions</a></li></ul></body></html>

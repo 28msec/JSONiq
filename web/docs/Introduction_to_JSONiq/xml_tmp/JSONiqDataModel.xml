@@ -1,0 +1,149 @@
+<chapter id="chapter-DataModel">
+  <title>The JSONiq Data Model</title>
+  <para>Having a JSON document as pure syntax is not very useful in itself,
+    except to send it over a network or to store it in a document store of course.
+    To make use of it in a database or in other processing environments, you need to bring it to a higher
+    level of abstraction and give semantics to the building blocks. This is what a Data Model is for.</para>
+  <para>We now introduce the JSONiq data model.</para>
+  <para>Let us begin with some good news first: the JSON syntax that we have just introduced is a subset of JSONiq. Concretely,
+  this means that any of these syntactic JSON building blocks can be copy-and-pasted, and executed as a JSONiq query. The output will be
+  the counterpart of this JSON building block in the Data Model. So, if you are familiar with JSON, then you already know some JSONiq.</para>
+  <section>
+    <title>JSONiq Values: Items and Sequences</title>
+    <para>In JSONiq, the JSON building blocks described in the former section, on a more abstract level, are referred to as items.
+    JSONiq manipulates sequences of these items. Hence, a JSONiq value is a sequence of items. So, in particular, a JSONiq query
+    returns sequences of items. Actually, even inside a JSONiq query, sequences of items are passed around
+    between the JSONiq building blocks internal to a query (called expressions).</para>
+    <para>Let us copy-and-paste a JSON Object and execute it as JSONiq:</para>
+    <example>
+      <title>A sequence of just one item.</title>
+      <programlisting>
+{ "foo" : "bar" }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "bar"
+}
+</programlisting></example>
+    <para>The above query generates a sequence of one item, an object item in this case. The result displayed above is the
+    output of this query when run with the Zorba query processor, which is one of the
+    JSONiq implementations.</para>
+    <para>Commas are all you need to begin building your own sequences. You can mix and match!</para>
+    <example>
+      <title>A sequence of various items.</title>
+      <programlisting>
+"foo", 2, true, { "foo", "bar" }, null, [ 1, 2, 3 ]
+      </programlisting>
+    <para>Results:</para><programlisting>"foo"
+2
+true
+"foo"
+"bar"
+null
+[ 1, 2, 3 ]
+</programlisting></example>
+    <para>There are three golden rules about sequences that are useful to keep in mind.</para>
+    <para>Rule #1: Sequences are flat and cannot be nested. This makes streaming possible, which is very powerful.</para>
+    <example>
+      <title>Sequences are flat.</title>
+      <programlisting>
+( ("foo", 2), ( (true, 4, null), 6 ) )
+      </programlisting>
+    <para>Results:</para><programlisting>"foo"
+2
+true
+4
+null
+6
+</programlisting></example>
+    <para>Rule #2: A sequence can be empty. The empty sequence can be constructed with empty parentheses.</para>
+    <example>
+      <title>The empty sequence.</title>
+      <programlisting>
+()
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+    <para>Rule #3: A sequence of just one item is considered the same as this item itself. Whenever we say that an expression returns or takes one item, we really
+      mean that it takes a singleton sequence of one item.</para>
+    <example>
+      <title>A sequence of one item.</title>
+      <programlisting>
+("foo")
+      </programlisting>
+    <para>Results:</para><programlisting>"foo"
+</programlisting></example>
+    <para>JSONiq classifies the items mentioned above in three categories:</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          Objects: the counterparts of the syntactic JSON objects.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Arrays: the counterparts of the syntactic JSON arrays.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Atomics: the counterparts of JSON strings, JSON numbers, JSON booleans and JSON nulls - but with a very rich type system
+          which includes dates, for example.
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
+    <title>Objects</title>
+    <para>An object represents a JSON object: an unordered collection of string/item
+    pairs.</para>
+    <para>Each pair consists of an atomic of type <emphasis>string</emphasis> and of an item which can be in any category.</para>
+    <para>No two pairs have the same name. Because of this, the word
+      <emphasis>field</emphasis> is also used to refer to pairs.</para>
+  </section>
+  <section>
+    <title>Arrays</title>
+    <para>An array represents a JSON array: an ordered list of items -- items in any category.</para>
+    <para>An array can be seen as a sequence that is wrapped in one single item.
+    And since an array is an item, arrays can nest -- like in JSON.</para>
+  </section>
+  <section>
+    <title>Atomics</title>
+    <para>An atomic is a non-structured value that is annotated with a type.</para>
+    <para>JSONiq defines many useful builtin atomic types. For now, let us introduce those that have a JSON counterpart. Note that JSON numbers correspond to
+    three different types in JSONiq.</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+        <emphasis>string</emphasis>: all JSON strings. </para>
+      </listitem>
+      <listitem>
+        <para>
+        <emphasis>integer</emphasis>: all JSON numbers that are integers (no dot, no exponent), infinite range.</para>
+      </listitem>
+      <listitem>
+        <para>
+        <emphasis>decimal</emphasis>: all JSON numbers that are decimals (no exponent), infinite range.</para>
+      </listitem>
+      <listitem>
+        <para>
+        <emphasis>double</emphasis>: IEEE double-precision 64-bit floating point numbers
+        (corresponds to JSON numbers with an exponent). </para>
+      </listitem>
+      <listitem>
+        <para>
+        <emphasis>boolean</emphasis>: the JSON booleans true and false. </para>
+      </listitem>
+      <listitem>
+        <para>
+        <emphasis>null</emphasis>: the JSON null. </para>
+      </listitem>
+    </itemizedlist>
+    <para> JSONiq also offers many other types of atomics. Here is a little appetizer that showcases constructing a date and a duration (365 days), and adding them.</para>
+    <example>
+      <title>Atomics with the types date and dayTimeDuration.</title>
+      <programlisting>
+date("2013-06-21") + dayTimeDuration("P365D")
+      </programlisting>
+    <para>Results:</para><programlisting>"2014-06-21"
+</programlisting></example>
+  </section>
+</chapter>

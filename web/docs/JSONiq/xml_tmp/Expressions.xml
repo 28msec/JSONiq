@@ -1,0 +1,10 @@
+<chapter id="chapter-expressions">
+  <title>Expressions</title>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Construction.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="BasicOperations.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="FunctionCalls.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Selectors.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ControlFlow.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="FLWORExpressions.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="TypeExpressions.xml"/>
+</chapter>

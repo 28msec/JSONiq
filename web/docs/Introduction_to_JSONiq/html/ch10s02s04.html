@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.2.4. Cast expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="section-type-expressions.html" title="10.2. Expressions dealing with types" /><link rel="prev" href="ch10s02s03.html" title="10.2.3. Castable expressions" /><link rel="next" href="ch10s02s05.html" title="10.2.5. Typeswitch expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s02s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch10s02s05.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm45232608">10.2.4. Cast expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/CastExpr.png" width="444" alt="CastExpr" /></div></div><h6>Figure 10.4. CastExpr</h6></div><br class="figure-break" /><div class="para">
+			A cast expression casts a JSONiq value to a given atomic type. The resulting value is annotated with this type.
+		</div><div class="example"><h6>Example 10.45. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+"1" cast as integer
+</pre><pre class="programlisting">Result:
+ 1
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.46. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+"foo" cast as integer
+</pre><pre class="programlisting">Result:
+ An error was raised: "foo": value of type xs:string is not castable to type xs:integer</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.47. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+"2013-04-02" cast as date
+</pre><pre class="programlisting">Result:
+ "2013-04-02"
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.48. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+() cast as date
+</pre><pre class="programlisting">Result:
+ An error was raised: empty sequence can not be cast to type with quantifier '1'</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.49. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+("2013-04-02", "2013-04-03") cast as date
+</pre><pre class="programlisting">Result:
+ An error was raised: sequence of more than one item can not be cast to type with quantifier '1' or '?'</pre></div></div><br class="example-break" /><div class="para">
+			The question mark allows for an empty sequence.
+		</div><div class="example"><h6>Example 10.50. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+() cast as date?
+</pre><pre class="programlisting">Result:
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.51. Cast as expression</h6><div class="example-contents"><pre class="programlisting">
+"2013-04-02" cast as date?
+</pre><pre class="programlisting">Result:
+ "2013-04-02"
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s02s03.html"><strong>Prev</strong>10.2.3. Castable expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch10s02s05.html"><strong>Next</strong>10.2.5. Typeswitch expressions</a></li></ul></body></html>

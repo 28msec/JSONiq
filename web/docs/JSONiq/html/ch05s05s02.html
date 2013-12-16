@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.5.2. Switch expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-control-flow.html" title="5.5. Control flow expressions" /><link rel="prev" href="chapter-control-flow.html" title="5.5. Control flow expressions" /><link rel="next" href="ch05s05s03.html" title="5.5.3. Try-catch expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-control-flow.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s05s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp8854464">5.5.2. Switch expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/SwitchExpr.png" width="444" alt="SwitchExpr" /></div></div><h6>Figure 5.34. SwitchExpr</h6></div><br class="figure-break" /><div class="para">
+			A switch expression evaluates the expression inside the switch. If it is an atomic, it compares it in turn to the provided atomic values (with the semantics of the eq operator) and returns the value associated with the first matching case clause.
+		</div><div class="example"><h6>Example 5.92. A switch expression</h6><div class="example-contents"><pre class="programlisting">
+switch ("foo")
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp12403744">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			If it is not an atomic, an error is raised.
+		</div><div class="example"><h6>Example 5.93. A switch expression</h6><div class="example-contents"><pre class="programlisting">
+switch ({ "foo" : "bar" })
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7292448">Result (run with Zorba):</h5>
+					An error was raised: can not atomize an object item: an object has probably been passed where an atomic value is expected (e.g., as a key, or to a function expecting an atomic item)
+				</div></div></div><br class="example-break" /><div class="para">
+			If no value matches, the default is used.
+		</div><div class="example"><h6>Example 5.94. A switch expression</h6><div class="example-contents"><pre class="programlisting">
+switch ("no-match")
+case "bar" return "foo"
+case "foo" return "bar"
+default return "none"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp17898560">Result (run with Zorba):</h5>
+					none
+				</div></div></div><br class="example-break" /><div class="para">
+			The case clauses support composability of expressions as well.
+		</div><div class="example"><h6>Example 5.95. A switch expression</h6><div class="example-contents"><pre class="programlisting">
+switch (2)
+case 1 + 1 return "foo"
+case 2 + 2 return "bar"
+default return "none"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10858480">Result (run with Zorba):</h5>
+					foo
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.96. A switch expression</h6><div class="example-contents"><pre class="programlisting">
+switch (true)
+case 1 + 1 eq 2 return "1 + 1 is 2"
+case 2 + 2 eq 5 return "2 + 2 is 5"
+default return "none of the above is true"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1346368">Result (run with Zorba):</h5>
+					1 + 1 is 2
+				</div></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-control-flow.html"><strong>Prev</strong>5.5. Control flow expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s05s03.html"><strong>Next</strong>5.5.3. Try-catch expressions</a></li></ul></body></html>

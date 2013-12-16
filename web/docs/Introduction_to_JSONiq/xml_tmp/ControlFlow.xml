@@ -1,0 +1,159 @@
+<chapter id="chapter-controlFlow">
+  <title>Control Flow Expressions</title>
+  <para>JSONiq supports control flow expressions such as conditional expressions (if then else), switch, and typeswitch. At least the first two
+   should be familiar to any programmer.</para>
+  <section>
+    <title>Conditional Expressions</title>
+    <para>A conditional expression allows you to pick the one or the other value depending on a boolean value.</para>
+    <example>
+      <title>A conditional expression.</title>
+      <programlisting>
+if (1 + 1 eq 2)
+then { "foo" : "yes" }
+else { "foo" : "false" }
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "yes"
+}
+</programlisting></example>
+    <para>The behavior of the expression inside the if is similar to that of logical operations (two-valued logics),
+      meaning that non-boolean values get converted to a boolean. The exists() builtin function can be useful to know if a sequence
+      is empty or not.
+    </para>
+    <example>
+      <title>A conditional expression.</title>
+      <programlisting>
+if (null) then { "foo" : "yes" }
+          else { "foo" : "no" },
+if (1) then { "foo" : "yes" }
+       else { "foo" : "no" },
+if (0) then { "foo" : "yes" }
+       else { "foo" : "no" },
+if ("foo") then { "foo" : "yes" }
+           else { "foo" : "no" },
+if ("") then { "foo" : "yes" }
+        else { "foo" : "no" },
+if (()) then { "foo" : "yes" }
+        else { "foo" : "no" },
+if (exists(collection("faqs"))) then { "foo" : "yes" }
+                               else { "foo" : "no" }
+        </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "no"
+}
+{
+  "foo" : "yes"
+}
+{
+  "foo" : "no"
+}
+{
+  "foo" : "yes"
+}
+{
+  "foo" : "no"
+}
+{
+  "foo" : "no"
+}
+{
+  "foo" : "yes"
+}
+</programlisting></example>
+    <para>Note that the else clause is mandatory (but can be the empty sequence)</para>
+    <example>
+      <title>A conditional expression.</title>
+      <programlisting>
+if (1+1 eq 2) then { "foo" : "yes" } else ()
+        </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "yes"
+}
+</programlisting></example>
+  </section>
+  <section>
+    <title>Switch expressions</title>
+    <para>Switch expressions are very similar to C++. A switch expression evaluates the expression inside the switch.
+      If it is an atomic, it compares it
+      in turn to the provided atomic values (with the semantics of the eq operator) and returns the value associated with
+      the first matching case clause.</para>
+    <example>
+      <title>A switch expression.</title>
+      <programlisting>
+switch ("foo")
+  case "bar" return "foo"
+  case "foo" return "bar"
+  default return "none"
+        </programlisting>
+    <para>Results:</para><programlisting>"bar"
+</programlisting></example>
+      <para>If the provided value is not an atomic, an error is raised (this is also similar to C++).</para>
+    <para>If the value does not match any of the expected values, the default is used.</para>
+    <para>Note that the default clause is mandatory (but can be the empty sequence)</para>
+    <example>
+      <title>A switch expression.</title>
+      <programlisting>
+switch ("no-match")
+  case "bar" return "foo"
+  case "foo" return "bar"
+  default return "none"
+        </programlisting>
+    <para>Results:</para><programlisting>"none"
+</programlisting></example>
+    <para>The case clauses support composability of expressions as well - an opportunity to remind you about the precedence
+    of the comma.</para>
+    <example>
+      <title>A switch expression.</title>
+      <programlisting>
+switch (2)
+  case 1 + 1 return "foo"
+  case 2 + 2 return "bar"
+  default return "none",
+switch (true)
+  case 1 + 1 eq 2 return "1 + 1 is 2"
+  case 2 + 2 eq 5 return "2 + 2 is 5"
+  default return "none of the above is true"
+        </programlisting>
+    <para>Results:</para><programlisting>"foo"
+"1 + 1 is 2"
+</programlisting></example>
+  </section>
+  <section>
+    <title>Try-Catch expressions</title>
+    <para>A try catch expression evaluates the expression inside the try block and returns its resulting value.</para>
+    <para>However, if an error is raised during this evaluation, the catch clause is evaluated and its result value returned.</para>
+    <example>
+      <title>A try catch expression.</title>
+      <programlisting>
+try { 1 div 0 } catch * { "Caught!" } 
+      </programlisting>
+    <para>Results:</para><programlisting>"Caught!"
+</programlisting></example>
+    <para>Only errors raised within the lexical scope of the try block are caught.</para>
+    <example>
+      <title>An error outside of a try-catch expression (failing).</title>
+      <programlisting>
+let $x := 1 div 0
+return try { $x }
+catch * { "Caught!" } 
+      </programlisting>
+    <para>Error:</para><programlisting>division by zero</programlisting></example>
+    <para>Errors that are detected statically within the try block, for example syntax errors, are still reported statically.</para>
+    <para>Note that this applies also if the engine is capable of detecting a type error statically, while another engine might only discover it
+    at runtime and catch it. You should keep this in mind, and only use try-catch expressions as a safety net.</para>
+    <example>
+      <title>A try catch expression with a syntax error (failing).</title>
+      <programlisting>
+try { x } catch * { "Caught!" } 
+      </programlisting>
+    <para>Error:</para><programlisting>invalid expression: syntax error, a path expression cannot 
+begin with an axis step</programlisting></example>
+    <example>
+      <title>A try catch expression with a type error (no guarantee of failure or success).</title>
+      <programlisting>
+try { "foo" + "bar" } catch * { "Caught!" }
+      </programlisting>
+    <para>Results:</para><programlisting>"Caught!"
+</programlisting></example>
+  </section>
+</chapter>

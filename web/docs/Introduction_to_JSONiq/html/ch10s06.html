@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.6. Let Clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-FLWOR.html" title="Chapter 10. FLWOR Expressions" /><link rel="prev" href="ch10s05.html" title="10.5. Group Clauses" /><link rel="next" href="ch10s07.html" title="10.7. Count Clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s05.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch10s07.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm47316288">10.6. Let Clauses</h2></div></div></div><div class="para">
+			Let bindings can be used to define aliases for any sequence, for convenience.
+		</div><div class="para">
+			For each incoming tuple, the expression in the let clause is evaluated to a sequence. A binding is added from this sequence to the let variable in each tuple. A tuple is hence produced for each incoming tuple.
+		</div><div class="example"><h6>Example 10.18. A let clause.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+let $qid := $answer.question_id
+group by $question := $qid
+let $count := count($answer)
+where $count gt 1
+return {
+  "question" : $question,
+  "count" : $count
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : 6183352,
+  "count" : 2
+}
+{
+  "question" : 4419499,
+  "count" : 2
+}
+{
+  "question" : 37823,
+  "count" : 2
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			Note that it is perfectly fine to reuse a variable name and hide a variable binding.
+		</div><div class="example"><h6>Example 10.19. A let clause reusing the same variable name.</h6><div class="example-contents"><pre class="programlisting">
+for $answer in collection("answers")
+let $qid := $answer.question_id
+group by $qid
+let $count := count($answer)
+where $count gt 1
+let $count := sum(
+  collection("faqs")
+    [ $$.question_id eq $qid ]!size($$.tags)
+)
+return {
+  "question" : collection("faqs")
+      [$$.question_id eq $qid].title,
+  "count" : $count
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "count" : 4
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "count" : 4
+}
+{
+  "question" : null,
+  "count" : 0
+}
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s05.html"><strong>Prev</strong>10.5. Group Clauses</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch10s07.html"><strong>Next</strong>10.7. Count Clauses</a></li></ul></body></html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.8. Builtin Functions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-basicOperations.html" title="Chapter 9. Basic Operations" /><link rel="prev" href="ch09s07s02.html" title="9.7.2. First-Order Logic (Quantified Variables)" /><link rel="next" href="chapter-controlFlow.html" title="Chapter 10. Control Flow Expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch09s07s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-controlFlow.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp50825856">9.8. Builtin Functions</h2></div></div></div><div class="para">
+			The syntax for function calls is similar to many other languages.
+		</div><div class="para">
+			Like in C++ (namespaces) or Java (packages, classes), functions live in namespaces that are URIs.
+		</div><div class="para">
+			Although it is possible to fully write the name of a function, namespace included, it can be cumbersome. Hence, for convenience, a namespace can be associated with a prefix that acts as a shortcut.
+		</div><div class="para">
+			JSONiq supports three sorts of functions:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					Builtin functions: these have no prefix and can be called without any import.
+				</div></li><li class="listitem"><div class="para">
+					Local functions: they are defined in the prolog, to be used in the main query. They have the prefix <span class="emphasis"><em>local:</em></span>. Chapter <a class="xref" href="chapter-prolog.html">Chapter 13, <em>Prologs</em></a> describes how to define your own local functions.
+				</div></li><li class="listitem"><div class="para">
+					Imported functions: they are defined in a library module. They have the prefix corresponding to the alias to which the imported module has been bound to. Chapter <a class="xref" href="chapter-modules.html">Chapter 14, <em>Modules</em></a> describes how to define your own modules.
+				</div></li></ul></div><div class="para">
+			For now, we only introduce how to call builtin functions -- these are the simplest, since they do not need any prefix or explicit namespace.
+		</div><div class="example"><h6>Example 9.17. A builtin function call.</h6><div class="example-contents"><pre class="programlisting">
+keys({ "foo" : "bar", "bar" : "foo" }),
+concat("foo", "bar")
+</pre><pre class="programlisting">Result:
+ "foo"
+ "bar"
+ "foobar"
+</pre></div></div><br class="example-break" /><div class="para">
+			Some builtin functions perform aggregation and are particularly convenient:
+		</div><div class="example"><h6>Example 9.18. A builtin function call.</h6><div class="example-contents"><pre class="programlisting">
+sum(1 to 100),
+avg(1 to 100),
+count( (1 to 100)[ $$ mod 5 eq 0 ] )
+</pre><pre class="programlisting">Result:
+ 5050
+ 50.5
+ 20
+</pre></div></div><br class="example-break" /><div class="para">
+			Remember that JSONiq is a strongly typed language. Functions have signatures, for example sum() expects a sequence of numbers. An error is raised if the actual types do not match the expected types.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch09s07s02.html"><strong>Prev</strong>9.7.2. First-Order Logic (Quantified Variables)</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-controlFlow.html"><strong>Next</strong>Chapter 10. Control Flow Expressions</a></li></ul></body></html>

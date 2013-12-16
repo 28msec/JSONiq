@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-status" lang="en-US">
+	<title>Status</title>
+	 <para>
+		The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax that the JSONiq core:
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				Object lookup is done with the same syntax as dynamic function calls (because the dot is allowed in variable names and XPath name tests).
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				All keys must be quoted (because unquoted strings are considered XPath name tests)
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Escaping in strings is done the XML way, i.e., with ampersands instead of backslashes.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Builtin atomic types are actually builtin XML Schema types and must be prefixed with xs:
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				The item type syntax for structured items like object(), array(), json-item(), item() must use parentheses, as item types without parentheses are considered user-defined atomic types in XQuery.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				The sequence type syntax for the empty sequence is empty-sequence().
+			</para>
+
+		</listitem>
+
+	</itemizedlist>
+</chapter>
+

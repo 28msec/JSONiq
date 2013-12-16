@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.4.2. Where clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-flwor.html" title="8.4. FLWOR expressions" /><link rel="prev" href="chapter-flwor.html" title="8.4. FLWOR expressions" /><link rel="next" href="ch08s04s03.html" title="8.4.3. Order clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-flwor.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch08s04s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp1651104">8.4.2. Where clauses</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/WhereClause.png" alt="WhereClause" /></div></div><h6>Figure 8.20. WhereClause</h6></div><br class="figure-break" /><div class="para">
+			Where clauses are used for filtering (selection operator in the relational algebra).
+		</div><div class="para">
+			For each incoming tuple, the expression in the where clause is evaluated to a boolean (possibly converting an atomic to a boolean). if this boolean is true, the tuple is forwarded to the next clause, otherwise it is dropped.
+		</div><div class="para">
+			The following query corresponds to "SELECT series FROM captains WHERE name = 'Kathryn Janeway'".
+		</div><div class="example"><h6>Example 8.59. A where clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+where $x.name eq "Kathryn Janeway"
+return $x.series
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "captains": collection does not exist</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-flwor.html"><strong>Prev</strong>8.4. FLWOR expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch08s04s03.html"><strong>Next</strong>8.4.3. Order clauses</a></li></ul></body></html>

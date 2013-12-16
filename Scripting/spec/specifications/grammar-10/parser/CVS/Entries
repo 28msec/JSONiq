@@ -1,0 +1,40 @@
+/ParseBAL.java/1.1/Fri Feb 22 23:07:32 2008//
+/PostParseException.java/1.1/Fri Feb 22 23:07:32 2008//
+/SimpleNode.java/1.1/Fri Feb 22 23:07:32 2008//
+/Test.java/1.1/Fri Feb 22 23:07:32 2008//
+/XMLValidator.java/1.1/Fri Feb 22 23:07:32 2008//
+/XPathApplet.java/1.1/Fri Feb 22 23:07:32 2008//
+/XQueryApplet.java/1.1/Fri Feb 22 23:07:32 2008//
+/XQueryToXQueryX.java/1.1/Fri Feb 22 23:07:32 2008//
+/Xq2xml.java/1.1/Fri Feb 22 23:07:32 2008//
+/applet.xml/1.1/Fri Feb 22 23:07:32 2008//
+/applet.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/applettext.xml/1.1/Fri Feb 22 23:07:32 2008//
+/build.bat/1.1/Fri Feb 22 23:07:31 2008//
+/build.dtd/1.1/Fri Feb 22 23:07:31 2008//
+/build.xml/1.1/Fri Feb 22 23:07:32 2008//
+/core-manifest.txt/1.1/Fri Feb 22 23:07:32 2008//
+/extxpath.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/ftsemfuncextr.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/ftusecasesextr.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/grammar2llk.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/javacc.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/jjtree.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/pathx1-manifest.txt/1.1/Fri Feb 22 23:07:32 2008//
+/pathx1.jar/1.1/Fri Feb 22 23:07:31 2008/-kb/
+/strip.xsl/1.2/Wed Sep 10 22:33:10 2008//
+/testextr.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/update.jar/1.1/Fri Feb 22 23:07:32 2008/-kb/
+/usecasesextr.xsl/1.1/Fri Feb 22 23:07:33 2008//
+/usecasesfrags.xquery/1.1/Fri Feb 22 23:07:32 2008//
+/xpath-manifest.txt/1.1/Fri Feb 22 23:07:32 2008//
+/xpath.jar/1.1/Fri Feb 22 23:07:32 2008/-kb/
+/xquery-core.jar/1.1/Fri Feb 22 23:07:32 2008/-kb/
+/xquery-fulltext.jar/1.1/Fri Feb 22 23:07:32 2008/-kb/
+/xquery-manifest.txt/1.1/Fri Feb 22 23:07:32 2008//
+/xquery-update.jar/1.1/Fri Feb 22 23:07:32 2008/-kb/
+/xquery.jar/1.1/Fri Feb 22 23:07:32 2008/-kb/
+/xqueryx.xsd/1.1/Fri Feb 22 23:07:33 2008//
+D/applets////
+D/applets-llk////
+D/lib////

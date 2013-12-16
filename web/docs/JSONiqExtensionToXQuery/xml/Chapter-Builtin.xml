@@ -1,0 +1,688 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-builtin-functions" lang="en-US">
+	<title>Builtin functions and operators</title>
+	 <para>
+		JSONiq defines a couple of basic builtin functions. Two of them define the atomized value and the effective boolean value of JSON items, and the others are for JSON navigation.
+	</para>
+	 <section>
+		<title>fn:boolean (aka Effective Boolean Value)</title>
+		 <para>
+			In XQuery, sequences can be converted to a boolean value. The effective boolean value is defined by invoking <code>fn:boolean</code>.
+		</para>
+		 <para>
+			<code>fn:boolean($arg as item()*) as xs:boolean</code>
+		</para>
+		 <para>
+			The definition of <code>fn:boolean($arg)</code> is changed as follows:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					If $arg is a sequence whose first item is an object or an array, <code>fn:boolean</code> returns true.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					If $arg is a singleton value of type <code>js:null</code>, <code>fn:boolean</code> returns false.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <example>
+			<title>Effective Boolean Value of JSONiq items</title>
+			 
+<programlisting>
+          Examples
+          EBV( jn:null() )         	    false
+          EBV( { } )                    true
+          EBV ( { "foo": false } )   	  true
+          EBV ( { "foo": 3, "bar":4 } )	true
+          EBV( { "foo": 3 } )	          true
+          EBV ( [1] )	                  true
+          EBV ( ( [1], jn:null() ) )    true
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>fn:collection</title>
+		 <para>
+			This is a standard function in XQuery. JSONiq extends the function to also allow collections that contains JSON items, in an implementation-dependent order
+		</para>
+		 <para>
+			<code>fn:collection($uri as xs:string?) as structured-item()*</code>
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>fn:data (aka Atomization)</title>
+		 <para>
+			In XQuery, sequences can be atomized. Atomization is defined by invoking fn:data.
+		</para>
+		 <para>
+			<code>fn:data($arg as item()*) as xs:anyAtomicType*</code>
+		</para>
+		 <para>
+			The error conditions of <code>fn:data($arg)</code> are extended as follows. An error is raised (<code>jerr:JNTY0004</code>) if an item in the sequence is an object or an array.
+		</para>
+		 <example>
+			<title>Atomization of JSONiq items</title>
+			 
+<programlisting>
+          fn:data( {"foo" : 3} )		          jerr:JNTY0004
+          fn:data( [1] )			                jerr:JNTY0004
+          fn:data( {"foo" : 3, "bar" : 4 } )	jerr:JNTY0004
+          fn:data( { } )			                jerr:JNTY0004
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>fn:string (aka string value)</title>
+		 <para>
+			In XQuery, items can have string values, which can be obtained by invoking fn:string. Objects and arrays do not have a string value.
+		</para>
+		 <para>
+			<code>fn:string($arg as item()?) as xs:string</code>
+		</para>
+		 <para>
+			The error conditions of <code>fn:string($arg)</code> are extended as follows. An error is raised (<code>jerr:JNTY0024</code>) if the item is an object or an array.
+		</para>
+		 <example>
+			<title>Atomization of JSONiq items</title>
+			 
+<programlisting>
+          fn:string( {"foo" : 3} )		          jerr:JNTY0024
+          fn:string( [1] )			                jerr:JNTY0024
+          fn:string( {"foo" : 3, "bar" : 4 } )	jerr:JNTY0024
+          fn:string( { } )			                jerr:JNTY0024
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>fn:trace</title>
+		 <para>
+			The default serialization method is changed to JSON-XML-hybrid.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>jn:decode-from-roundtrip</title>
+		 <para>
+			This function decodes non-JSON types previously encoded with <code>jn:encode-for-roundtrip.</code>
+		</para>
+		 <para>
+			<code>jn:decode-from-roundtrip($items as json-item()*) as item()*</code>
+		</para>
+		 <para>
+			<code>jn:decode-from-roundtrip($items as json-item()*, $options as object()) as item()*</code>
+		</para>
+		 <para>
+			Calling the unary version of the function defaults the value of the second parameter (<code>$options</code>) to 
+<programlisting>
+        { "prefix" : "Q{http://jsoniq.org/roundtrip}" }
+</programlisting>
+
+		</para>
+		 <para>
+			<code>$options("prefix")</code> must be atomizable and castable to a string.
+		</para>
+		 <para>
+			Error <code>jerr:JNTY0023</code> is raised if one of the above type criterion is not met.
+		</para>
+		 <para>
+			This function maps each item of the input sequence to a new item in the output sequence, preserving order.
+		</para>
+		 <para>
+			For convenience, the map is defined recursively from item() to item(), even though the initial items must be objects or arrays.
+		</para>
+		 <para>
+			It maps an array to an array the members of which are mapped resursively.
+		</para>
+		 <para>
+			It maps atomic values and XML nodes to themselves.
+		</para>
+		 <para>
+			If the supplied item is an object, it first checks if it has two pairs named "[$prefix]type" and "[$prefix]value" where [$prefix] stands for the value of <code>$options("prefix")</code>.
+		</para>
+		 <para>
+			If such is the case, then if the value of the first pair is "node()", it parses the value of the second pair to an XML node that is returned by the function.
+		</para>
+		 <para>
+			Otherwise, an atomic item is built, with the type specified by the value of the first pair (read as an EQName, with xs: automatically recognized as the XSD namespace). If this type is not xs:QName, xs:NOTATION or a subtype thereof, the atomic value is built from the lexical representation specified by the value of the pair named "[$prefix]value".
+		</para>
+		 <para>
+			If this type is xs:QName, xs:NOTATION or a subtype thereof, then the atomic value to be built is a qualified name. The namespace and local name are built from the value (an EQName) of the pair named "[$prefix]value", and the prefix is built from a third pair named "[$prefix]prefix" (empty if absent).
+		</para>
+		 <para>
+			If the object does not fit the above criterion, it is mapped to an object with the same keys, and the associated values are mapped recursively.
+		</para>
+		 <example>
+			<title>Encoding non-native JSON for roundtripping.</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        jn:decode-from-roundtrip(
+          {
+            "nan" : {
+              "Q{http://jsoniq.org/roundtrip}type" : "xs:double",
+              "Q{http://jsoniq.org/roundtrip}value" : "NaN"
+            },
+            "inf" : {
+              "Q{http://jsoniq.org/roundtrip}type" : "xs:double",
+              "Q{http://jsoniq.org/roundtrip}value" : "INF"
+            }
+            "date" : {
+              "Q{http://jsoniq.org/roundtrip}type" : "xs:date",
+              "Q{http://jsoniq.org/roundtrip}value" : "1066-10-14"
+             }
+            "hat" : {
+              "Q{http://jsoniq.org/roundtrip}type" : "Q{http://www.example.com/hat-shop}hatSize",
+              "Q{http://jsoniq.org/roundtrip}value" : "M"
+            }
+          }
+        )
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        {
+          "nan" : xs:double("NaN"),
+          "inf" : xs:double("INF"),
+          "date" : xs:date("1066-10-14"),
+          "user" : hat:hatSize("M")
+        }
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>jn:encode-for-roundtrip</title>
+		 <para>
+			This function recursively encodes non-JSON types in such a way that they can be serialized as JSON while keeping roundtrip capability.
+		</para>
+		 <para>
+			The following computations are made with respect to the static context of the caller, so that the schema type definitions are available.
+		</para>
+		 <para>
+			<code>jn:encode-for-roundtrip($items as item()*) as json-item()*</code>
+		</para>
+		 <para>
+			<code>jn:encode-for-roundtrip($items as item()*, $options as object()) as json-item()*</code>
+		</para>
+		 <para>
+			Calling the unary version of the function defaults the value of the second parameter (<code>$options</code>) to 
+<programlisting>
+        {
+          "prefix" : "Q{http://jsoniq.org/roundtrip}"
+          "serialization-parameters" : 
+            &lt;serialization-parameters xmlns="http://www.w3.org/2010/xslt-xquery-serialization"&gt;
+              &lt;omit-xml-declaration value="yes" /&gt;
+            &lt;/serialization-parameters&gt;
+        }
+</programlisting>
+
+		</para>
+		 <para>
+			<code>$options("prefix")</code> must be atomizable and castable to a string.
+		</para>
+		 <para>
+			<code>$options("serialization-parameters")</code> must be a node.
+		</para>
+		 <para>
+			Error <code>jerr:JNTY0023</code> is raised if one of the above two type criteria is not met.
+		</para>
+		 <para>
+			This function maps each item of the input sequence to a new item in the output sequence, preserving order.
+		</para>
+		 <para>
+			For convenience, the map is defined recursively from item() to item(), even though the signature of the function expects JSON items in the output sequence. The map preserves JSON native atomic values in general, however if such a value appears at the top-level in the input sequence, it is not treated as such and is mapped to an object like any other atomic item.
+		</para>
+		 <para>
+			It maps an object to an object with the same keys, the associated values being obtained by a recursive call on the original values.
+		</para>
+		 <para>
+			It maps an array to an array the members of which are obtained by a recursive call on the members of the original array.
+		</para>
+		 <para>
+			JSON native atomic values (of type exactly xs:double (except infinites and NaN), xs:decimal (except integers), xs:integer, xs:string, xs:boolean or js:null) are mapped to themselves.
+		</para>
+		 <para>
+			XML nodes are mapped to an object with two pairs: 
+			<itemizedlist>
+				<listitem>
+					<para>
+						A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the parameter $prefix) and with the value "document-node()", "element()", "text()", "comment()" or "processing-instruction()", depending on the node kind (note that if it is an attribute or namespace node, <code>err:SENR0001</code> will be raised by the step below).
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						A pair named "[$prefix]value" (where [$prefix] is replaced with the value of <code>$options("prefix")</code>) and whose value is a serialization of the XML node according to the XML output method and with the serialization parameters specified by <code>$options("serialization-parameters")</code>.
+					</para>
+
+				</listitem>
+
+			</itemizedlist>
+
+		</para>
+		 <para>
+			Non-native atomic values that are not qualified names (i.e., neither xs:QName nor xs:NOTATION nor subtypes) are mapped to an object with two pairs: 
+			<itemizedlist>
+				<listitem>
+					<para>
+						A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the parameter $prefix) and whose value is the EQName of the atomic type (The XSD namespace may be simply output with the xs: prefix).
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						A pair named "[$prefix]value" (where [$prefix] is replaced with the value of <code>$options("prefix")</code> and whose value is the lexical representation of the atomic value.
+					</para>
+
+				</listitem>
+
+			</itemizedlist>
+
+		</para>
+		 <para>
+			Non-native atomic values that are qualified names (i.e., xs:QName or xs:NOTATION or subtypes) are mapped to an object with two or three pairs: 
+			<itemizedlist>
+				<listitem>
+					<para>
+						A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the parameter $prefix) and whose value is the EQName of the atomic type (The XSD namespace may be simply output with the xs: prefix).
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						A pair named "[$prefix]value" (where [$prefix] is replaced with the value of <code>$options("prefix")</code> and whose value is the EQName corresponding to the qualified name (which includes namespace and local name).
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						A pair named "[$prefix]prefix" (where [$prefix] is replaced with the value of <code>$options("prefix")</code> and whose value is the prefix of the qualified name (only if there is such a prefix).
+					</para>
+
+				</listitem>
+
+			</itemizedlist>
+
+		</para>
+		 <example>
+			<title>Mapping non-JSON values</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        {
+          "serialized XML" :
+            jn:encode-for-roundtrip(&lt;para&gt;
+                 A pair named "[$prefix]value" (where [$prefix] is replaced with the
+                 value of the parameter $prefix) and whose value is a serialization
+                 of the XML node according to the XML output method and with the
+                 serialization parameters specified by $param.
+                 &lt;/para&gt;)
+        }
+        
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        {
+          "serialized XML" : {
+              "Q{http://jsoniq.org/roundtrip}type" : "node()",
+              "Q{http://jsoniq.org/roundtrip}value" : "&lt;para&gt;
+                 A pair named "[$prefix]value" (where [$prefix] is replaced with the
+                 value of the parameter $prefix) and whose value is a serialization
+                 of the XML node according to the XML output method and with the
+                 serialization parameters specified by $param.
+                 &lt;/para&gt;"
+          }
+        }
+</programlisting>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+        jn:encode-for-roundtrip({ "nan" : xs:double("NaN"),
+                                  "inf" : xs:double("INF"),
+                                  "date" : xs:date("1066-10-14"),
+                                  "user" : hat:hatSize("M"),
+                                  "QName" : xs:QName("jn:encode-for-roundtrip"),
+                                  "EQName" : fn:QName("http://jsoniq.org/roundtrip", "value")
+                                })
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+        {
+          "nan" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:double",
+            "Q{http://jsoniq.org/roundtrip}value" : "NaN"
+          },
+          "inf" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:double",
+            "Q{http://jsoniq.org/roundtrip}value" : "INF"
+          },
+          "date" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:date",
+            "Q{http://jsoniq.org/roundtrip}value" : "1066-10-14"
+          },
+          "hat" : {
+            "Q{http://jsoniq.org/roundtrip}type" : "Q{http://www.example.com/hat-shop}hatSize",
+            "Q{http://jsoniq.org/roundtrip}value" : "M"
+          },
+          "QName" : { 
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:QName", 
+            "Q{http://jsoniq.org/roundtrip}value" : "Q{http://jsoniq.org/functions}encode-for-roundtrip", 
+            "Q{http://jsoniq.org/roundtrip}prefix" : "jn" 
+          },
+          "EQName" : { 
+            "Q{http://jsoniq.org/roundtrip}type" : "xs:QName", 
+            "Q{http://jsoniq.org/roundtrip}value" : "Q{http://jsoniq.org/roundtrip}value" 
+          }
+        }
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>jn:json-doc</title>
+		 <para>
+			This function returns the JSON node associated with the supplied URI. It has the same semantics as <code>fn:doc</code>, except that it returns an Object or an Array.
+		</para>
+		 <para>
+			<code>jn:json-doc($uri as xs:string?) as json-item()?</code>
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>jn:keys</title>
+		 <para>
+			This function returns all keys of all objects in the supplied sequence, using the jdm:keys accessor, with duplicates eliminated. The order in which the keys are returned is implementation-dependent but must be stable within a snapshot. Non-objects in the input sequence are ignored.
+		</para>
+		 <para>
+			<code>jn:keys($arg as item()*) as xs:string*</code>
+		</para>
+		 <example>
+			<title>Getting all keys in a sequence</title>
+			 
+<programlisting>
+          let $seq := ("foo", [ 1, 2, 3 ], { "a" : 1, "b" : 2 }, { "a" : 3, "c" : 4 })
+          return jn:keys($seq)
+</programlisting>
+			 <para>
+				Resulting (possibly with a different ordering) in:
+			</para>
+			 
+<programlisting>
+          ("a", "b", "c")
+</programlisting>
+			 <para>
+				Retrieving all Pairs from an Object:
+			</para>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+            let $map := { "eyes" : "blue", "hair" : "fuchsia" }
+            for $key in jn:keys($map)
+            return { $key : $map($key) }
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+            { "eyes" : "blue" }
+            { "hair" : "fuchsia" }
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>jn:members</title>
+		 <para>
+			This functions returns all values that are in all arrays of an input sequence, preserving the order. Non-arrays in the input sequence are ignored.
+		</para>
+		 
+<programlisting>
+        declare function jn:members($arg as item()*) as item()* {
+          for $array in $arg[. instance of array()]
+          for $position in 1 to jn:size($array)
+          return $array($position)
+        };
+</programlisting>
+		 <example>
+			<title>Retrieving the members of an array</title>
+			 <para>
+				Query:
+			</para>
+			 
+<programlisting>
+          let $planets :=  ( "foo", { "foo" : "bar "}, [ "mercury", "venus", "earth", "mars" ], [ 1, 2, 3 ])
+          return jn:members($planets)</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>mercury venus earth mars 1 2 3</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>jn:null</title>
+		 <para>
+			This function returns the JSON null.
+		</para>
+		 <para>
+			<code>jn:null() as js:null</code>
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>jn:parse-json</title>
+		 <para>
+			This function has the same semantics as fn:parse-xml(), except that it parses the string as JSON (not XML), and returns a sequence of objects or arrays rather than an XML document.
+		</para>
+		 <para>
+			<code>jn:parse-json($arg as xs:string?, $options as object()) as json-item()*</code>
+		</para>
+		 <para>
+			<code>jn:parse-json($arg as xs:string?) as json-item()*</code>
+		</para>
+		 <para>
+			If <code>$options("jsoniq-multiple-top-level-items")</code> evaluates to the empty sequence, or the second parameter is not specified, it is considered to be true.
+		</para>
+		 <para>
+			If <code>$options("jsoniq-multiple-top-level-items")</code> is not of type <code>xs:boolean</code>, then <code>jerr:JNTY0020</code> is raised..
+		</para>
+		 <para>
+			If <code>$options("jsoniq-multiple-top-level-items")</code> is true, then jn:parse-json recognizes and parses sequences of objects and arrays, with no separation other than whitespaces.
+		</para>
+		 <para>
+			If parsing is not successful, then <code>jerr:JNDY0021</code> is raised. Parsing is considered in particular to be non-successful if <code>$options("jsoniq-multiple-top-level-items")</code> is false and there is extra content after parsing a single abject or array.
+		</para>
+		 <example>
+			<title>Parsing JSON items.</title>
+			 
+<programlisting>
+parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&amp;quot; : &amp;quot;foo&amp;quot;} [ 1, 2, 3 ]")
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>
+{ "foo" : "bar" }
+{ "bar" : "foo" }
+[ 1, 2, 3 ]
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>jn:size</title>
+		 <para>
+			This function returns the size of the supplied array using the jdm:size accessor (or the empty sequence if the empty sequence is provided).
+		</para>
+		 <para>
+			<code>jn:size(array()?) as xs:integer?</code>
+		</para>
+		 <example>
+			<title>Retrieving the size of an array</title>
+			 
+<programlisting>
+          let $a := [1 to 10]
+          return jn:size($a)
+</programlisting>
+			 <para>
+				Result:
+			</para>
+			 
+<programlisting>10</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Changes to cast semantics</title>
+		 <para>
+			The semantics of casts is changed as follows.
+		</para>
+		 <para>
+			No value of an atomic type different than js:null (or derived) can be cast to js:null. An error <code>err:XPTY0004</code> is raised instead.
+		</para>
+		 <para>
+			A js:null can still be cast to xs:string or xs:untypedAtomic as specified in the XPath function specification, which leads to its canonical representation "null".
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Changes to arithmetic operation semantics</title>
+		 <para>
+			The semantics of arithmetic operations is changed as follows. If one of the operands is null, an type error <code>err:XPTY0004</code> is raised.
+		</para>
+		 <example>
+			<title>Addition</title>
+			 <para>
+				Query
+			</para>
+			 
+<programlisting>
+        null + 1
+</programlisting>
+			 <para>
+				Result
+			</para>
+			 
+<programlisting>
+        Error.
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Changes to value comparison semantics</title>
+		 <para>
+			The semantics of value comparison is changed as follows.
+		</para>
+		 <para>
+			Null is considered equal to itself, unequal to any other atomic items, and smaller than any other atomic item.
+		</para>
+		 <example>
+			<title>Value comparison</title>
+			 <para>
+				Query
+			</para>
+			 
+<programlisting>
+        1 eq null, null eq null, 1 ne null, null lt 1
+</programlisting>
+			 <para>
+				Result
+			</para>
+			 
+<programlisting>
+        false true true true
+</programlisting>
+
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Changes to general comparison semantics</title>
+		 <para>
+			The semantics of general comparison is changed as follows.
+		</para>
+		 <para>
+			After atomization, if one of the operands is the null atomic item, the other item is not cast, and pair-wise comparison is done using the modified semantics of value comparison.
+		</para>
+		 <example>
+			<title>General comparison: equality</title>
+			 <para>
+				Query
+			</para>
+			 
+<programlisting>
+        (null, 2) = (1, 3)
+</programlisting>
+			 <para>
+				Result
+			</para>
+			 
+<programlisting>
+        false
+</programlisting>
+
+		</example>
+
+	</section>
+
+</chapter>
+

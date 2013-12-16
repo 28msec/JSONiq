@@ -1,0 +1,695 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<section id="chapter-basic-operations" lang="en-US">
+	<title>Basic operations</title>
+	 <para>
+		We now introduce the most basic operations you can perform in JSONiq.
+	</para>
+	 <section>
+		<title>Construction of sequences</title>
+		 <section>
+			<title>Comma operator</title>
+			 <figure>
+				<title>Expr</title>
+				 <mediaobject>
+					<imageobject>
+						<imagedata fileref="images/Expr.png" />
+					</imageobject>
+
+				</mediaobject>
+
+			</figure>
+			 <para>
+				Use a comma to concatenate two sequences, or even single items. This operator has the lowest precedence of all.
+			</para>
+			 <example>
+				<title>Comma</title>
+				 
+<programlisting>
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+</programlisting>
+				 <formalpara>
+					<title>Result (run with Zorba):</title>
+					<para>
+						1 2 3 4 5 6 7 8 9 10
+					</para>
+				</formalpara>
+			</example>
+			 <example>
+				<title>Comma</title>
+				 
+<programlisting>
+{ "foo" : "bar" }, [ 1 ]
+</programlisting>
+				 <formalpara>
+					<title>Result (run with Zorba):</title>
+					<para>
+						{ "foo" : "bar" } [ 1 ]
+					</para>
+				</formalpara>
+			</example>
+			 <para>
+				Sequences do not nest. You need to use arrays in order to nest.
+			</para>
+
+		</section>
+		
+		 <section>
+			<title>Range operator</title>
+			 <figure>
+				<title>RangeExpr</title>
+				 <mediaobject>
+					<imageobject>
+						<imagedata fileref="images/RangeExpr.png" />
+					</imageobject>
+
+				</mediaobject>
+
+			</figure>
+			 <para>
+				With the binary operator "to", you can generate larger sequences with just two integer operands.
+			</para>
+			 <example>
+				<title>Range operator</title>
+				 
+<programlisting>
+1 to 10
+</programlisting>
+				 <formalpara>
+					<title>Result (run with Zorba):</title>
+					<para>
+						1 2 3 4 5 6 7 8 9 10
+					</para>
+				</formalpara>
+			</example>
+			 <para>
+				If one operand evaluates to the empty sequence, then the range operator returns the empty sequence.
+			</para>
+			 <example>
+				<title>Range operator with the empty sequence</title>
+				 
+<programlisting>
+() to 10, 1 to ()
+</programlisting>
+				 <formalpara>
+					<title>Result (run with Zorba):</title>
+					<para>
+					</para>
+				</formalpara>
+			</example>
+			 <para>
+				Otherwise, if an operand evaluates to something else than a single integer or an empty sequence, an error is raised.
+			</para>
+			 <example>
+				<title>Range operator with a type inconsistency</title>
+				 
+<programlisting>
+(1, 2) to 10
+</programlisting>
+				 <formalpara>
+					<title>Result (run with Zorba):</title>
+					<para>
+						An error was raised: sequence of more than one item can not be promoted to parameter type xs:integer? of function to()
+					</para>
+				</formalpara>
+			</example>
+
+		</section>
+		
+
+	</section>
+	
+	 <section>
+		<title>Parenthesized expression</title>
+		 <figure>
+			<title>ParenthesizedExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/ParenthesizedExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Use parentheses to override the precedence of expressions.
+		</para>
+		 <para>
+			If the parentheses are empty, the empty sequence is produced.
+		</para>
+		 <example>
+			<title>Empty sequence</title>
+			 
+<programlisting>
+()
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Arithmetics</title>
+		 <figure>
+			<title>AdditiveExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/AdditiveExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>MultiplicativeExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/MultiplicativeExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>UnaryExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/UnaryExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			JSONiq supports the basic four operations, integer division and modulo.
+		</para>
+		 <para>
+			Multiplicative operations have precedence over additive operations. Parentheses can override it.
+		</para>
+		 <example>
+			<title>Basic arithmetic operations with precedence override</title>
+			 
+<programlisting>
+1 * ( 2 + 3 ) + 7 idiv 2 - (-8) mod 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					8
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Dates, times and durations are also supported in a natural way.
+		</para>
+		 <example>
+			<title>Using basic operations with dates.</title>
+			 
+<programlisting>
+date("2013-05-01") - date("2013-04-02")
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					P29D
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			If any of the operands is a sequence of more than one item, an error is raised.
+		</para>
+		 <example>
+			<title>Sequence of more than one number in an addition</title>
+			 
+<programlisting>
+(1, 2) + 3
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: sequence of more than one item can not be promoted to parameter type xs:anyAtomicType? of function add()
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			If any of the operands is not a number, a date, a time or a duration, an error is raised.
+		</para>
+		 <example>
+			<title>Null in an addition</title>
+			 
+<programlisting>
+1 + null
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: arithmetic operation not defined between types "xs:integer" and "js:null"
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			If one of the operands evaluates to the empty sequence, then the operation results in the empty sequence.
+		</para>
+		 <para>
+			Do not worry if the two operands do not have the same number type, JSONiq will do the adequate conversions.
+		</para>
+		 <example>
+			<title>Basic arithmetic operations with an empty sequence</title>
+			 
+<programlisting>
+() + 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>String concatenation</title>
+		 <figure>
+			<title>StringConcatExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/StringConcatExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Two strings or more can be concatenated using the concatenation operator.
+		</para>
+		 <example>
+			<title>String concatenation</title>
+			 
+<programlisting>
+"Captain" || " " || "Kirk"
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					Captain Kirk
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			An empty sequence is treated like an empty string.
+		</para>
+		 <example>
+			<title>String concatenation with the empty sequence</title>
+			 
+<programlisting>
+"Captain" || () || "Kirk"
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					CaptainKirk
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Comparison</title>
+		 <figure>
+			<title>ComparisonExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/ComparisonExpr.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>ValueComp</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/ValueComp.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			Atomics can be compared with the usual six comparison operators (equality, non-equality, lower-than, greater-than, lower-or-equal, greater-or-equal), and with the same two-letter symbols as in MongoDB.
+		</para>
+		 <example>
+			<title>Equality comparison</title>
+			 
+<programlisting>
+1 + 1 eq 2, 1 lt 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true true
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Comparison is only possible between two compatible types, otherwise, an error is raised.
+		</para>
+		 <example>
+			<title>Comparisons with a type mismatch</title>
+			 
+<programlisting>
+"foo" eq 1
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: "xs:string": invalid type: can not compare for equality to type "xs:integer"
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			null can be compared for equality or inequality to anything - it is only equal to itself so that false is returned when comparing if for equality with any non-null atomic. True is returned when comparing it with non-equality with any non-null atomic.
+		</para>
+		 <example>
+			<title>Equality and non-equality comparison with null</title>
+			 
+<programlisting>
+1 eq null, "foo" ne null, null eq null
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					false true true
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			For ordering operators (lt, le, gt, ge), null is considered the smallest possible value (like in JavaScript).
+		</para>
+		 <example>
+			<title>Ordering comparison with null</title>
+			 
+<programlisting>
+1 lt null
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					false
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Like for arithmetic operations, if an operand is the empty sequence, the empty sequence is returned as well.
+		</para>
+		 <example>
+			<title>Comparison with the empty sequence</title>
+			 
+<programlisting>
+() eq 1
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Comparisons and logic operators are fundamental for a query language and for the implementation of a query processor as they impact query optimization greatly. The current comparison semantics for them is carefully chosen to have the right characteristics as to enable optimization.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Logics</title>
+		 <figure>
+			<title>OrExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/OrExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>AndExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/AndExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <figure>
+			<title>NotExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/NotExpr.png" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			JSONiq logics support is based on two-valued logics: just true and false.
+		</para>
+		 <para>
+			Non-boolean operands get automatically converted to either true or false, or an error is raised. The boolean() function performs a manual conversion.
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					An empty sequence is converted to false.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					A singleton sequence of one null is converted to false.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					A singleton sequence of one string is converted to true except the empty string which is converted to false.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					A singleton sequence of one number is converted to true except zero or NaN which are converted to false.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					An operand singleton sequence whose first item is an object or array is converted to true.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Other operand sequences cannot be converted and an error is raised.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			JSONiq supports the most famous three boolean operations: conjunction, disjunction and negation. Negation has the highest precedence, then conjunction, then disjunction. Parentheses can override.
+		</para>
+		 <example>
+			<title>Logics with booleans</title>
+			 
+<programlisting>
+true and ( true or not true )
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Logics with comparing operands</title>
+			 
+<programlisting>
+1 + 1 eq 2 or 1 + 1 eq 3
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Conversion of the empty sequence to false</title>
+			 
+<programlisting>
+boolean(())
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					false
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Conversion of null to false</title>
+			 
+<programlisting>
+boolean(null)
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					false
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Conversion of a string to true</title>
+			 
+<programlisting>
+boolean("foo"), boolean("")
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true false
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Conversion of a number to false</title>
+			 
+<programlisting>
+0 and true, not (not 1e42)
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					false true
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Conversion of an object to a boolean (not implemented in Zorba at this point)</title>
+			 
+<programlisting>
+{ "foo" : "bar" } or false
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: "[JSONXQType object]": invalid argument type for function fn:boolean()
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			If the input sequence has more than one item, and the first item is not an object or array, an error is raised.
+		</para>
+		 <example>
+			<title>Error upon conversion of a sequence of more than one item, not beginning with a JSON item, to a boolean</title>
+			 
+<programlisting>
+( 1, 2, 3 ) or false
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: invalid argument type for function fn:boolean(): effective boolean value not defined for sequence of more than one item that starts with "xs:integer"
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Unlike in C++ or Java, you cannot rely on the order of evaluation of the operands of a boolean operation. The following query may return true or may return an error.
+		</para>
+		 <example>
+			<title>Non-determinism in presence of errors.</title>
+			 
+<programlisting>
+true or (1 div 0)
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+		 <figure>
+			<title>QuantifiedExpr</title>
+			 <mediaobject>
+				<imageobject>
+					<imagedata fileref="images/QuantifiedExpr.png" width="444" />
+				</imageobject>
+
+			</mediaobject>
+
+		</figure>
+		 <para>
+			It is possible to perform a conjunction or a disjunction on a predicate for each item in a sequence.
+		</para>
+		 <example>
+			<title>Universal quantifier</title>
+			 
+<programlisting>
+every $i in 1 to 10 satisfies $i gt 0
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Existential quantifier on several variables</title>
+			 
+<programlisting>
+some $i in -5 to 5, $j in 1 to 10 satisfies $i eq $j
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Variables can be annotated with a type. If no type is specified, item* is assumed. If the type does not match, an error is raised.
+		</para>
+		 <example>
+			<title>Existential quantifier with type checking</title>
+			 
+<programlisting>
+some $i as integer in -5 to 5, $j as integer in 1 to 10 satisfies $i eq $j
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+
+</section>
+
+

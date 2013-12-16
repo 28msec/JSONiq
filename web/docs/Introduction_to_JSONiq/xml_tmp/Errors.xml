@@ -1,0 +1,25 @@
+<chapter id="chapter-errors">
+  <title>Errors</title>
+  <para>Builtin expressions, operators and functions may raise errors under various conditions. An example is a mismatching type.</para>
+  <para>The evaluation of a JSONiq expression either returns a sequence of items, or raises an error.</para>
+  <para>Errors can be reported statically, or dynamically (at runtime).</para>
+  <para>Errors can also be raised by hand.</para>
+  <example>
+    <title>Raising an error.</title>
+    <programlisting>
+      error()
+    </programlisting>
+  <programlisting>Result:
+ An error was raised: </programlisting></example>
+  <para>Lazy evaluation and optimizations with regard to errors are allowed. Raising errors is not always deterministic, as in some cases the processor might
+    (but is not required to) stop evaluating the operands of an expression if it determines that only one possible value can be returned by that expression.
+    The following expression may return true, or may raise an error.</para>
+  <example>
+    <title>Non-deterministic behavior.</title>
+    <programlisting>
+      true or error()
+    </programlisting>
+  <programlisting>Result:
+ true
+</programlisting></example>
+</chapter>

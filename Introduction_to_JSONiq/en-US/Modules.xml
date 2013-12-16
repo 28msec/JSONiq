@@ -1,0 +1,60 @@
+<chapter id="chapter-modules">
+  <title>Modules</title>
+  <para>You can group functions and variables in separate units, called library modules.</para>
+  <para>Up to now, everything we encountered were main modules, i.e., a prolog followed by a main query.</para>
+  <para>A library module does not contain any query - just functions and variables that can be imported by other modules.</para>
+  <para>A library module must be assigned to a namespace. For convenience, this namespace is bound to an alias in the
+   module declaration. All variables and functions in a library module must be prefixed with this alias.</para>
+  <example>
+    <title>A library module.</title>
+    <programlisting>
+module namespace my =
+    "http://www.example.com/my-module";
+
+declare variable $my:variable := { "foo" : "bar" };
+declare variable $my:n := 42;
+
+declare function my:function($i as integer)
+{
+  $i * $i
+};
+    </programlisting>
+  </example>
+  <para>Once you have defined a library module, you can import it in any other module (library or main).
+   An alias must be given to the module namespace (my). Variables and functions from that module
+   can be accessed by prefixing their names with this alias. The alias may be different than the internal alias
+   defined in the imported module -- only the namespace really matters.</para>
+  <example>
+    <title>Importing a library module into a main module.</title>
+    <programlisting>
+import module namespace other =
+    "http://www.example.com/my-module";
+other:function($other:n)
+    </programlisting>
+  <para>Results:</para><programlisting>1764
+</programlisting></example>
+  <para>An engine may come with a number of builtin library modules. For example, there is the standardized math module.</para>
+  <example>
+    <title>Using the math module.</title>
+    <programlisting>
+import module namespace math =
+    "http://www.w3.org/2005/xpath-functions/math";
+math:pi(),
+math:pow(2, 30),
+math:exp(1),
+math:exp10(2),
+math:log(1),
+math:log10(2),
+math:sqrt(4),
+math:sin(math:pi())
+    </programlisting>
+  <para>Results:</para><programlisting>3.1415926535897931
+1.073741824E9
+2.7182818284590451
+100
+0
+0.3010299956639812
+2
+1.2246467991473532E-16
+</programlisting></example>
+</chapter>

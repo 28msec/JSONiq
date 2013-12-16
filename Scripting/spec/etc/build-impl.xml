@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<project name="qtspecs" default="all" basedir="..">
+
+  <property name="shortname" value="NOSHORTNAME"/>
+  <property name="spec.uri" value="http://example.com/you-got-the-spec.uri-wrong"/>
+  <property name="spec.xml" value="${src.dir}/NOSPEC.xml"/>
+  <property name="spec.html" value="${dist.dir}/Overview.html"/>
+  <property name="spec.diffs.html" value="${dist.dir}/Overview-diffs.html"/>
+  <property name="spec.code" value="NOCODE"/>
+  <!-- Here, we define the property 'spec.style' to point to the default      -->
+  <!--   stylesheet for transforming the various qtspecs documents.           -->
+  <!-- The value of this property is overridden by several build.xml files    -->
+  <property name="spec.style" value="${shared.style.dir}/xsl-query.xsl"/>
+
+  <!-- 2008-09-03, Jim: The following properties have no meaning at present,  -->
+  <!--   because we do not build errata in the qtspecs tree. Maybe later...   -->
+  <property name="errata.xml" value="${src.dir}/NOERRATA.xml"/>
+  <property name="errata.html" value="${dist.dir}/errata.html"/>
+
+<!-- ======================================================================== -->
+
+  <target name="main" depends="all" description="Alias for all."/>
+
+<!-- ======================================================================== -->
+
+  <target name="all" depends="spec,errata" description="This is the default target."/>
+
+<!-- ======================================================================== -->
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete>
+      <fileset dir="${dist.dir}" includes="**/*.html"/>
+      <fileset dir="${dist.dir}" includes="**/*.xml"/>
+      <fileset dir="${dist.dir}" includes="**/*.jpg"/>
+      <fileset dir="${dist.dir}" includes="**/*.gif"/>
+      <fileset dir="${dist.dir}" includes="**/*.png"/>
+      <fileset dir="${dist.dir}" includes="**/*.svg"/>
+    </delete>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="spec" depends="init,style-spec,copy-images"/>
+
+<!-- ======================================================================== -->
+
+  <target name="style-spec" depends="init,-tidy-style-spec,anchor-summary"/>
+
+<!-- ======================================================================== -->
+
+  <target name="-tidy-style-spec" depends="init,chk.runtidy,-style-spec" if="run.tidy">
+    <antcall target="tidy">
+      <param name="html.file" value="${spec.html}"/>
+    </antcall>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="-style-spec" depends="init,chk.spec,validate-spec"
+          if="build.spec" unless="spec.exists">
+    <echo message="Building ${shortname} ..."/>
+
+    <!-- XSLT 2.0 -->
+    <java fork="true" classname="net.sf.saxon.Transform">
+      <classpath refid="saxon9.classpath"/>
+      <arg value="-o"/>
+      <arg value="${dist.dir}/Overview.html"/>
+      <arg value="${spec.xml}"/>
+      <arg value="${spec.style}"/>
+    </java>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="chk.spec" depends="init">
+    <condition property="spec.exists">
+      <uptodate srcfile="${spec.xml}" targetfile="${spec.html}"/>
+    </condition>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="anchor-summary" depends="init,chk.anchor-summary,-style-spec,-copy-xml"
+          if="run.anchor-summary">
+    <xslt in="${dist.dir}/${shortname}.xml" out="${etc.dir}/${spec.code}.xml"
+          style="${shared.style.dir}/extract.xsl" force="yes" classpathref="saxon9.classpath">
+      <param name="specdoc" expression="${spec.code}"/>
+      <param name="uri" expression="${spec.uri}"/>
+    </xslt>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="chk.anchor-summary" depends="init,chk.format-spec,chk.code">
+    <condition property="run.anchor-summary">
+      <and>
+        <isset property="format.spec"/>
+        <isset property="code.exists"/>
+      </and>
+    </condition>
+  </target>
+
+<!-- ======================================================================== -->
+<!-- 2009-11-25, Jim: Added tstamp task to set DSTAMP, TSTAMP, TODAY props    -->
+
+  <target name="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+    <available property="build.spec" file="${spec.xml}"/>
+    <available property="build.errata" file="${errata.xml}"/>
+    <tstamp/>
+    <echo message="This document is being created on ${DSTAMP} at ${TSTAMP} (local time)."/>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="validate-spec">
+    <xmlvalidate file="${spec.xml}" failonerror="yes" lenient="no"
+                 warn="yes" classname="org.apache.xerces.parsers.SAXParser">
+      <classpath refid="saxon6.classpath"/>
+    </xmlvalidate>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="copy-images" depends="init">
+    <copy todir="${dist.dir}" flatten="true">
+      <fileset dir="${local.images.dir}"/>
+    </copy>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="-copy-xml" depends="init,chk.spec"
+          if="build.spec" unless="spec.exists">
+    <echo message="Copying XML for ${shortname}..."/>
+
+    <xslt in="${spec.xml}" out="${dist.dir}/${shortname}.xml"
+          style="${shared.style.dir}/identity.xsl" force="yes"
+          classpathref="saxon9.classpath"/>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="chk.code" depends="init">
+    <condition property="code.exists">
+      <not>
+        <equals arg1="${spec.code}" arg2="NOCODE"/>
+      </not>
+    </condition>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="chk.format-spec" depends="init,chk.spec">
+    <condition property="format.spec">
+      <and>
+        <isset property="build.spec"/>
+        <not>
+          <isset property="spec.exists"/>
+        </not>
+      </and>
+    </condition>
+  </target>
+
+<!-- ======================================================================== -->
+<!-- NOTE: property skiptidy is never set anywhere in the build system        -->
+
+  <target name="chk.runtidy" depends="init,chk.format-spec">
+    <condition property="run.tidy">
+      <and>
+        <isset property="format.spec"/>
+        <not>
+          <isset property="skiptidy"/>
+        </not>
+      </and>
+    </condition>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="tidy" depends="init">
+    <exec executable="tidy">
+      <arg value="-q"/>
+      <arg value="-utf8"/>
+      <arg value="-mn"/>
+      <arg value="-asxml"/>
+      <arg value="${html.file}"/>
+    </exec>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="errata" depends="init,style-errata"/>
+
+<!-- ======================================================================== -->
+
+  <target name="style-errata" depends="-tidy-style-errata"/>
+
+<!-- ======================================================================== -->
+<!-- NOTE: property skiptidy is never set anywhere in the build system        -->
+
+  <target name="-tidy-style-errata" depends="init,-style-errata" unless="skiptidy">
+<!--
+FOR NOW, DO NOT EVEN TIDY THE ERRATA!
+    <antcall target="tidy">
+      <param name="html.file" value="${errata.html}"/>
+    </antcall>
+-->
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="-style-errata" depends="init,chk.errata"
+          if="build.errata" unless="errata.exists">
+    <echo message="Formating ${shortname} errata..."/>
+
+    <xslt in="${errata.xml}" out="${dist.dir}/errata.html"
+          style="${spec.style}" force="yes" classpathref="saxon6.classpath"/>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="chk.errata" depends="init">
+    <condition property="errata.exists">
+      <uptodate srcfile="${errata.xml}" targetfile="${errata.html}"/>
+    </condition>
+  </target>
+
+<!-- ======================================================================== -->
+<!-- Utility targets used from other build.xml scripts                        -->
+<!-- ======================================================================== -->
+
+  <target name="xsdvalidate" depends="init">
+    <java fork="true" failonerror="true" classname="com.sun.msv.driver.textui.Driver">
+      <classpath refid="msv.classpath"/>
+      <arg value="${xsd.file}"/>
+      <arg value="${xml.file}"/>
+    </java>
+  </target>
+
+<!-- ======================================================================== -->
+
+  <target name="format-document" depends="init">
+    <xmlvalidate file="${source}" failonerror="yes" lenient="no" warn="yes"/>
+
+    <xslt in="${source}" out="${target}" style="${style}"
+          force="yes" classpathref="saxon6.classpath"/>
+
+    <antcall target="tidy-document">
+      <param name="html.file" value="${target}"/>
+    </antcall>
+  </target>
+
+<!-- ======================================================================== -->
+<!-- NOTE: property skiptidy is never set anywhere in the build system        -->
+
+  <target name="tidy-document" unless="skiptidy">
+    <antcall target="tidy">
+      <param name="html.file" value="${html.file}"/>
+    </antcall>
+  </target>
+</project>

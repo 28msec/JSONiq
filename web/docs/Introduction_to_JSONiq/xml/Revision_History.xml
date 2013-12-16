@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<appendix id="appe-JSONiq-Revision_History" lang="en-US">
+	<title>Revision History</title>
+	 <simpara>
+		<revhistory>
+			<revision>
+				<revnumber>1.0.7</revnumber>
+				 <date>Monday May 27th, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Relaxed array and object navigation to make it more XPath-like. No more cast is done. Lookup on mixed sequences of items (with an implicit iteration) are allowed. The empty sequence is returned in case of mismatch, i.e. in case of (i) integer lookup on object/atomic or (ii) string lookup on array/atomic.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>1.0.6</revnumber>
+				 <date>Friday May 24th, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Reran all queries through a newer Zorba version (trunk 11475).</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>1.0.5</revnumber>
+				 <date>Thursday May 2nd, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Reran all queries through a newer Zorba version (trunk revision 11426).</member>
+						 <member>Corrected some typos, like superfluous prefixes in function library sample queries.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>1.0.4</revnumber>
+				 <date>Monday April 8th, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Allowed the context item to appear unparenthesized in an object lookup expression.</member>
+						 <member>Added the function parse-json()</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>1.0.3</revnumber>
+				 <date>Thursday April 4th, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Fixed some typos.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>1.0.2</revnumber>
+				 <date>Thursday April 4th, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Null are comparable with other atomic items and are considered the smallest.</member>
+						 <member>Added link to semantics for all builtin functions inherited from XQuery.</member>
+						 <member>Aggregated some examples.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>1.0.1</revnumber>
+				 <date>Tuesday April 2nd, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Initial commit.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+
+		</revhistory>
+
+	</simpara>
+</appendix>
+

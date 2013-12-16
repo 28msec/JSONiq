@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 7. JSON updates</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="ch06s17.html" title="6.17. Changes to general comparison semantics" /><link rel="next" href="ch07s02.html" title="7.2. Update syntax: new updating expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s17.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch07s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="section-json-updates" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 7. JSON updates</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="section-json-updates.html#idm45499888">7.1. JSON udpate primitives</a></span></dt><dt><span class="section"><a href="ch07s02.html">7.2. Update syntax: new updating expressions</a></span></dt><dd><dl><dt><span class="section"><a href="ch07s02.html#idm42227600">7.2.1. Deleting expressions</a></span></dt><dt><span class="section"><a href="ch07s02s02.html">7.2.2. Inserting expressions</a></span></dt><dt><span class="section"><a href="ch07s02s03.html">7.2.3. Renaming expressions</a></span></dt><dt><span class="section"><a href="ch07s02s04.html">7.2.4. Replacing expressions</a></span></dt><dt><span class="section"><a href="ch07s02s05.html">7.2.5. Appending expressions</a></span></dt></dl></dd></dl></div><div class="para">
+		JSONiq introduces new update primitives for updating Objects and Arrays. Update primitives can be generated with new JSONiq updating expressions.
+	</div><div class="para">
+		An individual function may create an invalid JSON instance; however, an updating query must produce a valid JSON instance once the entire query is evaluated, or an error is raised and the entire update fails, leaving the instance in its original state.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm45499888">7.1. JSON udpate primitives</h2></div></div></div><div class="para">
+			The following new update primitives are introduced.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<code class="code">jupd:insert-into-object($o as object(), $p as object())</code>
+				</div><div class="para">
+					Inserts all pairs of the object <code class="code">$p</code> into the object $o.
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">jupd:insert-into-array($a as array(), $i as xs:integer, $c as item()*)</code>
+				</div><div class="para">
+					Inserts all items in the sequence $c before position $i into the array $a.
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">jupd:delete-from-object($o as object(), $s as xs:string*)</code>
+				</div><div class="para">
+					Removes the pairs the names of which appear in $s from the object $o.
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">jupd:delete-from-array($a as array(), $i as xs:integer)</code>
+				</div><div class="para">
+					Removes the item at position $i from the array $a (causes all following items in the array to move one position to the left).
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">jupd:replace-in-array($a as array(), $i as xs:integer, $v as item())</code>
+				</div><div class="para">
+					Replaces the item at position $i in the array $a with the item $v (do nothing if $i is not comprised between 1 and jdm:size($a)).
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">jupd:replace-in-object($o as object(), $n as xs:string, $v as item())</code>
+				</div><div class="para">
+					Replaces the value of the pair named $n in the object $o with the item $v (do nothing if there is no such pair).
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">jupd:rename-in-object($o as object(), $n as xs:string, $p as xs:string)</code>
+				</div><div class="para">
+					Renames the pair originally named $n in the object $o as $p (do nothing if there is no such pair).
+				</div></li></ul></div><div class="para">
+			Update primitives within a PUL are applied with strict snapshot semantics. For examples, the positions are resolved against the array before the updates. Names are resolved on the object before the updates.
+		</div><div class="para">
+			In the middle of a program, several PULs can be produced against the same snapshot. They are then merged with <code class="code">upd:mergeUpdates</code>, which is extended as follows.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					Several deletes on the same object are replaced with a unique delete on that object, with a list of all selectors (names) to be deleted, where duplicates have been eliminated.
+				</div></li><li class="listitem"><div class="para">
+					Several deletes on the same array and selector (position) are replaced with a unique delete on that array and with that selector.
+				</div></li><li class="listitem"><div class="para">
+					Several inserts on the same array and selector (position) are equivalent to a unique insert on that array and selector with the content of those original inserts appended in an implementation-dependent order (like XQUF).
+				</div></li><li class="listitem"><div class="para">
+					Several inserts on the same object are equivalent to a unique insert where the objects containing the pairs to insert are merged. An error <code class="code">jerr:JNUP0005</code> is raised if a collision occurs.
+				</div></li><li class="listitem"><div class="para">
+					Several replaces on the same object or array and with the same selector raise an error <code class="code">jerr:JNUP0009</code>.
+				</div></li><li class="listitem"><div class="para">
+					Several renames on the same object and with the same selector raise an error <code class="code">jerr:JNUP0010</code>.
+				</div></li><li class="listitem"><div class="para">
+					If there is a replace and a delete on the same object or array and with the same selector, the replace is omitted in the merged PUL.
+				</div></li><li class="listitem"><div class="para">
+					If there is a rename and a delete on the same object or array and with the same selector, the rename is omitted in the merged PUL.
+				</div></li></ul></div><div class="para">
+			At the end of an updating program, the resulting PUL is applied with <code class="code">upd:applyUpdates</code>, which is extended as follows:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					First, before applying any update, each update primitive (except the jupd:insert-into-object primitives, which do not have any target) locks onto its target by resolving the selector on the object or array it updates. If the selector is resolved to the empty sequence, the update primitive is ignored in step 2. After this operation, each of these update primitives will contain a reference to either the pair (for an object) or the value (for an array) on or relatively to which it operates
+				</div></li><li class="listitem"><div class="para">
+					Then each update primitive is applied, using the target references that were resolved at step 1. The order in which they are applied is not relevant and does not affect the final instance of the data model. After applying all updates, an error <code class="code">jerr:JNUP0006</code> is raised upon pair name collision within the same object.
+				</div></li></ul></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s17.html"><strong>Prev</strong>6.17. Changes to general comparison semantics</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch07s02.html"><strong>Next</strong>7.2. Update syntax: new updating expressions</a></li></ul></body></html>

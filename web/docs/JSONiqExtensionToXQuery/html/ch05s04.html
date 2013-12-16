@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.4. Array unboxing</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-json-navigation.html" title="Chapter 5. Navigation in JSON content" /><link rel="prev" href="ch05s03.html" title="5.3. Array lookup" /><link rel="next" href="section-builtin-functions.html" title="Chapter 6. Builtin functions and operators" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="section-builtin-functions.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp5076400">5.4. Array unboxing</h2></div></div></div><div class="para">
+			If the dynamic function call is 0-ary and the left-hand-side is an array, the semantics applied is that of array unboxing and is as follows.
+		</div><div class="para">
+			<code class="code">for $i in 1 to jdm:size($a) return $a($i)</code> is returned.
+		</div><div class="example"><h6>Example 5.4. Array unboxing</h6><div class="example-contents"><div class="para">
+				Query:
+			</div><pre class="programlisting">
+        let $wd := ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        return $wd()
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+        Sunday Mondy Tuesday Wednesday Thursday Friday Saturday
+</pre><div class="para">
+				For the following queries, assume the variable <code class="code">$f</code> is bound to the following two dimensional array.
+			</div><div class="para">
+				Data:
+			</div><pre class="programlisting">
+        [
+          [ "mercury", "venus", "earth", "mars" ],
+          [ "monday", "tuesday", "wednesday", "thursday" ]
+        ]
+</pre><div class="para">
+				Query:
+			</div><pre class="programlisting">
+        $f()
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+        [ "mercury", "venus", "earth", "mars" ] [ "monday", "tuesday", "wednesday", "thursday" ]
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s03.html"><strong>Prev</strong>5.3. Array lookup</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-builtin-functions.html"><strong>Next</strong>Chapter 6. Builtin functions and operators</a></li></ul></body></html>

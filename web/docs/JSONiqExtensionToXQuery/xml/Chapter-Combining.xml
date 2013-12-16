@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-combining-xml-and-json" lang="en-US">
+	<title>Combining XML and JSON</title>
+	 <para>
+		JSONiq is designed to allow XML and JSON to be used in the same query.
+	</para>
+	 <para>
+		The syntax of JSONiq allows JSON constructors to contain XML values, and allows JSON constructors to occur in XML constructors. JSON does not support XML nodes or types, and XML does not support Objects or Arrays, but JSONiq allows Objects and Arrays to contain XML nodes, and defines rules for using JSONiq nodes in XML content expressions.
+	</para>
+	 <example>
+		<title>XML in JSON</title>
+		 <para>
+			Both XML nodes and atomic values may occur in the values of Objects.
+		</para>
+		 
+<programlisting>
+        {
+          "element" : &lt;mercury&gt;Hg&lt;/mercury&gt;,
+          "atomic value" : xs:date("1896-01-24")
+          "several dates" : [ xs:date("1066-10-14"), xs:date("1935-01-11"), xs:date("1989-11-09") ]
+        }
+</programlisting>
+		 <para>
+			XML nodes and atomic values may also appear in Arrays.
+		</para>
+		 
+<programlisting>[ xs:date("1066-10-14"), &lt;mercury&gt;Hg&lt;/mercury&gt;, "ice cream" ]</programlisting>
+
+	</example>
+	 <para>
+		JSONiq does not allow XML nodes to contain Objects and Arrays. If an XQuery element content sequence, the value of the enclosed expression of an attribute, or the value of the content expression of a computed constructor contains an Object or Array, an error <code>jerr:JNTY0011</code> is raised.
+	</para>
+	 <example>
+		<title>Objects in XML Constructors</title>
+		 <para>
+			Objects can be indirectly used in the content expression of any XQuery constructor.
+		</para>
+		 <para>
+			Query:
+		</para>
+		 
+<programlisting>
+        let $object := { "x" : 10, "y" : 12 }
+        let $x := $object("x")
+        return &lt;x&gt;{ $x }&lt;/x&gt;
+</programlisting>
+		 <para>
+			An Array can also be used in the content expression.<footnote>
+			<para>
+				The data in this example is taken from an example on Stefan Goessner's JSONT site (<ulink url="http://goessner.net/articles/jsont/">http://goessner.net/articles/jsont/</ulink>).
+			</para>
+			</footnote>:
+		</para>
+		 
+<programlisting>
+        &lt;svg&gt;&lt;polygon stroke="blue" points="(jnlib:flatten([ [10,10], [20,10], [20,20], [10,20] ])}" /&gt;&lt;/svg&gt;
+</programlisting>
+		 <para>
+			Here is the result of the above query:
+		</para>
+		 
+<programlisting>&lt;svg&gt;&lt;polygon stroke="blue" points="10 10 20 10 20 20 10 20" /&gt;&lt;/svg&gt;</programlisting>
+
+	</example>
+
+</chapter>
+

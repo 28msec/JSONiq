@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>17.2. Null vs. empty sequence</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-areas-of-confusion.html" title="Chapter 17. Notes" /><link rel="prev" href="chapter-areas-of-confusion.html" title="Chapter 17. Notes" /><link rel="next" href="chapter-open-issues.html" title="Chapter 18. Open Issues" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-areas-of-confusion.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-open-issues.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm38273344">17.2. Null vs. empty sequence</h2></div></div></div><div class="para">
+			Null and the empty sequence are two different concepts.
+		</div><div class="para">
+			Null is an item (an atomic value), and can be a member of an array or of a sequence, or the value associated with a key in an object. Sequences cannot, as they represent the absence of any item.
+		</div><div class="example"><h6>Example 17.11. Null values in an array</h6><div class="example-contents"><pre class="programlisting">
+[ null, 1, null, 2 ]
+</pre><pre class="programlisting">Result:
+ [ null, 1, null, 2 ]
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.12. Null values in an object</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : null }
+</pre><pre class="programlisting">Result:
+ {
+   "foo" : null
+ }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.13. Null values in a sequence</h6><div class="example-contents"><pre class="programlisting">
+(null, 1, null, 2)
+</pre><pre class="programlisting">Result:
+ null
+ 1
+ null
+ 2
+</pre></div></div><br class="example-break" /><div class="para">
+			If an empty sequence is found as an object value, it is automatically converted to null.
+		</div><div class="example"><h6>Example 17.14. Automatic conversion to null.</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : () }
+</pre><pre class="programlisting">Result:
+ {
+   "foo" : null
+ }
+</pre></div></div><br class="example-break" /><div class="para">
+			In an arithmetic opration or a comparison, if an operand is an empty sequence, an empty sequence is returned. If an operand is a null, an error is raised except for equality and inequality.
+		</div><div class="example"><h6>Example 17.15. Empty sequence in an arithmetic operation.</h6><div class="example-contents"><pre class="programlisting">
+() + 2
+</pre><pre class="programlisting">Result:
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.16. Null in an arithmetic operation.</h6><div class="example-contents"><pre class="programlisting">
+null + 2
+</pre><pre class="programlisting">Result:
+ An error was raised: arithmetic operation not defined between types "js:null" and "xs:integer"</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.17. Null and empty sequence in an arithmetic operation.</h6><div class="example-contents"><pre class="programlisting">
+null + ()
+</pre><pre class="programlisting">Result:
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.18. Empty sequence in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+() eq 2
+</pre><pre class="programlisting">Result:
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.19. Null in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null eq 2
+</pre><pre class="programlisting">Result:
+ false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.20. Null in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null lt 2
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.21. Null and the empty sequence in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null eq ()
+</pre><pre class="programlisting">Result:
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 17.22. Null and the empty sequence in a comparison.</h6><div class="example-contents"><pre class="programlisting">
+null lt ()
+</pre><pre class="programlisting">Result:
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-areas-of-confusion.html"><strong>Prev</strong>Chapter 17. Notes</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-open-issues.html"><strong>Next</strong>Chapter 18. Open Issues</a></li></ul></body></html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.2. For Clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-FLWOR.html" title="Chapter 10. FLWOR Expressions" /><link rel="prev" href="chapter-FLWOR.html" title="Chapter 10. FLWOR Expressions" /><link rel="next" href="ch10s03.html" title="10.3. Where Clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-FLWOR.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch10s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp7262208">10.2. For Clauses</h2></div></div></div><div class="para">
+			For clauses allow iteration on a sequence.
+		</div><div class="para">
+			For each incoming tuple, the expression in the for clause is evaluated to a sequence. Each item in this sequence is in turn bound to the for variable. A tuple is hence produced for each incoming tuple, and for each item in the sequence produced by the for clause for this tuple.
+		</div><div class="para">
+			For example, the following for clause:
+		</div><pre class="programlisting">
+for $x in 1 to 3
+...
+</pre><div class="para">
+			produces the following stream of tuples. The tuples themselves are for explanatory purposes, they are not part of the data model. The syntax is also ad-hoc and is used for illustrating.
+		</div><pre class="programlisting">
+$x : 1
+$x : 2
+$x : 3
+</pre><div class="para">
+			The order in which items are bound by the for clause can be relaxed with unordered expressions, as described later in this section.
+		</div><div class="para">
+			The following query, using a for and a return clause, is the counterpart of SQL's "SELECT display_name FROM answers". $x is bound in turn to each item in the answers collection.
+		</div><div class="example"><h6>Example 10.1. A for clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("answers")
+return $x.owner.display_name
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"Ubiguchi"
+"Rob Wells"
+"Victor Nicollet"
+"descent89"
+"JasonSmith"
+"JasonSmith"
+"JasonSmith"
+"JasonSmith"
+</pre></div></div><br class="example-break" /><div class="para">
+			For clause expressions are composable, there can be several of them.
+		</div><div class="example"><h6>Example 10.2. Two for clauses.</h6><div class="example-contents"><pre class="programlisting">
+for $x in ( 1, 2, 3 )
+for $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">11
+12
+13
+21
+22
+23
+31
+32
+33
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.3. A for clause with two variables.</h6><div class="example-contents"><pre class="programlisting">
+for $x in ( 1, 2, 3 ), $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">11
+12
+13
+21
+22
+23
+31
+32
+33
+</pre></div></div><br class="example-break" /><div class="para">
+			A for variable is visible to subsequent bindings.
+		</div><div class="example"><h6>Example 10.4. Two for clauses.</h6><div class="example-contents"><pre class="programlisting">
+for $x in ( [ 1, 2, 3 ],
+            [ 4, 5, 6 ],
+            [ 7, 8, 9 ] ),
+    $y in $x[]
+return $y,
+for $x in collection("faqs")[size($$.tags) eq 5],
+    $y in $x.tags[]
+return {
+  "id" : $x.question_id,
+  "tag" : $y
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">1
+2
+3
+4
+5
+6
+7
+8
+9
+{
+  "id" : 5453872,
+  "tag" : "database"
+}
+{
+  "id" : 5453872,
+  "tag" : "full-text-search"
+}
+{
+  "id" : 5453872,
+  "tag" : "nosql"
+}
+{
+  "id" : 5453872,
+  "tag" : "couchdb"
+}
+{
+  "id" : 5453872,
+  "tag" : "riak"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			It is also possible to bind the position of the current item in the sequence to a variable.
+		</div><div class="example"><h6>Example 10.5. A for clause with a position variable.</h6><div class="example-contents"><pre class="programlisting">
+for $x at $position in collection("answers")
+return {
+  "old id" : $x.answer_id,
+  "new id" : $position
+}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "old id" : 37841,
+  "new id" : 1
+}
+{
+  "old id" : 37844,
+  "new id" : 2
+}
+{
+  "old id" : 4419542,
+  "new id" : 3
+}
+{
+  "old id" : 4419578,
+  "new id" : 4
+}
+{
+  "old id" : 4720977,
+  "new id" : 5
+}
+{
+  "old id" : 5454583,
+  "new id" : 6
+}
+{
+  "old id" : 6195094,
+  "new id" : 7
+}
+{
+  "old id" : 6210422,
+  "new id" : 8
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			JSONiq supports joins. For example, the counterpart of "SELECT q.title AS question, q.question_id FROM faq q JOIN answers a ON q.question_id = a.question_id" is:
+		</div><div class="example"><h6>Example 10.6. A regular join.</h6><div class="example-contents"><pre class="programlisting">
+for $question in collection("faqs"),
+    $answer in collection("answers")
+    [ $$.question_id eq $question.question_id ]
+return { "question" : $question.title,
+         "answer score" : $answer.score }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 17
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 1
+}
+{
+  "question" : "Redis, CouchDB or Cassandra?",
+  "answer score" : 34
+}
+{
+  "question" : "Full-text search in NoSQL databases",
+  "answer score" : 6
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 0
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 1
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			Note how JSONiq handles semi-structured data in a flexible way.
+		</div><div class="para">
+			Outer joins are also possible with "allowing empty", i.e., output will also be produced if there is no matching answer for a question. The following query is the counterpart of "SELECT q.title AS question, q.question_id FROM faq q LEFT JOIN answers a ON q.question_id = a.question_id".
+		</div><div class="example"><h6>Example 10.7. An outer join.</h6><div class="example-contents"><pre class="programlisting">
+for $question in collection("faqs"),
+    $answer allowing empty in collection("answers")
+    [ $$.question_id eq $question.question_id ]
+return { "question" : $question.title,
+         "answer score" : $answer.score }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 17
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 1
+}
+{
+  "question" : "The Next-gen Databases",
+  "answer score" : null
+}
+{
+  "question" : "Redis, CouchDB or Cassandra?",
+  "answer score" : 34
+}
+{
+  "question" : "Full-text search in NoSQL databases",
+  "answer score" : 6
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 0
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 1
+}
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-FLWOR.html"><strong>Prev</strong>Chapter 10. FLWOR Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch10s03.html"><strong>Next</strong>10.3. Where Clauses</a></li></ul></body></html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>3.5. JSON Objects</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-JSON.html" title="Chapter 3. The JSON Syntax" /><link rel="prev" href="ch03s04.html" title="3.4. JSON Null" /><link rel="next" href="chapter-DataModel.html" title="Chapter 4. The JSONiq Data Model" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-DataModel.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp7635984">3.5. JSON Objects</h2></div></div></div><div class="para">
+			Objects are unordered sets of string/value pairs. A string is any JSON string as described above. A value is any JSON building block.
+		</div><div class="para">
+			According to the JSON RFC, keys (the strings) should be unique -- and JSONiq does consider them unique.
+		</div><div class="para">
+			You can see in the following examples that values can be also nested objects or arrays.
+		</div><pre class="programlisting">
+{
+"_id" : "511C7C5C9A277C22D138802D", 
+"question_id" : 4419499, 
+"last_edit_date" : "2012-12-17T00:02:31", 
+"creation_date" : "2010-12-11T23:15:19", 
+"last_activity_date" : "2012-12-17T00:02:31", 
+"score" : 15, 
+"accepted_answer_id" : 4421601, 
+"title" : "MySQL and NoSQL: Help me to choose the right one", 
+"tags" : [ "php", "mysql", "nosql", "cassandra" ], 
+"view_count" : 3972, 
+"owner" : {
+  "user_id" : 279538, 
+  "display_name" : "cedivad", 
+  "reputation" : 430, 
+  "user_type" : "registered", 
+  "profile_image" : "http://www.gravatar.com/avatar/b77f...", 
+  "link" : "http://stackoverflow.com/users/279538/cedivad", 
+  "accept_rate" : 74
+}, 
+"link" : "http://stackoverflow.com/questions/4419499/mys...", 
+"is_answered" : true
+}
+</pre><div class="para">
+			In the NoSQL world, top-level JSON objects are often referred to as JSON documents.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s04.html"><strong>Prev</strong>3.4. JSON Null</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-DataModel.html"><strong>Next</strong>Chapter 4. The JSONiq Data Model</a></li></ul></body></html>

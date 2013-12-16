@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.4. Composing Constructors</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-Construction.html" title="Chapter 5. Construction of Items" /><link rel="prev" href="ch05s03.html" title="5.3. Array Constructors" /><link rel="next" href="chapter-collections.html" title="Chapter 6. Collections" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-collections.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm43143664">5.4. Composing Constructors</h2></div></div></div><div class="para">
+			Of course, JSONiq would not be very interesting if all you could do is copy and paste JSON documents. So now is time to get to the meat.
+		</div><div class="para">
+			Because JSONiq expressions are fully composable, in objects and arrays constructors, you can put way more than just atomic literals, object constructors and array constructors: you can put any JSONiq <span class="emphasis"><em>expression</em></span>. An expression is the JSONiq building block. You already know some (literals, constructors, comma, cast, instance of) and plenty more will be introduced in the next part (arithmetics, logic, comparison, if-then-else, try-catch, FLWORS that allow you to join, select, group, filter, project, stream in windows, ...)
+		</div><div class="para">
+			In order to illustrate composability, the following examples use a few of the many operators you can use:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					"to" for creating sequences of consecutive integers,
+				</div></li><li class="listitem"><div class="para">
+					"||" for concatenating strings,
+				</div></li><li class="listitem"><div class="para">
+					"+" for adding numbers,
+				</div></li><li class="listitem"><div class="para">
+					"," for appending sequences (yes, you already know this one).
+				</div></li></ul></div><div class="para">
+			So here we go.
+		</div><div class="para">
+			In an array, the operand expression inside the square bracket will evaluated to a sequence of items, and these items will be copied and become members of the newly created array.
+		</div><div class="example"><h6>Example 5.8. Composable array constructors.</h6><div class="example-contents"><pre class="programlisting">
+[ 1 to 10 ],
+[ "foo" || "bar", 1 to 3, 2 + 2 ]   
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+[ "foobar", 1, 2, 3, 4 ]
+</pre></div></div><br class="example-break" /><div class="para">
+			In an object, the expression you use for the key must evaluate to an atomic - if it is not a string, it will just get cast to it.
+		</div><div class="para">
+			An error is raised if the key expression is not an atomic.
+		</div><div class="example"><h6>Example 5.9. Composable object keys.</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" || "bar" : true },
+{ 1 + 1 : "foo" }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foobar" : true
+}
+{
+  "2" : "foo"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			And do not worry about the value expression: if it is empty, null will be used as a value, and if it contains two items or more, they will be wrapped into an array.
+		</div><div class="example"><h6>Example 5.10. Composable object values.</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : 1 + 1 },
+{ "foo" : (), "bar" : (1, 2) }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : 2
+}
+{
+  "foo" : null,
+  "bar" : [ 1, 2 ]
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			The {| |} constructor can be used to merge several objects.
+		</div><div class="example"><h6>Example 5.11. Merging object constructor.</h6><div class="example-contents"><pre class="programlisting">
+{| { "foo" : "bar" }, { "bar" : "foo" } |}
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">{
+  "foo" : "bar",
+  "bar" : "foo"
+}
+</pre></div></div><br class="example-break" /><div class="para">
+			An error is raised if the operand expression does not evaluate to a sequence of objects.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s03.html"><strong>Prev</strong>5.3. Array Constructors</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-collections.html"><strong>Next</strong>Chapter 6. Collections</a></li></ul></body></html>

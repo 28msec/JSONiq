@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.6. FLWOR expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-expressions.html" title="Chapter 5. Expressions" /><link rel="prev" href="ch05s05s03.html" title="5.5.3. Try-catch expressions" /><link rel="next" href="ch05s06s02.html" title="5.6.2. Where clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s05s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s06s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="section" id="chapter-flwor" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="chapter-flwor">5.6. FLWOR expressions</h2></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/FLWORExpr.png" width="444" alt="FLWORExpr" /></div></div><h6>Figure 5.36. FLWORExpr</h6></div><br class="figure-break" /><div class="para">
+		FLWOR expressions are probably the most powerful JSONiq construct and correspond to SQL's SELECT-FROM-WHERE statements, but they are more general and more flexible. In particular, clauses can almost appear in any order (apart that it must begin with a for or let clause, and end with a return clause).
+	</div><div class="para">
+		Here is a bit of theory on how it works.
+	</div><div class="para">
+		A clause binds values to some variables according to its own semantics, possibly several times. Each time, a tuple of variable bindings (mapping variable names to sequences) is passed on to the next clause.
+	</div><div class="para">
+		This goes all the way down, until the return clause. The return clause is eventually evaluated for each tuple of variable bindings, resulting in a sequence of items for each tuple.
+	</div><div class="para">
+		These sequences of items are concatenated, in the order of the incoming tuples, and the obtained sequence is returned by the FLWOR expression.
+	</div><div class="para">
+		We are now giving practical examples with a hint on how it maps to SQL.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp7465984">5.6.1. For clauses</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ForClause.png" width="444" alt="ForClause" /></div></div><h6>Figure 5.37. ForClause</h6></div><br class="figure-break" /><div class="para">
+			For clauses allow iteration on a sequence.
+		</div><div class="para">
+			For each incoming tuple, the expression in the for clause is evaluated to a sequence. Each item in this sequence is in turn bound to the for variable. A tuple is hence produced for each incoming tuple, and for each item in the sequence produced by the for clause for this tuple.
+		</div><div class="para">
+			The order in which items are bound by the for clause can be relaxed with unordered expressions, as described later in this section.
+		</div><div class="para">
+			The following query, using a for and a return clause, is the counterpart of SQL's "SELECT name FROM captains". $x is bound in turn to each item in the captains collection.
+		</div><div class="example"><h6>Example 5.100. A for clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+return $x.name
+</pre><div class="formalpara"><h5 class="formalpara" id="idp4271936">Result (run with Zorba):</h5>
+					James T. Kirk Jean-Luc Picard Benjamin Sisko Kathryn Janeway Jonathan Archer Samantha Carter
+				</div></div></div><br class="example-break" /><div class="para">
+			For clause expressions are composable, there can be several of them.
+		</div><div class="example"><h6>Example 5.101. Two for clauses.</h6><div class="example-contents"><pre class="programlisting">
+for $x in ( 1, 2, 3 )
+for $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</pre><div class="formalpara"><h5 class="formalpara" id="idp21588272">Result (run with Zorba):</h5>
+					11 12 13 21 22 23 31 32 33
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.102. A for clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in ( 1, 2, 3 ), $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</pre><div class="formalpara"><h5 class="formalpara" id="idp21212240">Result (run with Zorba):</h5>
+					11 12 13 21 22 23 31 32 33
+				</div></div></div><br class="example-break" /><div class="para">
+			A for variable is visible to subsequence bindings.
+		</div><div class="example"><h6>Example 5.103. A for clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in ( [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ), $y in $x[]
+return $y
+</pre><div class="formalpara"><h5 class="formalpara" id="idp18664512">Result (run with Zorba):</h5>
+					1 2 3 4 5 6 7 8 9
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.104. A for clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains"), $y in $x.series[]
+return { "captain" : $x.name, "series" : $y }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8390288">Result (run with Zorba):</h5>
+					{ "captain" : "James T. Kirk", "series" : "The original series" } { "captain" : "Jean-Luc Picard", "series" : "The next generation" } { "captain" : "Benjamin Sisko", "series" : "The next generation" } { "captain" : "Benjamin Sisko", "series" : "Deep Space 9" } { "captain" : "Kathryn Janeway", "series" : "The next generation" } { "captain" : "Kathryn Janeway", "series" : "Voyager" } { "captain" : "Jonathan Archer", "series" : "Entreprise" } { "captain" : null, "series" : "Voyager" }
+				</div></div></div><br class="example-break" /><div class="para">
+			It is also possible to bind the position of the current item in the sequence to a variable.
+		</div><div class="example"><h6>Example 5.105. A for clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x at $position in collection("captains")
+return { "captain" : $x.name, "id" : $position }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10563440">Result (run with Zorba):</h5>
+					{ "captain" : "James T. Kirk", "id" : 1 } { "captain" : "Jean-Luc Picard", "id" : 2 } { "captain" : "Benjamin Sisko", "id" : 3 } { "captain" : "Kathryn Janeway", "id" : 4 } { "captain" : "Jonathan Archer", "id" : 5 } { "captain" : null, "id" : 6 } { "captain" : "Samantha Carter", "id" : 7 }
+				</div></div></div><br class="example-break" /><div class="para">
+			JSONiq supports joins. For example, the counterpart of "SELECT c.name AS captain, m.name AS movie FROM captains c JOIN movies m ON c.name = m.name" is:
+		</div><div class="example"><h6>Example 5.106. A join</h6><div class="example-contents"><pre class="programlisting">
+for $captain in collection("captains"), $movie in collection("movies")[ try { $$.captain eq $captain.name } catch * { false } ]
+return { "captain" : $captain.name, "movie" : $movie.name }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp11487936">Result (run with Zorba):</h5>
+					{ "captain" : "James T. Kirk", "movie" : "The Motion Picture" } { "captain" : "James T. Kirk", "movie" : "The Wrath of Kahn" } { "captain" : "James T. Kirk", "movie" : "The Search for Spock" } { "captain" : "James T. Kirk", "movie" : "The Voyage Home" } { "captain" : "James T. Kirk", "movie" : "The Final Frontier" } { "captain" : "James T. Kirk", "movie" : "The Undiscovered Country" } { "captain" : "Jean-Luc Picard", "movie" : "First Contact" } { "captain" : "Jean-Luc Picard", "movie" : "Insurrection" } { "captain" : "Jean-Luc Picard", "movie" : "Nemesis" }
+				</div></div></div><br class="example-break" /><div class="para">
+			Note how JSONiq handles semi-structured data in a flexible way.
+		</div><div class="para">
+			Outer joins are also possible with "allowing empty", i.e., output will also be produced if there is no matching movie for a captain. The following query is the counterpart of "SELECT c.name AS captain, m.name AS movie FROM captains c LEFT JOIN movies m ON c.name = m.captain".
+		</div><div class="example"><h6>Example 5.107. A join</h6><div class="example-contents"><pre class="programlisting">
+for $captain in collection("captains"), $movie allowing empty in collection("movies")[ try { $$.captain eq $captain.name } catch * { false } ]
+return { "captain" : $captain.name, "movie" : $movie.name }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8295408">Result (run with Zorba):</h5>
+					{ "captain" : "James T. Kirk", "movie" : "The Motion Picture" } { "captain" : "James T. Kirk", "movie" : "The Wrath of Kahn" } { "captain" : "James T. Kirk", "movie" : "The Search for Spock" } { "captain" : "James T. Kirk", "movie" : "The Voyage Home" } { "captain" : "James T. Kirk", "movie" : "The Final Frontier" } { "captain" : "James T. Kirk", "movie" : "The Undiscovered Country" } { "captain" : "Jean-Luc Picard", "movie" : "First Contact" } { "captain" : "Jean-Luc Picard", "movie" : "Insurrection" } { "captain" : "Jean-Luc Picard", "movie" : "Nemesis" } { "captain" : "Benjamin Sisko", "movie" : null } { "captain" : "Kathryn Janeway", "movie" : null } { "captain" : "Jonathan Archer", "movie" : null } { "captain" : null, "movie" : null } { "captain" : "Samantha Carter", "movie" : null }
+				</div></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s05s03.html"><strong>Prev</strong>5.5.3. Try-catch expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s06s02.html"><strong>Next</strong>5.6.2. Where clauses</a></li></ul></body></html>

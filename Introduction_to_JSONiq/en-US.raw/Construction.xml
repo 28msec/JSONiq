@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-Construction">
+  <title>Construction of Items</title>
+  <para>
+    As we just saw, the items (objects, arrays, strings, ...) mentioned in <xref linkend="chapter-JSON"/> are constructed 
+    exactly as they are constructed in JSON. In a way, any JSON building block is also a well-formed JSONiq query
+    which just "returns itself" (more precisely: its counterpart in the JSONiq Data Model).
+  </para>
+  <section>
+    <title>Atomic Literals</title>
+    <section>
+      <title>String Literals</title>
+      <para>The syntax for creating strings is identical to that of JSON. No surprise here. JSON's backslash escaping is
+        supported, and like in JSON, double quotes are required and single quotes are forbidden.</para>
+      <example>
+        <title>String literals.</title>
+        <programlisting>
+"foo",
+"This is a line\nand this is a new line",
+"\u0001",
+"This is a nested \"quote\""
+        </programlisting>
+      </example>
+    </section>
+    <section>
+      <title>Number Literals.</title>
+    <para> The syntax for creating numbers is identical to that of JSON.</para>
+      <example>
+        <title>Number literals (integer, decimal and double literals)</title>
+        <programlisting>
+42,
+3.14,
+-6.022E23
+      </programlisting>
+      </example>
+      <para>Well, not quite. Actually, JSONiq allows a more flexible superset. In particular:</para>
+      <itemizedlist>
+        <listitem><para>leading 0s are allowed</para></listitem>
+        <listitem><para>a decimal literal can begin or end with a dot</para></listitem>
+        <listitem><para>a number may begin with a + sign</para></listitem>
+      </itemizedlist>
+      <example>
+        <title>A more general literal syntax.</title>
+        <programlisting>
+042,
+.1415926535,
+42.,
++6.022E23
+      </programlisting>
+      </example>
+        <para>Remember that JSONiq distinguishes between integers (no dot, no
+      scientific notation), decimals (dot but no scientific notation), and doubles (scientific
+      notation). As expected, an integer literal creates an atomic of type integer, and so on. No
+      surprises either.</para>
+    </section>
+    <section>
+      <title>Boolean and Null Literals</title>
+      <para>There is not much to say actually -- boolean literals build boolean atomics, the null literal builds a null atomic, so no worries here, the world
+      is in order.</para>
+      <example>
+      <title>Boolean and null literals.</title>
+      <programlisting>
+true,
+false,
+null
+      </programlisting>
+      </example>
+    </section>
+  </section>
+  <section>
+    <title>Object Constructors</title>
+    <para>
+      The syntax for creating objects is also identical to that of JSON. You can use for an object key any string literal,
+      and for an object value any literal, object constructor or array constructor.
+    </para>
+    <example>
+      <title>Object constructors.</title>
+      <programlisting>
+{},
+{ "foo" : "bar" },
+{ "foo" : [ 1, 2, 3, 4, 5, 6 ] },
+{ "foo" : true, "bar" : false },
+{ "this is a key" : { "value" : "a value" } }
+      </programlisting>
+    </example>
+    <para>
+      Again, JSONiq is more flexible here. Like in JavaScript, if your key is simple enough (like alphanumerics,
+     underscores, dashes, these kinds of things), you are welcome to omit the quotes. The strings for which quotes
+     are not mandatory are called <emphasis>unquoted names</emphasis>. This class of strings can be used for unquoted keys,
+     but also in later sections for variable and function names, and for module aliases.
+    </para>
+    <example>
+      <title>Object constructors with unquoted keys.</title>
+      <programlisting>
+{ foo : "bar" },
+{ foo : [ 1, 2, 3, 4, 5, 6 ] },
+{ foo : "bar", bar : "foo" },
+{ "but you need the quotes here" : null }
+    </programlisting>
+    </example>
+  </section>
+  <section>
+    <title>Array Constructors</title>
+    <para>
+      The syntax for creating arrays is identical to that of JSON (do you sense a growing feeling that we are repeating ourselves? But it feels
+      so good to say it): square brackets, comma separated values.
+    </para>
+    <example>
+      <title>Empty array constructors.</title>
+      <programlisting>
+[],
+[ 1, 2, 3, 4, 5, 6 ],
+[ "foo", [ 3.14, "Go" ], { "foo" : "bar" }, true ]
+      </programlisting>
+    </example>
+    <para>Square brackets are mandatory. Things can only be pushed so far.</para>
+  </section>
+  <section>
+    <title>Composing Constructors</title>
+    <para>Of course, JSONiq would not be very interesting if all you could do is copy and paste JSON documents. So now is time to get
+    to the meat.</para>
+    <para>Because JSONiq expressions are fully composable, in objects and arrays constructors, you
+      can put way more than just atomic literals, object constructors and array constructors: you
+      can put any JSONiq <emphasis>expression</emphasis>. An expression is the JSONiq building block. You already know some (literals,
+      constructors, comma, cast, instance of) and plenty more will be introduced in the next part (arithmetics, logic, comparison,
+      if-then-else, try-catch, FLWORS that allow you to join, select, group, filter, project, stream in windows, ...)</para>
+    <para>In order to illustrate composability, the following examples use a few of the many operators you can use:</para>
+    <itemizedlist>
+      <listitem><para>"to" for creating sequences of consecutive integers,</para></listitem>
+      <listitem><para>"||" for concatenating strings,</para></listitem>
+      <listitem><para>"+" for adding numbers,</para></listitem>
+      <listitem><para>"," for appending sequences (yes, you already know this one).</para></listitem>
+    </itemizedlist>
+    <para>So here we go.</para>
+    <para>In an array, the operand expression inside the square bracket will evaluated to a sequence of items,
+      and these items will be copied and become members
+      of the newly created array.</para>
+    <example>
+      <title>Composable array constructors.</title>
+      <programlisting>
+[ 1 to 10 ],
+[ "foo" || "bar", 1 to 3, 2 + 2 ]   
+    </programlisting>
+    </example>
+    <para>In an object, the expression you use for the key must evaluate to an atomic - if it is not a string, it will just get cast to it.</para>
+    <para>An error is raised if the key expression is not an atomic.</para>
+    <example>
+      <title>Composable object keys.</title>
+      <programlisting>
+{ "foo" || "bar" : true },
+{ 1 + 1 : "foo" }
+      </programlisting>
+    </example>
+    <para>And do not worry about the value expression: if it is empty, null will be used as a value, and if it contains two items or more, they
+      will be wrapped into an array.</para>
+    <example>
+      <title>Composable object values.</title>
+      <programlisting>
+{ "foo" : 1 + 1 },
+{ "foo" : (), "bar" : (1, 2) }
+      </programlisting>
+    </example>
+    <para> The {| |} constructor can be used to merge several objects.</para>
+    <example>
+      <title>Merging object constructor.</title>
+      <programlisting>
+{| { "foo" : "bar" }, { "bar" : "foo" } |}
+      </programlisting>
+    </example>
+    <para>An error is raised if the operand expression does not evaluate to a sequence of
+      objects.</para>
+  </section>
+</chapter>

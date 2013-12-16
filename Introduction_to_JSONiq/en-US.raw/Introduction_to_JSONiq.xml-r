@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<book>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Book_Info.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Introduction.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="JSON.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Collections.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="TypeSystem.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Expressions.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Prolog.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Modules.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="FunctionLibrary.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="EqualityAndIdentity.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="AreasOfConfusion.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="OpenIssues.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Revision_History.xml"/>
+</book>
+

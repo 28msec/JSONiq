@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 8. Basic Operations</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt03.html" title="Part III. JSONiq Expressions" /><link rel="prev" href="pt03.html" title="Part III. JSONiq Expressions" /><link rel="next" href="ch08s02.html" title="8.2. Parenthesized Expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="pt03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch08s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-basicOperations" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 8. Basic Operations</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-basicOperations.html#idm3200736">8.1. Construction of Sequences</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-basicOperations.html#idp5227520">8.1.1. Comma Operator</a></span></dt><dt><span class="section"><a href="chapter-basicOperations.html#idm41354688">8.1.2. Range Operator</a></span></dt></dl></dd><dt><span class="section"><a href="ch08s02.html">8.2. Parenthesized Expressions</a></span></dt><dt><span class="section"><a href="ch08s03.html">8.3. Arithmetics</a></span></dt><dt><span class="section"><a href="ch08s04.html">8.4. String Concatenation</a></span></dt><dt><span class="section"><a href="ch08s05.html">8.5. Comparison</a></span></dt><dt><span class="section"><a href="ch08s06.html">8.6. Empty Sequence Behavior</a></span></dt><dt><span class="section"><a href="section-logics.html">8.7. Logic</a></span></dt><dd><dl><dt><span class="section"><a href="section-logics.html#idp3437408">8.7.1. Propositional Logic</a></span></dt><dt><span class="section"><a href="ch08s07s02.html">8.7.2. First-Order Logic (Quantified Variables)</a></span></dt></dl></dd><dt><span class="section"><a href="ch08s08.html">8.8. Builtin Functions</a></span></dt></dl></div><div class="para">
+		Now that we have shown how expressions can be composed, we can begin the tour of all JSONiq expressions. First, we introduce the most basic operations.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm3200736">8.1. Construction of Sequences</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp5227520">8.1.1. Comma Operator</h3></div></div></div><div class="para">
+				The comma allows you to concatenate two sequences, or even single items. This operator has the lowest precedence of all, so do not forget the parentheses if you would like to change this.
+			</div><div class="para">
+				Also, the comma operator is associative -- in particular, sequences do not nest. You need to use arrays in order to nest.
+			</div><div class="example"><h6>Example 8.1. Comma.</h6><div class="example-contents"><pre class="programlisting">
+1, 2, 3, 4, 5,
+{ "foo" : "bar" }, [ 1  ],
+1 + 1, 2 + 2,
+(1, 2, (3, 4), 5)
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">1
+2
+3
+4
+5
+{
+  "foo" : "bar"
+}
+[ 1 ]
+2
+4
+1
+2
+3
+4
+5
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm41354688">8.1.2. Range Operator</h3></div></div></div><div class="para">
+				With the binary operator "to", you can generate larger sequences with just two integer operands.
+			</div><div class="para">
+				If the left operand is greater than the right operand, an empty sequence is returned.
+			</div><div class="para">
+				If an operand evaluates to something else than a single integer, an error is raised. There is one exception with the empty sequence, which behaves in a particular way for most operations (see below).
+			</div><div class="example"><h6>Example 8.2. Range operator.</h6><div class="example-contents"><pre class="programlisting">
+1 to 10,
+10 to 1
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></div><br class="example-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="pt03.html"><strong>Prev</strong>Part III. JSONiq Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch08s02.html"><strong>Next</strong>8.2. Parenthesized Expressions</a></li></ul></body></html>

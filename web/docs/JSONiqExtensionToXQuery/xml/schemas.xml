@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE locatingRules PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<locatingRules lang="en-US" xmlns="http://thaiopensource.com/ns/locating-rules/1.0"> <uri resource="Chapter.xml" typeId="DocBook"></uri></locatingRules>

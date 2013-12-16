@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.16. Changes to value comparison semantics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-builtin-functions.html" title="Chapter 6. Builtin functions and operators" /><link rel="prev" href="ch06s15.html" title="6.15. Changes to arithmetic operation semantics" /><link rel="next" href="ch06s17.html" title="6.17. Changes to general comparison semantics" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s15.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch06s17.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm607424">6.16. Changes to value comparison semantics</h2></div></div></div><div class="para">
+			The semantics of value comparison is changed as follows.
+		</div><div class="para">
+			Null is considered equal to itself, unequal to any other atomic items, and smaller than any other atomic item.
+		</div><div class="example"><h6>Example 6.11. Value comparison</h6><div class="example-contents"><div class="para">
+				Query
+			</div><pre class="programlisting">
+        1 eq null, null eq null, 1 ne null, null lt 1
+</pre><div class="para">
+				Result
+			</div><pre class="programlisting">
+        false true true true
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s15.html"><strong>Prev</strong>6.15. Changes to arithmetic operation semantics</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch06s17.html"><strong>Next</strong>6.17. Changes to general comparison semantics</a></li></ul></body></html>

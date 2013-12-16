@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-reference">
+  <title>Reference</title>
+  <para>A great part of JSONiq is directly inherited from XQuery -- everything that is orthogonal to XML.</para>
+  <para>If you would like to know more about JSONiq, you can browse <emphasis>http://www.jsoniq.org/</emphasis>.</para>
+  <para>If you are interested in knowing the semantics of the expressions more in depth, you can find most of them on
+    the XQuery 3.0 specification at <emphasis>http://www.w3.org/TR/xquery-30</emphasis>.</para>
+  <para>If you are interested in knowing the semantics of the builtin functions more in depth, you can find most of them on
+    the XPath and XQuery Functions and Operators 3.0 specification at <emphasis>http://www.w3.org/TR/xpath-functions-30</emphasis>.</para>
+</chapter>

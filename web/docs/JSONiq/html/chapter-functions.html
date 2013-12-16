@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 8. Function Library</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="index.html" title="JSONiq" /><link rel="prev" href="chapter-modules.html" title="Chapter 7. Modules" /><link rel="next" href="ch08s02.html" title="8.2. Functions taken from XQuery" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-modules.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch08s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-functions" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 8. Function Library</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-functions.html#idp24380224">8.1. JSON specific functions.</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-functions.html#idp18843760">8.1.1. keys</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp8938688">8.1.2. members</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp52820240">8.1.3. null</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp7622560">8.1.4. parse-json</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp56336960">8.1.5. size</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp56342208">8.1.6. accumulate</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp19990240">8.1.7. descendant-arrays</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp19992352">8.1.8. descendant-objects</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp19994464">8.1.9. descendant-pairs</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp3949856">8.1.10. flatten</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp3951904">8.1.11. intersect</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp3954240">8.1.12. project</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp3962560">8.1.13. remove-keys</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp56210192">8.1.14. values</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp56212176">8.1.15. encode-for-roundtrip</a></span></dt><dt><span class="section"><a href="chapter-functions.html#idp56214896">8.1.16. decode-from-roundtrip</a></span></dt></dl></dd><dt><span class="section"><a href="ch08s02.html">8.2. Functions taken from XQuery</a></span></dt></dl></div><div class="para">
+		JSONiq provides a rich set of functions.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp24380224">8.1. JSON specific functions.</h2></div></div></div><div class="para">
+			Some functions are specific to JSON.
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp18843760">8.1.1. keys</h3></div></div></div><div class="para">
+				This function returns the distinct keys of all objects in the supplied sequence, in an implementation-dependent order.
+			</div><div class="para">
+				<code class="code">keys($o as item*) as string*</code>
+			</div><div class="example"><h6>Example 8.1. Getting all distinct key names in the supplied objects, ignoring non-objects.</h6><div class="example-contents"><pre class="programlisting">
+let $o := ("foo", [ 1, 2, 3 ], { "a" : 1, "b" : 2 }, { "a" : 3, "c" : 4 })
+return keys($o)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp20529696">Result (run with Zorba):</h5>
+						a b c
+					</div></div></div><br class="example-break" /><div class="example"><h6>Example 8.2. Retrieving all Pairs from an Object:</h6><div class="example-contents"><pre class="programlisting">
+let $map := { "eyes" : "blue", "hair" : "fuchsia" }
+for $key in keys($map)
+return { $key : $map.$key }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp20494160">Result (run with Zorba):</h5>
+						{ "eyes" : "blue" } { "hair" : "fuchsia" }
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp8938688">8.1.2. members</h3></div></div></div><div class="para">
+				This functions returns all members of all arrays of the supplied sequence.
+			</div><div class="para">
+				<code class="code">members($a as item*) as item*</code>
+			</div><div class="example"><h6>Example 8.3. Retrieving the members of all supplied arrays, ignoring non-arrays.</h6><div class="example-contents"><pre class="programlisting">
+let $planets :=  ( "foo", { "foo" : "bar "}, [ "mercury", "venus", "earth", "mars" ], [ 1, 2, 3 ])
+return members($planets)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp55725168">Result (run with Zorba):</h5>
+						mercury venus earth mars 1 2 3
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp52820240">8.1.3. null</h3></div></div></div><div class="para">
+				This function returns the JSON null.
+			</div><div class="para">
+				<code class="code">null() as null</code>
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp7622560">8.1.4. parse-json</h3></div></div></div><div class="para">
+				This function parses its first parameter (a string) as JSON, and returns the resulting sequence of objects and arrays.
+			</div><div class="para">
+				<code class="code">parse-json($arg as string?) as json-item*</code>
+			</div><div class="para">
+				<code class="code">parse-json($arg as string?, $options as object) as json-item*</code>
+			</div><div class="para">
+				The object optionally supplied as the second parameter may contain additional options:
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						<code class="code">jsoniq-multiple-top-level-items</code> (boolean): indicates whether parsing to zero, or several objects is allowed. An error is raised if this value is false and there is not exactly one object that was parsed.
+					</div></li></ul></div><div class="para">
+				If parsing is not successful, an error is raised. Parsing is considered in particular to be non-successful if the boolean associated with "jsoniq-multiple-top-level-items" in the additional parameters is false and there is extra content after parsing a single abject or array.
+			</div><div class="example"><h6>Example 8.4. Parsing a JSON document</h6><div class="example-contents"><pre class="programlisting">
+parse-json("{ \"foo\" : \"bar\" }", { "jsoniq-multiple-top-level-items" : false })
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1134352">Result (run with Zorba):</h5>
+						{ "foo" : "bar" }
+					</div></div></div><br class="example-break" /><div class="example"><h6>Example 8.5. Parsing multiple, whitespace-separated JSON documents</h6><div class="example-contents"><pre class="programlisting">
+parse-json("{ \"foo\" : \"bar\" } { \"bar\" : \"foo\" }")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp1137184">Result (run with Zorba):</h5>
+						{ "foo" : "bar" } { "bar" : "foo" }
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56336960">8.1.5. size</h3></div></div></div><div class="para">
+				This function returns the size of the supplied array, or the empty sequence if the empty sequence is provided.
+			</div><div class="para">
+				<code class="code">size($a as array?) as integer?</code>
+			</div><div class="example"><h6>Example 8.6. Retrieving the size of an array</h6><div class="example-contents"><pre class="programlisting">
+let $a := [1 to 10]
+return size($a)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp56340480">Result (run with Zorba):</h5>
+						10
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56342208">8.1.6. accumulate</h3></div></div></div><div class="para">
+				This function dynamically builds an object, like the {| |} syntax, except that it does not throw an error upon pair collision. Instead, it accumulates them, wrapping into an array if necessary. Non-objects are ignored.
+			</div><pre class="programlisting">
+declare function accumulate($seq as item*) as object
+{
+  {|
+    keys($seq) ! { $$ : $seq.$$ }
+  |}
+};
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp19990240">8.1.7. descendant-arrays</h3></div></div></div><div class="para">
+				This function returns all arrays contained within the supplied items, regardless of depth.
+			</div><pre class="programlisting">
+declare function descendant-arrays($seq as item*) as array*
+{
+  for $i in $seq
+  return typeswitch ($i)
+  case array return ($i, descendant-arrays($i[])
+  case object return return descendant-arrays(values($i))
+  default return ()
+};
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp19992352">8.1.8. descendant-objects</h3></div></div></div><div class="para">
+				This function returns all objects contained within the supplied items, regardless of depth.
+			</div><pre class="programlisting">
+declare function descendant-objects($seq as item*) as object*
+{
+  for $i in $seq
+  return typeswitch ($i)
+  case object return ($i, descendant-objects(values($i)))
+  case array return return descendant-objects($i[])
+  default return ()
+};
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp19994464">8.1.9. descendant-pairs</h3></div></div></div><div class="para">
+				This function returns all descendant pairs within the supplied items.
+			</div><pre class="programlisting">
+declare function descendant-pairs($seq as item*)
+{
+  for $i in $seq
+  return typeswitch ($i)
+  case object return
+    for $k in keys($o)
+    let $v := $o.$k
+    return ({ $k : $v }, descendant-pairs($v))
+  case array return descendant-pairs($i[])
+  default return ()
+};
+</pre><div class="example"><h6>Example 8.7. Accessing all descendant pairs</h6><div class="example-contents"><pre class="programlisting">
+let $o := 
+{
+  "first" : 1,
+  "second" : { 
+    "first" : "a", 
+    "second" : "b" 
+  }
+}
+return descendant-pairs($o)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp19997792">Result (run with Zorba):</h5>
+						An error was raised: "descendant-pairs": function with arity 1 not declared
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp3949856">8.1.10. flatten</h3></div></div></div><div class="para">
+				This function recursively flattens arrays in the input sequence, leaving non-arrays intact.
+			</div><pre class="programlisting">
+declare function flatten($seq as item*) as item*
+{
+  for $value in $seq
+  return typeswitch ($value)
+         case array return flatten($value[])
+         default return $value
+};
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp3951904">8.1.11. intersect</h3></div></div></div><div class="para">
+				This function returns the intersection of the supplied objects, and aggregates values corresponding to the same name into an array. Non-objects are ignored.
+			</div><pre class="programlisting">
+declare function intersect($seq as item*)
+{
+  {|
+    let $objects := $seq[. instance of object()]
+    for $key in keys(head($objects))
+    where every $object in tail($objects)
+          satisfies exists(index-of(keys($object), $key))
+    return { $key : $objects.$key }
+  |}
+};
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp3954240">8.1.12. project</h3></div></div></div><div class="para">
+				This function iterates on the input sequence. It projects objects by filtering their pairs and leaves non-objects intact.
+			</div><pre class="programlisting">
+declare function project($seq as item*, $keys as string*) as item*
+{
+  for $item in $seq
+  return typeswitch ($item)
+         case $object as object return
+         {|
+           for $key in keys($object)
+           where some $to-project in $keys satisfies $to-project eq $key
+           let $value := $object.$key
+           return { $key : $value }
+         |}
+         default return $item
+};
+</pre><div class="example"><h6>Example 8.8. Projecting an object 1</h6><div class="example-contents"><pre class="programlisting">
+let $o := {
+  "Captain" : "Kirk",
+  "First Officer" : "Spock",
+  "Engineer" : "Scott"
+  }
+return project($o, ("Captain", "First Officer"))
+</pre><div class="formalpara"><h5 class="formalpara" id="idp3957904">Result (run with Zorba):</h5>
+						{ "Captain" : "Kirk", "First Officer" : "Spock" }
+					</div></div></div><br class="example-break" /><div class="example"><h6>Example 8.9. Projecting an object 2</h6><div class="example-contents"><pre class="programlisting">
+let $o := {
+  "Captain" : "Kirk",
+  "First Officer" : "Spock",
+  "Engineer" : "Scott"
+  }
+return project($o, "XQuery Evangelist")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp3960832">Result (run with Zorba):</h5>
+						{ }
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp3962560">8.1.13. remove-keys</h3></div></div></div><div class="para">
+				This function iterates on the input sequence. It removes the pairs with the given keys from all objects and leaves non-objects intact.
+			</div><pre class="programlisting">
+declare function remove-keys($seq as item*, $keys as string*) as item*
+{
+  for $item in $seq
+  return typeswitch ($item)
+         case $object as object return
+         {|
+           for $key in keys($object)
+           where every $to-remove in $keys satisfies $to-remove ne $key
+           let $value := $object.$key
+           return { $key : $value }
+         |}
+         default return $item
+};
+</pre><div class="example"><h6>Example 8.10. Removing keys from an object (not implemented yet)</h6><div class="example-contents"><pre class="programlisting">
+let $o := {
+  "Captain" : "Kirk",
+  "First Officer" : "Spock",
+  "Engineer" : "Scott"
+  }
+return remove-keys($o, ("Captain", "First Officer"))
+</pre><div class="formalpara"><h5 class="formalpara" id="idp56208496">Result (run with Zorba):</h5>
+						An error was raised: "remove-keys": function with arity 2 not declared
+					</div></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56210192">8.1.14. values</h3></div></div></div><div class="para">
+				This function returns all values in the supplied objects. Non-objects are ignored.
+			</div><pre class="programlisting">
+declare function values($seq as item*) as item* {
+  for $i in $seq
+  for $k in jn:keys($i)
+  return $i($k)
+};
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56212176">8.1.15. encode-for-roundtrip</h3></div></div></div><div class="para">
+				This function encodes any sequence of items, even containing non-JSON types, to a sequence of JSON items that can be serialized as pure JSON, in a way that it can be parsed and decoded back using decode-from-roundtrip. JSON features are left intact, while atomic items annotated with a non-JSON type are converted to objects embedding all necessary information.
+			</div><div class="para">
+				<code class="code">encode-for-roundtrip($items as item*) as json-item*</code>
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56214896">8.1.16. decode-from-roundtrip</h3></div></div></div><div class="para">
+				This function decodes a sequence previously encoded with encode-for-roundtrip.
+			</div><div class="para">
+				<code class="code">decode-from-roundtrip($items as json-item*) as item*</code>
+			</div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-modules.html"><strong>Prev</strong>Chapter 7. Modules</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch08s02.html"><strong>Next</strong>8.2. Functions taken from XQuery</a></li></ul></body></html>

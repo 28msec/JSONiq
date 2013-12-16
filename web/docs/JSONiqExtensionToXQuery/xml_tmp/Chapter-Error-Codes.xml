@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-error-codes">
+  <title>Error codes</title>
+  
+  <para>
+    The JSONiq error codes are summarized here.
+  </para>
+  <para><code>jerr:JNDY0003</code></para>
+  <para>
+    It is a dynamic error if two pairs in an object constructor or in a simple object union have the same name.
+  </para>
+  <para><code>jerr:JNTY0004</code></para>
+  <para>
+    Arrays and objects cannot be atomized. It is a type error to call fn:data on a sequence containing an array or an object.
+  </para>
+  <para><code>jerr:JNUP0005</code></para>
+  <para>
+    It is a dynamic error if a pending update list contains two JSON insert update primitives on the same object and pair name.
+  </para>
+  <para><code>jerr:JNUP0006</code></para>
+  <para>
+    It is a dynamic error if upd:applyUpdates causes an object to contain two pairs with the same name.
+  </para>
+  <para><code>jerr:JNUP0007</code></para>
+  <para>
+    It is a type error if, in an updating expression, an array selector cannot be cast to xs:integer or if an object selector cannot be cast to xs:string.
+  </para>
+  <para><code>jerr:JNUP0008</code></para>
+  <para>
+    It is a dynamic error if the target of a JSON delete or JSON replace expression is not an array or an object. It is a dynamic error if the target of a renaming expression is not an object. It is a dynamic error if the target of an appending expression is not an array. It is a dynamic error if the target of a position-inserting expression is not an array. It is a dynamic error if the target of a non-position-inserting expression is not an object.
+  </para>
+  <para><code>jerr:JNUP0009</code></para>
+  <para>
+    It is a dynamic error if a pending update list contains two JSON replacing update primitives on the same object or array, and with the same selector.
+  </para>
+  <para><code>jerr:JNUP0010</code></para>
+  <para>
+    It is a dynamic error if a pending update list contains two JSON renaming update primitives on the same object and with the same selector.
+  </para>
+  <para><code>jerr:JNTY0011</code></para>
+  <para>
+    It is a type error if the content sequence in a node constructor or in an XQUF insert or replace update expression contains an object or an array.
+  </para>
+  <para><code>jerr:JNSE0012</code></para>
+  <para>
+    It is a dynamic error to serialize something else than a unique JSON item with the JSON output method if the jsoniq-multiple-top-level-items is set to no.
+  </para>
+  <para><code>jerr:JNSE0014</code></para>
+  <para>
+    It is a dynamic error to serialize a function, a node or a standalone atomic item with the JSON output method.
+  </para>
+  <para><code>jerr:JNSE0015</code></para>
+  <para>
+    It is a dynamic error to serialize a top-level item which is not a JSON item if the jsoniq-multiple-top-level-items serialization parameter is not set to "array". 
+  </para>
+  <para><code>jerr:JNUP0016</code></para>
+  <para>
+    It is a dynamic error if it is attempted to create a replace, delete or rename update primitive with a selector that cannot be resolved against the target array or object.
+  </para>
+  <para><code>jerr:JNTY0018</code></para>
+  <para>
+    It is a type error if there is not exactly one supplied parameter for an object or array selector.
+  </para>
+  <para><code>jerr:JNUP0019</code></para>
+  <para>
+    It is a dynamic error if the content expression, in an object insert expression, does not evaluate to a sequence of objects.
+  </para>
+  <para><code>jerr:JNTY0020</code></para>
+  <para>
+    It is a dynamic error if, when calling jn:parse-json, the option "jsoniq-multiple-top-level-items" is not a boolean.
+  </para>
+  <para><code>jerr:JNDY0021</code></para>
+  <para>
+    It is a dynamic error if parsing a string to one or several objects or arrays is not successful, or if it results in more than one
+    item and "jsoniq-multiple-top-level-items" is false.
+  </para>
+  <para><code>jerr:JNSE0022</code></para>
+  <para>
+    It is a dynamic error if an object or array is encountered upon serializing as XML, XHTML, HTML or Text.
+  </para>
+  <para><code>jerr:JNTY0023</code></para>
+  <para>
+    It is a dynamic error if, when calling jn:encode-for-roundtrip or jn:decode-from-roundtrip, the value of the option
+    "prefix" is not atomizable and castable to a string, or if the value of the option "serialization-parameters" is not an element node.
+  </para>
+  <para><code>jerr:JNTY0024</code></para>
+  <para>
+    Arrays and objects do not have a string value. It is a type error to call fn:string on an array or an object.
+  </para>
+</chapter>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.2. JSON Numbers</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-JSON.html" title="Chapter 2. The JSON Syntax" /><link rel="prev" href="chapter-JSON.html" title="Chapter 2. The JSON Syntax" /><link rel="next" href="ch02s03.html" title="2.3. JSON Booleans" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-JSON.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch02s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm3245168">2.2. JSON Numbers</h2></div></div></div><div class="para">
+			Numbers cover the entire decimal space. There is no range restriction. Although there is no formal distinction in JSON, numbers can be grouped into three subcategories. These subcategories play an important role in JSONiq.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					Integers, possibly with a negative sign and not beginning with a leading 0 (except 0 itself):
+				</div><pre class="programlisting">
+0
+9
+42
+-96
+123456789012345678901234567890123456789012345
+</pre></li><li class="listitem"><div class="para">
+					"Plain" decimals, with a dot, both followed and preceded by at least by one digit (no leading dot):
+				</div><pre class="programlisting">
+0.3
+9.6
+42.2346902834
+-96.01345023400
+</pre></li><li class="listitem"><div class="para">
+					Decimals in scientific notation, i.e., a plain decimal followed by an E (case does not matter) and by a power of ten (an integer with an optional sign):
+				</div><pre class="programlisting">
+0.3e0
+9.6E+24
+42.2346902834e-2
+-96.01345023400E-02345
+</pre></li></ul></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-JSON.html"><strong>Prev</strong>Chapter 2. The JSON Syntax</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch02s03.html"><strong>Next</strong>2.3. JSON Booleans</a></li></ul></body></html>

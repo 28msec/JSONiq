@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "../../xpath-semantics-10/schema/xquery-semantics.dtd"[
+
+<!-- Fix the broken definition for prodrecap from the XML spec DTD - jpcs -->
+<!ENTITY % ref-req.att "ref    NMTOKEN    #REQUIRED">
+
+<!ENTITY doc.version "1.0">
+<!ENTITY doc.version-code "10">
+<!ENTITY doc.stage "WD">
+<!ENTITY doc.w3c-doctype "wd">
+<!ENTITY doc.w3c-doctype-full "Working Draft">
+<!ENTITY date.day "21">
+<!ENTITY date.DD "21">
+<!ENTITY date.month "January">
+<!ENTITY date.monthnum "01">
+<!ENTITY date.year "2011">
+<!ENTITY doc.date "&date.year;&date.monthnum;&date.DD;">
+<!ENTITY w3c.tr "http://www.w3.org/TR">
+<!ENTITY doc.shortname "xquery-sx-&doc.version-code;">
+<!ENTITY doc.w3c-designation "&doc.stage;-&doc.shortname;">
+<!ENTITY doc.publoc "&w3c.tr;/&date.year;/&doc.w3c-designation;-&doc.date;">
+<!ENTITY doc.latestloc "&w3c.tr;/&doc.shortname;/">
+<!ENTITY language "XQuery Scripting Extension Proposal">
+
+<!ENTITY xqsx-xqueryx SYSTEM "xqsx-xqueryx.xml">
+<!ENTITY xqsx-xqueryx-schema SYSTEM "xqsx-schema.xml">
+<!ENTITY xqsx-xqueryx-redef-schema SYSTEM "xqsx-redef-schema.xml">
+<!ENTITY xqsx-xqueryx-stylesheet SYSTEM "xqsx-stylesheet.xml">
+<!ENTITY xqsx-xqueryx-xq-example1a SYSTEM "xqsx-example-1a.xml">
+<!ENTITY xqsx-xqueryx-xqx-example1b SYSTEM "xqsx-example-1b.xml">
+<!ENTITY xqsx-xqueryx-xq-trans-example1c SYSTEM "xqsx-example-1c.xml">
+
+<!ENTITY % status-entities SYSTEM "../../../etc/status-entities.dtd">
+%status-entities;
+
+<!ENTITY doc.WD-pubdate "21 January 2011">
+<!ENTITY doc.LC-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.LC-comments-due "TO BE SPECIFIED">
+<!ENTITY doc.CR-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.CR-comments-due "TO BE SPECIFIED">
+<!ENTITY doc.PR-expected "TO BE SPECIFIED">
+<!ENTITY doc.PR-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.PR-comments-due "TO BE SPECIFIED">
+<!ENTITY doc.REC-pubdate "TO BE SPECIFIED">
+<!ENTITY doc.pubdate "&doc.WD-pubdate;">
+<!ENTITY doc.comments-due "$doc.WD-comments-due;">
+
+<!ENTITY status-section-id "status">
+<!ENTITY spec-devby "&devby.xquery;">
+<!ENTITY changelog-id "id-revisions-log">
+<!ENTITY changes-para "&post.WD.changes;">
+<!ENTITY implementation-report-location "">
+<!ENTITY implementation-report-availability "&report-public;">
+<!ENTITY implementation-report "&no-implementation-report-or-test-suite-yet;">
+<!ENTITY test-suite-location "TO BE PROVIDED">
+<!ENTITY disclosure.one "&disclosure.xquery;">
+<!ENTITY Bugzilla-key "SX">
+<!ENTITY patent-policy-paragraph "&ppp-one;">
+<!ENTITY documents-and-relationships "&not-set-of-documents;">
+<!ENTITY advancement.statement "&advance.1WG;">
+<!ENTITY doc-stability "&doc-stability-WD;">
+<!ENTITY features-at-risk-para "&no-features-at-risk;">
+<!ENTITY document-stage "&doc-stage-WD;">
+<!ENTITY customized-paragraph '<p>This is the last version of XQuery Scripting Extension that
+is aligned with XQuery Update Facility 1.0.  In future versions of this document, the Working Group
+intends to reposition XQuery Scripting Extension 1.0 against the <bibref ref="XQ11"/> set of
+specifications, and remove it from the <bibref ref="XQ10"/> publication track.</p>'>
+
+<!ENTITY status-section SYSTEM "../../../etc/status-general.xml">
+]>
+<spec id="spec-top" w3c-doctype="&doc.w3c-doctype;">
+  <header id="spec-header">
+    <title>&language;</title>
+    <w3c-designation>&doc.w3c-designation;</w3c-designation>
+    <w3c-doctype>W3C &doc.w3c-doctype-full;</w3c-doctype>
+    <pubdate>
+      <day>&date.day;</day>
+      <month>&date.month;</month>
+      <year>&date.year;</year>
+    </pubdate>
+    <publoc>
+      <loc href="&doc.publoc;">&doc.publoc;</loc>
+    </publoc>
+    <latestloc>
+      <loc href="&doc.latestloc;">&doc.latestloc;</loc>
+    </latestloc>
+    <prevlocs>
+		</prevlocs>
+    <authlist>
+      <author>
+        <name>Matthias Brantner</name>
+        <affiliation>28msec, Inc.</affiliation>
+        <email href="mailto:matthias.brantner@28msec.com">matthias.brantner@28msec.com</email>
+      </author>
+      <author>
+        <name>Daniela Florescu</name>
+        <affiliation>Oracle Corporation</affiliation>
+        <email href="mailto:daniela.florescu@oracle.com">daniela.florescu@oracle.com</email>
+      </author>
+      <author>
+        <name>Ghislain Fourny</name>
+        <affiliation>FLWOR Foundation</affiliation>
+        <email href="mailto:ghislain.fourny@flworfound.org">ghislain.fourny@flworfound.org</email>
+      </author>
+      <author>
+        <name>Josh Spiegel</name>
+        <affiliation>Oracle Corporation</affiliation>
+        <email href="mailto:josh.spiegel@oracle.com">josh.spiegel@oracle.com</email>
+      </author>
+    </authlist>
+
+    &status-section;
+
+    <abstract>
+      <p>This specification defines a syntactic sugar
+        on top of the XQuery Scripting Extension Formalism Proposal.
+        It introduces statements including the apply statement
+        and statement counterparts to FLWOR, If, Switch, Typeswitch, Trycatch expressions.
+        Statements do not return any value but can have side effects.
+      </p>
+    </abstract>
+
+    <langusage>
+      <language id="en">English</language>
+    </langusage>
+
+    <revisiondesc id="id-revision-log">
+      <p>Fourny, 21 January 2011.  Initial draft.</p>
+    </revisiondesc>
+  </header>
+
+  <body>
+
+      <div1 id="id-extensions-to-processing-model">
+        <head>Extensions to the Processing Model</head>
+
+        <div2 id="id-statements">
+          <head>Statements</head>
+          <p><termdef term="statement" id="dt-statement">A <term>statement</term> is a grammatical construct which
+            does not return anything (no XDM, no PUL) but can have side-effects.</termdef></p>
+          <p>XQSX introduces the following statements:
+            <ulist>
+              <item><p>Apply statements</p></item>
+              <item><p>Statements which have expression counterparts:
+                If-Then-Else, FLWOR, Try-Catch, Switch, Typeswitch and Block.</p></item>
+            </ulist>
+          </p>
+        </div2>
+        
+        <div2 id="id-query-body">
+          <head>Main module</head>
+          <scrap><head/>
+            <prodrecap ref="MainModule"/>
+            <prodrecap ref="Program"/>
+            <prodrecap ref="StatementsAndOptionalExpr"/>
+          </scrap>
+          <p>A main module is redefined to be be a prolog followed by a program.</p>
+          <p>A program corresponds to the body of a block expression, except that the final expression
+            may be omitted. If such is the case, the final expression is considered to be the empty sequence.
+            </p>
+        </div2>
+      </div1>
+
+
+
+
+
+
+
+      <div1 id="id-extensions-to-prolog">
+        <head>Extensions to the Prolog</head>
+
+        <div2 id="id-function-decl">
+          <head>Function Declarations</head>
+          <p>Function declarations are extended to allow statements in their body.</p>
+          <scrap><head/>
+            <prodrecap id="FunctionDecl" ref="FunctionDecl"/>
+            <prodrecap id="Annotation" ref="Annotation"/>
+            <prodrecap id="BuiltinAnnotation" ref="BuiltinAnnotation"/>
+            <prodrecap ref="StatementsAndOptionalExpr"/>
+          </scrap>
+        </div2>
+        
+      </div1>
+    
+
+
+
+
+
+
+
+
+
+
+    <div1 id="id-new-statements">
+      <head>Statements</head>
+      <p>XQSX extends the XQuery 1.0 syntax
+        by adding statements to the grammar. A statement may or may not have
+        side effects, and does not return anything.
+        There are the following kinds of statements:</p>
+      <scrap><head/>
+        <prodrecap ref="Statement"/>
+      </scrap>
+      
+      <p>This part presents the statements that have no expression counterpart.</p>
+      
+      <div2 id="id-apply">
+        <head>Apply Statement</head>
+        <scrap><head/>
+          <prodrecap id="ApplyStatement" ref="ApplyStatement"/>
+        </scrap>
+        <glist>
+        <gitem>
+          <label>Example:</label>
+          <def>
+            <eg>
+delete nodes ($user, $items, $bids);
+            </eg>
+            <p>Mapping</p>
+            <eg>
+xqsx:apply-and-discard-xdm(delete nodes ($user, $items, $bids))
+            </eg>
+          </def>
+        </gitem>
+        </glist>
+      </div2>
+      
+
+
+
+    </div1>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <div1 id="id-statements-expressions">
+      <head>Statement counterparts of existing expressions</head>
+      <p>XQSX defines statement counterparts for control flow
+      expressions (FLWOR, IfThenElse, Switch, Typeswitch, Trycatch).</p>
+
+      <div2 id="id-flwor-statement">
+        <head>FLWOR Statements and Expressions</head>
+          <p>In addition to FLWOR Expressions, XQSX introduces FLWOR Statements,
+            defined like FLWOR Expressions except that the final clause is
+            a statement.</p>
+          <scrap><head/>
+            <prodrecap id="FLWORStatement" ref="FLWORStatement"/>
+            <prodrecap id="ReturnStatement" ref="ReturnStatement"/>
+          </scrap>
+        <glist>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+for $book in book:search($eventNode/preceding-sibling::xhtml:input[1])
+return 
+insert node
+&lt;xhtml:tr>
+  &lt;xhtml:td>{data($book/title)}&lt;/xhtml:td>
+  &lt;xhtml:td>{data($book/isbn)}&lt;/xhtml:td>
+  &lt;xhtml:td/>
+&lt;/xhtml:tr>
+as last into $table;
+              </eg>
+              <p>Mapping:</p>
+              <eg>
+for $book in book:search($eventNode/preceding-sibling::xhtml:input[1])
+return xqsx:apply-and-discard-xdm(
+insert node
+&lt;xhtml:tr>
+&lt;xhtml:td>{data($book/title)}&lt;/xhtml:td>
+&lt;xhtml:td>{data($book/isbn)}&lt;/xhtml:td>
+&lt;xhtml:td/>
+&lt;/xhtml:tr>
+as last into $table)
+              </eg>
+              <p>The same with bulk updates:</p>
+              <eg>
+(for $book in book:search($eventNode/preceding-sibling::xhtml:input[1])
+return 
+insert node
+&lt;xhtml:tr>
+&lt;xhtml:td>{data($book/title)}&lt;/xhtml:td>
+&lt;xhtml:td>{data($book/isbn)}&lt;/xhtml:td>
+&lt;xhtml:td/>
+&lt;/xhtml:tr>
+as last into $table);
+              </eg>
+              <p>Mapping:</p>
+              <eg>
+xqsx:apply-and-discard-xdm(for $book in book:search($eventNode/preceding-sibling::xhtml:input[1])
+return 
+insert node
+&lt;xhtml:tr>
+&lt;xhtml:td>{data($book/title)}&lt;/xhtml:td>
+&lt;xhtml:td>{data($book/isbn)}&lt;/xhtml:td>
+&lt;xhtml:td/>
+&lt;/xhtml:tr>
+as last into $table)
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-if-statement">
+        <head>Conditional Statements and Expressions</head>
+        <p>In addition to Conditional Expressions, XQSX introduces Conditional Statements,
+          defined like Conditional Expressions except that the then and the else clause are
+          statements.</p>
+        <scrap><head/>
+          <prodrecap id="IfStatement" ref="IfStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+if($newbid &lt;= 60000) then {
+  insert nodes
+  &lt;bid_tuple>
+    { $uid, $item/itemno }
+    &lt;bid>{ $newbid }&lt;/bid> 
+    &lt;bid_date>{ fn:current-date() }&lt;/bid_date> 
+  &lt;/bid_tuple>
+  into doc("bids.xml")/bids;
+  $result := concat("What a bargain! You got a helicopter for ",
+                    $newbid);
+} else {
+  $result := "Bidding exceeded 60000";
+  $maximumExceeded := true();
+}
+              </eg>
+              <p>Mapping:</p>
+              <eg>
+if($newbid &lt;= 60000) then {
+  xqsx:apply-and-discard-xdm(insert nodes
+    &lt;bid_tuple>
+      { $uid, $item/itemno }
+      &lt;bid>{ $newbid }&lt;/bid> 
+      &lt;bid_date>{ fn:current-date() }&lt;/bid_date> 
+    &lt;/bid_tuple>
+  into doc("bids.xml")/bids),
+  xqsx:apply-and-discard-xdm($result := concat("What a bargain! You got a helicopter for ",
+    $newbid))
+} else {
+  xqsx:apply-and-discard-xdm($result := "Bidding exceeded 60000"),
+  xqsx:apply-and-discard-xdm($maximumExceeded := true())
+}
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+
+      <div2 id="id-switch-statement">
+        <head>Switch Statements and Expressions</head>
+        <p>In addition to Switch Expressions, XQSX introduces Switch Statements,
+          defined like Switch Expressions except that the return clauses are
+          statements.</p>
+        <scrap><head/>
+          <prodrecap id="SwitchStatement" ref="SwitchStatement"/>
+          <prodrecap id="SwitchCaseStatement" ref="SwitchCaseStatement"/>
+        </scrap>
+      </div2>
+      
+      <div2 id="id-trycatch-statement">
+        <head>Try-Catch Statements and Expressions</head>
+        <p>In addition to Try-Catch Expressions, XQSX introduces Try-Catch Statements,
+          defined like Try-Catch Expressions except that the try and catch clauses are
+          statements.</p>
+        <scrap><head/>
+          <prodrecap id="TryCatchStatement" ref="TryCatchStatement"/>
+        </scrap>
+      </div2>
+      
+      <div2 id="id-typeswitch-statement">
+        <head>Typeswitch Statements and Expressions</head>
+        <p>In addition to Typeswitch Expressions, XQSX introduces Typeswitch Statements,
+          defined like Typeswitch Expressions except that the try and catch clauses are
+          statements.</p>
+        <scrap><head/>
+          <prodrecap id="TypeswitchStatement" ref="TypeswitchStatement"/>
+        </scrap>
+      </div2>
+      
+      <div2 id="id-while-statement">
+        <head>While Statement</head>
+        <scrap><head/>
+          <prodrecap id="WhileStatement" ref="WhileStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <p>In the following query, a while statement is used to compute a sequence
+                containing all the Fibonacci numbers that are less than 100.</p>
+              <eg>
+variable $a as xs:integer := 0;
+variable $b as xs:integer := 1;  
+variable $c as xs:integer := $a + $b;
+variable $fibseq as xs:integer* := ($a, $b);
+
+while ($c &lt; 100) { 
+  $fibseq := ($fibseq, $c);
+  $a := $b;
+  $b := $c;
+  $c := $a + $b;
+}
+              </eg>
+              <p>Mapping:</p>
+              <eg>
+xqsx:apply-and-discard-xdm(variable $a as xs:integer := 0),
+xqsx:apply-and-discard-xdm(variable $b as xs:integer := 1),  
+xqsx:apply-and-discard-xdm(variable $c as xs:integer := $a + $b),
+xqsx:apply-and-discard-xdm(variable $fibseq as xs:integer* := ($a, $b)),
+
+while ($c &lt; 100) { 
+  xqsx:apply-and-discard-xdm($fibseq := ($fibseq, $c)),
+  xqsx:apply-and-discard-xdm($a := $b),
+  xqsx:apply-and-discard-xdm($b := $c),
+  xqsx:apply-and-discard-xdm($c := $a + $b)
+}
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+
+      <div2 id="id-block-statement">
+        <head>Block Statements and Expressions</head>
+        <p>A block statement is a concatenation of zero, one or more statements, surrounded by curly braces.</p>
+        <p>A block expression is a concatenation of zero, one or more statements and one expression, surrounded by curly braces.</p>
+        <scrap><head/>
+          <prodrecap ref="PrimaryExpr"/>
+          <prodrecap id="BlockExpr" ref="BlockExpr"/>
+          <prodrecap id="StatementsAndExpr" ref="StatementsAndExpr"/>
+          <prodrecap id="Statements" ref="Statements"/>
+          <prodrecap id="BlockStatement" ref="BlockStatement"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <eg>
+{
+variable $uid := doc("users.xml")/users/user_tuple[name = "Roger Smith"]/userid;
+variable $topbid := max(doc("bids.xml")/bids/bid_tuple[itemno = 1002]/bid);
+variable $newbid := $topbid * 1.1;
+
+insert nodes
+&lt;bid_tuple> 
+  &lt;userid>{ data($uid) }&lt;/userid> 
+  &lt;itemno>1002&lt;/itemno> 
+  &lt;bid>{ $newbid }&lt;/bid> 
+  &lt;bid_date>1999-03-03&lt;/bid_date> 
+&lt;/bid_tuple>
+into doc("bids.xml")/bids;
+
+&lt;new_bid>{ $newbid }&lt;/new_bid>
+}
+              </eg>
+              <p>Mapping:</p>
+              <eg>
+{
+xqsx:apply-and-discard-xdm(variable $uid := doc("users.xml")/users/user_tuple[name = "Roger Smith"]/userid),
+xqsx:apply-and-discard-xdm(variable $topbid := max(doc("bids.xml")/bids/bid_tuple[itemno = 1002]/bid)),
+xqsx:apply-and-discard-xdm(variable $newbid := $topbid * 1.1),
+
+xqsx:apply-and-discard-xdm(insert nodes
+&lt;bid_tuple> 
+  &lt;userid>{ data($uid) }&lt;/userid> 
+  &lt;itemno>1002&lt;/itemno> 
+  &lt;bid>{ $newbid }&lt;/bid> 
+  &lt;bid_date>1999-03-03&lt;/bid_date> 
+&lt;/bid_tuple>
+into doc("bids.xml")/bids),
+
+&lt;new_bid>{ $newbid }&lt;/new_bid>
+}
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+    </div1>
+
+
+
+
+    <div1 id="id-expr-changes">
+      <head>Changes to existing expressions</head>
+      
+      <div2 id="id-node-constructors-statements">
+        <head>Direct and Computed Node Constructors</head>
+        <p>Node constructors are extended to allow statements in their content.</p>
+        <scrap> 
+          <head></head>
+          <prodrecap id="CommonContent" ref="CommonContent"/>
+          <prodrecap id="ContentExpr" ref="ContentExpr"/>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Mapping:</label>
+            <def>
+              <p>Propagate.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+    </div1>
+    
+    <div1 id="id-mapping">
+      <head>Mapping to formalism</head>
+      <p>f(ApplyStatement) = "xqsx:apply-and-discard-xdm" "(" f(ExprSimple) ")"</p>
+      <p>f(Statements as epsilon) = epsilon</p>
+      <p>f(Statements as (Statement_i)_i=1..n, n>=1) = f(Statement_1) ("," f(Statements_i))_i=2..n</p>
+      <p>f(StatementsAndExpr) = f(Statements) "," f(Expr)</p>
+      <p>f(StatementsAndOptionalExpr as Statements Expr) = f(Statements) "," f(Expr)</p>
+      <p>f(StatementsAndOptionalExpr as Statements) = f(Statements)</p>
+      <p>For all other expressions, the application of the mapping is propagated to all operands.</p>
+      <p>xqsx:apply-and-discard-xdm is a shortcut for fn:subsequence(xqsx:apply(.), 1, 0)</p>
+    </div1>
+      
+    
+    <div1 id="id-example">
+      <head>Example</head>
+      <p>The following function returns <code>true</code> or <code>false</code>
+         according to whether its parameter is a known user name, and logs the event:</p>
+      <eg>declare %fn:side-effecting function validate-and-log($username as xs:string)
+    as xs:boolean {
+  variable $log as document-node() := fn:doc("log.xml"); 
+
+  variable $entry as element() :=
+    &lt;access-attempt&gt;
+      &lt;timestamp&gt;{fn:current-dateTime()}&lt;/timestamp&gt;
+      &lt;user-name&gt;{$username}&lt;/user-name&gt;
+      &lt;access-allowed/&gt;
+    &lt;/access-attempt&gt; ;
+
+  variable  $result as xs:boolean;
+
+  if ($username = doc("users.xml")/current-users/user/name )
+  then {
+    replace value of node $entry/access-allowed with "Yes";
+    $result := true();
+  } else {
+    replace value of node $entry/access-allowed with "No";
+   $result := false();
+  }
+  
+  insert node $entry as last into $log; 
+  
+  fn:put($log, "log.xml"); 
+  
+  $result
+} 
+      </eg>
+      <p>Mapping:</p>
+      <eg>declare %fn:side-effecting function validate-and-log($username as xs:string)
+    as xs:boolean {
+  xqsx:apply-and-discard-xdm(variable $log as document-node() := fn:doc("log.xml")),
+
+  xqsx:apply-and-discard-xdm(variable $entry as element() :=
+        &lt;access-attempt&gt;
+        &lt;timestamp&gt;{fn:current-dateTime()}&lt;/timestamp&gt;
+        &lt;user-name&gt;{$username}&lt;/user-name&gt;
+        &lt;access-allowed/&gt;
+        &lt;/access-attempt&gt; ),
+        
+  xqsx:apply-and-discard-xdm(variable  $result as xs:boolean),
+        
+  if ($username = doc("users.xml")/current-users/user/name )
+  then {
+    xqsx:apply-and-discard-xdm(replace value of node $entry/access-allowed with "Yes"),
+    xqsx:apply-and-discard-xdm($result := true())
+  } else {
+    xqsx:apply-and-discard-xdm(replace value of node $entry/access-allowed with "No"),
+    xqsx:apply-and-discard-xdm($result := false())
+  },
+
+  xqsx:apply-and-discard-xdm(insert node $entry as last into $log),
+
+  xqsx:apply-and-discard-xdm(fn:put($log, "log.xml")),
+
+  $result
+} 
+</eg>
+      
+    </div1>
+    
+  <div1 id ="id-lookahead">
+    <head>Alternative simplified grammar for LL-Parsers</head>
+    <p>For implementors using LL-parsers, the grammar described in this specification (which is LR(1)) needs
+      an arbitrary lookahead (as opposed to a lookahead of 1 for LR-parsers).
+      This arbitrary lookahead can be removed
+    by using a subset of this proposal specified by the following changes. This makes the grammar LL(2).</p>
+    <p>In a nutshell, block expressions are not available, and statements that could be mistaken for the beginning of
+      an expression (with a lookahead of 2) need to be put in block statements.
+      This happens in function bodies, node constructors and block expressions.</p>
+    <scrap><head/>
+      <prodrecap id="Alternative" ref="Alternative"/>
+    </scrap>
+  </div1>
+    
+  </body>
+
+</spec>

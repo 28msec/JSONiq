@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.4. Selectors</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-expressions.html" title="Chapter 5. Expressions" /><link rel="prev" href="chapter-function-calls.html" title="5.3. Function Calls" /><link rel="next" href="ch05s04s02.html" title="5.4.2. Array member selector" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-function-calls.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s04s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="section" id="chapter-selectors" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="chapter-selectors">5.4. Selectors</h2></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/PostfixExpr.png" alt="PostfixExpr" /></div></div><h6>Figure 5.27. PostfixExpr</h6></div><br class="figure-break" /><div class="para">
+		Like in JavaScript, it is possible to navigate through data.
+	</div><div class="para">
+		JSONiq supports filtering items from a sequence, looking up the value associated with a given key in an object, looking up the item at a given position in an array, and looking up all items in an array.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9506048">5.4.1. Object field selector</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ObjectLookup.png" alt="ObjectLookup" /></div></div><h6>Figure 5.28. ObjectLookup</h6></div><br class="figure-break" /><div class="para">
+			The simplest way to navigate in an object is similar to JavaScript, using a dot. This will work as soon as you do not push it too much: alphanumerical characters, dashes, underscores - just like unquoted keys in object constructors, any NCName is allowed.
+		</div><div class="example"><h6>Example 5.63. Object lookup</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" }.foo
+</pre><div class="formalpara"><h5 class="formalpara" id="idp6477344">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			Since JSONiq expressions are composable, you can also use any expression for the left-hand side. You might need parentheses depending on the precedence.
+		</div><div class="example"><h6>Example 5.64. Lookup on a single-object collection.</h6><div class="example-contents"><pre class="programlisting">
+collection("one-object").foo
+</pre><div class="formalpara"><h5 class="formalpara" id="idp48061072">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			The dot operator does an implicit mapping on the left-hand-side, i.e., it applies the lookup in turn on each item. Lookup on an object returns the value associated with the supplied key, or the empty sequence if there is none. Lookup on any item which is not an object (arrays and atomics) results in the empty sequence.
+		</div><div class="example"><h6>Example 5.65. Object lookup with an iteration on several objects</h6><div class="example-contents"><pre class="programlisting">
+({ "foo" : "bar" }, { "foo" : "bar2" }, { "bar" : "foo" }).foo
+</pre><div class="formalpara"><h5 class="formalpara" id="idp48234416">Result (run with Zorba):</h5>
+					bar bar2
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.66. Object lookup with an iteration on a collection</h6><div class="example-contents"><pre class="programlisting">
+collection("captains").name
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8297696">Result (run with Zorba):</h5>
+					James T. Kirk Jean-Luc Picard Benjamin Sisko Kathryn Janeway Jonathan Archer Samantha Carter
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.67. Object lookup on a mixed sequence</h6><div class="example-contents"><pre class="programlisting">
+({ "foo" : "bar1" }, [ "foo", "bar" ], { "foo" : "bar2" }, "foo").foo
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7504656">Result (run with Zorba):</h5>
+					bar1 bar2
+				</div></div></div><br class="example-break" /><div class="para">
+			Of course, unquoted keys will not work for strings that are not NCNames, e.g., if the field contains a dot or begins with a digit. Then you will need quotes.
+		</div><div class="example"><h6>Example 5.68. Quotes for object lookup</h6><div class="example-contents"><pre class="programlisting">
+{ "foo bar" : "bar" }."foo bar"
+</pre><div class="formalpara"><h5 class="formalpara" id="idp9479792">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			If you use an expression on the right side of the dot, it must always have parentheses. The result of the right-hand-side expression is cast to a string. An error is raised if the cast fails.
+		</div><div class="example"><h6>Example 5.69. Object lookup with a nested expression</h6><div class="example-contents"><pre class="programlisting">
+{ "foobar" : "bar" }.("foo" || "bar")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp12589648">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.70. Object lookup with a nested expression</h6><div class="example-contents"><pre class="programlisting">
+{ "foobar" : "bar" }.("foo", "bar")
+</pre><div class="formalpara"><h5 class="formalpara" id="idp21200832">Result (run with Zorba):</h5>
+					An error was raised: sequence of more than one item can not be treated as type xs:string
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.71. Object lookup with a nested expression</h6><div class="example-contents"><pre class="programlisting">
+{ "1" : "bar" }.(1)
+</pre><div class="formalpara"><h5 class="formalpara" id="idp7428176">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			Variables, or a context item reference, do not need parentheses. Variables are introduced later, but here is a sneak peek:
+		</div><div class="example"><h6>Example 5.72. Object lookup with a variable</h6><div class="example-contents"><pre class="programlisting">
+let $field := "foo" || "bar"
+return { "foobar" : "bar" }.$field
+</pre><div class="formalpara"><h5 class="formalpara" id="idp6490384">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-function-calls.html"><strong>Prev</strong>5.3. Function Calls</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s04s02.html"><strong>Next</strong>5.4.2. Array member selector</a></li></ul></body></html>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+  <epigraph>
+    <attribution>Niklaus Wirth</attribution>
+    <para>The possible solutions to a given problem emerge as the leaves of a tree, each node representing a point of deliberation and decision.</para>
+  </epigraph>
+  <section>
+    <title>NoSQL - Why Are Relational Databases Not Good Enough?</title>
+    <para>Relational databases have existed for decades. The entity-relationship model is very powerful and with it,
+      it is possible to model almost any structured data. SQL is the widely accepted standard for these databases. It supports
+      the relational algebra operators like join, project, select, filter.</para>
+    <para>In the last decade, several companies saw the amount of data they needed to store and handle
+      increase dramatically. They soon encountered problems scaling up and out. In his foreword on the "MongoDB Definitive Guide,"
+      Jeremy Zawodny explained it convincingly: once you add more replicas and shards, you realize you are stuck in the original
+      schema you designed unless you invest considerable effort.</para>
+    <para>In order to solve this issue, a new generation of data stores appeared. They often share the same set of design principles:</para>
+    <itemizedlist>
+      <listitem>
+        <para>The lines of a relational table are replaced with hierarchical data (semi-structured data, aka trees), while tables become collections of trees.</para>
+      </listitem>
+      <listitem>
+        <para>These trees are primarily associated with and indexed by an ID or a key.</para>
+      </listitem>
+      <listitem>
+        <para>Schemas are not mandatory, i.e., trees within a collection need not share the same structure (heterogeneity).</para>
+      </listitem>
+      <listitem>
+        <para>Some data stores see a tree as a kind of black box (key/value stores) while
+          some other data stores use XML (like eXist) and more recently JSON (like MongoDB) syntax to represent trees.</para>
+      </listitem>
+    </itemizedlist>
+    <para>These new technologies are often referred to as "NoSQL."</para>
+  </section>
+  <section>
+    <title>Why JSONiq?</title>
+<!--    <para>Performance is very important to NoSQL data stores. Very often, the data is used and accessed through a Web site,
+    so that it is important that the latency be kept to a minimum.</para>
+    <para>Data stores like MongoDB solve this problem by lowering the level of abstraction for interacting with the database.
+      For example, issuing an update is impressively fast. But lowering the level of
+      abstraction comes at the cost of more complexity for the programmer: depending on how important the success of the update is
+      important to you, you might want to check back later.
+    </para> -->
+    <para>
+      NoSQL has a very broad meaning and, while the general principles are similar between data stores, each data store has a specific
+      format for the values (or trees) and a query language tailored for the data store.
+    </para>
+    <para>
+      JSONiq was developed with the idea that many data stores share the same design principles (e.g., collections of trees)
+      so that it should be possibly to query them in a unified and portable way.
+    </para>
+    <para>
+    JSONiq is a query and processing language specifically designed for the popular JSON data model. The main ideas behind JSONiq are based on lessons learned in more than 
+    30 years of relational query systems and more than 15 years of experience with designing  and implementing query languages for semi-structured data like 
+    XML and RDF.
+    </para>
+    <para>
+    The main source of inspiration behind JSONiq is XQuery, which has been proven so far a successful and productive query language for semi-structured data (in particular XML).
+    JSONiq borrowed a large numbers of ideas from XQuery like the structure and semantics of a FLWOR construct, the functional aspect of the language, 
+    the semantics of comparisons in the face of data heterogeneity, the declarative, snapshot-based updates. However, unlike XQuery, JSON is not concerned 
+    with the peculiarities of XML like mixed content, ordered children, the confusion between attributes and elements, the complexities of namespaces and QNames, 
+    or the complexities of XML Schema, and so on. 
+    </para>
+    <para>
+    The power of the XQuery's FLWOR construct and the functional aspect combined with the simplicity of the JSON data model results in a clean, sleek, and easy to 
+    understand data processing language. As a matter of fact, JSONiq is a language that can do more than queries: it can describe powerful data processing programs
+    from transformations, selections, joins of heterogeneous data sets, data enrichment,  information extraction, information cleaning, and so on.
+    </para>
+    <para>
+    Technically, the main characteristics of JSONiq (and XQuery) are the following:
+    </para>  
+    <itemizedlist>
+      <listitem>
+        <para>
+          It is a <emphasis>set-oriented language</emphasis>. While most programming languages are designed to manipulate one object at a time, JSONiq is designed to process sets (actually, sequences) of data objects.
+        </para>
+      </listitem>
+      <listitem>
+        <para> 
+          It is a <emphasis>functional language</emphasis>. A JSONiq program is an expression; the result of the program is the result of the evaluation of the expression. Expressions have fundamental 
+    role in the language: every language construct is an expression and expressions are fully composable.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          It is a <emphasis>declarative language</emphasis>. A program specifies what is the result being calculated, and does not specify low level algorithms like the sort algorithm. Neither does it specify
+          whether an algorithm is
+          executed in main memory or whether it is executed on a single machine or parallelized on several machines; or what access patterns (aka indexes) are being used during the evaluation of the
+          program. Such implementation decisions should be taken automatically by an optimizer, based on the physical characteristics of the data and of the hardware environment -- just like
+          a traditional database would do. The language has been designed from day one with optimizability in mind.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          It is designed for <emphasis>nested, heterogeneous, semi-structured data</emphasis>. Data structures in JSON can be nested with arbitrary depth, do not have a specific type pattern (i.e. are heterogeneous),
+    and may or may not have one or more schemas that describe the data. Even in the case of a schema, such a schema can be open and/or simply partially describe the data. Unlike SQL,
+    which is designed to query tabular, flat, homogeneous structures. JSONiq has been designed from scratch as a query language for nested and heterogeneous data.
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
+    <title>How to Run the Queries in This Book?</title>
+    <para>Our first implementation of JSONiq was done in the Zorba NoSQL processor, which is developed jointly
+      between Oracle, 28msec, and the FLWOR Foundation. The home page is <emphasis>http://zorba.io/</emphasis>
+      and a sandbox is available on <emphasis>http://try.zorba.io/</emphasis>. You can run most of the queries shown
+      in the examples of this book in this sandbox (not the ones accessing collections).</para>
+    <para>28msec provides a platform called 28.io, which is specifically tailored for executing JSONiq queries against an existing MongoDB database.
+      You can run all example queries in the Try-It-Now sandbox at <emphasis>http://28.io/</emphasis>, in which 
+      the collections <emphasis>faqs</emphasis> and <emphasis>answers</emphasis> are prepopulated with lots of data and additional
+      sample queries.</para>
+    <para>If you obtained this book shortly after its publication, you should be aware that the array unboxing syntax may not be released yet, as it is recent.
+      If array unboxing does not work, try <code>$a()</code> instead of <code>$a[]</code> and <code>$a(2)</code>
+      instead of <code>$a[][2]</code>.</para>
+  </section>
+  <section>
+    <title>Acknowledgements</title>
+    <para>The design and implementation of JSONiq is a team effort involving Dana Florescu (Oracle), Jonathan Robie (EMC), Matthias Brantner (28msec),
+      Markos Zaharioudakis (Oracle), Till Westmann (Oracle) and myself (28msec).</para>
+    <para>This book was carefully reviewed by Matthias Brantner, Federico Cavalieri (28msec) and Paul J. Lucas (28msec). Many thanks to them!</para>
+    <para>A significant part of the introduction ("Why JSONiq?") was written by Dana Florescu.</para>
+  </section>
+</chapter>

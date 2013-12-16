@@ -1,0 +1,1081 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<appendix id="appe-JSONiq-Revision_History">
+  <title>Revision History</title>
+  <simpara>
+    <revhistory>
+
+<!--
+
+TODO:
+
+* XQ- - syntax variance
+
+** =, general comparisons
+** DIV => /
+** # comment
+** XQ- - strings are JSON strings, XQ++ strings are XQuery strings, conversion between the two
+
+-->
+
+      <revision>
+        <revnumber>1.0.3</revnumber>
+        <date>Tue Aug 13 2013</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>g@28.io</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Added more examples for library functions.
+            </member>
+            <member>
+              Completed signature of keys() and size() with return types.
+            </member>
+            <member>
+              Simplified code in libjn:remove-keys() and libjn:project().
+            </member>
+            <member>
+              Moved all fixes for JSON vs. JDM lexical representation mismatch to the serialization layer.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+
+      <revision>
+        <revnumber>1.0.2</revnumber>
+        <date>Thu Aug 8 2013</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>g@28.io</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Fixed the signatures of jn:keys() and jn:members() to accept parameters of type item()*. They were forgotten in the last update. Updated the description accordingly and
+              updating examples with more general sequences.
+            </member>
+            <member>
+              Fixed some typos. 
+            </member>
+            <member>
+              Fixed semantics of libjn:project() to make it consistent with the other functions.
+            </member>
+            <member>
+              Added libjn:remove-keys() which does the contrary of libjn:project(), i.e., removes the given keys from all input objects.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+
+      <revision>
+        <revnumber>1.0.1</revnumber>
+        <date>Mon Jul 22 2013</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>g@28.io</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Reintroduced the parameter cast in object lookup (to a string) or array lookup (to an integer) following feedback.
+              The general semantics of object/array lookup with unary dynamic function calls (implicit iteration on mixed sequences,
+              empty sequence in case of mismatch) is mostly untouched, but was significantly reformulated.
+            </member>
+            <member>
+              Introduced object key listing and array unboxing with 0-ary dynamic function call syntax: $o() (=jn:keys($o)) $a() (=jn:members($a)).
+              It works on mixed sequences in the same way as object and array lookup. 
+            </member>
+            <member>
+              Removed the function jn:is-null() because it is redundant with the "eq" and "instance of" operators which support null.
+            </member>
+            <member>
+              Removed the function jn:object() and introduced the equivalent {| |} syntax (like in the JSONiq core).
+            </member>
+            <member>
+              Relaxed the functions libjn:descendant-objects, libjn:descendant-pairs, libjn:values, libjn:flatten, libjn:project to accept any sequence of items. The behavior
+              on mixed sequences is consistent with object and array lookup. Also introduced new function libjn:descendant-arrays and relaxed jn:size to accept the empty sequence..
+            </member>
+            <member>
+              Fixed roundtrippability of decimals and doubles in jn:encode-for-roundtrip (decimals without dot were roundtripped to integers, etc).
+            </member>
+            <member>
+              Fixed corner cases in JSON number serialization (trailing zeros, absence of digits, leading +, which are allowed in the JDM but not in the JSON syntax).
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+
+      
+      <revision>
+        <revnumber>0.4.45</revnumber>
+        <date>Mon May 27 2013</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>g@28.io</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Relaxed object and array selection to work on any mixed sequences. In case of mismatch (i.e., (i) integer on
+              object or atomic, or (ii) string on array or atomic), an empty sequence is now returned. No more cast is done.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.44</revnumber>
+        <date>Thu May 8 2013</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>g@28.io</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Correcting various typos, errors and formatting errors, mostly in the examples (no change in semantics).
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.43</revnumber>
+        <date>Thu Apr 4 2013</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              The product was renamed to "JSONiq Extension to XQuery".
+            </member>
+            <member>
+              The semantics of arithmetics was modified to raise an error in case of a null operand.
+            </member>
+            <member>
+              The semantics of value comparison was modified to be compatible with null operands (null eq null, and null lt any other atomic item).
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.42</revnumber>
+        <date>Thu Sep 27 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              The hybrid output method now serializes XML nodes that are found inside objects or arrays to JSON strings.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.41</revnumber>
+        <date>Tue Sep 25 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Extended fn:string to raise an error for JSON items. Added JNTY0024.
+            </member>
+            <member>
+              Made definition of roundtripping functions more precise (for the case where there is a top-level item which is a JSON native value).
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.40</revnumber>
+        <date>Mon Sep 24 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Renamed JNTY0020 and added JNTY0023.
+            </member>
+            <member>
+              Changed default of encode-for-roundtrip to omit XML declaration.
+            </member>
+            <member>
+              Corrected signature of roundtripping functions to allow for full recursion.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.39</revnumber>
+        <date>Fri Sep 14 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Qualified names are now treated specially in jn:encode-for-roundtrip and jn:decode-from-roundtrip.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.38</revnumber>
+        <date>Thu Sep 13 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Further specified error handling for key (atomization error, cast error) in pair constructor.
+            </member>
+            <member>
+              Fixed appending expression syntax to be in sync with insert syntax.
+            </member>
+            <member>
+              Object and array selectors are now atomized and cast to xs:string and xs:integer respectively.
+            </member>
+            <member>
+              The alternate object insertion syntax supports several pairs.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.37</revnumber>
+        <date>Tue Sep 11 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Fixed error code of jerr:JNSE0022.
+            </member>
+            <member>
+              Moved libjn:members to jn:members (builtin).
+            </member>
+            <member>
+              Corrected example query for jn:encode-for-roundtrip and excluded NaN/infinite from native JSON mapping.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.36</revnumber>
+        <date>Mon Sep 10 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Changed error code to err:XPTY0004 if a key in a pair constructor cannot be atomized and cast to a string.
+            </member>
+            <member>
+              Further specified error-handling for jn:parse-json. Changed default to accepting multiple items.
+            </member>
+            <member>
+              Simplified semantics for null in comparison/arithmetics. Introduced jn:is-null().
+            </member>
+            <member>
+              Introduced a lightweight syntax for inserting a single pair into an object (optional curly braces).
+            </member>
+            <member>
+              Default output method is now JSON-XML-hybrid (also for fn:trace).
+            </member>
+            <member>
+              Made changes to sequence normalization orthogonal to the output method used. Introduced error codes.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.35</revnumber>
+        <date>Fri Sep 07 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              The json insert syntax was simplified and relaxed.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.34</revnumber>
+        <date>Thu Sep 06 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Relaxed condition that an expression computing a value (in a pair constructor, an insert expression or a replace expression) must
+              return a single item. If no item, null is used instead, if more than one item, an array is built to wrap the items. Errors
+              jerr:JNTY0002 and jerr:JNUP0017 disappear.
+            </member>
+            <member>
+              jn:parse-json-sequence was merged with jn:parse-json (using an object to transmit parameters).
+            </member>
+            <member>
+              jn:encode-for-roundtrip and jn:decode-from-roundtrip also now use an object to transmit parameters.
+            </member>
+            <member>
+              A semantics is now specified for arithmetic operations involving null (null is returned).
+              The semantics of value and general comparison involving nulls was updated.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.33</revnumber>
+        <date>Tue Sep 04 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Corrected typos. Capitalized JSON and XML in hybrid output method.
+            </member>
+            <member>
+              Introduced jn:parse-json-sequence to support roundtripping sequences.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.32</revnumber>
+        <date>Mon Sep 03 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Split the serialization roundtripping facility into a much simpler specification of the JSON output method and two
+              functions in the builtin module. Only one serialization parameter (specifying whether multiple items are allowed is left).
+            </member>
+            <member>
+              jerr:JNSE0013 disappears.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.31</revnumber>
+        <date>Fri Aug 31 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Sequences beginning with an object or array now have an effective boolean value, which is true.
+            </member>
+            <member>
+              jsoniq-boolean-and-null-literals is set to "yes" by default.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.30</revnumber>
+        <date>Thu Aug 30 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Significantly rewrote the serialization section to take feedback received into account: (i) some serialization parameters were renamed
+              (ii) If jsoniq-roundtrip-extensions is set to no, then non-JSON atomic values are automatically serialized to the JSON literal that
+              makes the most sense (iii) the json-xml-hybrid output method was introduced, mostly meant as a default output method for an engine
+              for convenience.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.29</revnumber>
+        <date>Tue Aug 28 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Added function jn:null.
+            </member>
+            <member>
+              Specified semantics for casting to/from jn:null.
+            </member>
+            <member>
+              Specified semantics for value and general comparisons involving JSON nulls.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.28</revnumber>
+        <date>Wed Aug 15 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Added namespace for library functions.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.27</revnumber>
+        <date>Mon Aug 13 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Renamed libjn:accumulator-object-union as libjn:accumulate. Corrected some typos in library function code. Completed paragraph on implementation.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.26</revnumber>
+        <date>Fri Aug 10 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Corrected and moved a dynamic object construction example to lib:object().
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.25</revnumber>
+        <date>Wed Aug 8 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Added a chapter about the implementation in Zorba.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.24</revnumber>
+        <date>Tue Aug 7 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Fixed array update grammar rules.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.23</revnumber>
+        <date>Thu Jul 31 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Changed JNDY0018 to JNTY0018.
+            </member>
+            <member>
+              Added more details on JSONiq string support.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0.4.22</revnumber>
+        <date>Thu Jul 24 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Objects and arrays are no longer matching any function types.
+            </member>
+            <member>
+              Updated type hierarchy picture.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0-21</revnumber>
+        <date>Thu Jul 24 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Corrected typos (jn:null, object constructor grammar in grammar section, residual {| |}s).
+            </member>
+            <member>
+              Added update features in the introductive list.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0-20</revnumber>
+        <date>Thu Jun 21 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Added an error code checking for single item for insert/replace expressions.
+            </member>
+            <member>
+              Corrected typos.
+            </member>
+            <member>
+              Changed JNTY0007 to JNUP0007 and JNTY0008 to JNUP0008.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0-19</revnumber>
+        <date>Thu Jun 11 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Added error code if the selector cannot be resolved when creating an update primitive.
+            </member>
+            <member>
+              Updated JSONiq value serialization examples to the right double lexical value of infinity.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+      
+      <revision>
+        <revnumber>0-18</revnumber>
+        <date>Thu May 24 2012</date>
+        <author>
+          <firstname>Ghislain</firstname>
+          <surname>Fourny</surname>
+          <email>ghislain.fourny@28msec.com</email>
+        </author>
+        <revdescription>
+          <simplelist>
+            <member>
+              Pairs are no longer exposed as items. There are now just singleton objects (but the word
+              pair is still used in this spec for a string/value pair);
+            </member>
+            <member>
+              Update primitives are decoupled from a new update syntax;
+            </member>
+            <member>
+              Object and array selectors return values;
+            </member>
+            <member>
+              Dynamic invocation on sequence of functions/arrays/objects;
+            </member>
+            <member>
+              Minimalistic builtin functions. Still, some functions defined for convenience (relational
+              algebra projection, intersection, ...);
+            </member>
+            <member>
+              Atomization and EBV raise errors or objects and arrays;
+            </member>
+            <member>
+              There are only one serialization method: json with three new serialization parameters;
+            </member>
+            <member>
+              Boolean and null literals can be activated with an option;
+            </member>
+            <member>
+              Multiple items can be serialized according to serialization parameter settings.
+            </member>
+          </simplelist>
+        </revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-17</revnumber>
+	<date>Thu Dec 22 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Eliminated Array Pairs.</member>
+	    <member>Renamed "member accessors" => "member selectors"</member>
+	    <member>Changed semantics of the empty member selector, which now returns all Objects at the top level or below.</member>
+	    <member>Changed signature of json:delete() to always require the Array or Object as a parameter. Pairs no longer point to the Array or Object that contain them.</member>
+	    <member>Changed namespaces used in the document. Functions and errors have separate namespaces. Functions used to implement operators and JDM accessors are abstract, and have a prefix that is not bound to a namespace.</member>
+	    <member>Removed isnull() function - compare to null insteadl</member>
+	    <member>Removed whitespace requirement for ":" in PairConstructor, require the operands of a PairConstructor to be AdditiveExprs.</member>
+	    <member>Specified that object lookup uses the codepoint collation.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-16</revnumber>
+	<date>Tue Oct 11 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Eliminated typed-value() and string-value() accessors for Pair.</member>
+	    <member>Redefined atomization to use unboxing; defined type value and string value in terms of unboxing.</member>
+	    <member>Changed signatures of many functions to make them more precise.</member>
+	    <member>Fixed "tuesday" query - result is now "day": "Monday".</member>
+	    <member>Introduced "structured items" base class for nodes and JSON Items.</member>
+	    <member>Added StructuredItemTest.</member>
+	    <member>Removed string arguments from JSONPairTest, JSONObjectPairTest, JSONArrayPairTest.</member>
+	    <member>Specified update primitives.</member>
+	    <member>Made signatures of update primitives more precise.</member>
+	    <member>Stated that NaN and Infinity are instances of <code>xs:double</code>.</member>
+	    <member>Clarified order of results for () on Arrays.</member>
+	    <member>Changed "unordered" to implementation-defined order.</member>
+	    <member>Minor editorial changes.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-15</revnumber>
+	<date>Thu Sep 22 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Pairs now have typed-values again. No other JSONiq Item does.</member>
+	    <member>Unboxing pairs is now part of atomization.</member>
+	    <member>In the XQ-- subset of JSONiq, atomizing a Pair is defined as unboxing it. The remaining steps of atomization are irrelevant, because XML values do not occur.</member>
+	    <member>Unboxing pairs is also done for the value expression of Array Constructors and Object Constructors. These do not atomize.</member>
+	    <member>The content expressions of element constructors unbox Pairs and flatten arrays. (In other content expressions, atomization is done, so explicit unboxing is not needed.)</member>
+	    <member>Removed dangling references to context items in two function descriptions.</member>
+	    <member>Changed erroneous KindTest to ItemType in several sentences.</member>
+	    <member>Added a footnote clarifying that the identity of JSON Item is used only in PULs.</member>
+	    <member>Changed name of json() to json-doc()</member>
+	    <member>Changed signature of json-doc(), parse-json() to return json-item()?</member>
+	    <member>Put public functions in the <code>json</code> namespace. </member>
+	    <member>Stated that string serialization uses JSON escape conventions.</member>
+	    <member>Stated that serialization of XML as string content uses serialization parameters and standard serialization.</member>
+	  </simplelist>
+<!--
+###########################################
+- editorial, put json:null in the picture under AtomicType
+- Type hierarchy diagram needs to be fixed - has json-array, json-object
+- NOTE: we don't know which fn: functions we need for XQ- -
+- DECISION: for XQ++, all in the json: namespace
+- for XQ- -, merge the json: and fn: namespaces
+- serialization function must take the serialization parameters
+#################
+-->
+
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-14</revnumber>
+	<date>Mon Sep 19 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>JSONiq Items no longer have typed values.</member>
+	    <member>Atomization is now defined only for Pairs, which are now unboxed before atomization, then treated as any other value.</member>
+	    <member>In content sequences, Pairs are unboxed, Arrays are flattened, and Objects still raise errors.</member>
+	    <member>Extra-grammatical constraint added: whitespace must occur before and after a ":".</member>
+	    <member>Explicitly stated that a standalone Pair raises an error when serializing.</member>
+	    <member>If a Pair occurs in the value expression of a Pair Constructor, it is unboxed.</member>
+	    <member>Defined the flatten() function to flatten arrays recursively.</member>
+	    <member>Defined serialization for <code>json:null</code>.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-13</revnumber>
+	<date>Fri Sep 2 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Refers to XQ++ and XQ-- grammars on the JSONiq site.</member>
+	    <member>Tutorial is now a separate document.</member>
+	    <member>Data Model appendix is now part of the main text.</member>
+	    <member>Member accessors are defined independently of dynamic function invocation.</member>
+	    <member>Arrays have a typed value again.</member>
+	    <member>Added type hierarchy diagram.</member>
+	    <member>JSON Item tests are ItemTests, no longer KindTests.</member>
+	    <member>Renamed node types and item tests for consistency, changing terminology in the text to match.</member>
+	    <member>Added item tests for all JSON Item types.</member>
+	    <member>Added isnull() function.</member>
+	    <member>Moved updates out of an appendix and into the main text.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-12</revnumber>
+	<date>Mon Aug 22 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Neither Object nor Array have typed values now.</member>
+	    <member>Coined the term "member accessors".</member>
+	    <member>New section calls out semantics of Pair.</member>
+	    <member>Filled in type signatures of functions, added size().</member>
+	    <member>Added Group By queries to Sample Queries.</member>
+	    <member>Moved Satellites query to Sample Queries.</member>
+	    <member>General reorganization, editorial changes.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+
+      <revision>
+	<revnumber>0-11</revnumber>
+	<date>Fri Aug 12 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Added updating functions, revised update example to use them.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+
+      <revision>
+	<revnumber>0-10</revnumber>
+	<date>Wed Aug 10 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>New representation of objects, arrays, pairs in the data model. No longer nodes or function items.</member>
+	    <member>Changed representation of nulls.</member>
+	    <member>Navigation primitives now return pairs, not values.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+
+      <revision>
+	<revnumber>0-09</revnumber>
+	<date>Tue Aug 9 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Significantly changed data model. Pairs now serve as the container for values, in both Arrays and Objects. PULs will now need to be defined for pairs, objects, or arrays, not at the level of a single value.</member>
+	    <member>Changed to new path syntax.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+
+      <revision>
+	<revnumber>0-07</revnumber>
+	<date>Fri Jul 15 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Removed special case positional filters for arrays.</member>
+	    <member>Removed special case conversion of sequences to arrays in object values.</member>
+	    <member>Removed extraneous constraint for objects in insert before / after.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-06</revnumber>
+	<date>Thu Jul 14 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Added status section to emphasize that we are in very early stages.</member>
+	    <member>Changed positioning in the introduction.</member>
+	    <member>Added an update example.</member>
+	    <member>Added an appendix listing changes needed for the XQuery Update Facility.</member>
+	    <member>Added navigation primitives; defined navigation functions in terms of these primitives.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-05</revnumber>
+	<date>Wed Jul 06 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Serialization now uses JSONiq values, with a type and a serialized string, for things that JSON can not represent directly.</member>
+	    <member>Changed the verb used in an example.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+
+      <revision>
+	<revnumber>0-04</revnumber>
+	<date>Tue Jul 05 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Revised author list.</member>
+	    <member>Added explicit JDM representation of nulls.</member>
+	    <member>Changed definition of 'value()' - it now returns the empty sequence rather than a type error for nodes that have no value, and the set of nodes for which it is defined has changed.</member>
+	    <member>Added return type to times-ten() function, showed function call.</member>
+	    <member>Removed superfluous space from svg example.</member>
+	    <member>Changed definition of serialization.</member>
+	    <member>Fixed stock holdings example.</member>
+	    <member>Items are now copied into arrays or objects, rather than using references to nodes in existing hierarchies.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-03</revnumber>
+	<date>Mon Jun 27 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Removed references to XQ--, XQ++, which are not yet well specified.</member>
+	    <member>Finished simple value nodes for XQuery atomic values.</member>
+	    <member>Reworked typed value of nodes, added examples and further explanation to "Combining XML and JSON".</member>
+	    <member>General reorganization and rewriting of introduction.</member>
+	    <member>Added "JSON views in middleware" example.</member>
+	    <member>Added "JSON Arrays to HTML Tables" example.</member>
+	    <member>Added "Transforming to SVG" example.</member>
+	    <member>Added KindTests, with an example.</member>
+	    <member>Added section on combining XML, JSON.</member>
+	    <member>Added extended example to show ramifications of atomization.</member>
+	    <member>Added superficial, hand-wavy section on serialization. Needs discussion / fleshing out.</member>
+	    <member>Reorganized section on navigating JSON objects and arrays.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+      <revision>
+	<revnumber>0-02</revnumber>
+	<date>Fri Jun 24 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Clarified datatypes used for numeric types.</member>
+	    <member>Fixed typo in JSONPair grammar.</member>
+	    <member>Added text and an example to clarify use of child axis for JSON Pair Nodes.</member>
+	    <member>Added value() for pair nodes.</member>
+	    <member>Added json() function, similar to XQuery's doc() function.</member>
+	    <member>Added parse-json() function, similar to XQuery's parse-xml() function.</member>
+	    <member>Started a section on combining XML and JSON. Not done yet.</member>
+	    <member>Defined atomization for simple value nodes.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+
+      <revision>
+	<revnumber>0-01</revnumber>
+	<date>Thu Jun 23 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Specified filter expressions for Array nodes.</member>
+	    <member>Added XDM mapping, in an appendix.</member>
+	    <member>Clarified typed-value, string-value for arrays and objects.</member>
+	    <member>NameTest no longer matches Pair Nodes. The differences between JSON names and XML names caused problems because (1) the characters allowed in a NameTest and a JSON string differ, and (2) an unprefixed name in a Nametest is in the default namespace, all JSON strings are in no namespace.</member>
+	    <member>Array constructors now allow empty arrays; Object constructors now allow empty objects.</member>
+	    <member>Made JSONPair available as a primary expression.</member>
+	    <member>Added Stellarium example to introduction.</member>
+	    <member>Incorporated navigation functions based on this week's feedback.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+      <revision>
+	<revnumber>0-00</revnumber>
+	<date>Fri Jun 17 2011</date>
+	<author>
+	  <firstname>Jonathan</firstname>
+	  <surname>Robie</surname>
+	  <email>jonathan.robie@gmail.com</email>
+	</author>
+	<revdescription>
+	  <simplelist>
+	    <member>Imported spec into publican.</member>
+	  </simplelist>
+	</revdescription>
+      </revision>
+    </revhistory>
+  </simpara>
+</appendix>
+

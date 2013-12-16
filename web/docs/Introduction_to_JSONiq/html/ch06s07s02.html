@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.7.2. Treat expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="section-type-expressions.html" title="6.7. Expressions dealing with types" /><link rel="prev" href="section-type-expressions.html" title="6.7. Expressions dealing with types" /><link rel="next" href="ch06s07s03.html" title="6.7.3. Castable expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="section-type-expressions.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch06s07s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9526336">6.7.2. Treat expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/TreatExpr.png" width="444" alt="TreatExpr" /></div></div><h6>Figure 6.47. TreatExpr</h6></div><br class="figure-break" /><div class="para">
+			A treat expression checks that a JSONiq value matches a given sequence type. If it is not the case, an error is raised.
+		</div><div class="example"><h6>Example 6.131. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+1 treat as integer
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">1
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.132. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+1 treat as string
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "xs:integer" cannot be treated as type xs:string</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.133. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+"foo" treat as string
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"foo"
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.134. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" } treat as object
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"{ "foo" : "bar" }"
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.135. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+({ "foo" : "bar" }, { "bar" : "foo" }) treat as json-item+
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"{ "foo" : "bar" }"
+ "{ "bar" : "foo" }"
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.136. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+[ 1, 2, 3 ] treat as array?
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"[ 1, 2, 3 ]"
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.137. Treat as expression</h6><div class="example-contents"><pre class="programlisting">
+() treat as ()
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting"></pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="section-type-expressions.html"><strong>Prev</strong>6.7. Expressions dealing with types</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch06s07s03.html"><strong>Next</strong>6.7.3. Castable expressions</a></li></ul></body></html>

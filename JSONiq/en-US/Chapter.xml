@@ -1,0 +1,27 @@
+<chapter id="chap-JSONiq-Test_Chapter">
+	<title>Test Chapter</title>
+	<para>
+		This is a test paragraph
+	</para>
+	<section id="sect-JSONiq-Test_Chapter-Test_Section_1">
+		<title>Test Section 1</title>
+		<para>
+			This is a test paragraph in a section
+		</para>
+	</section>
+	
+	<section id="sect-JSONiq-Test_Chapter-Test_Section_2">
+		<title>Test Section 2</title>
+		<para>
+			This is a test paragraph in Section 2
+			<orderedlist>
+				<listitem>
+					<para>
+						listitem text
+					</para>
+				</listitem>
+			</orderedlist>
+		</para>
+	</section>
+
+</chapter>

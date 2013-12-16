@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>3.5. ItemTypes for JSONiq Items</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-jsoniq-data-model.html" title="Chapter 3. JSONiq Data Model" /><link rel="prev" href="ch03s04.html" title="3.4. Arrays" /><link rel="next" href="section-json-value-construction.html" title="Chapter 4. Construction of JSON values" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="section-json-value-construction.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp3863424">3.5. ItemTypes for JSONiq Items</h2></div></div></div><div class="para">
+			In XQuery, an ItemType is used to match certain items, for example in function signatures, return types, and a variety of other expressions. JSONiq extends XQuery's ItemType as follows:
+		</div><pre class="programlisting">
+      ItemType ::= -- everything so far --
+        | JSONTest
+        | StructuredItemTest
+
+      JSONTest ::= 
+          JSONItemTest
+        | JSONObjectTest
+        | JSONArrayTest
+
+      StructuredItemTest ::= "structured-item" "(" ")"
+      JSONItemTest ::= "json-item" "(" ")"
+      JSONObjectTest ::= "object" "(" ")"
+      JSONArrayTest ::= "array" "(" ")"
+</pre><div class="para">
+			The semantics of these expressions are straightforward.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<code class="code">structured-item()</code> matches any node or JSON Item.
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">json-item()</code> matches any JSON Item (Object or Array).
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">object()</code> matches any Object.
+				</div></li><li class="listitem"><div class="para">
+					<code class="code">array()</code> matches any Array.
+				</div></li></ul></div><div class="example"><h6>Example 3.1. JSON Items in Function Signatures and instance-of expressions</h6><div class="example-contents"><div class="para">
+				The following function returns any Objects that are members of an Array (see below for more on array navigation).
+			</div><pre class="programlisting">
+          declare function local:objects-in-array($a as array()) as object()* {
+            for $i in 1 to jn:size($a)
+            let $item := $a($i)
+            where $iteminstance of object()
+            return $item
+          };
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s04.html"><strong>Prev</strong>3.4. Arrays</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-json-value-construction.html"><strong>Next</strong>Chapter 4. Construction of JSON values</a></li></ul></body></html>

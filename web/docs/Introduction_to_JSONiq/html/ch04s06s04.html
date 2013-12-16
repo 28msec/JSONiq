@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.6.4. Group clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-flwor.html" title="4.6. FLWOR expressions" /><link rel="prev" href="ch04s06s03.html" title="4.6.3. Order clauses" /><link rel="next" href="ch04s06s05.html" title="4.6.5. Let clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s06s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch04s06s05.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp17321872">4.6.4. Group clauses</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/GroupByClause.png" width="444" alt="GroupByClause" /></div></div><h6>Figure 4.39. GroupByClause</h6></div><br class="figure-break" /><div class="para">
+			Grouping is also supported, like in SQL.
+		</div><div class="para">
+			For each incoming tuple, the expression in the group clause is evaluated to an atomic (a grouping key). The incoming tuples are then grouped according to the key they are associated with.
+		</div><div class="para">
+			For each group, a tuple is output, with a binding from the grouping variable to the key of the group.
+		</div><div class="example"><h6>Example 4.112. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+group by $century := $x.century
+return { "century" : $century  }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"{ "century" : 21 }"
+ "{ "century" : 22 }"
+ "{ "century" : 23 }"
+ "{ "century" : 24 }"
+</pre></div></div><br class="example-break" /><div class="para">
+			As for the other (non-grouping) variables, their values within one group are all concatenated, keeping the same name. Aggregations can be done on these variables.
+		</div><div class="para">
+			The following query is equivalent to "SELECT century, COUNT(*) FROM captains GROUP BY century".
+		</div><div class="example"><h6>Example 4.113. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+group by $century := $x.century
+return { "century" : $century, "count" : count($x) }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"{ "century" : 21, "count" : 1 }"
+ "{ "century" : 22, "count" : 1 }"
+ "{ "century" : 23, "count" : 1 }"
+ "{ "century" : 24, "count" : 4 }"
+</pre></div></div><br class="example-break" /><div class="para">
+			JSONiq's group by is more flexible than SQL and is fully composable.
+		</div><div class="example"><h6>Example 4.114. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+group by $century := $x.century
+return { "century" : $century, "captains" : [ $x.name ] }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"{ "century" : 21, "captains" : [ "Samantha Carter" ] }"
+ "{ "century" : 22, "captains" : [ "Jonathan Archer" ] }"
+ "{ "century" : 23, "captains" : [ "James T. Kirk" ] }"
+ "{ "century" : 24, "captains" : [ "Jean-Luc Picard", "Benjamin Sisko", "Kathryn Janeway" ] }"
+</pre></div></div><br class="example-break" /><div class="para">
+			Unlike SQL, JSONiq does not need a having clause, because a where clause works perfectly after grouping as well.
+		</div><div class="para">
+			The following query is the counterpart of "SELECT century, COUNT(*) FROM captains GROUP BY century HAVING COUNT(*) &gt; 1"
+		</div><div class="example"><h6>Example 4.115. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+group by $century := $x.century
+where count($x) gt 1
+return { "century" : $century, "count" : count($x) }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"{ "century" : 24, "count" : 4 }"
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s06s03.html"><strong>Prev</strong>4.6.3. Order clauses</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch04s06s05.html"><strong>Next</strong>4.6.5. Let clauses</a></li></ul></body></html>

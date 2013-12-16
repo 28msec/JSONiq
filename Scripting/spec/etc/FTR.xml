@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document-summary uri="http://www.w3.org/TR/xpath-full-text-10-requirements/">
+   <title>XQuery and XPath Full Text 1.0 Requirements</title>
+   <div1 id="intro">
+      <head>
+1 Introduction</head>
+   </div1>
+   <div1 id="Terminology">
+      <head>
+2 Terminology</head>
+      <div2 id="">
+         <head>
+2.1 Terminology</head>
+      </div2>
+      <div2 id="div-score">
+         <head>
+2.2 SCORE</head>
+      </div2>
+      <div2 id="div-fts">
+         <head>
+2.3 Full-Text Search</head>
+      </div2>
+   </div1>
+   <div1 id="LanguageDesign">
+      <head>
+3 Language Design</head>
+      <div2 id="markupPrimary">
+         <head>
+3.1 The Data Model</head>
+      </div2>
+      <div2 id="lang-side-effects">
+         <head>
+3.2 Side-effects on the data</head>
+      </div2>
+      <div2 id="lang-score-match-body">
+         <head>
+3.3 Score Function and Full-Text Predicates</head>
+         <div3 id="div3-score-independent">
+            <head>
+3.3.1 Predicate and Score Independence</head>
+         </div3>
+         <div3 id="div3-score-language">
+            <head>
+3.3.2 Score language</head>
+         </div3>
+      </div2>
+      <div2 id="score-algorithm">
+         <head>
+3.4 Score algorithm</head>
+         <div3 id="div-return-score">
+            <head>
+3.4.1 Return Score</head>
+         </div3>
+         <div3 id="div-sort-score">
+            <head>
+3.4.2 Sort by Score</head>
+         </div3>
+         <div3 id="div-typerange-score">
+            <head>
+3.4.3 Type, Range of Score</head>
+         </div3>
+         <div3 id="div-score-stats">
+            <head>
+3.4.4 Score Statistics</head>
+         </div3>
+         <div3 id="div-score-semantics">
+            <head>
+3.4.5 Semantics of Score</head>
+         </div3>
+      </div2>
+      <div2 id="scoreComb">
+         <head>
+3.5 Combined score</head>
+         <div3 id="score-combination">
+            <head>
+3.5.1 Score Combination</head>
+         </div3>
+         <div3 id="score-alg-vendor">
+            <head>
+3.5.2 Score algorithm vendor-provided</head>
+         </div3>
+         <div3 id="score-alg-override">
+            <head>
+3.5.3 Score algorithm overridable</head>
+         </div3>
+         <div3 id="score-alg-influence">
+            <head>
+3.5.4 Score influence</head>
+         </div3>
+      </div2>
+      <div2 id="ext">
+         <head>
+3.6 Extensibility</head>
+         <div3 id="div-extensible">
+            <head>
+3.6.1 Extensible by vendors</head>
+         </div3>
+         <div3 id="div-extensible-users">
+            <head>
+3.6.2 Extensible by users</head>
+         </div3>
+      </div2>
+      <div2 id="fastRight">
+         <head>
+3.7 First, Future Versions</head>
+      </div2>
+      <div2 id="lang-endUserLanguage">
+         <head>
+3.8 End user language</head>
+      </div2>
+      <div2 id="searchable-query">
+         <head>
+3.9 Searchable query</head>
+      </div2>
+      <div2 id="universality">
+         <head>
+3.10 Universality</head>
+      </div2>
+   </div1>
+   <div1 id="Integration">
+      <head>
+4 Integration</head>
+      <div2 id="xpath">
+         <head>
+4.1 XPath</head>
+      </div2>
+      <div2 id="ext-mech">
+         <head>
+4.2 Extensibility Mechanisms</head>
+         <div3 id="div-int-xquery">
+            <head>
+4.2.1 Integration into XQuery/XPath</head>
+         </div3>
+         <div3 id="div-own-ext">
+            <head>
+4.2.2 XQuery and XPath Full Text 1.0 Extensibility</head>
+         </div3>
+      </div2>
+      <div2 id="int-composability">
+         <head>
+4.3 Composability</head>
+      </div2>
+      <div2 id="Human-readable">
+         <head>
+4.4 Human-readable</head>
+      </div2>
+      <div2 id="XMLSyntax">
+         <head>
+4.5 XML syntax</head>
+      </div2>
+   </div1>
+   <div1 id="Implementation">
+      <head>
+5 Implementation</head>
+      <div2 id="efficientExecution">
+         <head>
+5.1 Declarativity</head>
+      </div2>
+   </div1>
+   <div1 id="Scope">
+      <head>
+6 Functionality and Scope</head>
+      <div2 id="functionality">
+         <head>
+6.1 Functionality</head>
+      </div2>
+      <div2 id="func-searchScope">
+         <head>
+6.2 Search Scope</head>
+         <div3 id="div-arbitrary">
+            <head>
+6.2.1 Search within arbitrary structure</head>
+         </div3>
+         <div3 id="div-constructed">
+            <head>
+6.2.2 Constructed Structures</head>
+         </div3>
+         <div3 id="div-return-arbitrary">
+            <head>
+6.2.3 Return Arbitrary Nodes</head>
+         </div3>
+         <div3 id="div-comb-tree">
+            <head>
+6.2.4 Parts of Search Tree</head>
+         </div3>
+      </div2>
+      <div2 id="func-att">
+         <head>
+6.3 Attributes</head>
+         <div3 id="div-att">
+            <head>
+6.3.1 Search within attributes</head>
+         </div3>
+         <div3 id="div-att-content">
+            <head>
+6.3.2 Search across attributes and content</head>
+         </div3>
+      </div2>
+      <div2 id="func-markup">
+         <head>
+6.4 Markup</head>
+      </div2>
+      <div2 id="elementBoundaries">
+         <head>
+6.5 Element Boundaries</head>
+         <div3 id="div-element-boundary">
+            <head>
+6.5.1 Search across element boundaries</head>
+         </div3>
+         <div3 id="div-token-boundary">
+            <head>
+6.5.2 Element as a token boundary</head>
+         </div3>
+      </div2>
+      <div2 id="func-score">
+         <head>
+6.6 Score</head>
+         <div3 id="div-score-accessible">
+            <head>
+6.6.1 Score accessible</head>
+         </div3>
+         <div3 id="div-mplicit-ordering">
+            <head>
+6.6.2 Implicit ordering</head>
+         </div3>
+         <div3 id="div-score-extendable">
+            <head>
+6.6.3 Score extendable</head>
+         </div3>
+      </div2>
+   </div1>
+   <div1 id="biblio">
+      <head>
+A References</head>
+      <div2 id="non-normative-biblio">
+         <head>
+A.1 Non-Normative</head>
+      </div2>
+   </div1>
+   <div1 id="changeLog">
+      <head>
+B Change Log</head>
+   </div1>
+   <termdef id="terminology-score" term="SCORE"/>
+   <termdef id="terminology-FTS" term="Full-Text Search"/>
+</document-summary>

@@ -1,0 +1,182 @@
+/* JSONiq 1.0 : The JSON Query Language
+ * (Just the Core)
+ */
+
+Module   ::= ("jsoniq" (("encoding" StringLiteral) | ("version" StringLiteral ("encoding" StringLiteral)?)) ";")? (LibraryModule | MainModule)
+MainModule
+         ::= Prolog Expr
+LibraryModule
+         ::= "module" "namespace" NCName "=" URILiteral ";" Prolog
+Prolog   ::= ((DefaultCollationDecl | OrderingModeDecl | EmptyOrderDecl | DecimalFormatDecl | ModuleImport) ";")* ((FunctionDecl | VariableDecl) ";")*
+DefaultCollationDecl
+         ::= "declare" "default" "collation" URILiteral
+OrderingModeDecl
+         ::= "declare" "ordering" ("ordered" | "unordered")
+EmptyOrderDecl
+         ::= "declare" "default" "order" "empty" ("greatest" | "least")
+DecimalFormatDecl
+         ::= "declare" (("decimal-format" (NCName ":")? NCName) | ("default" "decimal-format")) (DFPropertyName "=" StringLiteral)*
+DFPropertyName
+         ::= "decimal-separator" | "grouping-separator" | "infinity" | "minus-sign" | "NaN" | "percent" | "per-mille" | "zero-digit" | "digit" | "pattern-separator"
+ModuleImport
+         ::= "import" "module" ("namespace" NCName "=")? URILiteral ("at" URILiteral ("," URILiteral)*)?
+VarDecl  ::= "declare" "variable" VarRef ("as" SequenceType)? ((":=" ExprSingle) | ("external" (":=" ExprSingle)?))
+FunctionDecl
+         ::= "declare" "function" (NCName ":")? NCName "(" ParamList? ")" ("as" SequenceType)? ("{" Expr "}" | "external")
+ParamList
+         ::= "$" NCName ("as" SequenceType)? ("," "$" NCName ("as" SequenceType)?)*
+Expr     ::= ExprSingle ("," ExprSingle)*
+ExprSingle
+         ::= FLWORExpr
+           | QuantifiedExpr
+           | SwitchExpr
+           | TypeswitchExpr
+           | IfExpr
+           | TryCatchExpr
+           | OrExpr
+FLWORExpr
+         ::= (ForClause | LetClause)
+             (ForClause | LetClause | WhereClause | GroupByClause | OrderByClause | CountClause)*
+             "return" ExprSingle
+ForClause
+         ::= "for" VarRef ("as" SequenceType)? ("allowing" "empty")? ("at" VarRef)? "in" ExprSingle ("," VarRef ("as" SequenceType)? ("allowing" "empty")? ("at" VarRef)? "in" ExprSingle)*
+LetClause
+         ::= "let" VarRef ("as" SequenceType)? ":=" ExprSingle ("," VarRef ("as" SequenceType)? ":=" ExprSingle)*
+CountClause
+         ::= "count" VarRef
+WhereClause
+         ::= "where" ExprSingle
+GroupByClause
+         ::= "group" "by" VarRef (("as" SequenceType)? ":=" ExprSingle)? ("collation" URILiteral)? ("," VarRef (("as" SequenceType)? ":=" ExprSingle)? ("collation" URILiteral)?)*
+OrderByClause
+         ::= (("order" "by") | ("stable" "order" "by")) ExprSingle ("ascending" | "descending")? ("empty" ("greatest" | "least"))? ("collation" URILiteral)? ("," ExprSingle ("ascending" | "descending")? ("empty" ("greatest" | "least"))? ("collation" URILiteral)?)*
+QuantifiedExpr
+         ::= ("some" | "every") VarRef ("as" SequenceType)? "in" ExprSingle ("," VarRef ("as" SequenceType)? "in" ExprSingle)* "satisfies" ExprSingle
+SwitchExpr
+         ::= "switch" "(" Expr ")" SwitchCaseClause+ "default" "return" ExprSingle
+SwitchCaseClause
+         ::= ("case" ExprSingle)+ "return" ExprSingle
+TypeswitchExpr
+         ::= "typeswitch" "(" Expr ")" CaseClause+ "default" (VarRef)? "return" ExprSingle
+CaseClause
+         ::= "case" (VarRef "as")? SequenceType ("|" SequenceType)* "return" ExprSingle
+IfExpr   ::= "if" "(" Expr ")" "then" ExprSingle "else" ExprSingle
+TryCatchExpr
+         ::= "try" "{" Expr "}" "catch" "*" "{" Expr "}"
+OrExpr   ::= AndExpr ( "or" AndExpr )*
+AndExpr  ::= NotExpr ( "and" NotExpr )*
+NotExpr  ::= "not"? ComparisonExpr
+ComparisonExpr
+         ::= StringConcatExpr ( ("eq" | "ne" | "lt" | "le" | "gt" | "ge") StringConcatExpr )?
+StringConcatExpr
+         ::= RangeExpr ( "||" RangeExpr )*
+RangeExpr
+         ::= AdditiveExpr ( "to" AdditiveExpr )?
+AdditiveExpr
+         ::= MultiplicativeExpr ( ("+" | "-") MultiplicativeExpr )*
+MultiplicativeExpr
+         ::= InstanceofExpr ( ("*" | "div" | "idiv" | "mod") InstanceofExpr )*
+InstanceofExpr
+         ::= TreatExpr ( "instance" "of" SequenceType )?
+TreatExpr
+         ::= CastableExpr ( "treat" "as" SequenceType )?
+CastableExpr
+         ::= CastExpr ( "castable" "as" AtomicType "?"? )?
+CastExpr ::= UnaryExpr ( "cast" "as" AtomicType "?"? )?
+UnaryExpr
+         ::= ("-" | "+")* SimpleMapExpr
+SimpleMapExpr
+         ::= PostfixExpr ("!" PostfixExpr)*
+PostfixExpr
+         ::= PrimaryExpr (Predicate | ObjectLookup | ArrayLookup | ArrayUnboxing)*
+Predicate
+         ::= "[" Expr "]"
+ObjectLookup
+         ::= "." ( StringLiteral | NCName | ParenthesizedExpr | VarRef | ContextItemExpr )
+ArrayLookup
+         ::= "[" "[" Expr "]" "]"
+ArrayUnboxing
+         ::= "[" "]"
+PrimaryExpr
+         ::= Literal
+           | VarRef
+           | ParenthesizedExpr
+           | ContextItemExpr
+           | FunctionCall
+           | OrderedExpr
+           | UnorderedExpr
+           | ObjectConstructor
+           | ArrayConstructor
+Literal  ::= NumericLiteral | StringLiteral | BooleanLiteral | NullLiteral
+NumericLiteral
+         ::= IntegerLiteral | DecimalLiteral | DoubleLiteral
+BooleanLiteral
+         ::= "true" | "false"
+NullLiteral
+         ::= "null"
+VarRef   ::= "$" (NCName ":")? NCName
+ParenthesizedExpr
+         ::= "(" Expr? ")"
+ContextItemExpr
+         ::= "$$"
+OrderedExpr
+         ::= "ordered" "{" Expr "}"
+UnorderedExpr
+         ::= "unordered" "{" Expr "}"
+FunctionCall
+         ::= (NCName ":")? NCName ArgumentList
+Argument ::= ExprSingle | "?"
+ObjectConstructor
+         ::=  "{" ( PairConstructor ("," PairConstructor)* )? "}"
+         | "{|" Expr "|}"
+PairConstructor
+         ::=  ( ExprSingle | NCName ) ":" ExprSingle
+ArrayConstructor
+         ::=  "[" Expr? "]"
+SequenceType
+         ::= "(" ")"
+           | ItemType ("?" | "*" | "+")?
+ItemType
+         ::= "item"
+           | JSONItemTest
+           | AtomicType
+JSONItemTest
+         ::= "object"
+           | "array"
+           | "json-item"
+AtomicType
+         ::= "atomic" | "string" | "integer" | "decimal" | "double" | "boolean" | "null"
+         | "etc (other builtin atomic types)"
+URILiteral
+         ::= StringLiteral
+
+
+<?TOKENS?>
+
+IntegerLiteral
+         ::= Digits
+DecimalLiteral
+         ::= ("." Digits) | (Digits "." [0-9]*)
+          /* ws: explicit */
+DoubleLiteral
+         ::= (("." Digits) | (Digits ("." [0-9]*)?)) [eE] [+-]? Digits
+          /* ws: explicit */
+StringLiteral
+         ::= ('"' (PredefinedCharRef | CharRef | [^"\])* '"')
+          /* ws: explicit */
+PredefinedCharRef
+         ::= "\" ("\" | "/" | '"' | "'" | "b" | "f" | "n" | "r" | "t" )
+          /* ws: explicit */
+CharRef  ::= "\" "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F][0-9a-fA-F]
+Comment  ::= "(:" (CommentContents | Comment)* ":)"
+          /* ws: explicit */
+          /* gn: comments */
+NCName   ::= [http://www.w3.org/TR/REC-xml-names/#NT-NCName-w-o-dot-and-keywords]
+          /* xgc: xml-version */
+S        ::= [http://www.w3.org/TR/REC-xml#NT-S]
+          /* xgc: xml-version */
+Char     ::= [http://www.w3.org/TR/REC-xml#NT-Char]
+          /* xgc: xml-version */
+Digits   ::= [0-9]+
+CommentContents
+         ::= (Char+ - (Char* ('(:' | ':)') Char*))

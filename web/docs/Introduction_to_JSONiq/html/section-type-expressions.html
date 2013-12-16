@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>10.2. Expressions dealing with types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-expressions.html" title="Chapter 10. Expressions" /><link rel="prev" href="chapter-expressions.html" title="Chapter 10. Expressions" /><link rel="next" href="ch10s02s02.html" title="10.2.2. Treat expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-expressions.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch10s02s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="section" id="section-type-expressions" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="section-type-expressions">10.2. Expressions dealing with types</h2></div></div></div><div class="para">
+		This section describes JSONiq types as well as the sequence type syntax.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm47666368">10.2.1. Instance-of expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/InstanceofExpr.png" width="444" alt="InstanceofExpr" /></div></div><h6>Figure 10.1. InstanceofExpr</h6></div><br class="figure-break" /><div class="para">
+			An instance expression can be used to tell whether a JSONiq value matches a given sequence type.
+		</div><div class="example"><h6>Example 10.25. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+1 instance of integer
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.26. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+1 instance of string
+</pre><pre class="programlisting">Result:
+ false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.27. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+"foo" instance of string
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.28. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" } instance of object
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.29. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+({ "foo" : "bar" }, { "bar" : "foo" }) instance of json-item+
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.30. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+[ 1, 2, 3 ] instance of array?
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 10.31. Instance of expression</h6><div class="example-contents"><pre class="programlisting">
+() instance of ()
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-expressions.html"><strong>Prev</strong>Chapter 10. Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch10s02s02.html"><strong>Next</strong>10.2.2. Treat expressions</a></li></ul></body></html>

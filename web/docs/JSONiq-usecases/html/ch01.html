@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 1. JSONiq Use Cases</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq_Use_Cases-1.0-en-US-1.0.9-0" /><link rel="home" href="index.html" title="JSONiq Use Cases" /><link rel="up" href="index.html" title="JSONiq Use Cases" /><link rel="prev" href="index.html" title="JSONiq Use Cases" /><link rel="next" href="appe-UsecasesForJSONiq-Revision_History.html" title="Appendix A. Revision History" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="index.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="appe-UsecasesForJSONiq-Revision_History.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="idm41473952" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 1. JSONiq Use Cases</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="ch01.html#idm41081232">1.1. Sample Queries</a></span></dt><dd><dl><dt><span class="section"><a href="ch01.html#json.joins">1.1.1. Joins</a></span></dt><dt><span class="section"><a href="ch01.html#jsongrouping">1.1.2. Grouping Queries for JSON</a></span></dt><dt><span class="section"><a href="ch01.html#json2json">1.1.3. JSON to JSON Transformations</a></span></dt><dt><span class="section"><a href="ch01.html#update.example">1.1.4. JSON Updates</a></span></dt><dt><span class="section"><a href="ch01.html#idm29649056">1.1.5. Data Transformations</a></span></dt></dl></dd></dl></div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				Queries and Transformations for JSON
+			</div><div class="para">
+				JSONiq can be used for queries on JSON that return JSON results. These queries have the full power of XQuery, including FLWOR expressions, grouping, windowing, updates, and full-text. But queries or implementations that do not use XML or produce XML can use a subset of XQuery, and need not deal with the additional complexity that XML requires. Used in this way, JSONiq adds significant value to NoSQL databases.
+			</div><div class="para">
+				Examples of these queries can be found in <a class="xref" href="ch01.html#json.joins">Section 1.1.1, “Joins”</a>, <a class="xref" href="ch01.html#jsongrouping">Section 1.1.2, “Grouping Queries for JSON”</a>, and <a class="xref" href="ch01.html#json2json">Section 1.1.3, “JSON to JSON Transformations”</a>.
+			</div></li><li class="listitem"><div class="para">
+				JSON Updates
+			</div><div class="para">
+				JSONiq provides updates for JSON, in the same way that the XQuery Update Facility provides updates for XML.
+			</div><div class="para">
+				An example of such a query can be found in <a class="xref" href="ch01.html#update.example">Section 1.1.4, “JSON Updates”</a>.
+			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm41081232">1.1. Sample Queries</h2></div></div></div><div class="section" id="json.joins"><div class="titlepage"><div><div><h3 class="title" id="json.joins">1.1.1. Joins</h3></div></div></div><div class="para">
+				The following queries are based on a social media site that allows users to interact with their friends. <code class="code">collection("users")</code> contains data on users and their friends:
+			</div><pre class="programlisting">{
+  "name" : "Sarah",
+  "age" : 13,
+  "gender" : "female",
+  "friends" : [ "Jim", "Mary", "Jennifer"]
+}
+
+{
+  "name" : "Jim",
+  "age" : 13,
+  "gender" : "male",
+  "friends" : [ "Sarah" ]
+}
+</pre><div class="para">
+				The following query performs a join on Sarah's friend list to return the Object representing each of her friends:
+			</div><div class="example"><h6>Example 1.1. A join query.</h6><div class="example-contents"><pre class="programlisting">
+for $sarah in collection("users"),
+    $friend in collection("users")
+where $sarah.name eq "Sarah"
+      and
+      (some $name in $sarah.friends[]
+       satisfies $friend.name eq $name)
+return $friend
+</pre><div class="formalpara"><h5 class="formalpara" id="idm40686048">Result:</h5>
+						{ "name" : "Jim", "age" : 13, "gender" : "male", "friends" : [ "Sarah" ] }
+					</div></div></div><br class="example-break" /><div class="para">
+				The query can be simplified using a filter. In the following expression, <code class="code">[$$.name = "Sarah"]</code> is a filter that restricts the set of users to the one named "Sarah". The following query returns the same results as the previous one:
+			</div><div class="example"><h6>Example 1.2. A join query with a predicate.</h6><div class="example-contents"><pre class="programlisting">
+let $sarah := collection("users")[$$.name eq "Sarah"]
+for $friend in $sarah.friends[]
+return collection("users")[$$.name eq $friend]
+</pre><div class="formalpara"><h5 class="formalpara" id="idm29512336">Result:</h5>
+						{ "name" : "Jim", "age" : 13, "gender" : "male", "friends" : [ "Sarah" ] }
+					</div></div></div><br class="example-break" /></div><div class="section" id="jsongrouping"><div class="titlepage"><div><div><h3 class="title" id="jsongrouping">1.1.2. Grouping Queries for JSON<sup>[<a id="idp192000" href="#ftn.idp192000" class="footnote">1</a>]</sup></h3></div></div></div><div class="para">
+				collection("sales") is an unordered sequence that contains the following objects:
+			</div><pre class="programlisting">{ "product" : "broiler", "store number" : 1, "quantity" : 20  },
+{ "product" : "toaster", "store number" : 2, "quantity" : 100 },
+{ "product" : "toaster", "store number" : 2, "quantity" : 50 },
+{ "product" : "toaster", "store number" : 3, "quantity" : 50 },
+{ "product" : "blender", "store number" : 3, "quantity" : 100 },
+{ "product" : "blender", "store number" : 3, "quantity" : 150 },
+{ "product" : "socks", "store number" : 1, "quantity" : 500 },
+{ "product" : "socks", "store number" : 2, "quantity" : 10 },
+{ "product" : "shirt", "store number" : 3, "quantity" : 10 }
+</pre><div class="para">
+				We want to group sales by product, across stores.
+			</div><div class="example"><h6>Example 1.3. A grouping query</h6><div class="example-contents"><pre class="programlisting">
+{|
+  for $sales in collection("sales")
+  let $pname := $sales.product
+  group by $pname
+  return { $pname : sum($sales.quantity) }
+|}
+</pre><div class="formalpara"><h5 class="formalpara" id="idp4001440">Result:</h5>
+						{ "toaster" : 200, "blender" : 250, "shirt" : 10, "socks" : 510, "broiler" : 20 }
+					</div></div></div><br class="example-break" /><div class="para">
+				Now let's do a more complex grouping query, showing sales by category within each state. We need further data to describe the categories of products and the location of stores.
+			</div><div class="para">
+				collection("products") contains the following data:
+			</div><pre class="programlisting">{ "name" : "broiler", "category" : "kitchen", "price" : 100, "cost" : 70 },
+{ "name" : "toaster", "category" : "kitchen", "price" : 30, "cost" : 10 },
+{ "name" : "blender", "category" : "kitchen", "price" : 50, "cost" : 25 },
+{ "name" : "socks", "category" : "clothes", "price" : 5, "cost" : 2 },
+{ "name" : "shirt", "category" : "clothes", "price" : 10, "cost" : 3 }</pre><div class="para">
+				collection("stores") contains the following data:
+			</div><pre class="programlisting">{ "store number" : 1, "state" : "CA" },
+{ "store number" : 2, "state" : "CA" },
+{ "store number" : 3, "state" : "MA" },
+{ "store number" : 4, "state" : "MA" }
+</pre><div class="para">
+				The following query groups by state, then by category, then lists individual products and the sales associated with each.
+			</div><div class="para">
+				Query:
+			</div><div class="example"><h6>Example 1.4. A nesting grouping query.</h6><div class="example-contents"><pre class="programlisting">
+{|
+  for $store in collection("stores")
+  let $state := $store.state
+  group by $state
+  return {
+    $state : {|
+      for $product in collection("products")
+      let $category := $product.category
+      group by $category
+      return {
+        $category : {|
+          for $sales in collection("sales")
+          where (some $s in $store
+                satisfies $sales."store number" eq $s."store number")
+            and (some $p in $product
+                satisfies $sales.product eq $p.name)
+          let $pname := $sales.product
+          group by $pname
+          return { $pname : sum( $sales.quantity ) }
+        |}
+      }
+    |}
+  }
+|}
+</pre><div class="formalpara"><h5 class="formalpara" id="idm40470416">Result:</h5>
+						{ "MA" : { "clothes" : { "shirt" : 10 }, "kitchen" : { "toaster" : 50, "blender" : 250 } }, "CA" : { "clothes" : { "socks" : 510 }, "kitchen" : { "toaster" : 150, "broiler" : 20 } } }
+					</div></div></div><br class="example-break" /></div><div class="section" id="json2json"><div class="titlepage"><div><div><h3 class="title" id="json2json">1.1.3. JSON to JSON Transformations</h3></div></div></div><div class="para">
+				The following query takes satellite data, and summarizes which satellites are visible. The data for the query is a simplified version of a Stellarium file that contains this information.
+			</div><div class="para">
+				<span class="emphasis"><em>Collection "satellites":</em></span>
+			</div><pre class="programlisting">{
+  "creator" : "Satellites plugin version 0.6.4",
+  "satellites" : {
+    "AAU CUBESAT" : {
+      "tle1" : "1 27846U 03031G 10322.04074654  .00000056  00000-0  45693-4 0  8768",
+      "visible" : false
+    },
+    "AJISAI (EGS)" : {
+      "tle1" : "1 16908U 86061A 10321.84797408 -.00000083  00000-0  10000-3 0  3696",
+      "visible" : true
+    },
+    "AKARI (ASTRO-F)" : {
+      "tle1" : "1 28939U 06005A 10321.96319841  .00000176  00000-0  48808-4 0  4294",
+      "visible" : true
+    }
+  }
+}</pre><div class="para">
+				We want to query this data to return a summary.
+			</div><div class="para">
+				The following is a JSONiq query that returns the desired result.
+			</div><div class="example"><h6>Example 1.5. A summarizing query.</h6><div class="example-contents"><pre class="programlisting">let $sats := collection("satellites").satellites
+return {
+  "visible" : [
+     for $sat in keys($sats)
+     where $sats.$sat.visible
+     return $sat
+  ],
+  "invisible" : [
+     for $sat in keys($sats)
+     where not $sats.$sat.visible
+     return $sat
+  ]
+}</pre><div class="formalpara"><h5 class="formalpara" id="idm29657760">Result:</h5>
+						{ "visible" : [ "AJISAI (EGS)", "AKARI (ASTRO-F)" ], "invisible" : [ "AAU CUBESAT" ] }
+					</div></div></div><br class="example-break" /></div><div class="section" id="update.example"><div class="titlepage"><div><div><h3 class="title" id="update.example">1.1.4. JSON Updates</h3></div></div></div><div class="para">
+				The XQuery Update Facility allows XML data to be updated. JSONiq provides updating functions to allow JSON to be updated.
+			</div><div class="para">
+				Suppose an application receives an order that contains a credit card number, and needs to put the user on probation.
+			</div><div class="para">
+				Data for an order:
+			</div><pre class="programlisting">{
+  "user" : "Deadbeat Jim",
+  "credit card" : VISA 4111 1111 1111 1111,
+  "product" : "lottery tickets",
+  "quantity" : 243
+}
+</pre><div class="para">
+				collection("users") contains the data for each individual user:
+			</div><pre class="programlisting">{
+  "name" : "Deadbeat Jim",
+  "address" : "1 E 161st St, Bronx, NY 10451",
+  "risk tolerance" : "high"
+}
+</pre><div class="para">
+				The following query adds <code class="code">"status" : "credit card declined"</code> to the user's record.
+			</div><pre class="programlisting">
+let $dbj := collection("users")[ $$.name = "Deadbeat Jim" ]
+return insert { "status" : "credit card declined" } into $dbj
+</pre><div class="para">
+				After the update is finished, the user's record looks like this:
+			</div><pre class="programlisting">{
+  "name" : "Deadbeat Jim",
+  "address" : "1 E 161st St, Bronx, NY 10451",
+  "status" : "credit card declined",
+  "risk tolerance" : "high"
+}
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm29649056">1.1.5. Data Transformations</h3></div></div></div><div class="para">
+				Many applications need to modify data before forwarding it to another source. The XQuery Update Facility provides an expression called a tranform expression that can be used to create modified copies. The transform expression uses updating expressions to perform a transformation. JSONiq defines updating functions for JSON, which can be used in the XQuery transform expression.
+			</div><div class="para">
+				Suppose an application make videos available using feeds from Youtube. The following data comes from one such feed:
+			</div><pre class="programlisting">{
+    "encoding" : "UTF-8",
+    "feed" : {
+        "author" : [
+            {
+                "name" : {
+                    "$t" : "YouTube"
+                },
+                "uri" : {
+                    "$t" : "http://www.youtube.com/"
+                }
+            }
+        ],
+        "category" : [
+            {
+                "scheme" : "http://schemas.google.com/g/2005#kind",
+                "term" : "http://gdata.youtube.com/schemas/2007#video"
+            }
+        ],
+        "entry" : [
+            {
+                "app$control" : {
+                    "yt$state" : {
+                        "$t" : "Syndication of this video was restricted by its owner.",
+                        "name" : "restricted",
+                        "reasonCode" : "limitedSyndication"
+                    }
+                },
+                "author" : [
+                    {
+                        "name" : {
+                            "$t" : "beyonceVEVO"
+                        },
+                        "uri" : {
+                            "$t" : "http://gdata.youtube.com/feeds/api/users/beyoncevevo"
+                        }
+                    }
+                ]
+!!! SNIP !!!</pre><div class="para">
+				The following query creates a modified copy of the feed by removing all entries that restrict syndication.
+			</div><pre class="programlisting">
+let $feed := collection("youtube")
+return
+   copy $out := $feed
+   modify
+      let $feed := $out.feed
+      let $feed-entry := $feed.entry
+      for $entry at $pos in $feed-entry[]
+      where $entry."app$control"."yt$state".name eq "restricted"
+      return delete $feed-entry.pos
+   return $out
+</pre></div></div><div class="footnotes"><br /><hr /><div class="footnote"><div class="para"><sup>[<a id="ftn.idp192000" href="#idp192000" class="para">1</a>] </sup>
+				These queries are based on similar queries in the XQuery 3.0 Use Cases.
+			</div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="index.html"><strong>Prev</strong>JSONiq Use Cases</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="appe-UsecasesForJSONiq-Revision_History.html"><strong>Next</strong>Appendix A. Revision History</a></li></ul></body></html>

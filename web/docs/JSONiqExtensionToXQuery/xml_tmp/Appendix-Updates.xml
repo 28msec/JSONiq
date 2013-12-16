@@ -1,0 +1,49 @@
+<appendix id="jsoniq-updates">
+  <title>Extensions to the XQuery Update Facility</title>
+
+  <para>JSONiq adds the following functions for updating Objects and Arrays. They generate PULs, which are used in the same way as any other PULs in the XQuery Update Facility.</para>
+
+  <para>An individual function may create an invalid JSON instance; however, an updating query must produce a valid JSON instance once the entire query is evaluated, or an error is raised and the entire update fails, leaving the instance in its original state.</para>
+
+  <itemizedlist>
+    <listitem><para><emphasis>json:insert-into($o as object(), $p as pair()*)</emphasis></para>
+
+    <para>Insert one or more pairs into an object. All pairs must be object pairs, or an error is raised. If inserting a pair would result in duplicate names in the object, an error is raised<footnote><para>The other logical alternative would be to treat this as an upsert.</para></footnote>.</para></listitem>
+
+    <listitem><para><emphasis>json:insert-as-first($a as array(), $i as item()*)</emphasis></para>
+    <para>Inserts an item as the first member of an array.</para></listitem>
+
+    <listitem><para><emphasis>json:insert-as-last($a as array(), $i as item()*)</emphasis></para>
+    <para>Inserts an item as the last member of an array.</para></listitem>
+
+    <listitem><para><emphasis>json:insert-into-collection($collection-name as xs:string(), $objects as object()*)</emphasis></para>
+    <para>Inserts an object into a named collection.</para></listitem>
+
+    <listitem><para><emphasis>json:delete($p as json-item())</emphasis></para>
+
+    <para>Deletes a Pair, Object, or Array.</para>
+
+    <para>Deleting a Pair removes it from the Object or Array that contains it.</para>
+
+    <para>Deleting an Object removes it from the collection or Pair that contains it.</para>
+
+    <para>Deleting an Array removes it from the Pair that contains it.</para></listitem>
+
+
+    <listitem><para><emphasis>json:rename($p as pair(), $name as xs:string())</emphasis></para>
+
+    <para>Assigns a new name to a pair. If the pair is not an Object Pair, an error is raised. If changing the name would rsult in duplicate names in the Object, an error is raised.</para></listitem>
+
+    <listitem><para><emphasis>json:replace-value($p as pair(), $i as item())</emphasis></para>
+
+    <para>Replaces the value of a Pair. The Pair may be either an Object Pair or an Array Pair.</para></listitem>
+
+    <listitem><para><emphasis>json:insert-before($p as pair(), $i as item()*)</emphasis></para>
+    <para>Inserts the item(s) immediately before $p in the array. $p must be an Array Pair, or an error is raised.</para></listitem>
+
+    <listitem><para><emphasis>json:insert-after($p as pair(), $i as item()*)</emphasis></para>
+    <para>Inserts the item(s) immediately after $p in the array. $p must be an Array Pair, or an error is raised.</para></listitem>
+
+  </itemizedlist>
+
+</appendix>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 7. JSON Navigation</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt02.html" title="Part II. Construction of Items and JSON Navigation" /><link rel="prev" href="chapter-collections.html" title="Chapter 6. Collections" /><link rel="next" href="ch07s02.html" title="7.2. Array Unboxing" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-collections.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch07s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-selectors" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 7. JSON Navigation</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-selectors.html#idm37787056">7.1. Object Navigation</a></span></dt><dt><span class="section"><a href="ch07s02.html">7.2. Array Unboxing</a></span></dt><dt><span class="section"><a href="section-predicateExpressions.html">7.3. Sequence Filtering</a></span></dt><dt><span class="section"><a href="ch07s04.html">7.4. Array Navigation</a></span></dt></dl></div><div class="para">
+		Like in JavaScript or SQL or Java, it is possible to navigate through data.
+	</div><div class="para">
+		JSONiq supports:
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				Looking up the value of a field (given its string key) in an object.
+			</div></li><li class="listitem"><div class="para">
+				Looking up the item at a given position (integer) in an array.
+			</div></li><li class="listitem"><div class="para">
+				Extracing all members of an array as a sequence of items.
+			</div></li><li class="listitem"><div class="para">
+				Filtering items from a sequence, retaining only the items that match a given criterium.
+			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm37787056">7.1. Object Navigation</h2></div></div></div><div class="para">
+			The simplest way to navigate an object is similar to JavaScript. This will work as soon as you do not push it too much: alphanumerical characters, dashes, underscores. The rule for unquoted names is similar to keys in object constructions, and to variable names. The empty sequence is returned if no key is found with the specified name.
+		</div><div class="example"><h6>Example 7.1. Object lookup.</h6><div class="example-contents"><pre class="programlisting">
+{
+  "question" : "What NoSQL technology should I use?"
+}.question,
+{
+  "question" : "What NoSQL technology should I use?"
+}.answer
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What NoSQL technology should I use?"
+</pre></div></div><br class="example-break" /><div class="para">
+			Since JSONiq expressions are composable, you can also use any expression for the left-hand side. You might need parentheses depending on the precedence.
+		</div><div class="example"><h6>Example 7.2. Lookup on a single-object collection.</h6><div class="example-contents"><pre class="programlisting">
+collection("one-object").question
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What NoSQL technology should I use?"
+</pre></div></div><br class="example-break" /><div class="para">
+			The dot operator does an implicit mapping on the left-hand-side, i.e., it applies the lookup in turn on each item. Lookup on any item which is not an object (arrays and atomics) results in the empty sequence.
+		</div><div class="example"><h6>Example 7.3. Object lookup with an iteration on several objects.</h6><div class="example-contents"><pre class="programlisting">
+({ "foo" : "bar" }, { "foo" : "bar2" } ).foo,
+{ "ids" : collection("faqs").question_id }
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"bar"
+"bar2"
+{
+  "ids" : [ 4419499, 282783, 4720508, 5453872, 6183352 ]
+}
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 7.4. Object lookup on non-objects.</h6><div class="example-contents"><pre class="programlisting">
+"foo".foo,
+({
+  "question" : "What NoSQL technology should I use?"
+},
+ [ "question", "answer" ],
+ { "question" : "answer" },
+ "question").question
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What NoSQL technology should I use?"
+"answer"
+</pre></div></div><br class="example-break" /><div class="para">
+			Of course, unquoted keys will not work for strings that are not unquoted names, e.g., if the field contains a dot or begins with a digit. Then you will need quotes. If you use a more general expression on the right-hand side of the dot, it must always have parentheses.
+		</div><div class="example"><h6>Example 7.5. Quotes and parentheses for object lookup.</h6><div class="example-contents"><pre class="programlisting">
+{
+  "my question" : "What NoSQL technology should I use?"
+}."my question",
+{
+  "my question" : "What NoSQL technology should I use?"
+}.("my " || "question")
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What NoSQL technology should I use?"
+"What NoSQL technology should I use?"
+</pre></div></div><br class="example-break" /><div class="para">
+			The value returned by the right-hand side expression is cast to string. An error is raised upon failure. This value may be the empty sequence, in which case the object lookup also returns the empty sequence.
+		</div><div class="example"><h6>Example 7.6. Object lookup with a nested expression.</h6><div class="example-contents"><pre class="programlisting">
+{
+  "question" : "What NoSQL technology should I use?"
+}.(),
+{
+  "1" : "What NoSQL technology should I use?"
+}.(1),
+{
+  "1" : "What NoSQL technology should I use?"
+}."1"
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What NoSQL technology should I use?"
+"What NoSQL technology should I use?"
+</pre></div></div><br class="example-break" /><div class="para">
+			Variables, or a context item reference, do not need parentheses. Variables are introduced in <a class="xref" href="chapter-FLWOR.html#section-Variables">Section 10.1, “Variables”</a>, but here is a sneak peek:
+		</div><div class="example"><h6>Example 7.7. Object lookup with a variable.</h6><div class="example-contents"><pre class="programlisting">
+let $field := "my " || "question"
+return { 
+  "my question" : "What technology should I use?"
+}.$field
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What technology should I use?"
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-collections.html"><strong>Prev</strong>Chapter 6. Collections</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch07s02.html"><strong>Next</strong>7.2. Array Unboxing</a></li></ul></body></html>

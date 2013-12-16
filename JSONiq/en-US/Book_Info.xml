@@ -1,0 +1,22 @@
+<bookinfo id="book-JSONiq-JSONiq">
+	<title>JSONiq</title>
+	<subtitle>The complete reference</subtitle>
+  <productname>JSONiq - the SQL of NoSQL</productname>
+	<productnumber>1.0</productnumber>
+	<edition>1.0.11</edition>
+	<pubsnumber>1</pubsnumber>
+	<abstract>
+		<para>
+			This document provides a complete reference of the core of JSONiq, the JSON query language.
+		</para>
+	</abstract>
+	<corpauthor>
+		<inlinemediaobject>
+			<imageobject>
+				<imagedata fileref="images/28.png" format="PNG" contentwidth="111"/>
+			</imageobject>
+		</inlinemediaobject>
+	</corpauthor>
+<!--	<xi:include href="Common_Content/Legal_Notice.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Author_Group.xml"/>
+</bookinfo>

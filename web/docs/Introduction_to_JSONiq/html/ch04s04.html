@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.4. Atomics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-DataModel.html" title="Chapter 4. The JSONiq Data Model" /><link rel="prev" href="ch04s03.html" title="4.3. Arrays" /><link rel="next" href="chapter-TypeSystem.html" title="Chapter 5. The JSONiq Type System" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-TypeSystem.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp8738912">4.4. Atomics</h2></div></div></div><div class="para">
+			An atomic is a non-structured value that is annotated with a type.
+		</div><div class="para">
+			JSONiq defines many useful builtin atomic types. For now, let us introduce those that have a JSON counterpart. Note that JSON numbers correspond to three different types in JSONiq.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<span class="emphasis"><em>string</em></span>: all JSON strings.
+				</div></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>integer</em></span>: all JSON numbers that are integers (no dot, no exponent), infinite range.
+				</div></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>decimal</em></span>: all JSON numbers that are decimals (no exponent)
+				</div></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>double</em></span>: IEEE double-precision 64-bit floating point numbers (corresponds to JSON numbers with an exponent).
+				</div></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>boolean</em></span>: the JSON booleans true and false.
+				</div></li><li class="listitem"><div class="para">
+					<span class="emphasis"><em>null</em></span>: the JSON null.
+				</div></li></ul></div><div class="para">
+			JSONiq also offers many other types of atomics. Here is a little appetizer that showcases constructing a date, and then extracting the month with a function. All these features will be shown in details later in this book.
+		</div><div class="example"><h6>Example 4.6. Atomics with the type date</h6><div class="example-contents"><pre class="programlisting">
+month-from-date(date("2013-06-18"))
+</pre><pre class="programlisting">Result:
+ 6
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s03.html"><strong>Prev</strong>4.3. Arrays</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-TypeSystem.html"><strong>Next</strong>Chapter 5. The JSONiq Type System</a></li></ul></body></html>

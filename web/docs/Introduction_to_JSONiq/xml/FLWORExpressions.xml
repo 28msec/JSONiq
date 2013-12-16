@@ -1,0 +1,1223 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chapter-FLWOR" lang="en-US">
+	<title>FLWOR Expressions</title>
+	 <para>
+		FLWOR expressions are probably the most powerful JSONiq construct and correspond to SQL's SELECT-FROM-WHERE statements, but they are more general and more flexible. In particular, clauses can almost appear in any order (apart that it must begin with a for or let clause, and end with a return clause).
+	</para>
+	 <para>
+		Let us begin with a bit of theory on how they work.
+	</para>
+	 <para>
+		A clause binds values to some variables according to its own semantics, possibly several times. Each time, a tuple of variable bindings (mapping variable names to sequences) is passed on to the next clause.
+	</para>
+	 <para>
+		This goes all the way down, until the return clause. The return clause is eventually evaluated for each tuple of variable bindings, resulting in a sequence of items for each tuple. It is not to be confused with Java or C++ return statements, as it does not exit or break the loop.
+	</para>
+	 <para>
+		These sequences of items are concatenated, in the order of the incoming tuples, and the obtained sequence is returned by the FLWOR expression.
+	</para>
+	 <para>
+		We are now giving practical examples with a hint on how it maps to SQL -- but first, we need to introduce variable syntax.
+	</para>
+	 <section id="section-Variables">
+		<title>Variables</title>
+		 <para>
+			Values can be bound to variables within a certain scope. Variable references always begin with a dollar sign: $foo.
+		</para>
+		 <para>
+			The scope of a variable declared in a FLWOR clause comprises all further clauses of the FLWOR expression up to the return clause.
+		</para>
+		 <para>
+			Variables are immutables, but variable bindings can be hidden with a binding to a variable with the same name.
+		</para>
+		 <para>
+			Variables can be declared by FLWOR expressions as shown in this chapter, but also as global variables (<xref linkend="section-globalVariables" />) or in typeswitch expressions (<xref linkend="section-typeswitch" />).
+		</para>
+		 <para>
+			There is a special variable which is called the context item and which is denoted with $$. You already saw it in <xref linkend="section-predicateExpressions" /> in <xref linkend="chapter-selectors" />.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>For Clauses</title>
+		 <para>
+			For clauses allow iteration on a sequence.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the for clause is evaluated to a sequence. Each item in this sequence is in turn bound to the for variable. A tuple is hence produced for each incoming tuple, and for each item in the sequence produced by the for clause for this tuple.
+		</para>
+		 <para>
+			For example, the following for clause:
+		</para>
+		 
+<programlisting>
+for $x in 1 to 3
+...
+</programlisting>
+		<para>
+			produces the following stream of tuples. The tuples themselves are for explanatory purposes, they are not part of the data model. The syntax is also ad-hoc and is used for illustrating.
+		</para>
+		
+<programlisting>
+$x : 1
+$x : 2
+$x : 3
+</programlisting>
+		 <para>
+			The order in which items are bound by the for clause can be relaxed with unordered expressions, as described later in this section.
+		</para>
+		 <para>
+			The following query, using a for and a return clause, is the counterpart of SQL's "SELECT display_name FROM answers". $x is bound in turn to each item in the answers collection.
+		</para>
+		 <example>
+			<title>A for clause.</title>
+			 
+<programlisting>
+for $x in collection("answers")
+return $x.owner.display_name
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>"Ubiguchi"
+"Rob Wells"
+"Victor Nicollet"
+"descent89"
+"JasonSmith"
+"JasonSmith"
+"JasonSmith"
+"JasonSmith"
+</programlisting>
+		</example>
+		 <para>
+			For clause expressions are composable, there can be several of them.
+		</para>
+		 <example>
+			<title>Two for clauses.</title>
+			 
+<programlisting>
+for $x in ( 1, 2, 3 )
+for $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>11
+12
+13
+21
+22
+23
+31
+32
+33
+</programlisting>
+		</example>
+		 <example>
+			<title>A for clause with two variables.</title>
+			 
+<programlisting>
+for $x in ( 1, 2, 3 ), $y in ( 1, 2, 3 )
+return 10 * $x + $y
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>11
+12
+13
+21
+22
+23
+31
+32
+33
+</programlisting>
+		</example>
+		 <para>
+			A for variable is visible to subsequent bindings.
+		</para>
+		 <example>
+			<title>Two for clauses.</title>
+			 
+<programlisting>
+for $x in ( [ 1, 2, 3 ],
+            [ 4, 5, 6 ],
+            [ 7, 8, 9 ] ),
+    $y in $x[]
+return $y,
+for $x in collection("faqs")[size($$.tags) eq 5],
+    $y in $x.tags[]
+return {
+  "id" : $x.question_id,
+  "tag" : $y
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>1
+2
+3
+4
+5
+6
+7
+8
+9
+{
+  "id" : 5453872,
+  "tag" : "database"
+}
+{
+  "id" : 5453872,
+  "tag" : "full-text-search"
+}
+{
+  "id" : 5453872,
+  "tag" : "nosql"
+}
+{
+  "id" : 5453872,
+  "tag" : "couchdb"
+}
+{
+  "id" : 5453872,
+  "tag" : "riak"
+}
+</programlisting>
+		</example>
+		 <para>
+			It is also possible to bind the position of the current item in the sequence to a variable.
+		</para>
+		 <example>
+			<title>A for clause with a position variable.</title>
+			 
+<programlisting>
+for $x at $position in collection("answers")
+return {
+  "old id" : $x.answer_id,
+  "new id" : $position
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "old id" : 37841,
+  "new id" : 1
+}
+{
+  "old id" : 37844,
+  "new id" : 2
+}
+{
+  "old id" : 4419542,
+  "new id" : 3
+}
+{
+  "old id" : 4419578,
+  "new id" : 4
+}
+{
+  "old id" : 4720977,
+  "new id" : 5
+}
+{
+  "old id" : 5454583,
+  "new id" : 6
+}
+{
+  "old id" : 6195094,
+  "new id" : 7
+}
+{
+  "old id" : 6210422,
+  "new id" : 8
+}
+</programlisting>
+		</example>
+		 <para>
+			JSONiq supports joins. For example, the counterpart of "SELECT q.title AS question, q.question_id FROM faq q JOIN answers a ON q.question_id = a.question_id" is:
+		</para>
+		 <example>
+			<title>A regular join.</title>
+			 
+<programlisting>
+for $question in collection("faqs"),
+    $answer in collection("answers")
+    [ $$.question_id eq $question.question_id ]
+return { "question" : $question.title,
+         "answer score" : $answer.score }
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 17
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 1
+}
+{
+  "question" : "Redis, CouchDB or Cassandra?",
+  "answer score" : 34
+}
+{
+  "question" : "Full-text search in NoSQL databases",
+  "answer score" : 6
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 0
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 1
+}
+</programlisting>
+		</example>
+		 <para>
+			Note how JSONiq handles semi-structured data in a flexible way.
+		</para>
+		 <para>
+			Outer joins are also possible with "allowing empty", i.e., output will also be produced if there is no matching answer for a question. The following query is the counterpart of "SELECT q.title AS question, q.question_id FROM faq q LEFT JOIN answers a ON q.question_id = a.question_id".
+		</para>
+		 <example>
+			<title>An outer join.</title>
+			 
+<programlisting>
+for $question in collection("faqs"),
+    $answer allowing empty in collection("answers")
+    [ $$.question_id eq $question.question_id ]
+return { "question" : $question.title,
+         "answer score" : $answer.score }
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 17
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 1
+}
+{
+  "question" : "The Next-gen Databases",
+  "answer score" : null
+}
+{
+  "question" : "Redis, CouchDB or Cassandra?",
+  "answer score" : 34
+}
+{
+  "question" : "Full-text search in NoSQL databases",
+  "answer score" : 6
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 0
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 1
+}
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Where Clauses</title>
+		 <para>
+			Where clauses are used for filtering.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the where clause is evaluated to a boolean (possibly converting an atomic to a boolean). If this boolean is true, the tuple is forwarded to the next clause, otherwise it is dropped.
+		</para>
+		 <para>
+			The following query corresponds to "SELECT q.title as question, q.question_id as id FROM faq WHERE CONTAINS(question, 'NoSQL')".
+		</para>
+		 <example>
+			<title>A where clause.</title>
+			 
+<programlisting>
+for $question in collection("faqs")
+where contains($question.title, "NoSQL")
+return {
+  "question" : $question.title,
+  "id" : $question.question_id
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "id" : 4419499
+}
+{
+  "question" : "Full-text search in NoSQL databases",
+  "id" : 5453872
+}
+</programlisting>
+		</example>
+		 <para>
+			JSONiq can do joins with where clauses, too:
+		</para>
+		 <example>
+			<title>A join with a where clause.</title>
+			 
+<programlisting>
+for $question in collection("faqs"),
+    $answer in collection("answers")
+where $question.question_id eq $answer.question_id
+return {
+  "question" : $question.title,
+  "answer score" : $answer.score
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 17
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "answer score" : 1
+}
+{
+  "question" : "Redis, CouchDB or Cassandra?",
+  "answer score" : 34
+}
+{
+  "question" : "Full-text search in NoSQL databases",
+  "answer score" : 6
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 0
+}
+{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "answer score" : 1
+}
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Order Clauses</title>
+		 <para>
+			Order clauses are for reordering tuples.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the where clause is evaluated to an atomic. The tuples are then sorted based on the atomics they are associated with, and then forwarded to the next clause.
+		</para>
+		 <para>
+			Like for ordering comparisons, null values are always considered the smallest.
+		</para>
+		 <para>
+			The following query is the counterpart of SQL's "SELECT a.display_name, a.score FROM answers a ORDER BY a.display_name".
+		</para>
+		 <example>
+			<title>An order by clause.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+order by $answer.owner.display_name
+return {
+  "owner" : $answer.owner.display_name,
+  "score" : $answer.score
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "owner" : "JasonSmith",
+  "score" : 34
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 6
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 0
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 1
+}
+{
+  "owner" : "Rob Wells",
+  "score" : 4
+}
+{
+  "owner" : "Ubiguchi",
+  "score" : 7
+}
+{
+  "owner" : "Victor Nicollet",
+  "score" : 17
+}
+{
+  "owner" : "descent89",
+  "score" : 1
+}
+</programlisting>
+		</example>
+		 <para>
+			Multiple sorting criteria can be given - they are treated with the semantics of a lexicographic order, that is, incoming tuples are first sorted according to the first criterion, and in case of equality the second criterion is used, etc.
+		</para>
+		 <example>
+			<title>An order by clause with two criteria.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+order by $answer.owner.display_name,
+         $answer.score
+return {
+  "owner" : $answer.owner.display_name,
+  "score" : $answer.score
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "owner" : "JasonSmith",
+  "score" : 0
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 1
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 6
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 34
+}
+{
+  "owner" : "Rob Wells",
+  "score" : 4
+}
+{
+  "owner" : "Ubiguchi",
+  "score" : 7
+}
+{
+  "owner" : "Victor Nicollet",
+  "score" : 17
+}
+{
+  "owner" : "descent89",
+  "score" : 1
+}
+</programlisting>
+		</example>
+		 <para>
+			For each criterion, it can be specified whether the order is ascending or descending. Empty sequences are allowed and it can be chosen whether to put them first (even before null) or last (even after null).
+		</para>
+		 <example>
+			<title>An order by clause with ordering options.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+order by $answer.owner.display_name
+             descending empty greatest,
+         $answer.score ascending
+return {
+  "owner" : $answer.owner.display_name,
+  "score" : $answer.score
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "owner" : "descent89",
+  "score" : 1
+}
+{
+  "owner" : "Victor Nicollet",
+  "score" : 17
+}
+{
+  "owner" : "Ubiguchi",
+  "score" : 7
+}
+{
+  "owner" : "Rob Wells",
+  "score" : 4
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 0
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 1
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 6
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 34
+}
+</programlisting>
+		</example>
+		 <para>
+			An error is raised if the expression does not evaluate to an atomic or to the empty sequence.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Group Clauses</title>
+		 <para>
+			Grouping is also supported, like in SQL.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the group clause is evaluated to an atomic. The value of this atomic is called a grouping key. The incoming tuples are then grouped according to the grouping key -- one group for each value of the grouping key.
+		</para>
+		 <para>
+			For each group, a tuple is output, in which:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					Each grouping variable (appearing in the group clause) is bound to the group's key corresponding to this variable.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Each other (non-grouping) variable is bound to the sequence obtained by concatenating all original values of the variable within the group. Aggregations can then be done on these variables in further clauses.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			Here is an example:
+		</para>
+		 
+<programlisting>
+for $i in (1, 2),
+    $j in (3, 4)
+group by $j
+...
+</programlisting>
+		 <para>
+			The first for clause produces four tuples (this is again an ad-hoc syntax for illustrative purposes):
+		</para>
+		 
+<programlisting>
+"$i" : 1, "$j" : 3
+"$i" : 1, "$j" : 4
+"$i" : 2, "$j" : 3
+"$i" : 2, "$j" : 4
+</programlisting>
+		 <para>
+			Then the group clause groups according the value of $j. There are two distinct values (3 and 4), so that this results in two groups.
+		</para>
+		 
+<programlisting>
+Group 1 (key $j : 3)
+$i : 1, $j : 3
+$i : 2, $j : 3
+
+Group 2 (key $j : 4)
+$i : 1, $j : 4
+$i : 2, $j : 4
+</programlisting>
+		 <para>
+			In each output tuple, $j is the grouping variable and is bound to the key of the group. $i is non-grouping and is bound to the sequence of all values in the group.
+		</para>
+		 
+<programlisting>
+$i : (1, 2), $j : 3
+$i : (1, 2), $j : 4
+</programlisting>
+		 <para>
+			The following query is equivalent to "SELECT question_id FROM answers GROUP BY question_id".
+		</para>
+		 <example>
+			<title>A group by clause.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return { "question" : $question }
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : 5453872
+}
+{
+  "question" : 6183352
+}
+{
+  "question" : 4720508
+}
+{
+  "question" : 4419499
+}
+{
+  "question" : 37823
+}
+</programlisting>
+		</example>
+		 <para>
+			The following query is equivalent to "SELECT question_id, COUNT(*) FROM answers GROUP BY question_id".
+		</para>
+		 <example>
+			<title>A group by clause using count aggregation.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return {
+  "question" : $question,
+  "count" : count($answer)
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : 5453872,
+  "count" : 1
+}
+{
+  "question" : 6183352,
+  "count" : 2
+}
+{
+  "question" : 4720508,
+  "count" : 1
+}
+{
+  "question" : 4419499,
+  "count" : 2
+}
+{
+  "question" : 37823,
+  "count" : 2
+}
+</programlisting>
+		</example>
+		 <para>
+			The following query is equivalent to "SELECT question_id, AVG(score) FROM answers GROUP BY question_id".
+		</para>
+		 <example>
+			<title>A group by clause using average aggregation.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return {
+  "question" : $question,
+  "average score" : avg($answer.score)
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : 5453872,
+  "average score" : 6
+}
+{
+  "question" : 6183352,
+  "average score" : 0.5
+}
+{
+  "question" : 4720508,
+  "average score" : 34
+}
+{
+  "question" : 4419499,
+  "average score" : 9
+}
+{
+  "question" : 37823,
+  "average score" : 5.5
+}
+</programlisting>
+		</example>
+		 <para>
+			JSONiq's group by is more flexible than SQL and is fully composable.
+		</para>
+		 <example>
+			<title>A group by clause with a nested expression.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+group by $question := $answer.question_id
+return {
+  "question" : $question,
+  "scores" : [ $answer.score ]
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : 5453872,
+  "scores" : [ 6 ]
+}
+{
+  "question" : 6183352,
+  "scores" : [ 0, 1 ]
+}
+{
+  "question" : 4720508,
+  "scores" : [ 34 ]
+}
+{
+  "question" : 4419499,
+  "scores" : [ 17, 1 ]
+}
+{
+  "question" : 37823,
+  "scores" : [ 7, 4 ]
+}
+</programlisting>
+		</example>
+		 <para>
+			Unlike SQL, JSONiq does not need a having clause, because a where clause works perfectly after grouping as well.
+		</para>
+		 <para>
+			The following query is the counterpart of "SELECT question_id, COUNT(*) FROM answers GROUP BY question_id HAVING COUNT(*) &gt; 1"
+		</para>
+		 <example>
+			<title>A group by clause with a post-grouping condition.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+group by $question := $answer.question_id
+where count($answer) gt 1
+return {
+  "question" : $question,
+  "count" : count($answer)
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : 6183352,
+  "count" : 2
+}
+{
+  "question" : 4419499,
+  "count" : 2
+}
+{
+  "question" : 37823,
+  "count" : 2
+}
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Let Clauses</title>
+		 <para>
+			Let bindings can be used to define aliases for any sequence, for convenience.
+		</para>
+		 <para>
+			For each incoming tuple, the expression in the let clause is evaluated to a sequence. A binding is added from this sequence to the let variable in each tuple. A tuple is hence produced for each incoming tuple.
+		</para>
+		 <example>
+			<title>A let clause.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+let $qid := $answer.question_id
+group by $question := $qid
+let $count := count($answer)
+where $count gt 1
+return {
+  "question" : $question,
+  "count" : $count
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : 6183352,
+  "count" : 2
+}
+{
+  "question" : 4419499,
+  "count" : 2
+}
+{
+  "question" : 37823,
+  "count" : 2
+}
+</programlisting>
+		</example>
+		 <para>
+			Note that it is perfectly fine to reuse a variable name and hide a variable binding.
+		</para>
+		 <example>
+			<title>A let clause reusing the same variable name.</title>
+			 
+<programlisting>
+for $answer in collection("answers")
+let $qid := $answer.question_id
+group by $qid
+let $count := count($answer)
+where $count gt 1
+let $count := sum(
+  collection("faqs")
+    [ $$.question_id eq $qid ]!size($$.tags)
+)
+return {
+  "question" : collection("faqs")
+      [$$.question_id eq $qid].title,
+  "count" : $count
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "question" : "Find CouchDB docs missing an arbitrary fiel
+d",
+  "count" : 4
+}
+{
+  "question" : "MySQL and NoSQL: Help me to choose the righ
+t one",
+  "count" : 4
+}
+{
+  "question" : null,
+  "count" : 0
+}
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Count Clauses</title>
+		 <para>
+			For each incoming tuple, a binding from the position of this tuple in the tuple stream to the count variable is added. The new tuple is then forwarded to the next clause.
+		</para>
+		 <example>
+			<title>A count clause.</title>
+			 
+<programlisting>
+for $question in collection("faqs")
+order by size($question.tags)
+count $count
+return {
+  "id" : $count,
+  "faq" : $question.title
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "id" : 1,
+  "faq" : "MySQL and NoSQL: Help me to choose the right one
+"
+}
+{
+  "id" : 2,
+  "faq" : "The Next-gen Databases"
+}
+{
+  "id" : 3,
+  "faq" : "Redis, CouchDB or Cassandra?"
+}
+{
+  "id" : 4,
+  "faq" : "Find CouchDB docs missing an arbitrary field"
+}
+{
+  "id" : 5,
+  "faq" : "Full-text search in NoSQL databases"
+}
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Map Operator</title>
+		 <para>
+			JSONiq provides a shortcut for a for-return construct, automatically binding each item in the left-hand-side sequence to the context item.
+		</para>
+		 <example>
+			<title>A simple map.</title>
+			 
+<programlisting>
+(1 to 10) ! ($$ * 2)
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+</programlisting>
+		</example>
+		 <example>
+			<title>An equivalent query.</title>
+			 
+<programlisting>
+for $i in 1 to 10
+return $i * 2
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Composing FLWOR Expressions</title>
+		 <para>
+			Like all other expressions, FLWOR expressions can be composed. In the following example, a predicate expression is nested in an existential quantifier, nested in the where clause of a FLWOR, nested in a function call, nested in a FLWOR, nested in a function call, nested in an array constructor. The examples looks for users who got an answer not accepted, but for whom there were at least two questions for which they gave an answer with a better score.
+		</para>
+		 <example>
+			<title>Nested FLWORs.</title>
+			 
+<programlisting>
+[
+  distinct-values(
+    for $answer in collection("answers")
+    let $oid := $answer.owner.user_id
+    where count(
+      for $question in collection("faqs")
+      where
+        some $other-answer
+        in collection("answers")
+           [$$.question_id eq
+                $question.question_id
+            and
+            $$.owner.user_id eq $oid]
+        satisfies
+          $other-answer.score gt $answer.score
+       return $question
+    ) ge 2
+    where not $answer.is_accepted
+    return $answer.owner.display_name
+  )
+]
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>[ "JasonSmith" ]
+</programlisting>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Ordered and Unordered Expressions</title>
+		 <para>
+			By default, the order in which a for clause binds its items is important.
+		</para>
+		 <para>
+			This behaviour can be relaxed in order give the optimizer more leeway. An unordered expression relaxes ordering by for clauses within its operand scope:
+		</para>
+		 <example>
+			<title>An unordered expression.</title>
+			 
+<programlisting>
+unordered {
+  for $answer in collection("answers")
+  where $answer.score ge 4
+  count $c
+  where $c le 2
+  return $answer
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "_id" : "511C7C5D9A277C22D13880C3",
+  "question_id" : 37823,
+  "answer_id" : 37841,
+  "creation_date" : "2008-09-01T12:14:38",
+  "last_activity_date" : "2008-09-01T12:14:38",
+  "score" : 7,
+  "is_accepted" : false,
+  "owner" : {
+    "user_id" : 2562,
+    "display_name" : "Ubiguchi",
+    "reputation" : 1871,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/00b87
+a917ec763c0c051dc6b8c06f402?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/2562/ubiguchi"
+
+  }
+}
+{
+  "_id" : "511C7C5D9A277C22D13880C4",
+  "question_id" : 37823,
+  "answer_id" : 37844,
+  "creation_date" : "2008-09-01T12:16:40",
+  "last_activity_date" : "2008-09-01T12:16:40",
+  "score" : 4,
+  "is_accepted" : false,
+  "owner" : {
+    "user_id" : 2974,
+    "display_name" : "Rob Wells",
+    "reputation" : 17543,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/87692
+81d99f8fe9c208fd6a926c383d1?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/2974/rob-wells
+",
+    "accept_rate" : 94
+  }
+}
+</programlisting>
+		</example>
+		 <para>
+			An ordered expression can be used to reactivate ordering behaviour in a subscope.
+		</para>
+		 <example>
+			<title>An ordered expression.</title>
+			 
+<programlisting>
+unordered {
+  for $question in collection("faqs")
+  where exists(
+    ordered {
+      for $answer at $i in collection("answers")
+      where $i eq 5
+      where $answer.question_id
+          eq $question.question_id
+      return $answer
+    }
+  )
+  return $question
+}
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>{
+  "_id" : "511C7C5C9A277C22D138808A",
+  "question_id" : 4720508,
+  "creation_date" : "2011-01-18T04:32:30",
+  "last_activity_date" : "2011-01-19T06:46:34",
+  "score" : 13,
+  "accepted_answer_id" : 4720977,
+  "title" : "Redis, CouchDB or Cassandra?",
+  "tags" : [ "nosql", "couchdb", "cassandra", "redis" ],
+  "view_count" : 5620,
+  "owner" : {
+    "user_id" : 216728,
+    "display_name" : "nornagon",
+    "reputation" : 3114,
+    "user_type" : "registered",
+    "profile_image" : "http://www.gravatar.com/avatar/13f27
+199f9bf9c9f1261dc8a49630a6b?d=identicon&amp;amp;r=PG",
+    "link" : "http://stackoverflow.com/users/216728/nornago
+n",
+    "accept_rate" : 86
+  },
+  "link" : "http://stackoverflow.com/questions/4720508/redi
+s-couchdb-or-cassandra",
+  "is_answered" : true
+}
+</programlisting>
+		</example>
+
+	</section>
+
+</chapter>
+

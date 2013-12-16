@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>7.2. Update syntax: new updating expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-json-updates.html" title="Chapter 7. JSON updates" /><link rel="prev" href="section-json-updates.html" title="Chapter 7. JSON updates" /><link rel="next" href="ch07s02s02.html" title="7.2.2. Inserting expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="section-json-updates.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch07s02s02.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm589968">7.2. Update syntax: new updating expressions</h2></div></div></div><div class="para">
+			The following syntax is introduced for updates.
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm42227600">7.2.1. Deleting expressions</h3></div></div></div><pre class="programlisting">
+            JSONDeleteExpr ::= "delete" "json" PrimaryExpr ( "(" ExprSingle ")" )+ 
+</pre><div class="para">
+				PrimaryExpr followed by all "(" ExprSingle ")" except the last one, is evaluated according to the semantics of dynamic function calls. It must return a single object $o or a single array $a. Otherwise, <code class="code">jerr:JNUP0008</code> is raised. After this evaluation, two cases can appear for interpreting the last "(" ExprSingle ")":
+			</div><div class="para">
+				(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						<code class="code">delete json $o($s)</code>
+					</div><div class="para">
+						$s is atomized and cast to xs:string (<code class="code">jerr:JNUP0007</code> is raised upon failure).
+					</div><div class="para">
+						Creates the update primitive <code class="code">jupd:delete-from-object($o, $s)</code>. An error <code class="code">JNUP:0016</code> is raised if $o does not contain a pair with the key $s.
+					</div></li><li class="listitem"><div class="para">
+						<code class="code">delete json $a($i)</code>
+					</div><div class="para">
+						$i is atomized and cast to xs:integer (<code class="code">jerr:JNUP0007</code> is raised upon failure).
+					</div><div class="para">
+						Creates the update primitive <code class="code">jupd:delete-from-array($a, $i)</code>. An error <code class="code">JNUP:0016</code> is raised if $i is out of the range of the array $a.
+					</div></li></ul></div><div class="example"><h6>Example 7.1. Deleting from an object and from an array</h6><div class="example-contents"><pre class="programlisting">
+             delete json $o("foo")
+             delete json $a(2)
+</pre></div></div><br class="example-break" /><div class="para">
+				Note:
+			</div><div class="para">
+				If <code class="code">$o($s)</code> or <code class="code">$a($i)</code> resolves to an empty sequence, the produced update primitive will have no effect.
+			</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="section-json-updates.html"><strong>Prev</strong>Chapter 7. JSON updates</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch07s02s02.html"><strong>Next</strong>7.2.2. Inserting expressions</a></li></ul></body></html>

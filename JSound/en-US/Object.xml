@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Object">
+  <title>Object Types</title>
+  <section>
+    <title>Scope</title>
+    <para>Object Types match objects.</para>
+    <para>There is one builtin Object Type: "object" which is the direct base type of all other Object Types.</para>
+    <para>An Object Type can be defined by restricting the value space of "object" by specifying
+    a layout (type of the pairs, optional or not, ...).
+    A restriction can also be made with the general Types facets $enumeration and $constraints.</para>
+  </section>
+  <section>
+    <title>Examples</title>
+    <para>Against the following Object Type:</para>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+     "$kind" : "object",
+     "$content" : {
+       "foo" : {
+         "$type" : "string",
+       }
+     },
+     "$open" : false,
+     "$name" : "only-foo"
+    },
+    {
+      "$kind" : "object",
+      "$content" : {
+        "foo" : {
+          "$type" : "string",
+        },
+        "bar" : {
+         "$type" : "boolean",
+         "$optional" : true
+       }
+     }
+    "$name" : "foo-bar-and-arrays"
+    }
+  ]
+}
+    </programlisting>
+    <para>The objects { "foo" : "bar" } and { "foo" : "foo" } are valid against the Type named "Q{http://www.example.com/my-schema}only-foo"
+    because the foo pairs are strings.</para>
+    <para>The object {} is not because the foo pair is missing.</para>
+    <para>The object { "foo" : "bar", "bar" : "foo" } is not because no other pair than "foo" is allowed (closed Object Type).</para>
+    <para>Against the Type named "Q{http://www.example.com/my-schema}only-foo":</para>
+    <para>The objects { "foo" : "bar", "foobar" : [ "foo" ] } and { "foo" : "bar", "bar" : true } are valid because the foo pairs are strings, bar is optional and the Object Type is $open.</para>
+    <para>The objects {} and { "bar" : "foo" } and { "foo" : "bar", "bar" : "foo" } are not because the foo pair is missing or the bar pair is not a boolean.</para>
+  </section>
+  <section>
+    <title>Builtin Object Type</title>
+    <para>There is one topmost, builtin Object Type named <emphasis>object</emphasis>, against which all objects are valid.</para> 
+    <para>This topmost type can be seen as having its $content Facet as the empty object, and its $open Facet as true.</para>
+  </section>
+  <section>
+    <title>Object Facets</title>
+    <para>
+      Restriction is done using the general Facets, or the following object Facets.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>$content (object): the layout definition. Each pair in $content is called a field descriptor.
+              The value in each field descriptor has the following properties.</para>
+        <itemizedlist>
+          <listitem>
+            <para>$type (string or object) - required (<code>jsd:JDST0001</code> if absent): the name of a Type (Qualified Name in a string) or the type itself (an object) that the value must match.
+            <code>jsd:JDST0002</code> is raised if if is a Qualified Name that cannot be resolved.</para>
+          </listitem>
+          <listitem>
+            <para>$optional (boolean) - optional: indicates that the pair is optional. Default is false.</para>
+          </listitem>
+          <listitem>
+            <para>$default (item) - optional: indicates a default value to be taken the value is missing in the Serialized Instance. $optional is then ignored.</para>
+            <para>However, if this value is an object with a pair named $computed (which must be associated with a string), then the JSONiq query in $content.$default.$computed
+            is executed upon Annotation, with the context item bound to the Candidate Instance being matched against the containing Object Type.
+            It must result in one item, which is the default value for the Pair Descriptor.</para>
+          </listitem>
+        </itemizedlist>
+        <para>An object $o is valid against the $content facet if the following conditions are met:</para>
+        <itemizedlist>
+          <listitem>
+            <para>For each pair $k : $v in the field descriptor such that $v."$optional" is false and $v."$default" is absent, there must be a pair named $k in $o.</para>
+          </listitem>
+          <listitem>
+            <para>For each pair $k : $v in the field descriptor, if $o.$k exists, then $o.$k must be valid against the Type $v."$type".</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>$open (boolean) : specifies whether pairs not specified in $content are to be accepted. The default is the same as the $baseType (true if $baseType is object).</para>
+        <para>All objects are valid against the $open facet if it is set to true.</para>
+        <para>If it is set to false, an object $o is valid against the $open facet if all its keys appear in $content, or in the $content of a super type.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The $open Facet behaves like most Facets, i.e., if that of the Base Type is false,
+     it cannot be set back to true, otherwise <code>jsd:JDST0007</code> is raised.</para>
+    <para>The $content Facet is Accumulative, in that the new field descriptors are actually merged with the Base Type's $content Facet.</para>
+    <para>If a field descriptor in the $content Facet is overriden, it must be more restrictive, i.e., its $type must be a subtype
+      of the $type associated to this key by the closest super type which does so. Also, $optional, if false, cannot be set back to true.
+      If any of these two constraints is not met, <code>jsd:JDST0007</code> is raised.</para>
+    <para>Finally, there is an additional constraint that spans across the two object Facets:
+      Field descriptors with new keys may not be added to the $content Facet if the $baseType's $open Facet is false. Otherwise, <code>jsd:JDST0008</code> is raised.</para>
+  </section>
+</chapter>

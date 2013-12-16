@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-json-serialization" lang="en-US">
+	<title>JSON Serialization</title>
+	 <para>
+		JSONiq defines two new output methods: "JSON" and "JSON-XML-hybrid". The JSON output method outputs guaranteed JSON (application/json) with the small exception that it may also output a sequence of objects and arrays (as seems to be standard practice, for example, in REST APIs). The JSON-XML-hybrid method allows serializing mixed sequences of JSON items and XML nodes for convenience. The JSON-XML-hybrid method is the default output method.
+	</para>
+	 <section>
+		<title>New serialization parameters</title>
+		 <para>
+			One new serialization parameter is introduced:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<code>jsoniq-multiple-top-level-items</code> (one of: "yes", "no"):
+				</para>
+				 <para>
+					Specifies if multiple items are allowed. Default is "yes".
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+
+	</section>
+	
+	 <section>
+		<title>Changes to sequence normalization</title>
+		 <para>
+			The XQuery and XSLT serialization specification performs sequence normalization before serializing an XDM instance. The result is a sequence of exactly one document node.
+		</para>
+		 <para>
+			JSONiq extends sequence normalization as follows:
+		</para>
+		 <para>
+			The final step of building a document node with all items as its children is only done for adjacent XML nodes. JSON objects and arrays in the input sequence are left untouched.
+		</para>
+		 <para>
+			This means that the final result of sequence normalization will be a sequence of objects, arrays and document nodes.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>The JSON output method</title>
+		 <section>
+			<title>Serialization of a sequence of items</title>
+			 <para>
+				If the normalized sequence does not consist exclusively of JSON arrays and objects, an error <code>jerr:JNSE0014</code> is raised.
+			</para>
+			 <para>
+				If jsoniq-multiple-top-level-items is set to "no" and the sequence to be serialized does not consist of a single object or array, an error <code>jerr:JNSE0012</code> is raised.
+			</para>
+			 <para>
+				If jsoniq-multiple-top-level-items is set to "yes", then the JSON items in the sequence are serialized one by one as specified below, in the same order and without any separating character (except whitespaces, depending on the indent parameter).
+			</para>
+
+		</section>
+		
+		 <section>
+			<title>Serialization of individual JSON values</title>
+			 <para>
+				This section specifies how JSON items as well as JSON atomic values are serialized.
+			</para>
+			 <itemizedlist>
+				<listitem>
+					<para>
+						Object
+					</para>
+					 <para>
+						An object is serialized as an opening curly brace {, followed by the comma-separated serializations of all its pairs, followed by a closing curly brace.
+					</para>
+					 <para>
+						A pair is serialized as the serialization of its name, followed by a colon, followed by the serialization of its value.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						Array
+					</para>
+					 <para>
+						An array is serialized as an opening square brace, followed by the comma-separated serializations of all its member values, followed by a closing square brace.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<code>xs:string</code>
+					</para>
+					 <para>
+						An atomic value of type xs:string is serialized between double quotes and with the escaping specified in http://www.ietf.org/rfc/rfc4627.txt.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<code>xs:double</code>, <code>xs:float</code> (except Nan, positive/negative infinity), <code>xs:decimal</code> or subtype
+					</para>
+					 <para>
+						An atomic value of a numeric type (<code>xs:double</code>, <code>xs:float</code>, <code>xs:decimal</code> or subtype) is serialized as its lexical representation, i.e., is cast to <code>xs:string</code>, not surrounded by quotes. This corresponds to the JSON number notation, but with a few exceptions which must be fixed before serializing:
+					</para>
+					 <itemizedlist>
+						<listitem>
+							<para>
+								The leading + sign must be removed if present.
+							</para>
+						</listitem>
+						 <listitem>
+							<para>
+								A zero must be added in front of and/or after the dot if no digit is present in front of and/or after the dot.
+							</para>
+						</listitem>
+						 <listitem>
+							<para>
+								Unnecessary zeros in front of the number (except if the only digit in front of the dot is 0) must be removed.
+							</para>
+						</listitem>
+						 <listitem>
+							<para>
+								Values of type xs:decimal that have a lexical representation without dot must be suffixed with ".0" (so that it parses back as a decimal).
+							</para>
+						</listitem>
+						 <listitem>
+							<para>
+								Values of type xs:double that have a lexical representation without E must be suffixed with "E0" (so that it parses back as a double).
+							</para>
+						</listitem>
+
+					</itemizedlist>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<code>xs:boolean</code> or subtype
+					</para>
+					 <para>
+						An atomic value matching the type <code>xs:boolean</code> is serialized as <code>true</code> or <code>false</code>, not surrounded by quotes.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<code>js:null</code> or subtype
+					</para>
+					 <para>
+						The atomic value null matching the type <code>js:null</code> is serialized as <code>null</code>, not surrounded by quotes.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						All other atomic values are output as if they were of value <code>xs:string</code> (i.e., as a JSON string).
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						An error jerr:JNSE0014 is raised if an XML node or a function is encountered.
+					</para>
+
+				</listitem>
+
+			</itemizedlist>
+
+		</section>
+		
+		 <section>
+			<title>Influence of other serialization parameters upon the JSON output method</title>
+			 <section>
+				<title>JSON output method: the indent parameter</title>
+				 <para>
+					Like for the XML output method, the indent parameter controls if the serializer is allowed to add extra whitespaces to make the output easier to read. If the indent parameter has the value "yes", the serializer may output additional whitespaces characters outside of JSON literals. If the indent parameter has the value "no", the serializer may not output any whitespaces outside of JSON literals.
+				</para>
+				 <para>
+					If the indent parameter is set to yes, the algorithm for adding whitespaces is allowed to add them at the following places, and only at these places:
+				</para>
+				 <itemizedlist>
+					<listitem>
+						<para>
+							Between an object-opening curly brace and the first key.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							On either side of a key-value-separating colon.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							Before and after pair-separating commas in an object.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							Between the value of the last pair of an object and the object-closing curly brace.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							Between an array-opening square bracket and the first member.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							Before and after value-separating commas in an array.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							Between the last member of an array and the array-closing square bracket.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							Between two objects or arrays if multiple JSON items are serialized.
+						</para>
+
+					</listitem>
+
+				</itemizedlist>
+				 <para>
+					In particular, no whitespaces may be added inside JSON literals (strings, numbers, booleans, nulls).
+				</para>
+				 <para>
+					If the indent parameter is set to no, no whitespace may be output to any of the places mentioned above.
+				</para>
+
+			</section>
+			
+			 <section>
+				<title>JSON output method: the byte-order-mark parameter</title>
+				 <para>
+					The byte-order-mark parameter is applicable to the JSON output method and has the same semantics as for the XML output method.
+				</para>
+
+			</section>
+			
+			 <section>
+				<title>JSON output method: the use-character-maps parameter</title>
+				 <para>
+					The use-character-maps parameter is applicable to the JSON output method and has the same semantics as for the XML output method.
+				</para>
+				 <para>
+					Like for the XML output method, the result of serialization using the JSON output method is not guaranteed to be well-formed JSON if character maps have been specified.
+				</para>
+
+			</section>
+			
+
+		</section>
+		
+
+	</section>
+	
+	 <section>
+		<title>The JSON-XML-hybrid output method</title>
+		 <para>
+			This method serializes a sequence of items to a stream of objects, arrays, XML nodes and text as follows:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					An object or array is serialized according to the JSON output method (the value of jsoniq-multiple-top-level-items is irrelevant), with the exception that no error is raised if an XML node is found as a value in an object or a member of an array. Instead, the XML node is serialized to a JSON string as described below for document nodes.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					A document node is serialized according to the xml output method and the corresponding serialization parameters (except that the parameters setting declaration and doctypes are ignored, and no doctype or XML declaration is output).
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					The item serialization outputs are not separated by any spaces in the final output (except if the indent parameter is set, in which case the serializer is free to insert whitespaces).
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+
+	</section>
+	
+	 <section>
+		<title>Changes to ther other output methods</title>
+		 <para>
+			The other outputs methods (XML, HTML, XHTML, Text) are changed as follows: if the normalized sequence does not consist of exactly one document node, then <code>jerr:JNSE0022</code> is raised.
+		</para>
+
+	</section>
+	
+
+</chapter>
+

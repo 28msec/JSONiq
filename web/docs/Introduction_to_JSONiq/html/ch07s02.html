@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>7.2. Array Unboxing</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-selectors.html" title="Chapter 7. JSON Navigation" /><link rel="prev" href="chapter-selectors.html" title="Chapter 7. JSON Navigation" /><link rel="next" href="section-predicateExpressions.html" title="7.3. Sequence Filtering" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-selectors.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="section-predicateExpressions.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm3101328">7.2. Array Unboxing</h2></div></div></div><div class="para">
+			The items in an array (which is an item) can be extracted as a sequence of items with the [] postfix operator.
+		</div><div class="para">
+			The argument must be (a singleton sequence of) one array or the empty sequence (in which case the empty sequence is returned as well.
+		</div><div class="example"><h6>Example 7.8. Array unboxing.</h6><div class="example-contents"><pre class="programlisting">
+[
+  "What NoSQL technology should I use?",
+  "What is the bottleneck in MapReduce?"
+][],
+
+for $a in collection("faqs").tags
+return $a[],
+
+()[]
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">"What NoSQL technology should I use?"
+"What is the bottleneck in MapReduce?"
+"php"
+"mysql"
+"nosql"
+"cassandra"
+"sql"
+"database"
+"nosql"
+"non-relational-database"
+"nosql"
+"couchdb"
+"cassandra"
+"redis"
+"database"
+"full-text-search"
+"nosql"
+"couchdb"
+"riak"
+"database"
+"view"
+"nosql"
+"couchdb"
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-selectors.html"><strong>Prev</strong>Chapter 7. JSON Navigation</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-predicateExpressions.html"><strong>Next</strong>7.3. Sequence Filtering</a></li></ul></body></html>

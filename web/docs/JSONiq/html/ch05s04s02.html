@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.4.2. Array member selector</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-selectors.html" title="5.4. Selectors" /><link rel="prev" href="chapter-selectors.html" title="5.4. Selectors" /><link rel="next" href="ch05s04s03.html" title="5.4.3. Sequence predicates" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-selectors.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s04s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp9980848">5.4.2. Array member selector</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ArrayLookup.png" alt="ArrayLookup" /></div></div><h6>Figure 5.29. ArrayLookup</h6></div><br class="figure-break" /><div class="para">
+			Array lookup uses double square brackets.
+		</div><div class="example"><h6>Example 5.73. Array lookup</h6><div class="example-contents"><pre class="programlisting">
+[ "foo", "bar" ] [[2]]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp48207664">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			Since JSONiq expressions are composable, you can also use any expression for the left-hand side. You might need parentheses depending on the precedence.
+		</div><div class="example"><h6>Example 5.74. Array lookup after an object lookup</h6><div class="example-contents"><pre class="programlisting">
+{ field : [ "one",  { "foo" : "bar" } ] }.field[[2]].foo
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8495104">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="para">
+			The array lookup operator does an implicit mapping on the left-hand-side, i.e., it applies the lookup in turn on each item. Lookup on an array returns the item at that position in the array, or the empty sequence if there is none (position larger than size or smaller than 1). Lookup on any item which is not an array (objects and atomics) results in the empty sequence.
+		</div><div class="example"><h6>Example 5.75. Array lookup with an iteration on several arrays</h6><div class="example-contents"><pre class="programlisting">
+([ 1, 2, 3 ], [ 4, 5, 6 ])[[2]]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp21362096">Result (run with Zorba):</h5>
+					2 5
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.76. Array lookup with an iteration on a collection</h6><div class="example-contents"><pre class="programlisting">
+collection("captains").series[[1]]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10791008">Result (run with Zorba):</h5>
+					The original series The next generation The next generation The next generation Entreprise Voyager
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.77. Array lookup on a mixed sequence</h6><div class="example-contents"><pre class="programlisting">
+([ 1, 2, 3 ], [ 4, 5, 6 ], { "foo" : "bar" }, true)[[3]]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10087792">Result (run with Zorba):</h5>
+					3 6
+				</div></div></div><br class="example-break" /><div class="para">
+			The expression inside the double-square brackets may be any expression. The result of evaluating this expression is cast to an integer. An error is raised if the cast fails.
+		</div><div class="example"><h6>Example 5.78. Array lookup with a right-hand-side expression</h6><div class="example-contents"><pre class="programlisting">
+[ "foo", "bar" ] [[ 1 + 1 ]]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp3719920">Result (run with Zorba):</h5>
+					bar
+				</div></div></div><br class="example-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ArrayUnboxing.png" alt="ArrayUnboxing" /></div></div><h6>Figure 5.30. ArrayUnboxing</h6></div><br class="figure-break" /><div class="para">
+			You can also extract all items from an array (i.e., as a sequence) with the [] syntax. The [] operator also implicitly iterates on the left-hand-side, returning the empty sequence for non-arrays.
+		</div><div class="example"><h6>Example 5.79. Extracting all items from an array</h6><div class="example-contents"><pre class="programlisting">
+[ "foo", "bar" ][]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp8880672">Result (run with Zorba):</h5>
+					foo bar
+				</div></div></div><br class="example-break" /><div class="example"><h6>Example 5.80. Extracting all items from arrays in a mixed sequence</h6><div class="example-contents"><pre class="programlisting">
+([ "foo", "bar" ], { "foo" : "bar" }, true, [ 1, 2, 3 ] )[]
+</pre><div class="formalpara"><h5 class="formalpara" id="idp12441264">Result (run with Zorba):</h5>
+					foo bar 1 2 3
+				</div></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-selectors.html"><strong>Prev</strong>5.4. Selectors</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s04s03.html"><strong>Next</strong>5.4.3. Sequence predicates</a></li></ul></body></html>

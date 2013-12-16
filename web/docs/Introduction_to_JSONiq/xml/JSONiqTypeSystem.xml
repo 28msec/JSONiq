@@ -1,0 +1,403 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chapter-TypeSystem" lang="en-US">
+	<title>The JSONiq Type System</title>
+	 <para>
+		JSONiq manipulates semi-structured data: in general, JSONiq allows you, but does not require you to specify types. So you have as much or as little type verification as you wish.
+	</para>
+	 <para>
+		Like in Java or C++, it is possible to create a variable with a given static type:
+	</para>
+	 <example id="example-Integer">
+		<title>Specifying a type.</title>
+		 
+<programlisting>
+let $x as integer := 16
+return $x * $x
+</programlisting>
+		 <para>
+			Results:
+		</para>
+		
+<programlisting>256
+</programlisting>
+	</example>
+	 <para>
+		Like in JavaScript, it is possible to create a variable without explicitly giving any static type. JSONiq is still strongly typed, so that you will be told if there is a type inconsistency or mismatch in your programs.
+	</para>
+	 <example>
+		<title>Not specifying a type.</title>
+		 
+<programlisting>
+let $x := 16
+return $x * $x
+</programlisting>
+		 <para>
+			Results:
+		</para>
+		
+<programlisting>256
+</programlisting>
+	</example>
+	 <para>
+		Variables are explained in <xref linkend="section-Variables" /> in <xref linkend="chapter-FLWOR" /> more in details.
+	</para>
+	 <para>
+		JSONiq supports types at the sequence level. They are called sequence types, and the syntax for designing types is called the sequence type syntax. The type "integer" that was shown in <xref linkend="example-Integer" /> matches singleton sequences of one atomic item of type integer.
+	</para>
+	 <para>
+		We say that a sequence matches a sequence type (or that a sequence type matches a sequence) if the sequence is in the value space of the sequence type. Since an item is a particular (singleton) sequence, we also can say that an item matches an item type or conversely.
+	</para>
+	 <para>
+		Whenever you do not specify the type of a variable or the type signature of a function, the most general type for any sequence of items, <emphasis>item*</emphasis>, is assumed. But it is not forbidden for the processor to be smart and warn you if it can detect that a type issue can arise at runtime.
+	</para>
+	 <para>
+		There are many JSONiq expressions (cast, instance of, ...) which perform type operations and that make use of the sequence type syntax. In the remainder of this section, we will introduce sequence types using an "instance of" expression that returns true or false depending on whether or not the type on the right side is matched by the value on the left side -- like in Java.
+	</para>
+	 <example>
+		<title>The instance of operator.</title>
+		 
+<programlisting>
+16 instance of integer
+</programlisting>
+		 <para>
+			Results:
+		</para>
+		
+<programlisting>true
+</programlisting>
+	</example>
+	 <section>
+		<title>Item Types</title>
+		 <section>
+			<title>Atomic Types</title>
+			 <para>
+				Atomic types are organized in a tree hierarchy.
+			</para>
+			 <para>
+				JSONiq defines the following build-in types that have a direct relation with JSON:
+			</para>
+			 <itemizedlist>
+				<listitem>
+					<para>
+						<emphasis>string</emphasis>: the value space is all strings made of Unicode characters.
+					</para>
+					 <para>
+						All string literals build an atomic that matches <emphasis>string</emphasis>.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<emphasis>integer</emphasis>: the value space is that of all mathematical integral numbers (N), with an infinite range. This is a subtype of <emphasis>decimal</emphasis>, so that all integers also match the item type <emphasis>decimal</emphasis>.
+					</para>
+					 <para>
+						All integer literals build an atomic that matches <emphasis>integer</emphasis>.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<emphasis>decimal</emphasis>: the value space is that of all mathematical decimal numbers (D), with an infinite range.
+					</para>
+					 <para>
+						All decimal literals build an atomic that matches <emphasis>decimal</emphasis>.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<emphasis>double</emphasis>: the value space is that of all IEEE double-precision 64-bit floating point numbers.
+					</para>
+					 <para>
+						All double literals build an atomic that matches <emphasis>double</emphasis>.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<emphasis>boolean</emphasis>: the value space contains the booleans true and false.
+					</para>
+					 <para>
+						All boolean literals build an atomic that matches <emphasis>boolean</emphasis>.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<emphasis>null</emphasis>: the value space is a singleton and only contains null.
+					</para>
+					 <para>
+						All null literals build an atomic that matches <emphasis>null</emphasis>.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						<emphasis>atomic</emphasis>: all atomic types.
+					</para>
+					 <para>
+						All literals build an atomic that matches <emphasis>atomic</emphasis>.
+					</para>
+
+				</listitem>
+
+			</itemizedlist>
+			 <example>
+				<title>Atomic types</title>
+				 
+<programlisting>
+16 instance of integer,
+16 instance of decimal,
+16.6 instance of decimal,
+16.6e10 instance of double,
+"foo" instance of string,
+true instance of boolean,
+null instance of null,
+"foo" instance of atomic
+</programlisting>
+				 <para>
+					Results:
+				</para>
+				
+<programlisting>true
+true
+true
+true
+true
+true
+true
+true
+</programlisting>
+			</example>
+			 <para>
+				JSONiq also supports further atomic types, which were borrowed from XML Schema 1.1.
+			</para>
+			 <para>
+				These datatypes are already used as a set of atomic datatypes by the other two semi-structured data formats of the Web: XML and RDF, as well as by the corresponding query languages: XQuery and SPARQL, so it is natural for a complete JSON data model to reuse them.
+			</para>
+			 <itemizedlist>
+				<listitem>
+					<para>
+						Further number types: long, int, short, byte, float.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						Date or time types: date, dateTime, dateTimeStamp, gDay, gMonth, gMonthDay, gYear, gYearMonth, time.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						Duration types: duration, dayTimeDuration, yearMonthDuration.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						Binary types: base64Binary, hexBinary.
+					</para>
+
+				</listitem>
+				 <listitem>
+					<para>
+						An URI type: anyURI.
+					</para>
+
+				</listitem>
+
+			</itemizedlist>
+			 <para>
+				Atomic items that have these builtin atomic types can only be built with a constructor -- again similar to JavaScript.
+			</para>
+			 <example>
+				<title>Further builtin atomic types.</title>
+				 
+<programlisting>
+date("2013-06-18") instance of date,
+dateTime("2013-06-21T05:00:00Z") instance of dateTime,
+time("05:00:00") instance of time,
+long("1234567890123") instance of long
+</programlisting>
+				 <para>
+					Results:
+				</para>
+				
+<programlisting>true
+true
+true
+true
+</programlisting>
+			</example>
+
+		</section>
+		
+		 <section>
+			<title>JSON Item Types : Object Types and Array Types</title>
+			 <para>
+				All objects match the item type <emphasis>object</emphasis> as well as <emphasis>json-item</emphasis>.
+			</para>
+			 <para>
+				All arrays match the item type <emphasis>array</emphasis> as well as <emphasis>json-item</emphasis>.
+			</para>
+			 <para>
+				Atomics do not match <emphasis>json-item</emphasis>.
+			</para>
+			 <example>
+				<title>Further builtin atomic types.</title>
+				 
+<programlisting>
+{ "foo" : "bar" } instance of object,
+{ "foo" : "bar" } instance of json-item,
+{} instance of object,
+[ 1, 2, 3, 4 ] instance of array,
+[ 1, 2, 3, 4 ] instance of json-item
+</programlisting>
+				 <para>
+					Results:
+				</para>
+				
+<programlisting>true
+true
+true
+true
+true
+</programlisting>
+			</example>
+
+		</section>
+		
+		 <section>
+			<title>The Most General Item Type.</title>
+			 <para>
+				All items match the item type <emphasis>item</emphasis>.
+			</para>
+			 <example>
+				<title>The most general item type: item.</title>
+				 
+<programlisting>
+{ "foo" : "bar" } instance of item,
+[ 1, 2, 3, 4 ] instance of item,
+"foo" instance of item,
+42 instance of item,
+false instance of item,
+null instance of item
+</programlisting>
+				 <para>
+					Results:
+				</para>
+				
+<programlisting>true
+true
+true
+true
+true
+true
+</programlisting>
+			</example>
+
+		</section>
+		
+
+	</section>
+	
+	 <section>
+		<title>Sequence Types</title>
+		 <para>
+			All sequences match the sequence type <emphasis>item*</emphasis>.
+		</para>
+		 <example>
+			<title>The most general sequence type: item*.</title>
+			 
+<programlisting>
+{ "foo" : "bar" } instance of item*,
+() instance of item*,
+([ 1, 2, 3 ], 2, { "foo" : "bar" }, 4)
+    instance of item*
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>true
+true
+true
+</programlisting>
+		</example>
+		 <para>
+			But sequence types can be much more precise than that. In general, a sequence type is made of an item type, as presented above, followed by an occurrence indicator among the following:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					* stands for a sequence of any length (zero or more)
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					+ stands for a non-empty sequence (one or more)
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					? stands for an empty or a singleton sequence (zero or one)
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					The absence of indicator stands for a singleton sequence (one).
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <example>
+			<title>Further sequence types.</title>
+			 
+<programlisting>
+( { "foo" : "bar" } , {} ) instance of object*,
+() instance of object*,
+( [ 1, 2, 3 ] , {} ) instance of json-item+,
+[ 1, 2, 3 ] instance of array?,
+() instance of array?,
+"foo" instance of string
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>true
+true
+true
+true
+true
+true
+</programlisting>
+		</example>
+		 <para>
+			There is also a special type that matches only empty sequences, denoted () as well:
+		</para>
+		 <example>
+			<title>Empty sequence type: ()</title>
+			 
+<programlisting>
+() instance of ()
+</programlisting>
+			 <para>
+				Results:
+			</para>
+			
+<programlisting>true
+</programlisting>
+		</example>
+
+	</section>
+
+</chapter>
+

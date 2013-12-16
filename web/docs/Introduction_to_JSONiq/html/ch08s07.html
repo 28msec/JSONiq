@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.7. Logic</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-basicOperations.html" title="Chapter 8. Basic Operations" /><link rel="prev" href="ch08s06.html" title="8.6. The Empty Sequence in Range, Arithmetics and Comparison Operations" /><link rel="next" href="ch08s07s02.html" title="8.7.2. First-Order Logic (Quantified Variables)" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s06.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch08s07s02.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm33992704">8.7. Logic</h2></div></div></div><div class="para">
+			JSONiq logics support is based on two-valued logics: there is just true and false and nothing else.
+		</div><div class="para">
+			Non-boolean operands get automatically converted to either true or false, or an error is raised. The boolean() function performs a manual conversion. The rules for conversion were designed in such a way that it feels "natural". Here they are:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					An empty sequence is converted to false.
+				</div></li><li class="listitem"><div class="para">
+					A singleton sequence of one null is converted to false.
+				</div></li><li class="listitem"><div class="para">
+					A singleton sequence of one string is converted to true except the empty string which is converted to false.
+				</div></li><li class="listitem"><div class="para">
+					A singleton sequence of one number is converted to true except zero or NaN which are converted to false.
+				</div></li><li class="listitem"><div class="para">
+					Operand singleton sequences of any other item cannot be converted and an error is raised.
+				</div></li><li class="listitem"><div class="para">
+					Operand sequences of more than one item cannot be converted and an error is raised.
+				</div></li></ul></div><div class="example"><h6>Example 8.12. Conversion to booleans</h6><div class="example-contents"><pre class="programlisting">
+{
+  "empty-sequence" : boolean(()),
+  "null" : boolean(null),
+  "non-empty-string" : boolean("foo"),
+  "empty-string" : boolean(""),
+  "zero" : boolean(0),
+  "not-zero" : boolean(1e42)
+},
+null and "foo"
+</pre><pre class="programlisting">Result:
+ {
+   "empty-sequence" : false,
+   "null" : false,
+   "non-empty-string" : true,
+   "empty-string" : false,
+   "zero" : false,
+   "not-zero" : true
+ }
+ false
+</pre></div></div><br class="example-break" /><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm33981968">8.7.1. Propositional Logic</h3></div></div></div><div class="para">
+				JSONiq supports the most famous three boolean operations: conjunction, disjunction, and negation. Negation has the highest precedence, then conjunction, then disjunction. Comparisons have a higher precedence than all logical operations. Parentheses can override.
+			</div><div class="example"><h6>Example 8.13. Logics with booleans</h6><div class="example-contents"><pre class="programlisting">
+  true and ( true or not true ),
+  1 + 1 eq 2 or not 1 + 1 eq 3
+</pre><pre class="programlisting">Result:
+ true
+ true
+</pre></div></div><br class="example-break" /><div class="para">
+				A sequence with more than one item, or singleton objects and arrays cannot be converted to a boolean. An error is raised if it is attempted.
+			</div><div class="para">
+				Unlike in C++ or Java, you cannot rely on the order of evaluation of the operands of a boolean operation. The following query may return true or may return an error.
+			</div><div class="example"><h6>Example 8.14. Non-determinism in presence of errors.</h6><div class="example-contents"><pre class="programlisting">
+  true or (1 div 0)
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s06.html"><strong>Prev</strong>8.6. The Empty Sequence in Range, Arithmetics and...</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch08s07s02.html"><strong>Next</strong>8.7.2. First-Order Logic (Quantified Variables)</a></li></ul></body></html>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<bookinfo id="book-Introduction_to_JSONiq-Introduction_to_JSONiq">
+	<title>JSONiq</title>
+	<subtitle>The SQL of NoSQL</subtitle>
+	<productname>JSONiq</productname>
+	<productnumber>0.1</productnumber>
+	<edition>0</edition>
+	<pubsnumber>0</pubsnumber>
+	<abstract>
+		<para>
+		  JSONiq is a query and processing language specifically designed for the popular JSON data model.
+The main ideas behind JSONiq are based on lessons learned in more than 30 years of relational query systems
+and more than 15 years of experience with designing and implementing query languages for semi-structured data.
+As a result, JSONiq is an expressive and highly optimizable language to query and update any kind of JSONiq store or resource.
+It enables developers to leverage the same productive high-level language across a variety of NoSQL products.
+		  
+		  This book gives a complete introduction to the JSONiq language. It does so by giving examples for all
+types of expressions and functions. Those examples can be immediately used because they work standalone, which
+allows the interested reader to start diving into the language.		</para>
+	</abstract>
+	<xi:include href="Author_Group.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</bookinfo>
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 3. JSONiq Data Model</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="section-introduction.html" title="Chapter 2. Introduction" /><link rel="next" href="ch03s02.html" title="3.2. JSON Items" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="section-introduction.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch03s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="section-jsoniq-data-model" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 3. JSONiq Data Model</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="section-jsoniq-data-model.html#idm47025168">3.1. Simple Datatypes</a></span></dt><dt><span class="section"><a href="ch03s02.html">3.2. JSON Items</a></span></dt><dt><span class="section"><a href="ch03s03.html">3.3. Objects</a></span></dt><dt><span class="section"><a href="ch03s04.html">3.4. Arrays</a></span></dt><dt><span class="section"><a href="ch03s05.html">3.5. ItemTypes for JSONiq Items</a></span></dt></dl></div><div class="para">
+		JSONiq is based on the XQuery Data Model, adding support for JSON nulls, objects and arrays. <sup>[<a id="idp5164176" href="#ftn.idp5164176" class="footnote">1</a>]</sup>
+	</div><div class="para">
+		To support nulls, JSONiq adds the following atomic datatype:
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				<span class="emphasis"><em>js:null</em></span>, which represents a JSON null.
+			</div></li></ul></div><div class="para">
+		To support JSON objects and arrays, JSONiq adds the following new items:
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				<span class="emphasis"><em>Object</em></span>, which represents a JSON object. An Object contains a set of string/item pairs.
+			</div></li><li class="listitem"><div class="para">
+				<span class="emphasis"><em>Array</em></span>, which represent a JSON array. An Array contains a sequence of items.
+			</div></li></ul></div><div class="para">
+		As well as the generic term (associated with an item type):
+	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+				<span class="emphasis"><em>JSON Item</em></span>, which can be an Object or an Array.
+			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm47025168">3.1. Simple Datatypes</h2></div></div></div><div class="para">
+			JSON's simple values can have any of the following datatypes, which are supported as primitives in JSONiq.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					string
+				</div></li><li class="listitem"><div class="para">
+					number
+				</div></li><li class="listitem"><div class="para">
+					boolean (true, false)
+				</div></li><li class="listitem"><div class="para">
+					null
+				</div></li></ul></div><div class="para">
+			JSONiq represents a JSON string (a sequence of Unicode characters) as an xs:string. However, JSON supports strings (after resolving escaped characters) with characters of arbitrary unicode codepoints, whereas XML 1.0 and XML 1.1 only support a subset of these. It is implementation-defined if unicode characters outside of XML 1.0 or XML 1.1 are supported. Implementations which support XML 1.1 (which only excludes the null character) are encouraged to add support for the null character to provide full-fledged JSON support.
+		</div><div class="para">
+			JSONiq represents the JSON simple values 'true' and 'false' as <code class="code">xs:boolean</code> values.
+		</div><div class="para">
+			JSONiq adds one new data type: <code class="code">js:null</code>, derived from <code class="code">xs:anyAtomicType</code>. <code class="code">js:null</code> has a singleton value space containing the value <span class="emphasis"><em>null</em></span> <sup>[<a id="idp3046928" href="#ftn.idp3046928" class="footnote">2</a>]</sup>. The lexical representation of an instance of <code class="code">js:null</code> is the string "<code class="code">null</code>".
+		</div><div class="para">
+			JSON defines number as follows:
+		</div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+				A number can be represented as integer, real, or floating point. JSON does not support octal or hex because it is minimal. It does not have values for NaN or Infinity because it does not want to be tied to any particular internal representation.
+			</div></blockquote></div><div class="para">
+			JSONiq uses XQuery's lexical representation of numbers to distinguish integer, real, and floating point numbers <sup>[<a id="idp3595232" href="#ftn.idp3595232" class="footnote">3</a>]</sup>:
+		</div><pre class="programlisting">NumericLiteral ::= IntegerLiteral | DecimalLiteral | DoubleLiteral</pre><div class="para">
+			If a numeric literal has no "." character and no e or E character, it has the atomic type <code class="code">xs:integer</code>; if it has a "." character but no e or E character it has type <code class="code">xs:decimal</code>; if it has an e or E character it has type <code class="code">xs:double</code>.
+		</div><div class="para">
+			Number literals are mapped to atomic values according to the XML Schema specification.
+		</div></div><div class="footnotes"><br /><hr /><div class="footnote"><div class="para"><sup>[<a id="ftn.idp5164176" href="#idp5164176" class="para">1</a>] </sup>
+			In the XQ-- subset of JSONiq, we will define a simpler data model that omits much of the XQuery Data Model.
+		</div></div><div class="footnote"><div class="para"><sup>[<a id="ftn.idp3046928" href="#idp3046928" class="para">2</a>] </sup>
+				(Because the typed value of all <code class="code">js:null</code> instances is the same, nulls are always equal to each other for the purpose of value comparisons).
+			</div></div><div class="footnote"><div class="para"><sup>[<a id="ftn.idp3595232" href="#idp3595232" class="para">3</a>] </sup>
+				The result of a JSONiq query may contain values such as NaN or Infinity, which cannot be serialized as JSON. These values have type <code class="code">xs:double</code>, and are either rejected or treated in a special way during the JSON Serialization process.
+			</div><div class="para">
+				ECMAScript also has has Infinity and NaN, and takes a similar approach.
+			</div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="section-introduction.html"><strong>Prev</strong>Chapter 2. Introduction</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch03s02.html"><strong>Next</strong>3.2. JSON Items</a></li></ul></body></html>

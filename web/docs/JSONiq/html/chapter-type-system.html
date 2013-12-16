@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 4. JSONiq types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="index.html" title="JSONiq" /><link rel="prev" href="chapter-collections.html" title="Chapter 3. Collections" /><link rel="next" href="ch04s02.html" title="4.2. Sequence types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-collections.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch04s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-type-system" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 4. JSONiq types</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-type-system.html#idp52178752">4.1. Item types</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-type-system.html#idp55717472">4.1.1. Atomics</a></span></dt><dt><span class="section"><a href="chapter-type-system.html#idp56699040">4.1.2. JSON items</a></span></dt><dt><span class="section"><a href="chapter-type-system.html#idp56705248">4.1.3. The most general item type.</a></span></dt></dl></dd><dt><span class="section"><a href="ch04s02.html">4.2. Sequence types</a></span></dt></dl></div><div class="para">
+		This section describes JSONiq types as well as the sequence type syntax.
+	</div><div class="para">
+		JSONiq manipulates semi-structured data: in general, JSONiq allows you, but does not require you to specify types. So you have as much or as little type verification as you wish.
+	</div><div class="para">
+		JSONiq is still strongly typed, so that you will be told if there is a type inconsistency or mismatch in your programs.
+	</div><div class="para">
+		Whenever you do not specify the type of a variable or the type signature of a function, the most general type for any sequence of items, item*, is assumed.
+	</div><div class="para">
+		Section <a class="xref" href="section-type-expressions.html">Section 5.7, “Expressions dealing with types”</a> introduces expressions which work with values of these types, as well as type operations (variable types, casts, ...).
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp52178752">4.1. Item types</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp55717472">4.1.1. Atomics</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/AtomicType.png" alt="AtomicOrUnionType" /></div></div><h6>Figure 4.1. AtomicOrUnionType</h6></div><br class="figure-break" /><div class="para">
+				Atomic types are organized in a tree hierarchy.
+			</div><div class="para">
+				JSONiq defines the following build-in types that have a direct relation with JSON:
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						<span class="emphasis"><em>string</em></span>: the value space is all strings made of Unicode characters.
+					</div><div class="para">
+						All string literals build an atomic which matches string.
+					</div></li><li class="listitem"><div class="para">
+						<span class="emphasis"><em>integer</em></span>: the value space is that of all mathematical integral numbers (N), with an infinite range. This is a subtype of <span class="emphasis"><em>decimal</em></span>, so that all integers also match the item type <span class="emphasis"><em>decimal</em></span>.
+					</div><div class="para">
+						All integer literals build an atomic which matches integer.
+					</div></li><li class="listitem"><div class="para">
+						<span class="emphasis"><em>decimal</em></span>: the value space is that of all mathematical decimal numbers (D), with an infinite range.
+					</div><div class="para">
+						All decimal literals build an atomic which matches decimal.
+					</div></li><li class="listitem"><div class="para">
+						<span class="emphasis"><em>double</em></span>: the value space is that of all IEEE double-precision 64-bit floating point numbers.
+					</div><div class="para">
+						All double literals build an atomic which matches double.
+					</div></li><li class="listitem"><div class="para">
+						<span class="emphasis"><em>boolean</em></span>: the value space contains the booleans true and false.
+					</div><div class="para">
+						All boolean literals build an atomic which matches boolean.
+					</div></li><li class="listitem"><div class="para">
+						<span class="emphasis"><em>null</em></span>: the value space is a singleton and only contains null.
+					</div><div class="para">
+						All null literals build an atomic which matches null.
+					</div></li><li class="listitem"><div class="para">
+						<span class="emphasis"><em>atomic</em></span>: all atomic types.
+					</div><div class="para">
+						All literals build an atomic which matches atomic.
+					</div></li></ul></div><div class="para">
+				JSONiq also supports further atomic types, which were borrowed from <a href="http://www.w3.org/TR/xmlschema11-2/#built-in-datatypes">XML Schema</a>.
+			</div><div class="para">
+				These datatypes are already used as a set of atomic datatypes by the other two semi-structured data formats of the Web: XML and RDF, as well as by the corresponding query languages: XQuery and SPARQL, so it is natural for a complete JSON data model to reuse them.
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						Further number types: long, int, short, byte, float.
+					</div></li><li class="listitem"><div class="para">
+						Date or time types: date, dateTime, dateTimeStamp, gDay, gMonth, gMonthDay, gYear, gYearMonth, time.
+					</div></li><li class="listitem"><div class="para">
+						Duration types: duration, dayTimeDuration, yearMonthDuration.
+					</div></li><li class="listitem"><div class="para">
+						Binary types: base64Binary, hexBinary.
+					</div></li><li class="listitem"><div class="para">
+						An URI type: anyURI.
+					</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56699040">4.1.2. JSON items</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/JSONItemTest.png" alt="JSONItemTest" /></div></div><h6>Figure 4.2. JSONItemTest</h6></div><br class="figure-break" /><div class="para">
+				All objects match the item type <span class="emphasis"><em>object</em></span> as well as <span class="emphasis"><em>json-item</em></span>.
+			</div><div class="para">
+				All arrays match the item type <span class="emphasis"><em>array</em></span> as well as <span class="emphasis"><em>json-item</em></span>.
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp56705248">4.1.3. The most general item type.</h3></div></div></div><div class="para">
+				All items match the item type <span class="emphasis"><em>item</em></span>.
+			</div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/ItemType.png" alt="ItemType" /></div></div><h6>Figure 4.3. ItemType</h6></div><br class="figure-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-collections.html"><strong>Prev</strong>Chapter 3. Collections</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch04s02.html"><strong>Next</strong>4.2. Sequence types</a></li></ul></body></html>

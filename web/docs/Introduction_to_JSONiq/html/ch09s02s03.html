@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.2.3. Order clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-flwor.html" title="9.2. FLWOR expressions" /><link rel="prev" href="ch09s02s02.html" title="9.2.2. Where clauses" /><link rel="next" href="ch09s02s04.html" title="9.2.4. Group clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch09s02s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch09s02s04.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp10548384">9.2.3. Order clauses</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/OrderByClause.png" width="444" alt="OrderByClause" /></div></div><h6>Figure 9.4. OrderByClause</h6></div><br class="figure-break" /><div class="para">
+			Order clauses are for reordering tuples.
+		</div><div class="para">
+			For each incoming tuple, the expression in the where clause is evaluated to an atomic. The tuples are then sorted based on the atomics they are associated with, and then forwarded to the next clause.
+		</div><div class="para">
+			Like for ordering comparisons, null values are always considered the smallest.
+		</div><div class="para">
+			The following query is the counterpart of SQL's "SELECT * FROM captains ORDER BY name".
+		</div><div class="example"><h6>Example 9.20. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+order by $x.name
+return $x
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "captains": collection does not exist</pre></div></div><br class="example-break" /><div class="para">
+			Multiple sorting criteria can be given - they are treated like a lexicographic order (most important criterium first).
+		</div><div class="example"><h6>Example 9.21. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+order by size($x.series), $x.name
+return $x
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "captains": collection does not exist</pre></div></div><br class="example-break" /><div class="para">
+			It can be specified whether the order is ascending or descending. Empty sequences are allowed and it can be chosen whether to put them first or last.
+		</div><div class="example"><h6>Example 9.22. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+order by $x.name descending empty greatest
+return $x
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "captains": collection does not exist</pre></div></div><br class="example-break" /><div class="para">
+			An error is raised if the expression does not evaluate to an atomic or the empty sequence.
+		</div><div class="example"><h6>Example 9.23. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+order by $x
+return $x.name
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "captains": collection does not exist</pre></div></div><br class="example-break" /><div class="para">
+			Collations can be used to give a specific way of how strings are to be ordered. A collation is identified by a URI.
+		</div><div class="example"><h6>Example 9.24. Use of a collation in an order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+order by $x.name collation "http://www.w3.org/2005/xpath-functions/collation/codepoint"
+return $x.name
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "captains": collection does not exist</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch09s02s02.html"><strong>Prev</strong>9.2.2. Where clauses</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch09s02s04.html"><strong>Next</strong>9.2.4. Group clauses</a></li></ul></body></html>

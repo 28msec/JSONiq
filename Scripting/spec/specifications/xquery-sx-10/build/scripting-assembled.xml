@@ -1,0 +1,2359 @@
+<?xml version="1.0" encoding="UTF-8"?><!--XSLT Processor: Apache Software Foundation (Xalan XSLTC)--><!DOCTYPE spec SYSTEM "../../../schema/xsl-query.dtd">
+<spec xmlns:e="http://www.w3.org/1999/XSL/Spec/ElementSyntax" id="spec-top" w3c-doctype="wd">
+  <header id="spec-header">
+    <title>XQuery Scripting Extension Proposal 1.0</title>
+    <w3c-designation>WD-xquery-sx-10</w3c-designation>
+    <w3c-doctype>W3C Working Draft</w3c-doctype>
+    <pubdate>
+      <day>21</day>
+      <month>January</month>
+      <year>2011</year>
+    </pubdate>
+    <publoc>
+      <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/2011/WD-xquery-sx-10-20110121" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://www.w3.org/TR/2011/WD-xquery-sx-10-20110121</loc>
+    </publoc>
+    <latestloc>
+      <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/xquery-sx-10/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://www.w3.org/TR/xquery-sx-10/</loc>
+    </latestloc>
+    <prevlocs>
+		</prevlocs>
+    <authlist>
+      <author>
+        <name>Matthias Brantner</name>
+        <affiliation>28msec, Inc.</affiliation>
+        <email xmlns:xlink="http://www.w3.org/1999/xlink" href="mailto:matthias.brantner@28msec.com" xlink:type="simple" xlink:show="new" xlink:actuate="onRequest">matthias.brantner@28msec.com</email>
+      </author>
+      <author>
+        <name>Dana Florescu</name>
+        <affiliation>Oracle Corporation</affiliation>
+        <email xmlns:xlink="http://www.w3.org/1999/xlink" href="mailto:dana.florescu@oracle.com" xlink:type="simple" xlink:show="new" xlink:actuate="onRequest">dana.florescu@oracle.com</email>
+      </author>
+      <author>
+        <name>Ghislain Fourny</name>
+        <affiliation>ETH Zurich</affiliation>
+        <email xmlns:xlink="http://www.w3.org/1999/xlink" href="mailto:ghislain.fourny@inf.ethz.ch" xlink:type="simple" xlink:show="new" xlink:actuate="onRequest">ghislain.fourny@inf.ethz.ch</email>
+      </author>
+      <author>
+        <name>Josh Spiegel</name>
+        <affiliation>Oracle Corporation</affiliation>
+        <email xmlns:xlink="http://www.w3.org/1999/xlink" href="mailto:josh.spiegel@oracle.com" xlink:type="simple" xlink:show="new" xlink:actuate="onRequest">josh.spiegel@oracle.com</email>
+      </author>
+    </authlist>
+
+    <!--* Common status section for QT specs.
+    * Use is currently not required, but it simplifies things.
+    * 
+    * Revisions:
+    * 2007-01-15 : CMSMcQ : made file, to simplify publication of Rec.
+    * 2008-02-15 : JimMelton : cloned from MSM's REC-only material
+                     to generalize for all stages
+    *-->
+
+    <status id="status">
+
+<!-- ************************************************************************** -->
+<!-- * All Status sections must start with the standard boilerplate paragraph * -->
+<!-- *   This entity is defined in status-entities.dtd                        * -->
+<!-- ************************************************************************** -->
+      <p><emph>This section describes the status of this
+         document at the time of its publication.
+         Other documents may supersede this document.
+         A list of current W3C publications and the latest
+         revision of this technical report can be found in the
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">W3C technical reports index</loc>
+         at http://www.w3.org/TR/.</emph></p>
+
+<!-- ************************************************************************** -->
+<!-- * QT publishes suites of documents, which must be described in the       * -->
+<!--     Status section of each document within such a suite.                 * -->
+<!-- *   This entity is defined in the host document.                         * -->
+<!-- ************************************************************************** -->
+      
+
+<!-- ************************************************************************** -->
+<!-- * There is a lot of detailed customization based on the document stage   * -->
+<!-- *   This entity is defined in the host document.                         * -->
+<!-- ************************************************************************** -->
+      <p>This is a <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2005/10/Process-20051014/tr.html#maturity-levels" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">Working Draft</loc> as described in the <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2005/10/Process-20051014/tr.html" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">Process Document</loc>.
+It has been developed by the W3C <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/XML/Query/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XML Query Working Group</loc>,
+which is part of the <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/XML/Activity" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XML Activity</loc>.
+The Working Group expects to advance this specification to <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2005/10/Process-20051014/tr.html#RecsW3C" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">Recommendation</loc> Status.</p>
+
+<!-- ************************************************************************** -->
+<!-- * CR documents must cite features at risk                                * -->
+<!-- *   This entity is defined in the host document.                         * -->
+<!-- ************************************************************************** -->
+      
+
+<!-- ************************************************************************** -->
+<!-- * Every Status section must have a customized paragraph                  * -->
+<!-- *   This entity is defined completely in the host document.              * -->
+<!-- ************************************************************************** -->
+      <p>This is the last version of XQuery Scripting Extension that
+is aligned with XQuery Update Facility 1.0.  In future versions of this document, the Working Group
+intends to reposition XQuery Scripting Extension 1.0 against the <bibref ref="XQ11"/> set of
+specifications, and remove it from the <bibref ref="XQ10"/> publication track.</p>
+
+<!-- ************************************************************************** -->
+<!-- * CR docs should, and PR docs must, have a pointer to an implementation  * -->
+<!-- *   report.  We also want to point to the test suite.                    * -->
+<!-- *   This entity is defined in the host document.                         * -->
+<!-- ************************************************************************** -->
+      <p>No implementation report currently exists.
+However, a Test Suite for XQuery Scripting Extension Proposal 1.0 is under development.</p>
+
+<!-- ************************************************************************** -->
+<!-- * The Status section should point to a changelog                         * -->
+<!-- *   This entity is defined in the host document.                         * -->
+<!-- ************************************************************************** -->
+      <p>This document incorporates changes made against the previous publication
+  of the Working Draft of 21 January 2011.
+  Changes to this document since the previous publication of the Working Draft
+  are detailed in <specref ref="id-revisions-log"/>.</p>
+
+<!-- ************************************************************************** -->
+<!-- * The Status section must tell readers where to send comments            * -->
+<!-- *   This entity is defined in status-entities.dtd                        * -->
+<!-- ************************************************************************** -->
+      <p>Please report errors in this document using W3C's
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/Bugs/Public/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">public Bugzilla system</loc>
+         (instructions can be found at
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/XML/2005/04/qt-bugzilla" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://www.w3.org/XML/2005/04/qt-bugzilla</loc>).
+         If access to that system is not feasible, you may send your comments
+         to the W3C XSLT/XPath/XQuery public comments mailing list,
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="mailto:public-qt-comments@w3.org" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">public-qt-comments@w3.org</loc>.
+         It will be very helpful if you include the string 
+         “[SX]”
+         in the subject line of your report, whether made in Bugzilla or in email.
+         Please use multiple Bugzilla entries (or, if necessary, multiple email messages)
+         if you have more than one comment to make.
+         Archives of the comments and responses are available at
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://lists.w3.org/Archives/Public/public-qt-comments/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://lists.w3.org/Archives/Public/public-qt-comments/</loc>. </p>
+
+<!-- ************************************************************************** -->
+<!-- Status sections must state the stability (not stable, or REC) of the document -->
+<!-- *   This entity is defined in the host document.                         * -->
+<!-- ************************************************************************** -->
+      <p>Publication as a Working Draft
+does not imply endorsement by the W3C Membership. 
+This is a draft document and may be updated, replaced or obsoleted
+by other documents at any time. 
+It is inappropriate to cite this document as other than work in progress.</p>
+
+<!-- ************************************************************************** -->
+<!-- * Finally, all Status sections must end with the appropriate IPR para    * -->
+<!-- *   This entity is defined in status-entities.dtd                        * -->
+<!-- ************************************************************************** -->
+       <p>This document was produced by a group operating under the
+  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/Consortium/Patent-Policy-20040205/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">5 February 2004
+  W3C Patent Policy</loc>.
+  W3C maintains a 
+  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2004/01/pp-impl/18797/status#disclosures" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">public list of any patent disclosures</loc>
+  made in connection with the deliverables of the group; 
+  that page also includes instructions for disclosing a patent.
+  An individual who has actual knowledge of a patent 
+  which the individual believes contains
+  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">Essential Claim(s)</loc>
+  must disclose the information in accordance with
+  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+  section 6 of the W3C Patent Policy</loc>. </p>
+
+
+    </status>
+
+    <abstract>
+      <p>This specification defines an extension to <bibref ref="XQ10"/>
+         and <bibref ref="XQueryUpdate"/>.
+         It introduces statements including the apply, local variable declaration, assignment,
+         while, exit and block statements, as well as statement counterparts to FLWOR, If, Switch,
+         Typeswitch, Trycatch expressions. Statements do not return any value but can have side
+         effects such as applying a PUL or reassigning a variable.
+         It also introduces block expressions, which may contain statements and thus also have
+         side effects. Expressions can be evaluated in a specific order,
+         with later expressions seeing the effects of the expressions that came before them. 
+      </p>
+    </abstract>
+
+    <langusage>
+      <language id="en">English</language>
+    </langusage>
+
+    <revisiondesc id="id-revision-log">
+      <p>Fourny, 21 January 2011.  Initial draft.</p>
+    </revisiondesc>
+  </header>
+
+  <body>
+
+    <div1 id="Introduction">
+      <head>Introduction</head>
+
+      <p>XQuery Scripting Extension Proposal extends <bibref ref="XQ10"/>, enabling it to
+         serve as a scripting language in order to satisfy <bibref ref="ScriptingRequirements"/>. 
+         A prerequisite for this extension is <bibref ref="XQueryUpdate"/>. 
+         The following abbreviations are used in this specification: 
+         <termdef term="XQUF" id="dt-xquf"><term>XQUF</term> is an abbreviation for <bibref ref="XQueryUpdate"/>.</termdef>
+         <termdef term="XQSX" id="dt-xqsx"><term>XQSX</term> is an abbreviation for XQuery Scripting Extension.</termdef></p>
+
+      <p>In this document, examples and material labeled as <quote>Note</quote> are provided for
+         explanatory purposes and are not normative. </p>
+
+      <p><termref def="dt-xqsx">XQSX</termref> has the following properties:</p>
+
+      <ulist>
+        <item>
+          <p>It is a strict superset of <termref def="dt-xquf">XQUF</termref>, in the
+             sense that all valid <termref def="dt-xquf">XQUF</termref> expressions are also
+             valid <termref def="dt-xqsx">XQSX</termref> expressions and have the same meaning. 
+             (In the same sense, <termref def="dt-xquf">XQUF</termref> is a strict
+             superset of <bibref ref="XQ10"/>.)</p>
+        </item>
+
+        <item>
+          <p>It does not introduce any "modes" that affect the semantics of expressions.</p>
+        </item>
+
+        <item>
+          <p>As in <termref def="dt-xquf">XQUF</termref>, the result of an expression
+             consists of an <termref def="dt-xdm-instance">XDM instance</termref> and a
+             <termref def="dt-pul">pending update list</termref>.
+             <termdef term="XDM instance" id="dt-xdm-instance">An <term>XDM instance</term>
+             is an unconstrained sequence of zero or more nodes and/or atomic values,
+             as defined in <bibref ref="XDM"/>.</termdef>
+             <termdef term="pending update list" id="dt-pul">A <term>pending update list</term>
+             is an unordered collection of update primitives, representing node state changes
+             that have not yet been applied, as defined in <bibref ref="XQueryUpdate"/>.</termdef></p>
+        </item>
+      </ulist>
+    </div1>
+
+      <div1 id="id-extensions-to-processing-model">
+        <head>Extensions to the Processing Model</head>
+
+        <p>
+          Expressions in XQSX may have side-effects that are visible to subsequent expressions (according to their
+          <termref def="dt-eval-order">evaluation order</termref>). This requires a number of extensions to the 
+          <bibref ref="XQ10"/>and <bibref ref="XQueryUpdate"/> processing model.
+        </p>
+
+      <div2 id="id-evaluation-order">
+        <head>Evaluation Order</head>
+        <p>
+          <termdef term="evaluation order" id="dt-eval-order"><termref def="dt-xqsx">XQSX</termref> defines an <term>evaluation order</term> on
+          many kinds of XQuery expressions, which is the order that operand expressions must be evaluated in order
+          to determine what side-effects are visible to later expressions.</termdef>
+          An implementation may use any execution strategy as long as the result complies with
+          the semantics of this ordering.</p>
+        <note>
+          <p>Since none of the XQuery expressions existing before
+             <termref def="dt-xqsx">XQSX</termref> has any immediate side-effects,
+             no ordering is effectively imposed on the evaluation of any expression
+             unless it is side-effecting.</p>
+        </note>
+      </div2>
+        
+      <div2 id="id-statements">
+        <head>Statements</head>
+        <p><termdef term="statement" id="dt-statement">A <term>statement</term> is an imperative construct which
+        does not return anything (no XDM, no PUL) but can have side-effects. Statements have to be executed
+        in the execution order defined in XQSX.</termdef></p>
+        <p>XQSX introduces the following statements:
+          <ulist>
+            <item><p>Apply statements</p></item>
+            <item><p>Variable declaration/assignment statements</p></item>
+            <item><p>Block statements</p></item>
+            <item><p>Control flow statements: If-Then-Else, FLWOR, Try-Catch, Switch, Typeswitch, While and Exit-Returning.</p></item>
+          </ulist>
+        </p>
+      </div2>
+
+      <div2 id="id-snapshot-scope">
+        <head>Snapshot <phrase diff="add">and Execution</phrase> Scope</head>
+        <p>The term <term>snapshot</term> is defined in <bibref ref="XQueryUpdate"/> as follows:
+           <termdef term="snapshot" id="dt-snapshot">A <term>snapshot</term> is a scope
+           within which expressions are evaluated with respect to a fixed
+           <termref def="dt-xdm-instance">XDM instance</termref> and updates are held pending.</termdef>
+           A snapshot is terminated by invocation of the <code>upd:applyUpdates</code> operation.
+           Unlike <termref def="dt-xquf">XQUF</termref>, <termref def="dt-xqsx">XQSX</termref>
+           permits a query to contain more than one snapshot.</p>
+
+        <p>
+          <bibref ref="FO"/> defines certain functions as <xtermref spec="FO" ref="stable">stable</xtermref>. Stable functions
+          such as <code>fn:current-time</code> and <code>fn:doc</code> are defined to return the same result given the same
+          arguments within an <xtermref spec="FO" ref="execution-scope">execution scope</xtermref>. <termref def="dt-xqsx">XQSX</termref>
+          redefines the extent of an execution scope, so that a top level query can contain many execution scopes.
+        </p>
+
+        <p>In XQSX, each of the following statements is <phrase diff="add">both</phrase> a snapshot <phrase diff="add">and execution scope</phrase>:
+           <ulist>
+             <item><p>each SimpleExpr within an ApplyStatement</p></item>
+             <item><p>each initialization expression in a VarDeclStatement</p></item>
+             <item><p>the expression on the right-hand side of an AssignmentStatement</p></item>
+           </ulist>
+        </p>
+      </div2>
+      <div2 id="id-variable-revalidation">
+        <head>Variable Binding Revalidation</head>
+        <p>
+          To ensure type soundness, variable bindings are revalidated at the end of each scope to check that
+          any updates applied have not made them invalid with repect to their declared types. It is a dynamic
+          error <errorref code="0003" class="DY"/> if, after applying a pending update list (using <code>upd:applyUpdates</code>),
+          the XDM instance bound to any in-scope variable does not match the static type of that variable according
+          to SequenceType matching rules.
+        </p>
+      </div2>
+      <div2 id="id-updating-constraint">
+        <head>Updating Expression Constraints</head>
+        <p>
+            <termref def="dt-xqsx">XQSX</termref> builds on top of XQuery 3.0 and XQuery Update 1.0, so that it keeps
+            the same constraints about an expression being simple (if it returns an empty PUL), updating (if it
+            returns an empty XDM) or vacuous (if both are empty). But it is open to a possible future relaxation
+            of this property in the above specifications.
+        </p>
+      </div2>
+      <div2 id="id-side-effecting">
+        <head>Side-effecting Expressions</head>
+          <p>
+            In addition to the <termdef term="simple expression" id="dt-simple-expr"><term>simple</term></termdef>
+            /<termdef term="updating expression" id="dt-updating-expr"><term>updating</term></termdef> categorization, <termref def="dt-xqsx">XQSX</termref>
+            introduces another dimension to classify expressions: side-effecting/non-side-effecting expressions.</p>
+          <olist>
+            <item>
+              <p>
+                <termdef term="side-effecting expression" id="dt-side-effecting-expr">A <term>side-effecting expression</term>
+                is an expression that can have side effects other than constructing a new node or raising an error.</termdef>
+                Side effects include applying updates to an <termref def="dt-xdm-instance">XDM instance</termref>,
+                altering the dynamic context, or affecting the flow of control. 
+                Side-effecting expressions include expressions which contain statements (block expressions)
+                and calls to side-effecting functions, as well as certain other expressions that
+                contain nested side-effecting expressions. 
+                The side effects of a side-effecting expression are immediately effective
+                and are visible to subsequent expressions. 
+                Because of their side effects, side-effecting expressions must be evaluated
+                in a well-defined order. 
+                In addition to its side effects, a side-effecting expression may return
+                a non-empty <termref def="dt-xdm-instance">XDM instance</termref> if it is simple,
+                or a non-empty <termref def="dt-pul">pending update list</termref> if it is updating.</p>
+            </item>
+            <item>
+              <p>
+                <termdef term="pure expression" id="dt-pure-expr">A <term>pure expression</term>
+                is an expression that is is not side-effecting.</termdef></p>
+            </item>
+          </olist>
+          <p>The classification of each expression into one of the above categories is
+             performed by static analysis. 
+             For each kind of expression, <termref def="dt-xqsx">XQSX</termref>
+             provides rules that specify the required categories of the operand expressions
+             and the category of the expression itself.</p>
+      <p>
+         Note that simple/updating and pure/side-effecting are two orthogonal classification dimensions.
+         Hence, an expression can be simple and pure, simple and side-effecting, updating and pure or updating and side-effecting.
+      </p>
+      </div2>
+      </div1>
+
+      <div1 id="id-extensions-to-static-context">
+        <head>Extensions to the Static Context</head>
+      <div2 id="id-namespace">
+        <head>Predefined Namespace</head>
+        <p>
+          <termref def="dt-xqsx">XQSX</termref> adds the pair (<code>xqsx</code>, <code>http://www.w3.org/2008/xquery-sx-10</code>) as a predefined
+          namespace to the statically known namespaces.
+        </p>
+      </div2>
+      </div1>
+
+      <div1 id="id-extensions-to-prolog">
+        <head>Extensions to the Prolog</head>
+
+        <div2 id="id-assignable-global-var">
+          <head>Assignable Global Variables</head>
+          <scrap headstyle="show"><head/>
+            <prod num="NaN" id="doc-xquery-VarDecl"><lhs>VarDecl</lhs><rhs>"declare"  ("unassignable"?  |  "assignable")  "variable"  "$"  <nt def="prod--QName">QName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  ((":="  <nt def="prod--ExprSingle">ExprSingle</nt>)  |  <nt def="prod--External">External</nt>)</rhs></prod>
+          </scrap>
+          <p diff="add">
+            <termref def="dt-xqsx">XQSX</termref> allows the qualifiers <code>assignable</code> and <code>unassignable</code>
+            to be used in a Prolog variable declaration.
+            <termdef term="assignable" id="dt-assignable">Prolog variables declared as <term>assignable</term> may have their
+            value changed by an <specref ref="id-assignment"/>.</termdef>
+            If an assignment qualifier is not used, the default is <code>unassignable</code>.
+          </p>
+         <p diff="del">
+           <termdef term="constant" id="dt-constant">
+           <termref def="dt-xqsx">XQSX</termref> allows the keyword <code>constant</code>
+           to be used in place of <code>variable</code> in a Prolog declaration. 
+           A variable declared in this way is called a <term>constant</term>.</termdef>
+         </p>
+
+          <p diff="add">The semantics of assignable variables are the same as the semantics of unassignable variables, except that
+          the static type of an assignable variable without a declared type is always <code>item()*</code>.
+           </p>
+         <p diff="del">Rules for initializing variables and for determining the scope of variables
+            apply equally to constants. 
+            The semantics of constants are the same as the semantics of variables,
+            with the following exception: 
+            It is a static error [err:TBD] if a constant appears on the
+            left-hand-side of an assignment expression.</p>
+
+          <p diff="add">The initializing expression of a prolog variable (whether assignable or not)
+          must be a simple and pure expression <errorref code="0001" class="ST"/>.</p>
+         <p diff="del">The initializing expression in a variable or constant declaration
+         in a Prolog must be a simple and pure expression [err:TBD].</p>
+
+        </div2>
+        <div2 id="id-function-decl">
+          <head>Function Declarations</head>
+          <scrap headstyle="show"><head/>
+            <prod num="NaN" id="doc-xquery-FunctionDecl"><lhs>FunctionDecl</lhs><rhs>("declare"  ("simple"?  |  "updating")  "function"  <nt def="prod--QName">QName</nt>  "("  <nt def="prod--ParamList">ParamList</nt>?  ")"  ("as"  <nt def="prod--SequenceType">SequenceType</nt>)?  (<nt def="prod--EnclosedExpr">EnclosedExpr</nt>  |  <nt def="prod--External">External</nt>))<br/>|  ("declare"  "sequential"  "function"  <nt def="prod--QName">QName</nt>  "("  <nt def="prod--ParamList">ParamList</nt>?  ")"  ("as"  <nt def="prod--SequenceType">SequenceType</nt>)?  (<nt def="prod--Block">Block</nt>  |  <nt def="prod--External">External</nt>))</rhs></prod>
+          </scrap>
+          <glist>
+            <gitem>
+              <label>Definitions:</label>
+              <def>
+                <p>
+                  <termdef term="simple function" id="dt-simple-function">A <term>simple function</term>
+                  is a function whose declaration does not specify <code>updating</code>.
+                  A <termref def="dt-simple-function">simple function</termref> may optionally specify the keyword
+                  <code>non-updating</code>.</termdef>
+                </p>
+                <p>
+                  <termdef term="updating function" id="dt-updating-function">An <term>updating function</term>
+                  is a function whose declaration specifies the keyword <code>updating</code>.</termdef>
+                </p>
+                <p>
+                  <termdef term="pure function" id="dt-pure-function">A <term>pure function</term>
+                  is a function whose declaration does not specify <code>side-effecting </code>.
+                  A <termref def="dt-pure-function">pure function</termref> may optionally specify the keyword
+                  <code>non-side-effecting</code>.</termdef>
+                  </p>
+                <p>
+                  <termdef term="side-effecting function" id="dt-side-effecting-function">A <term>sequential function</term>
+                    is a function whose declaration specifies the keyword <code>sequential</code>.</termdef>
+                </p>
+              </def>
+            </gitem>
+            <gitem>
+              <label>Category Rules:</label>
+              <def>
+                <ulist>
+                <item><p>
+                  The body of a <termref def="dt-simple-function">simple function</termref>
+                  must be a <termref def="dt-simple-expr">simple expression</termref>.
+                </p></item>
+                <item><p>
+                  The body of an <termref def="dt-updating-function">updating function</termref>
+                  must be an <termref def="dt-updating-expr">updating expression</termref>.
+                </p></item>
+                <item><p>
+                  The body of an <termref def="dt-pure-function">pure function</termref>
+                  must be a <termref def="dt-updating-expr">pure expression</termref>.
+                </p></item>
+                <item><p>
+                  The body of an <termref def="dt-side-effecting-function">side-effecting function</termref>
+                  may be a <termref def="dt-updating-expr">pure expression</termref> or a
+                  <termref def="dt-updating-expr">side-effecting expression</termref>.
+                </p></item>
+                <item><p>
+                  If the body of a function violates the category rules for it's declared category,
+                  <errorref code="0008" class="ST"/> is raised.
+                </p></item>
+                </ulist>
+              </def>
+            </gitem>
+            <gitem>
+              <label>Semantics:</label>
+              <def>
+                <p>The semantics of pure and <termref def="dt-simple-function">simple functions</termref>
+                  are defined in <bibref ref="XQueryUpdate"/> and <bibref ref="XQ10"/>, and remain
+                  unchanged in <termref def="dt-xqsx">XQSX</termref>.</p>
+                <p>The semantics of pure and <termref def="dt-simple-function">updating functions</termref>
+                  are defined in <bibref ref="XQueryUpdate"/> and <bibref ref="XQ10"/>, and remain
+                  unchanged in <termref def="dt-xqsx">XQSX</termref>.</p>
+                <p>The semantics of <termref def="dt-side-effecting-function">side-effecting functions</termref>
+                  are as follows. The result of a <termref def="dt-side-effecting-function">side-effecting function</termref> is determined
+                  by the first <specref ref="id-exit"/> encountered during evaluation of the Block. 
+                  If no exit statement is encountered, the result of the function is the value returned by the expression
+                  that comprises its body. Other than that, the semantics is as defined for simple/updating functions
+                  in <bibref ref="XQueryUpdate"/>.</p>
+              </def>
+            </gitem>
+          </glist>
+        </div2>
+
+      </div1>
+    
+    <div1 id="id-new-statements">
+      <head>Statements</head>
+      <p><termref def="dt-xqsx">XQSX</termref> extends the XQuery 1.0 syntax
+        by adding statements to the grammar. A statement may or may not have
+        side effects, and does not return anything.
+        There are the following kinds of statements:</p>
+      <scrap headstyle="show"><head/>
+        
+        
+        
+        
+      </scrap>
+      
+      <div2 id="id-apply">
+        <head>Apply Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p><termdef term="apply statement" id="dt-apply-statement">An <term>apply statement</term> is
+                a SimpleExpr (the operand) followed by a semi-colon.</termdef></p>
+              <p>The operand may be simple or updating, side-effecting or not.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>
+                After the evaluation of the operand expression, the
+                <termref def="dt-pul">pending update list</termref> returned by
+                this expression is applied (by <code>upd:applyUpdates</code>).
+                The <termref def="dt-xdm-instance">XDM instance</termref>
+                returned by this expression is discarded.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-assignment">
+        <head>Assignment Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>SingleExpr must be non-updating.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The variable on the left-hand side of the assignment must have been declared in one of the following ways, otherwise a
+                static error <errorref code="0007" class="ST"/> is raised:
+                <ulist>
+                  <item><p>By a variable declaration</p></item>
+                  <item><p>As a parameter to a side-effecting function</p></item>
+                  <item><p>By a variable declaration in the Prolog <phrase diff="add">declared as <termref def="dt-assignable">assignable</termref></phrase></p></item>
+                </ulist>
+                In all cases the variable must be in the in-scope variables, otherwise a static error is raised <xerrorref spec="XQ" code="0008" class="ST"/>.</p>
+              <note>
+                <p>Variables bound in FLWOR, typeswitch, or quantified expressions or statements may not appear
+                  on the left-hand side of an assignment.</p>
+              </note>
+              <p>
+                The expression on the right-hand side is evaluated (its side-effects being visible), resulting in an
+                <termref def="dt-xdm-instance">XDM instance</termref>
+                and a <termref def="dt-pul">pending update list</termref>.
+              </p>
+              <p>If the <termref def="dt-xdm-instance">XDM instance</termref>
+                returned by the expression on the right-hand side does not match the declared type
+                of the variable according to SequenceType matching rules,
+                a type error is raised <xerrorref spec="XQ" code="0004" class="TY"/>. 
+                If the types match, the <termref def="dt-xdm-instance">XDM instance</termref>
+                returned by the expression is bound to the variable (added to <emph>variable values</emph>
+                in the <emph>dynamic context</emph>.)</p>
+              <p>
+                The <termref def="dt-pul">pending update list</termref> returned by
+                the expression on the right-hand side is applied using <code>upd:applyUpdates</code>.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-block-statement">
+        <head>Block Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>A block statement is a concatenation of zero, one or more statements surrounded by curly braces.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The statements are evaluated in the order they appear. The side-effects of a statements are visible
+                to subsequent statements.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-exit">
+        <head>Exit Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>The operand of an exit expression may be an expression of any category.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>An exit statement serves to define the result of the enclosing function or query body.</p>
+              <p>
+                The operand expression of the exit expression is evaluated, resulting in an
+                <termref def="dt-xdm-instance">XDM instance</termref>
+                and a <termref def="dt-pul">pending update list</termref>.
+              </p>
+              <p>If an exit statement is evaluated within the body of a function,
+                further evaluation of the function body is interrupted and the
+                <termref def="dt-xdm-instance">XDM instance</termref> and
+                <termref def="dt-pul">pending update list</termref> returned by
+                the operand expression are returned as the result of the function call.</p>
+              <p>If an exit statement is evaluated within a query body
+                (i.e., not within the body of a function), further evaluation of the query
+                is interrupted and the <termref def="dt-xdm-instance">XDM instance</termref> and
+                <termref def="dt-pul">pending update list</termref>
+                returned by the operand expression are returned as the result of the query.</p>
+              <note>
+                <p>An exit statement in a block terminates evaluation of the
+                  enclosing function body or query, not just the immediately enclosing block.</p>
+              </note>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      
+      <div2 id="id-flwor-statement">
+        <head>FLWOR Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>The expressions in the clauses must be non-updating and non-side-effecting.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The variables in the clauses are bound as specified in XQuery 1.0. The return clause is evaluated
+                for each variable binding and in the order corresponding to the sequence of variable bindings.
+                The side-effects of a return clause evaluation are visible to subsequent return clause evaluations.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-if-statement">
+        <head>If Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>The expression must be non-updating and non-side-effecting.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The expression is evaluated. If the EBV of its returned XDM is true, then the then statement is evaluated,
+              otherwise the else statement is evaluated. The side-effects of the evaluated statement are visible to the
+              rest of the program.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+
+      <div2 id="id-switch-statement">
+        <head>Switch Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>The operand expressions must be non-updating and non-side-effecting.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>[TODO]</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-trycatch-statement">
+        <head>Try-Catch Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>The operand expressions must be non-updating and non-side-effecting.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>[TODO]</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-typeswitch-statement">
+        <head>Typeswitch Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p>The operand expressions must be non-updating and non-side-effecting.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>[TODO]</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      <div2 id="id-vardecl-statement">
+        <head>Variable Declaration Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p><termdef term="initializing expression" id="dt-initializing-expr">The expression on
+                the right-hand side of a block variable declaration is called an
+                <term>initializing expression</term>.</termdef>
+                <termref def="dt-initializing-expr">Initializing expressions</termref> must be
+                non-updating.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>A variable declaration defines a modifiable local variable whose scope
+                is the remainder of the innermost block, function body or query body (not including its <termref def="dt-initializing-expr">initializing expression</termref>). 
+                The variable defined in a variable declaration occludes (hides)
+                any variable of the same name that is in scope at the location where the innermost block appears.</p>
+              <p>It is a static error <errorref code="0005" class="ST"/> if two or more variables declared in the same block, function body or query body
+                have the same expanded QName.</p>
+              <p>The type of each declared variable is added to <emph>in-scope variables</emph>
+                in the <emph>static context</emph>. 
+                <phrase diff="add">If no explicit type is declared, the type of the variable is <code>item()*</code>.</phrase>
+                
+                <phrase diff="del">If no explicit type is declared, the type of the variable is inferred from
+                  the type of its <termref def="dt-initializing-expr">initializing expression</termref>.
+                  If the variable has neither an explicit type declaration nor an initializing expression,
+                  its type is <code>item()*</code>. </phrase>
+                
+                If a variable has both an explicit type declaration and an
+                <termref def="dt-initializing-expr">initializing expression</termref>,
+                the value of the <termref def="dt-initializing-expr">initializing expression</termref> must match
+                the declared type according to SequenceType matching rules; otherwise a type error is raised <xerrorref spec="XQ" code="0004" class="TY"/>.</p>
+              <p>The block variable declaration evaluates its <termref def="dt-initializing-expr">initializing expression</termref>
+                and adds the resulting <termref def="dt-xdm-instance">XDM instance</termref> to the <emph>variable values</emph> in
+                the <emph>dynamic context</emph>.
+                If no <termref def="dt-initializing-expr">initializing expression</termref> is present, the variable has no initial value. 
+                A reference to a variable, other than on the left-hand side of an assignment expression,
+                is an error if the variable has no value in <emph>variable values</emph>
+                when the reference is evaluated <errorref code="0006" class="TY"/>.</p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      
+      
+      <div2 id="id-while-statement">
+        <head>While Statement</head>
+        <scrap headstyle="show"><head/>
+          
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Category Rules:</label>
+            <def>
+              <p><termdef term="test expression" id="dt-test-expr">The expression enclosed in the
+                parentheses of a while expression is called a <term>test expression</term>.</termdef>
+              The <termref def="dt-test-expr">test expression</termref> must be non-updating and non-side-effecting.</p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Semantics:</label>
+            <def>
+              <p>The while statement is used for conditional iteration.  It is evaluated as follows:</p>
+              <p>
+                The <termref def="dt-test-expr">test expression</termref> is evaluated, resulting in an
+                <termref def="dt-xdm-instance">XDM instance</termref>.
+              </p>
+              <p>
+                If the effective Boolean value of the <termref def="dt-test-expr">test expression</termref>
+                is false, the block is not evaluated. If the effective Boolean value of the
+                <termref def="dt-test-expr">test expression</termref> is true, the statement is evaluated repeatedly. 
+                Each evaluation of the statement may cause side effects that affect the result of re-evaluating the
+                <termref def="dt-test-expr">test expression</termref>. 
+                The <termref def="dt-test-expr">test expression</termref> is re-evaluated after each evaluation of the statement. 
+                This process continues until the effective Boolean value of the <termref def="dt-test-expr">test expression</termref>
+                is evaluated to be false.
+              </p>
+            </def>
+          </gitem>
+          <gitem>
+            <label>Example:</label>
+            <def>
+              <p>In the following query, a while statement is used to compute a sequence
+                containing all the Fibonacci numbers that are less than 100.</p>
+              <eg xml:space="preserve">
+                {
+                variable $a as xs:integer := 0;
+                variable $b as xs:integer := 1;  
+                variable $c as xs:integer := $a + $b;
+                variable $fibseq as xs:integer* := ($a, $b);
+                
+                while ($c &lt; 100) { 
+                  $fibseq := ($fibseq, $c);
+                  $a := $b;
+                  $b := $c;
+                  $c := $a + $b;
+                };
+                
+                }
+              </eg>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      
+      
+    
+    </div1>
+    
+    <div1 id="id-expr-statements">
+      <head>Composing Expressions and Statements</head>
+      <p>Composing Statements with Expressions is done as follows:</p>
+      <scrap headstyle="show"><head/>
+        
+        
+        <prod num="NaN" id="noid_N67505.doc-xquery-QueryBody"><lhs>QueryBody</lhs><rhs><nt def="prod--Expr">Expr</nt></rhs></prod>
+        <prod num="NaN" id="noid_N67508.doc-xquery-FunctionDecl"><lhs>FunctionDecl</lhs><rhs>("declare"  ("simple"?  |  "updating")  "function"  <nt def="prod--QName">QName</nt>  "("  <nt def="prod--ParamList">ParamList</nt>?  ")"  ("as"  <nt def="prod--SequenceType">SequenceType</nt>)?  (<nt def="prod--EnclosedExpr">EnclosedExpr</nt>  |  <nt def="prod--External">External</nt>))<br/>|  ("declare"  "sequential"  "function"  <nt def="prod--QName">QName</nt>  "("  <nt def="prod--ParamList">ParamList</nt>?  ")"  ("as"  <nt def="prod--SequenceType">SequenceType</nt>)?  (<nt def="prod--Block">Block</nt>  |  <nt def="prod--External">External</nt>))</rhs></prod>
+      </scrap>
+      <p>Statements may be directly concatenated (e.g., in a block statement).</p>
+      <p>In a query body or a function body, the main expression may be preceded by one or more statements,
+        which may have side-effects.
+        The main expression may also be omitted (i.e., there are only statements). If such is the case,
+        an empty XDM and an empty PUL are returned.</p>
+      <p>A new kind of expression is defined, block expression.</p>
+      <p>Also, node constructors may have statements in their content.</p>
+    
+        <div2 id="id-block">
+          <head>Block Expressions</head>
+          <scrap headstyle="show"><head/>
+            <prod num="NaN" id="noid_N67534.doc-xquery-PrimaryExpr"><lhs>PrimaryExpr</lhs><rhs><nt def="prod--Literal">Literal</nt>  |  <nt def="prod--VarRef">VarRef</nt>  |  <nt def="prod--ParenthesizedExpr">ParenthesizedExpr</nt>  |  <nt def="prod--ContextItemExpr">ContextItemExpr</nt>  |  <nt def="doc-xquery-FunctionCall">FunctionCall</nt>  |  <nt def="prod--OrderedExpr">OrderedExpr</nt>  |  <nt def="prod--UnorderedExpr">UnorderedExpr</nt>  |  <nt def="prod--Constructor">Constructor</nt></rhs></prod>
+            
+            
+            <prod num="NaN" id="doc-xquery-BlockExpr"><lhs>BlockExpr</lhs><rhs>"block"  <nt def="prod--Block">Block</nt></rhs></prod>
+          </scrap>
+          <glist>
+            <gitem>
+              <label>Category Rules:</label>
+              <def>
+                <p>If the final expression is non-updating, the block expression is non-updating.</p>
+                <p>If the final expression is updating, the block expression is updating.</p>
+              </def>
+            </gitem>
+            <gitem>
+              <label>Semantics:</label>
+              <def>
+                <p>A block expression consists of zero or more statements followed by an expression.</p>
+                <p>The statements are evaluated in the specified order. The side-effects of each statement are
+                  visible to the subsequent statements and, finally to the expression</p>
+                <p>After all the statements have been evaluated, the final expression is evaluated. 
+                The result of the block expression is
+                the <termref def="dt-xdm-instance">XDM instance</termref> and <termref def="dt-pul">pending update list</termref>
+                returned by the final expression.</p>
+              </def>
+            </gitem>
+          </glist>
+        </div2>
+      <div2 id="id-node-constructors-statements">
+        <head>Node Constructors</head>
+        <scrap headstyle="show"> 
+          <head/>
+          <prod num="NaN" id="doc-xquery-DirElemConstructor"><lhs>DirElemConstructor</lhs><rhs><nt def="prod--LessThanOpOrTagO">LessThanOpOrTagO</nt>  <nt def="prod--TagQName">TagQName</nt>  <nt def="doc-xquery-DirAttributeList">DirAttributeList</nt>  (<nt def="prod--EmptyTagClose">EmptyTagClose</nt>  |  (<nt def="prod--StartTagClose">StartTagClose</nt>  <nt def="prod--DirElemContent">DirElemContent</nt>*  <nt def="prod--EndTagOpen">EndTagOpen</nt>  <nt def="prod--EndTagQName">EndTagQName</nt>  <nt def="prod--S">S</nt>?  <nt def="prod--EndTagClose">EndTagClose</nt>))</rhs></prod> 
+          <prod num="NaN" id="doc-xquery-DirAttributeList"><lhs>DirAttributeList</lhs><rhs>(<nt def="prod--S">S</nt>  (<nt def="prod--TagQName">TagQName</nt>  <nt def="prod--S">S</nt>?  <nt def="prod--ValueIndicator">ValueIndicator</nt>  <nt def="prod--S">S</nt>?  <nt def="prod--DirAttributeValue">DirAttributeValue</nt>)?)*</rhs></prod> 
+          <prod num="NaN" id="doc-xquery-CDataSection"><lhs>CDataSection</lhs><rhs><nt def="prod--CdataSectionStart">CdataSectionStart</nt>  <nt def="prod--CDataSectionContents">CDataSectionContents</nt>  <nt def="prod--CdataSectionEnd">CdataSectionEnd</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-DirPIConstructor"><lhs>DirPIConstructor</lhs><rhs><nt def="prod--ProcessingInstructionStart">ProcessingInstructionStart</nt>  <nt def="prod--PITarget">PITarget</nt>  (<nt def="prod--S">S</nt>  <nt def="prod--DirPIContents">DirPIContents</nt>)?  <nt def="prod--ProcessingInstructionEnd">ProcessingInstructionEnd</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-DirCommentConstructor"><lhs>DirCommentConstructor</lhs><rhs><nt def="prod--XmlCommentStart">XmlCommentStart</nt>  <nt def="prod--DirCommentContents">DirCommentContents</nt>  <nt def="prod--XmlCommentEnd">XmlCommentEnd</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-CompElemConstructor"><lhs>CompElemConstructor</lhs><rhs>"element"  (<nt def="prod--QName">QName</nt>  |  (<nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>  <nt def="prod--Rbrace">Rbrace</nt>))  <nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--ContentExpr">ContentExpr</nt>?  <nt def="prod--Rbrace">Rbrace</nt></rhs></prod>    
+          <prod num="NaN" id="doc-xquery-CompAttrConstructor"><lhs>CompAttrConstructor</lhs><rhs>"attribute"  (<nt def="prod--QName">QName</nt>  |  (<nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>  <nt def="prod--Rbrace">Rbrace</nt>))  <nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>?  <nt def="prod--Rbrace">Rbrace</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-CompDocConstructor"><lhs>CompDocConstructor</lhs><rhs>"document"  <nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>  <nt def="prod--Rbrace">Rbrace</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-CompTextConstructor"><lhs>CompTextConstructor</lhs><rhs>"text"  <nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>  <nt def="prod--Rbrace">Rbrace</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-CompPIConstructor"><lhs>CompPIConstructor</lhs><rhs>"processing-instruction"  (<nt def="prod--NCName">NCName</nt>  |  (<nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>  <nt def="prod--Rbrace">Rbrace</nt>))  <nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>?  <nt def="prod--Rbrace">Rbrace</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-CompCommentConstructor"><lhs>CompCommentConstructor</lhs><rhs>"comment"  <nt def="prod--Lbrace">Lbrace</nt>  <nt def="prod--Expr">Expr</nt>  <nt def="prod--Rbrace">Rbrace</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-CommonContent"><lhs>CommonContent</lhs><rhs><nt def="prod--PredefinedEntityRef">PredefinedEntityRef</nt>  |  <nt def="prod--CharRef">CharRef</nt>  |  <nt def="prod--LCurlyBraceEscape">LCurlyBraceEscape</nt>  |  <nt def="prod--RCurlyBraceEscape">RCurlyBraceEscape</nt>  |  <nt def="prod--EnclosedExpr">EnclosedExpr</nt></rhs></prod>
+        </scrap>
+      </div2>
+    </div1>
+    <div1 id="id-side-effecting-expressions">
+      <head>Side-effecting expressions</head>
+      <p>An expression is side-effecting if:</p>
+      <ulist>
+        <item>
+          <p>It contains a call to a side-effecting function.</p>
+        </item>
+        <item>
+          <p>It contains an assign statement, and the affected variable is declared outside
+            of the expression.</p>
+        </item>
+        <item>
+          <p>It contains an apply statement, the operand of which is updating.</p>
+        </item>
+      </ulist>
+      <p>A side-effecting expression must be evaluated following an evaluation order.</p>
+      <div2 id="id-function-call">
+        <head>Function Calls</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-FunctionCall"><lhs>FunctionCall</lhs><rhs><nt def="prod--QName">QName</nt>  "("  (<nt def="prod--ExprSingle">ExprSingle</nt>  (","  <nt def="prod--ExprSingle">ExprSingle</nt>)*)?  ")"</rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                Argument expressions are evaluated from left to right, then the function is invoked.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-path-expr">
+        <head>Path Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-PathExpr"><lhs>PathExpr</lhs><rhs>(<nt def="prod--Slash">Slash</nt>  <nt def="doc-xquery-RelativePathExpr">RelativePathExpr</nt>?)<br/>|  (<nt def="prod--SlashSlash">SlashSlash</nt>  <nt def="doc-xquery-RelativePathExpr">RelativePathExpr</nt>)<br/>|  <nt def="doc-xquery-RelativePathExpr">RelativePathExpr</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-RelativePathExpr"><lhs>RelativePathExpr</lhs><rhs><nt def="prod--StepExpr">StepExpr</nt>  ((<nt def="prod--Slash">Slash</nt>  |  <nt def="prod--SlashSlash">SlashSlash</nt>)  <nt def="prod--StepExpr">StepExpr</nt>)*</rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                StepExpr are evaluated in order from left to right.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-predicate">
+        <head>Predicates</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-AxisStep"><lhs>AxisStep</lhs><rhs>(<nt def="prod--ReverseStep">ReverseStep</nt>  |  <nt def="prod--ForwardStep">ForwardStep</nt>)  <nt def="doc-xquery-PredicateList">PredicateList</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-FilterExpr"><lhs>FilterExpr</lhs><rhs><nt def="prod--PrimaryExpr">PrimaryExpr</nt>  <nt def="doc-xquery-PredicateList">PredicateList</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-PredicateList"><lhs>PredicateList</lhs><rhs><nt def="doc-xquery-Predicate">Predicate</nt>*</rhs></prod>
+          <prod num="NaN" id="doc-xquery-Predicate"><lhs>Predicate</lhs><rhs>"["  <nt def="prod--Expr">Expr</nt>  "]"</rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                First the reverse step, forward step or primary expression is evaluated, then predicates are evaluated from left to right.
+                Each predicate expression must be evaluated to completion before the next is evaluated.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-concat-expr">
+        <head>Concatenation Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-ConcatExpr"><lhs>ConcatExpr</lhs><rhs><nt def="prod--ExprSingle">ExprSingle</nt>  (","  <nt def="prod--ExprSingle">ExprSingle</nt>)*</rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                Operand expressions are evaluated once, from left to right. Side effects of each sequential operand expression are visible to subsequent operand expressions.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-node-constructors">
+        <head>Direct and Computed Node Constructors</head>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <olist>
+                <item><p>The name expression is evaluated (computed element/attribute/processing-instruction constructors only).</p></item>
+                <item><p>The direct attribute constructors are evaluated from left to right (direct element constructors only).</p></item>
+                <item><p>The child or value expressions are evaluated from left to right.</p></item>
+              </olist>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-FLWOR-expr">
+        <head>FLWOR Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-FLWORExpr"><lhs>FLWORExpr</lhs><rhs>(<nt def="doc-xquery-ForClause">ForClause</nt>  |  <nt def="doc-xquery-LetClause">LetClause</nt>)+  <nt def="doc-xquery-WhereClause">WhereClause</nt>?  <nt def="doc-xquery-OrderByClause">OrderByClause</nt>?  "return"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-ForClause"><lhs>ForClause</lhs><rhs>"for"  "$"  <nt def="prod--VarName">VarName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  <nt def="doc-xquery-PositionalVar">PositionalVar</nt>?  "in"  <nt def="prod--ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod--VarName">VarName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  <nt def="doc-xquery-PositionalVar">PositionalVar</nt>?  "in"  <nt def="prod--ExprSingle">ExprSingle</nt>)*</rhs></prod>
+          <prod num="NaN" id="doc-xquery-PositionalVar"><lhs>PositionalVar</lhs><rhs>"at"  "$"  <nt def="prod--VarName">VarName</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-LetClause"><lhs>LetClause</lhs><rhs>"let"  "$"  <nt def="prod--VarName">VarName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  ":="  <nt def="prod--ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod--VarName">VarName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  ":="  <nt def="prod--ExprSingle">ExprSingle</nt>)*</rhs></prod>
+          <prod num="NaN" id="doc-xquery-WhereClause"><lhs>WhereClause</lhs><rhs>"where"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-OrderByClause"><lhs>OrderByClause</lhs><rhs>(("order"  "by")  |  ("stable"  "order"  "by"))  <nt def="doc-xquery-OrderSpecList">OrderSpecList</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-OrderSpecList"><lhs>OrderSpecList</lhs><rhs><nt def="doc-xquery-OrderSpec">OrderSpec</nt>  (","  <nt def="doc-xquery-OrderSpec">OrderSpec</nt>)*</rhs></prod>
+          <prod num="NaN" id="doc-xquery-OrderSpec"><lhs>OrderSpec</lhs><rhs><nt def="prod--ExprSingle">ExprSingle</nt>  <nt def="doc-xquery-OrderModifier">OrderModifier</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-OrderModifier"><lhs>OrderModifier</lhs><rhs>(<nt def="prod--Ascending">Ascending</nt>  |  <nt def="prod--Descending">Descending</nt>)?  ("empty"  (<nt def="prod--Greatest">Greatest</nt>  |  <nt def="prod--Least">Least</nt>))?  ("collation"  <nt def="prod--URILiteral">URILiteral</nt>)?</rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <ulist>
+                <item><p>
+                  <emph>For Clause:</emph> The associated expression is evaluated first to produce the binding sequnce, then
+                  the next clause is evaluated once for each item in the binding sequence. Any side effects in the associated
+                  expression are visible to the evaluation of the next clause.
+                </p></item>
+                <item><p>
+                  <emph>Let Clause:</emph> The associated expression is evaluated first to produce the binding sequnce, then
+                  the next clause is evaluated. Any side effects in the associated
+                  expression are visible to the evaluation of the next clause.
+                </p></item>
+                <item><p>
+                  <emph>Where Clause:</emph> The where expression is evaluated once, then
+                  the next clause is evaluated. Any side effects in the where
+                  expression are visible to the evaluation of the next clause.
+                </p></item>
+                <item><p>
+                  <emph>Order By Clause:</emph> The orderspecs are evaluated from left to right on each tuple in the tuple stream.
+                  The tuple stream is reordered, then the next clause is evaluated.
+                </p></item>
+                <item><p>
+                  <emph>Return Clause:</emph> The return expresion is evaluated once.
+                </p></item>
+              </ulist>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-conditional-expr">
+        <head>Conditional Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-IfExpr"><lhs>IfExpr</lhs><rhs>"if"  "("  <nt def="prod--Expr">Expr</nt>  ")"  "then"  <nt def="prod--ExprSingle">ExprSingle</nt>  "else"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                The test expression is evaluated first. Next either the then expression or the else expression (but not both) is evaluated.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-quantified-expr">
+        <head>Quantified Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-QuantifiedExpr"><lhs>QuantifiedExpr</lhs><rhs>("some"  |  "every")  "$"  <nt def="prod--VarName">VarName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  "in"  <nt def="prod--ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod--VarName">VarName</nt>  <nt def="prod--TypeDeclaration">TypeDeclaration</nt>?  "in"  <nt def="prod--ExprSingle">ExprSingle</nt>)*  "satisfies"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                The quantified expression clauses are initially evaluated as specified
+                by <bibref ref="XQ10"/>, generating a tuple stream. Then the satisfies clause is evaluated once for each tuple in the tuple stream, in order. 
+                If the satisfies clause contains a sequential expression, the side effects of
+                each iteration are visible to subsequent evaluations of the return clause.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-typeswitch-expr">
+        <head>Typeswitch Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-TypeswitchExpr"><lhs>TypeswitchExpr</lhs><rhs>"typeswitch"  "("  <nt def="prod--Expr">Expr</nt>  ")"  <nt def="prod--CaseClause">CaseClause</nt>+  "default"  ("$"  <nt def="prod--VarName">VarName</nt>)?  "return"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                The operand expression is evaluated first. Then, exactly one of the return expressions is evaluated.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-update-expr">
+        <head>Insert, Delete, Replace, and Rename Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-InsertExpr"><lhs>InsertExpr</lhs><rhs>"insert"  ("node"  |  "nodes")  <nt def="doc-xquery-SourceExpr">SourceExpr</nt>  <nt def="doc-xquery-InsertExprTargetChoice">InsertExprTargetChoice</nt>  <nt def="doc-xquery-TargetExpr">TargetExpr</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-InsertExprTargetChoice"><lhs>InsertExprTargetChoice</lhs><rhs>(("as"  ("first"  |  "last"))?  "into")<br/>|  "after"<br/>|  "before"</rhs></prod>
+          <prod num="NaN" id="doc-xquery-DeleteExpr"><lhs>DeleteExpr</lhs><rhs>"delete"  ("node"  |  "nodes")  <nt def="doc-xquery-TargetExpr">TargetExpr</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-ReplaceExpr"><lhs>ReplaceExpr</lhs><rhs>"replace"  ("value"  "of")?  "node"  <nt def="doc-xquery-TargetExpr">TargetExpr</nt>  "with"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-RenameExpr"><lhs>RenameExpr</lhs><rhs>"rename"  "node"  <nt def="doc-xquery-TargetExpr">TargetExpr</nt>  "as"  <nt def="doc-xquery-NewNameExpr">NewNameExpr</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-SourceExpr"><lhs>SourceExpr</lhs><rhs><nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-TargetExpr"><lhs>TargetExpr</lhs><rhs><nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+          <prod num="NaN" id="doc-xquery-NewNameExpr"><lhs>NewNameExpr</lhs><rhs><nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                Order of evaluation for insert, delete, replace, and rename expressions is irrelevent since their operands
+                cannot be sequential expressions.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-transform-expr">
+        <head>Transform Expressions</head>
+        <scrap headstyle="show"><head/>
+          <prod num="NaN" id="doc-xquery-TransformExpr"><lhs>TransformExpr</lhs><rhs>"copy"  "$"  <nt def="prod--VarName">VarName</nt>  ":="  <nt def="prod--ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod--VarName">VarName</nt>  ":="  <nt def="prod--ExprSingle">ExprSingle</nt>)*  "modify"  <nt def="prod--ExprSingle">ExprSingle</nt>  "return"  <nt def="prod--ExprSingle">ExprSingle</nt></rhs></prod>
+        </scrap>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                Copy clauses are evaluated in order, then the modify expression is evaluated. Finally the return clause is evaluated.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+      <div2 id="id-other-expr">
+        <head>Other Expressions</head>
+        <p>
+          All expressions not listed above are extended as follows.
+          This includes the following kinds of expressions:
+        </p>
+        <ulist>
+          <item>
+            <p>Range expressions</p>
+          </item>
+          <item>
+            <p>Union, intersect, and except expressions</p>
+          </item>
+          <item>
+            <p>Arithmetic, comparison, and logical expressions</p>
+          </item>
+          <item>
+            <p>Ordered and unordered expressions</p>
+          </item>
+          <item>
+            <p>Instance of, cast, castable, and treat expressions</p>
+          </item>
+          <item>
+            <p>Validate expressions</p>
+          </item>
+          <item>
+            <p>Extension expressions (pragmas)</p>
+          </item>
+        </ulist>
+        <glist>
+          <gitem>
+            <label>Evaluation Order:</label>
+            <def>
+              <p>
+                Operand expressions are evaluated once, from left to right.
+              </p>
+            </def>
+          </gitem>
+        </glist>
+      </div2>
+    </div1>
+    
+    <div1 id="id-example">
+      <head>Example</head>
+      <p>The following function returns <code>true</code> or <code>false</code>
+         according to whether its parameter is a known user name, and logs the event:</p>
+      <eg xml:space="preserve">declare %side-effecting function validate-and-log($username as xs:string) 
+     as xs:boolean {
+        variable $log as document-node() := fn:doc("log.xml"); 
+        variable $entry as element() :=
+           &lt;access-attempt&gt;
+              &lt;timestamp&gt;{fn:current-dateTime()}&lt;/timestamp&gt;
+              &lt;user-name&gt;{$username}&lt;/user-name&gt;
+              &lt;access-allowed/&gt;
+           &lt;/access-attempt&gt; ;
+        variable  $result as xs:boolean;
+        if ($username = doc("users.xml")/current-users/user/name )
+        then {
+           replace value of node $entry/access-allowed with "Yes";
+           $result := true();
+        } else {
+           replace value of node $entry/access-allowed with "No";
+           $result := false();
+        };
+        insert node $entry as last into $log; 
+        fn:put($log, "log.xml"); 
+        exit returning $result;
+      } 
+</eg>
+    </div1>
+    
+  </body>
+
+  <back>
+<div1 id="id-grammar">
+		<head>EBNF for XQuery 1.0 Grammar with Scripting Extensions</head>
+
+<p>The EBNF in this document and in this section is aligned with
+the current XML Query 1.0 grammar (see <bibref ref="XQ10"/>).</p>
+
+		<scrap role="non-terminal-structure-expand" headstyle="show"><head/>
+<prod num="" id="prod-xquery-QueryList"><lhs>QueryList</lhs><rhs><nt def="prod-xquery-Module">Module</nt>  ("%%%"  <nt def="prod-xquery-Module">Module</nt>?)*</rhs></prod><prod num="" id="prod-xquery-Module"><lhs>Module</lhs><rhs><nt def="prod-xquery-VersionDecl">VersionDecl</nt>?  (<nt def="prod-xquery-LibraryModule">LibraryModule</nt>  |  <nt def="prod-xquery-MainModule">MainModule</nt>)</rhs></prod><prod num="" id="prod-xquery-VersionDecl"><lhs>VersionDecl</lhs><rhs>"xquery"  "version"  <nt def="prod-xquery-StringLiteral">StringLiteral</nt>  ("encoding"  <nt def="prod-xquery-StringLiteral">StringLiteral</nt>)?  <nt def="prod-xquery-Separator">Separator</nt></rhs></prod><prod num="" id="prod-xquery-MainModule"><lhs>MainModule</lhs><rhs><nt def="prod-xquery-Prolog">Prolog</nt>  <nt def="prod-xquery-QueryBody">QueryBody</nt></rhs></prod><prod num="" id="prod-xquery-LibraryModule"><lhs>LibraryModule</lhs><rhs><nt def="prod-xquery-ModuleDecl">ModuleDecl</nt>  <nt def="prod-xquery-Prolog">Prolog</nt></rhs></prod><prod num="" id="prod-xquery-ModuleDecl"><lhs>ModuleDecl</lhs><rhs>"module"  "namespace"  <nt def="prod-xquery-NCName">NCName</nt>  "="  <nt def="prod-xquery-URILiteral">URILiteral</nt>  <nt def="prod-xquery-Separator">Separator</nt></rhs></prod><prod num="" id="prod-xquery-Prolog"><lhs>Prolog</lhs><rhs>((<nt def="prod-xquery-DefaultNamespaceDecl">DefaultNamespaceDecl</nt>  |  <nt def="prod-xquery-Setter">Setter</nt>  |  <nt def="prod-xquery-NamespaceDecl">NamespaceDecl</nt>  |  <nt def="prod-xquery-Import">Import</nt>)  <nt def="prod-xquery-Separator">Separator</nt>)*  ((<nt def="prod-xquery-VarDecl">VarDecl</nt>  |  <nt def="prod-xquery-FunctionDecl">FunctionDecl</nt>  |  <nt def="prod-xquery-OptionDecl">OptionDecl</nt>)  <nt def="prod-xquery-Separator">Separator</nt>)*</rhs></prod><prod num="" id="prod-xquery-Setter"><lhs>Setter</lhs><rhs><nt def="prod-xquery-BoundarySpaceDecl">BoundarySpaceDecl</nt>  |  <nt def="prod-xquery-DefaultCollationDecl">DefaultCollationDecl</nt>  |  <nt def="prod-xquery-BaseURIDecl">BaseURIDecl</nt>  |  <nt def="prod-xquery-ConstructionDecl">ConstructionDecl</nt>  |  <nt def="prod-xquery-OrderingModeDecl">OrderingModeDecl</nt>  |  <nt def="prod-xquery-EmptyOrderDecl">EmptyOrderDecl</nt>  |  <nt def="prod-xquery-RevalidationDecl">RevalidationDecl</nt>  |  <nt def="prod-xquery-CopyNamespacesDecl">CopyNamespacesDecl</nt></rhs></prod><prod num="" id="prod-xquery-Import"><lhs>Import</lhs><rhs><nt def="prod-xquery-SchemaImport">SchemaImport</nt>  |  <nt def="prod-xquery-ModuleImport">ModuleImport</nt></rhs></prod><prod num="" id="prod-xquery-Separator"><lhs>Separator</lhs><rhs>";"</rhs></prod><prod num="" id="prod-xquery-NamespaceDecl"><lhs>NamespaceDecl</lhs><rhs>"declare"  "namespace"  <nt def="prod-xquery-NCName">NCName</nt>  "="  <nt def="prod-xquery-URILiteral">URILiteral</nt></rhs></prod><prod num="" id="prod-xquery-BoundarySpaceDecl"><lhs>BoundarySpaceDecl</lhs><rhs>"declare"  "boundary-space"  ("preserve"  |  "strip")</rhs></prod><prod num="" id="prod-xquery-DefaultNamespaceDecl"><lhs>DefaultNamespaceDecl</lhs><rhs>"declare"  "default"  ("element"  |  "function")  "namespace"  <nt def="prod-xquery-URILiteral">URILiteral</nt></rhs></prod><prod num="" id="prod-xquery-OptionDecl"><lhs>OptionDecl</lhs><rhs>"declare"  "option"  <nt def="prod-xquery-QName">QName</nt>  <nt def="prod-xquery-StringLiteral">StringLiteral</nt></rhs></prod><prod num="" id="prod-xquery-OrderingModeDecl"><lhs>OrderingModeDecl</lhs><rhs>"declare"  "ordering"  ("ordered"  |  "unordered")</rhs></prod><prod num="" id="prod-xquery-EmptyOrderDecl"><lhs>EmptyOrderDecl</lhs><rhs>"declare"  "default"  "order"  "empty"  (<nt def="prod-xquery-Greatest">Greatest</nt>  |  <nt def="prod-xquery-Least">Least</nt>)</rhs></prod><prod num="" id="prod-xquery-CopyNamespacesDecl"><lhs>CopyNamespacesDecl</lhs><rhs>"declare"  "copy-namespaces"  <nt def="prod-xquery-PreserveMode">PreserveMode</nt>  ","  <nt def="prod-xquery-InheritMode">InheritMode</nt></rhs></prod><prod num="" id="prod-xquery-PreserveMode"><lhs>PreserveMode</lhs><rhs>"preserve"  |  "no-preserve"</rhs></prod><prod num="" id="prod-xquery-InheritMode"><lhs>InheritMode</lhs><rhs>"inherit"  |  "no-inherit"</rhs></prod><prod num="" id="prod-xquery-DefaultCollationDecl"><lhs>DefaultCollationDecl</lhs><rhs>"declare"  "default"  "collation"  <nt def="prod-xquery-URILiteral">URILiteral</nt></rhs></prod><prod num="" id="prod-xquery-BaseURIDecl"><lhs>BaseURIDecl</lhs><rhs>"declare"  "base-uri"  <nt def="prod-xquery-URILiteral">URILiteral</nt></rhs></prod><prod num="" id="prod-xquery-SchemaImport"><lhs>SchemaImport</lhs><rhs>"import"  "schema"  <nt def="prod-xquery-SchemaPrefix">SchemaPrefix</nt>?  <nt def="prod-xquery-URILiteral">URILiteral</nt>  ("at"  <nt def="prod-xquery-URILiteral">URILiteral</nt>  (","  <nt def="prod-xquery-URILiteral">URILiteral</nt>)*)?</rhs></prod><prod num="" id="prod-xquery-SchemaPrefix"><lhs>SchemaPrefix</lhs><rhs>("namespace"  <nt def="prod-xquery-NCName">NCName</nt>  "=")  |  ("default"  "element"  "namespace")</rhs></prod><prod num="" id="prod-xquery-ModuleImport"><lhs>ModuleImport</lhs><rhs>"import"  "module"  ("namespace"  <nt def="prod-xquery-NCName">NCName</nt>  "=")?  <nt def="prod-xquery-URILiteral">URILiteral</nt>  ("at"  <nt def="prod-xquery-URILiteral">URILiteral</nt>  (","  <nt def="prod-xquery-URILiteral">URILiteral</nt>)*)?</rhs></prod><prod num="" id="prod-xquery-VarDecl"><lhs>VarDecl</lhs><rhs>"declare"  ("unassignable"?  |  "assignable")  "variable"  "$"  <nt def="prod-xquery-QName">QName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  ((":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)  |  <nt def="prod-xquery-External">External</nt>)</rhs></prod><prod num="" id="prod-xquery-ConstructionDecl"><lhs>ConstructionDecl</lhs><rhs>"declare"  "construction"  ("strip"  |  "preserve")</rhs></prod><prod num="" id="prod-xquery-FunctionDecl"><lhs>FunctionDecl</lhs><rhs>("declare"  ("simple"?  |  "updating")  "function"  <nt def="prod-xquery-QName">QName</nt>  "("  <nt def="prod-xquery-ParamList">ParamList</nt>?  ")"  ("as"  <nt def="prod-xquery-SequenceType">SequenceType</nt>)?  (<nt def="prod-xquery-EnclosedExpr">EnclosedExpr</nt>  |  <nt def="prod-xquery-External">External</nt>))<br/>|  ("declare"  "sequential"  "function"  <nt def="prod-xquery-QName">QName</nt>  "("  <nt def="prod-xquery-ParamList">ParamList</nt>?  ")"  ("as"  <nt def="prod-xquery-SequenceType">SequenceType</nt>)?  (<nt def="prod-xquery-Block">Block</nt>  |  <nt def="prod-xquery-External">External</nt>))</rhs></prod><prod num="" id="prod-xquery-ParamList"><lhs>ParamList</lhs><rhs><nt def="prod-xquery-Param">Param</nt>  (","  <nt def="prod-xquery-Param">Param</nt>)*</rhs></prod><prod num="" id="prod-xquery-Param"><lhs>Param</lhs><rhs>"$"  <nt def="prod-xquery-QName">QName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?</rhs></prod><prod num="" id="prod-xquery-EnclosedExpr"><lhs>EnclosedExpr</lhs><rhs><nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-QueryBody"><lhs>QueryBody</lhs><rhs><nt def="prod-xquery-Expr">Expr</nt></rhs></prod><prod num="" id="prod-xquery-Expr"><lhs>Expr</lhs><rhs><nt def="prod-xquery-ApplyExpr">ApplyExpr</nt></rhs></prod><prod num="" id="prod-xquery-ApplyExpr"><lhs>ApplyExpr</lhs><rhs><nt def="prod-xquery-ConcatExpr">ConcatExpr</nt>  (";"  (<nt def="prod-xquery-ConcatExpr">ConcatExpr</nt>  ";")*)?</rhs></prod><prod num="" id="prod-xquery-ConcatExpr"><lhs>ConcatExpr</lhs><rhs><nt def="prod-xquery-ExprSingle">ExprSingle</nt>  (","  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)*</rhs></prod><prod num="" id="prod-xquery-ExprSingle"><lhs>ExprSingle</lhs><rhs><nt def="prod-xquery-FLWORExpr">FLWORExpr</nt><br/>|  <nt def="prod-xquery-QuantifiedExpr">QuantifiedExpr</nt><br/>|  <nt def="prod-xquery-TypeswitchExpr">TypeswitchExpr</nt><br/>|  <nt def="prod-xquery-IfExpr">IfExpr</nt><br/>|  <nt def="prod-xquery-InsertExpr">InsertExpr</nt><br/>|  <nt def="prod-xquery-DeleteExpr">DeleteExpr</nt><br/>|  <nt def="prod-xquery-RenameExpr">RenameExpr</nt><br/>|  <nt def="prod-xquery-ReplaceExpr">ReplaceExpr</nt><br/>|  <nt def="prod-xquery-TransformExpr">TransformExpr</nt><br/>|  <nt def="prod-xquery-BlockExpr">BlockExpr</nt><br/>|  <nt def="prod-xquery-AssignmentExpr">AssignmentExpr</nt><br/>|  <nt def="prod-xquery-ExitExpr">ExitExpr</nt><br/>|  <nt def="prod-xquery-WhileExpr">WhileExpr</nt><br/>|  <nt def="prod-xquery-OrExpr">OrExpr</nt></rhs></prod><prod num="" id="prod-xquery-FLWORExpr"><lhs>FLWORExpr</lhs><rhs>(<nt def="prod-xquery-ForClause">ForClause</nt>  |  <nt def="prod-xquery-LetClause">LetClause</nt>)+  <nt def="prod-xquery-WhereClause">WhereClause</nt>?  <nt def="prod-xquery-OrderByClause">OrderByClause</nt>?  "return"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-ForClause"><lhs>ForClause</lhs><rhs>"for"  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  <nt def="prod-xquery-PositionalVar">PositionalVar</nt>?  "in"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  <nt def="prod-xquery-PositionalVar">PositionalVar</nt>?  "in"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)*</rhs></prod><prod num="" id="prod-xquery-PositionalVar"><lhs>PositionalVar</lhs><rhs>"at"  "$"  <nt def="prod-xquery-VarName">VarName</nt></rhs></prod><prod num="" id="prod-xquery-LetClause"><lhs>LetClause</lhs><rhs>"let"  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  ":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  ":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)*</rhs></prod><prod num="" id="prod-xquery-WhereClause"><lhs>WhereClause</lhs><rhs>"where"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-OrderByClause"><lhs>OrderByClause</lhs><rhs>(("order"  "by")  |  ("stable"  "order"  "by"))  <nt def="prod-xquery-OrderSpecList">OrderSpecList</nt></rhs></prod><prod num="" id="prod-xquery-OrderSpecList"><lhs>OrderSpecList</lhs><rhs><nt def="prod-xquery-OrderSpec">OrderSpec</nt>  (","  <nt def="prod-xquery-OrderSpec">OrderSpec</nt>)*</rhs></prod><prod num="" id="prod-xquery-OrderSpec"><lhs>OrderSpec</lhs><rhs><nt def="prod-xquery-ExprSingle">ExprSingle</nt>  <nt def="prod-xquery-OrderModifier">OrderModifier</nt></rhs></prod><prod num="" id="prod-xquery-OrderModifier"><lhs>OrderModifier</lhs><rhs>(<nt def="prod-xquery-Ascending">Ascending</nt>  |  <nt def="prod-xquery-Descending">Descending</nt>)?  ("empty"  (<nt def="prod-xquery-Greatest">Greatest</nt>  |  <nt def="prod-xquery-Least">Least</nt>))?  ("collation"  <nt def="prod-xquery-URILiteral">URILiteral</nt>)?</rhs></prod><prod num="" id="prod-xquery-QuantifiedExpr"><lhs>QuantifiedExpr</lhs><rhs>("some"  |  "every")  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  "in"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  "in"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)*  "satisfies"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-TypeswitchExpr"><lhs>TypeswitchExpr</lhs><rhs>"typeswitch"  "("  <nt def="prod-xquery-Expr">Expr</nt>  ")"  <nt def="prod-xquery-CaseClause">CaseClause</nt>+  "default"  ("$"  <nt def="prod-xquery-VarName">VarName</nt>)?  "return"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-CaseClause"><lhs>CaseClause</lhs><rhs>"case"  ("$"  <nt def="prod-xquery-VarName">VarName</nt>  "as")?  <nt def="prod-xquery-SequenceType">SequenceType</nt>  "return"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-IfExpr"><lhs>IfExpr</lhs><rhs>"if"  "("  <nt def="prod-xquery-Expr">Expr</nt>  ")"  "then"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  "else"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-OrExpr"><lhs>OrExpr</lhs><rhs><nt def="prod-xquery-AndExpr">AndExpr</nt> ( "or"  <nt def="prod-xquery-AndExpr">AndExpr</nt> )*</rhs></prod><prod num="" id="prod-xquery-AndExpr"><lhs>AndExpr</lhs><rhs><nt def="prod-xquery-ComparisonExpr">ComparisonExpr</nt> ( "and"  <nt def="prod-xquery-ComparisonExpr">ComparisonExpr</nt> )*</rhs></prod><prod num="" id="prod-xquery-ComparisonExpr"><lhs>ComparisonExpr</lhs><rhs><nt def="prod-xquery-RangeExpr">RangeExpr</nt> ( (<nt def="prod-xquery-ValueComp">ValueComp</nt><br/>|  <nt def="prod-xquery-GeneralComp">GeneralComp</nt><br/>|  <nt def="prod-xquery-NodeComp">NodeComp</nt>)  <nt def="prod-xquery-RangeExpr">RangeExpr</nt> )?</rhs></prod><prod num="" id="prod-xquery-RangeExpr"><lhs>RangeExpr</lhs><rhs><nt def="prod-xquery-AdditiveExpr">AdditiveExpr</nt> ( "to"  <nt def="prod-xquery-AdditiveExpr">AdditiveExpr</nt> )?</rhs></prod><prod num="" id="prod-xquery-AdditiveExpr"><lhs>AdditiveExpr</lhs><rhs><nt def="prod-xquery-MultiplicativeExpr">MultiplicativeExpr</nt> ( (<nt def="prod-xquery-Plus">Plus</nt>  |  <nt def="prod-xquery-Minus">Minus</nt>)  <nt def="prod-xquery-MultiplicativeExpr">MultiplicativeExpr</nt> )*</rhs></prod><prod num="" id="prod-xquery-MultiplicativeExpr"><lhs>MultiplicativeExpr</lhs><rhs><nt def="prod-xquery-UnionExpr">UnionExpr</nt> ( ("*"  |  "div"  |  "idiv"  |  "mod")  <nt def="prod-xquery-UnionExpr">UnionExpr</nt> )*</rhs></prod><prod num="" id="prod-xquery-UnionExpr"><lhs>UnionExpr</lhs><rhs><nt def="prod-xquery-IntersectExceptExpr">IntersectExceptExpr</nt> ( ("union"  |  "|")  <nt def="prod-xquery-IntersectExceptExpr">IntersectExceptExpr</nt> )*</rhs></prod><prod num="" id="prod-xquery-IntersectExceptExpr"><lhs>IntersectExceptExpr</lhs><rhs><nt def="prod-xquery-InstanceofExpr">InstanceofExpr</nt> ( ("intersect"  |  "except")  <nt def="prod-xquery-InstanceofExpr">InstanceofExpr</nt> )*</rhs></prod><prod num="" id="prod-xquery-InstanceofExpr"><lhs>InstanceofExpr</lhs><rhs><nt def="prod-xquery-TreatExpr">TreatExpr</nt> ( "instance"  "of"  <nt def="prod-xquery-SequenceType">SequenceType</nt> )?</rhs></prod><prod num="" id="prod-xquery-TreatExpr"><lhs>TreatExpr</lhs><rhs><nt def="prod-xquery-CastableExpr">CastableExpr</nt> ( "treat"  "as"  <nt def="prod-xquery-SequenceType">SequenceType</nt> )?</rhs></prod><prod num="" id="prod-xquery-CastableExpr"><lhs>CastableExpr</lhs><rhs><nt def="prod-xquery-CastExpr">CastExpr</nt> ( "castable"  "as"  <nt def="prod-xquery-SingleType">SingleType</nt> )?</rhs></prod><prod num="" id="prod-xquery-CastExpr"><lhs>CastExpr</lhs><rhs><nt def="prod-xquery-UnaryExpr">UnaryExpr</nt> ( "cast"  "as"  <nt def="prod-xquery-SingleType">SingleType</nt> )?</rhs></prod><prod num="" id="prod-xquery-UnaryExpr"><lhs>UnaryExpr</lhs><rhs>(<nt def="prod-xquery-Minus">Minus</nt>  |  <nt def="prod-xquery-Plus">Plus</nt>)* <nt def="prod-xquery-ValueExpr">ValueExpr</nt></rhs></prod><prod num="" id="prod-xquery-ValueExpr"><lhs>ValueExpr</lhs><rhs><nt def="prod-xquery-ValidateExpr">ValidateExpr</nt>  |  <nt def="prod-xquery-PathExpr">PathExpr</nt>  |  <nt def="prod-xquery-ExtensionExpr">ExtensionExpr</nt></rhs></prod><prod num="" id="prod-xquery-GeneralComp"><lhs>GeneralComp</lhs><rhs>"="  |  "!="  |  <nt def="prod-xquery-LessThanOpOrTagO">LessThanOpOrTagO</nt>  |  "&lt;="  |  "&gt;"  |  "&gt;="</rhs></prod><prod num="" id="prod-xquery-ValueComp"><lhs>ValueComp</lhs><rhs>"eq"  |  "ne"  |  "lt"  |  "le"  |  "gt"  |  "ge"</rhs></prod><prod num="" id="prod-xquery-NodeComp"><lhs>NodeComp</lhs><rhs>"is"  |  "&lt;&lt;"  |  "&gt;&gt;"</rhs></prod><prod num="" id="prod-xquery-ValidateExpr"><lhs>ValidateExpr</lhs><rhs>"validate"  <nt def="prod-xquery-ValidationMode">ValidationMode</nt>?  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-ValidationMode"><lhs>ValidationMode</lhs><rhs>"lax"  |  "strict"</rhs></prod><prod num="" id="prod-xquery-ExtensionExpr"><lhs>ExtensionExpr</lhs><rhs><nt def="prod-xquery-Pragma">Pragma</nt>+  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>?  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-Pragma"><lhs>Pragma</lhs><rhs><nt def="prod-xquery-PragmaOpen">PragmaOpen</nt>  <nt def="prod-xquery-S">S</nt>?  <nt def="prod-xquery-QNameForPragma">QNameForPragma</nt>  (<nt def="prod-xquery-S">S</nt>  <nt def="prod-xquery-PragmaContents">PragmaContents</nt>)?  <nt def="prod-xquery-PragmaClose">PragmaClose</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-PragmaContents"><lhs>PragmaContents</lhs><rhs>(<nt def="prod-xquery-ExtensionContentChar">ExtensionContentChar</nt>* - (Char* '#)' Char*))</rhs></prod><prod num="" id="prod-xquery-PathExpr"><lhs>PathExpr</lhs><rhs>(<nt def="prod-xquery-Slash">Slash</nt>  <nt def="prod-xquery-RelativePathExpr">RelativePathExpr</nt>?)<br/>|  (<nt def="prod-xquery-SlashSlash">SlashSlash</nt>  <nt def="prod-xquery-RelativePathExpr">RelativePathExpr</nt>)<br/>|  <nt def="prod-xquery-RelativePathExpr">RelativePathExpr</nt></rhs><com><phrase><xspecref ref="parse-note-leading-lone-slash" spec="XQ">gn: leading-lone-slash</xspecref></phrase></com></prod><prod num="" id="prod-xquery-RelativePathExpr"><lhs>RelativePathExpr</lhs><rhs><nt def="prod-xquery-StepExpr">StepExpr</nt>  ((<nt def="prod-xquery-Slash">Slash</nt>  |  <nt def="prod-xquery-SlashSlash">SlashSlash</nt>)  <nt def="prod-xquery-StepExpr">StepExpr</nt>)*</rhs></prod><prod num="" id="prod-xquery-StepExpr"><lhs>StepExpr</lhs><rhs><nt def="prod-xquery-FilterExpr">FilterExpr</nt>  |  <nt def="prod-xquery-AxisStep">AxisStep</nt></rhs></prod><prod num="" id="prod-xquery-AxisStep"><lhs>AxisStep</lhs><rhs>(<nt def="prod-xquery-ReverseStep">ReverseStep</nt>  |  <nt def="prod-xquery-ForwardStep">ForwardStep</nt>)  <nt def="prod-xquery-PredicateList">PredicateList</nt></rhs></prod><prod num="" id="prod-xquery-ForwardStep"><lhs>ForwardStep</lhs><rhs>(<nt def="prod-xquery-ForwardAxis">ForwardAxis</nt>  <nt def="prod-xquery-NodeTest">NodeTest</nt>)  |  <nt def="prod-xquery-AbbrevForwardStep">AbbrevForwardStep</nt></rhs></prod><prod num="" id="prod-xquery-ForwardAxis"><lhs>ForwardAxis</lhs><rhs>("child"  "::")<br/>|  ("descendant"  "::")<br/>|  ("attribute"  "::")<br/>|  ("self"  "::")<br/>|  ("descendant-or-self"  "::")<br/>|  ("following-sibling"  "::")<br/>|  ("following"  "::")</rhs></prod><prod num="" id="prod-xquery-AbbrevForwardStep"><lhs>AbbrevForwardStep</lhs><rhs>"@"?  <nt def="prod-xquery-NodeTest">NodeTest</nt></rhs></prod><prod num="" id="prod-xquery-ReverseStep"><lhs>ReverseStep</lhs><rhs>(<nt def="prod-xquery-ReverseAxis">ReverseAxis</nt>  <nt def="prod-xquery-NodeTest">NodeTest</nt>)  |  <nt def="prod-xquery-AbbrevReverseStep">AbbrevReverseStep</nt></rhs></prod><prod num="" id="prod-xquery-ReverseAxis"><lhs>ReverseAxis</lhs><rhs>("parent"  "::")<br/>|  ("ancestor"  "::")<br/>|  ("preceding-sibling"  "::")<br/>|  ("preceding"  "::")<br/>|  ("ancestor-or-self"  "::")</rhs></prod><prod num="" id="prod-xquery-AbbrevReverseStep"><lhs>AbbrevReverseStep</lhs><rhs>".."</rhs></prod><prod num="" id="prod-xquery-NodeTest"><lhs>NodeTest</lhs><rhs><nt def="prod-xquery-KindTest">KindTest</nt>  |  <nt def="prod-xquery-NameTest">NameTest</nt></rhs></prod><prod num="" id="prod-xquery-NameTest"><lhs>NameTest</lhs><rhs><nt def="prod-xquery-QName">QName</nt>  |  <nt def="prod-xquery-Wildcard">Wildcard</nt></rhs></prod><prod num="" id="prod-xquery-Wildcard"><lhs>Wildcard</lhs><rhs>"*"<br/>|  <nt def="prod-xquery-NCNameColonStar">NCNameColonStar</nt><br/>|  <nt def="prod-xquery-StarColonNCName">StarColonNCName</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-FilterExpr"><lhs>FilterExpr</lhs><rhs><nt def="prod-xquery-PrimaryExpr">PrimaryExpr</nt>  <nt def="prod-xquery-PredicateList">PredicateList</nt></rhs></prod><prod num="" id="prod-xquery-PredicateList"><lhs>PredicateList</lhs><rhs><nt def="prod-xquery-Predicate">Predicate</nt>*</rhs></prod><prod num="" id="prod-xquery-Predicate"><lhs>Predicate</lhs><rhs>"["  <nt def="prod-xquery-Expr">Expr</nt>  "]"</rhs></prod><prod num="" id="prod-xquery-PrimaryExpr"><lhs>PrimaryExpr</lhs><rhs><nt def="prod-xquery-Literal">Literal</nt>  |  <nt def="prod-xquery-VarRef">VarRef</nt>  |  <nt def="prod-xquery-ParenthesizedExpr">ParenthesizedExpr</nt>  |  <nt def="prod-xquery-ContextItemExpr">ContextItemExpr</nt>  |  <nt def="prod-xquery-FunctionCall">FunctionCall</nt>  |  <nt def="prod-xquery-OrderedExpr">OrderedExpr</nt>  |  <nt def="prod-xquery-UnorderedExpr">UnorderedExpr</nt>  |  <nt def="prod-xquery-Constructor">Constructor</nt></rhs></prod><prod num="" id="prod-xquery-Literal"><lhs>Literal</lhs><rhs><nt def="prod-xquery-NumericLiteral">NumericLiteral</nt>  |  <nt def="prod-xquery-StringLiteral">StringLiteral</nt></rhs></prod><prod num="" id="prod-xquery-NumericLiteral"><lhs>NumericLiteral</lhs><rhs><nt def="prod-xquery-IntegerLiteral">IntegerLiteral</nt>  |  <nt def="prod-xquery-DecimalLiteral">DecimalLiteral</nt>  |  <nt def="prod-xquery-DoubleLiteral">DoubleLiteral</nt></rhs></prod><prod num="" id="prod-xquery-VarRef"><lhs>VarRef</lhs><rhs>"$"  <nt def="prod-xquery-VarName">VarName</nt></rhs></prod><prod num="" id="prod-xquery-VarName"><lhs>VarName</lhs><rhs><nt def="prod-xquery-QName">QName</nt></rhs></prod><prod num="" id="prod-xquery-ParenthesizedExpr"><lhs>ParenthesizedExpr</lhs><rhs>"("  <nt def="prod-xquery-Expr">Expr</nt>?  ")"</rhs></prod><prod num="" id="prod-xquery-ContextItemExpr"><lhs>ContextItemExpr</lhs><rhs>"."</rhs></prod><prod num="" id="prod-xquery-OrderedExpr"><lhs>OrderedExpr</lhs><rhs>"ordered"  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-UnorderedExpr"><lhs>UnorderedExpr</lhs><rhs>"unordered"  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-FunctionCall"><lhs>FunctionCall</lhs><rhs><nt def="prod-xquery-QName">QName</nt>  "("  (<nt def="prod-xquery-ExprSingle">ExprSingle</nt>  (","  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)*)?  ")"</rhs><com><loc href="#parse-note-sx-reserved-function-names">gn: sx-reserved-function-names</loc></com><com><phrase><xspecref ref="parse-note-parens" spec="XQ">gn: parens</xspecref></phrase></com></prod><prod num="" id="prod-xquery-Constructor"><lhs>Constructor</lhs><rhs><nt def="prod-xquery-DirectConstructor">DirectConstructor</nt><br/>|  <nt def="prod-xquery-ComputedConstructor">ComputedConstructor</nt></rhs></prod><prod num="" id="prod-xquery-DirectConstructor"><lhs>DirectConstructor</lhs><rhs><nt def="prod-xquery-DirElemConstructor">DirElemConstructor</nt><br/>|  <nt def="prod-xquery-DirCommentConstructor">DirCommentConstructor</nt><br/>|  <nt def="prod-xquery-DirPIConstructor">DirPIConstructor</nt></rhs></prod><prod num="" id="prod-xquery-DirElemConstructor"><lhs>DirElemConstructor</lhs><rhs><nt def="prod-xquery-LessThanOpOrTagO">LessThanOpOrTagO</nt>  <nt def="prod-xquery-TagQName">TagQName</nt>  <nt def="prod-xquery-DirAttributeList">DirAttributeList</nt>  (<nt def="prod-xquery-EmptyTagClose">EmptyTagClose</nt>  |  (<nt def="prod-xquery-StartTagClose">StartTagClose</nt>  <nt def="prod-xquery-DirElemContent">DirElemContent</nt>*  <nt def="prod-xquery-EndTagOpen">EndTagOpen</nt>  <nt def="prod-xquery-EndTagQName">EndTagQName</nt>  <nt def="prod-xquery-S">S</nt>?  <nt def="prod-xquery-EndTagClose">EndTagClose</nt>))</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-DirAttributeList"><lhs>DirAttributeList</lhs><rhs>(<nt def="prod-xquery-S">S</nt>  (<nt def="prod-xquery-TagQName">TagQName</nt>  <nt def="prod-xquery-S">S</nt>?  <nt def="prod-xquery-ValueIndicator">ValueIndicator</nt>  <nt def="prod-xquery-S">S</nt>?  <nt def="prod-xquery-DirAttributeValue">DirAttributeValue</nt>)?)*</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-DirAttributeValue"><lhs>DirAttributeValue</lhs><rhs>(<nt def="prod-xquery-OpenQuot">OpenQuot</nt>  (<nt def="prod-xquery-EscapeQuot">EscapeQuot</nt>  |  <nt def="prod-xquery-QuotAttrValueContent">QuotAttrValueContent</nt>)*  <nt def="prod-xquery-CloseQuot">CloseQuot</nt>)<br/>|  (<nt def="prod-xquery-OpenApos">OpenApos</nt>  (<nt def="prod-xquery-EscapeApos">EscapeApos</nt>  |  <nt def="prod-xquery-AposAttrValueContent">AposAttrValueContent</nt>)*  <nt def="prod-xquery-CloseApos">CloseApos</nt>)</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-QuotAttrValueContent"><lhs>QuotAttrValueContent</lhs><rhs><nt def="prod-xquery-QuotAttrContentChar">QuotAttrContentChar</nt><br/>|  <nt def="prod-xquery-CommonContent">CommonContent</nt></rhs></prod><prod num="" id="prod-xquery-AposAttrValueContent"><lhs>AposAttrValueContent</lhs><rhs><nt def="prod-xquery-AposAttrContentChar">AposAttrContentChar</nt><br/>|  <nt def="prod-xquery-CommonContent">CommonContent</nt></rhs></prod><prod num="" id="prod-xquery-DirElemContent"><lhs>DirElemContent</lhs><rhs><nt def="prod-xquery-DirectConstructor">DirectConstructor</nt><br/>|  <nt def="prod-xquery-CDataSection">CDataSection</nt><br/>|  <nt def="prod-xquery-CommonContent">CommonContent</nt><br/>|  <nt def="prod-xquery-ElementContentChar">ElementContentChar</nt></rhs></prod><prod num="" id="prod-xquery-CommonContent"><lhs>CommonContent</lhs><rhs><nt def="prod-xquery-PredefinedEntityRef">PredefinedEntityRef</nt>  |  <nt def="prod-xquery-CharRef">CharRef</nt>  |  <nt def="prod-xquery-LCurlyBraceEscape">LCurlyBraceEscape</nt>  |  <nt def="prod-xquery-RCurlyBraceEscape">RCurlyBraceEscape</nt>  |  <nt def="prod-xquery-EnclosedExpr">EnclosedExpr</nt></rhs></prod><prod num="" id="prod-xquery-DirCommentConstructor"><lhs>DirCommentConstructor</lhs><rhs><nt def="prod-xquery-XmlCommentStart">XmlCommentStart</nt>  <nt def="prod-xquery-DirCommentContents">DirCommentContents</nt>  <nt def="prod-xquery-XmlCommentEnd">XmlCommentEnd</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-DirCommentContents"><lhs>DirCommentContents</lhs><rhs>(<nt def="prod-xquery-CommentContentChar">CommentContentChar</nt>  |  <nt def="prod-xquery-CommentContentCharDash">CommentContentCharDash</nt>)*</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-DirPIConstructor"><lhs>DirPIConstructor</lhs><rhs><nt def="prod-xquery-ProcessingInstructionStart">ProcessingInstructionStart</nt>  <nt def="prod-xquery-PITarget">PITarget</nt>  (<nt def="prod-xquery-S">S</nt>  <nt def="prod-xquery-DirPIContents">DirPIContents</nt>)?  <nt def="prod-xquery-ProcessingInstructionEnd">ProcessingInstructionEnd</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-DirPIContents"><lhs>DirPIContents</lhs><rhs>(<nt def="prod-xquery-Char">Char</nt>* - (Char* '?&gt;' Char*))</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-CDataSection"><lhs>CDataSection</lhs><rhs><nt def="prod-xquery-CdataSectionStart">CdataSectionStart</nt>  <nt def="prod-xquery-CDataSectionContents">CDataSectionContents</nt>  <nt def="prod-xquery-CdataSectionEnd">CdataSectionEnd</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-CDataSectionContents"><lhs>CDataSectionContents</lhs><rhs>(<nt def="prod-xquery-Char">Char</nt>* - (Char* ']]&gt;' Char*))</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-ComputedConstructor"><lhs>ComputedConstructor</lhs><rhs><nt def="prod-xquery-CompDocConstructor">CompDocConstructor</nt><br/>|  <nt def="prod-xquery-CompElemConstructor">CompElemConstructor</nt><br/>|  <nt def="prod-xquery-CompAttrConstructor">CompAttrConstructor</nt><br/>|  <nt def="prod-xquery-CompTextConstructor">CompTextConstructor</nt><br/>|  <nt def="prod-xquery-CompCommentConstructor">CompCommentConstructor</nt><br/>|  <nt def="prod-xquery-CompPIConstructor">CompPIConstructor</nt></rhs></prod><prod num="" id="prod-xquery-CompDocConstructor"><lhs>CompDocConstructor</lhs><rhs>"document"  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-CompElemConstructor"><lhs>CompElemConstructor</lhs><rhs>"element"  (<nt def="prod-xquery-QName">QName</nt>  |  (<nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt>))  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-ContentExpr">ContentExpr</nt>?  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-ContentExpr"><lhs>ContentExpr</lhs><rhs><nt def="prod-xquery-Expr">Expr</nt></rhs></prod><prod num="" id="prod-xquery-CompAttrConstructor"><lhs>CompAttrConstructor</lhs><rhs>"attribute"  (<nt def="prod-xquery-QName">QName</nt>  |  (<nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt>))  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>?  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-CompTextConstructor"><lhs>CompTextConstructor</lhs><rhs>"text"  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-CompCommentConstructor"><lhs>CompCommentConstructor</lhs><rhs>"comment"  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-CompPIConstructor"><lhs>CompPIConstructor</lhs><rhs>"processing-instruction"  (<nt def="prod-xquery-NCName">NCName</nt>  |  (<nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt>))  <nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-Expr">Expr</nt>?  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-SingleType"><lhs>SingleType</lhs><rhs><nt def="prod-xquery-AtomicType">AtomicType</nt>  "?"?</rhs></prod><prod num="" id="prod-xquery-TypeDeclaration"><lhs>TypeDeclaration</lhs><rhs>"as"  <nt def="prod-xquery-SequenceType">SequenceType</nt></rhs></prod><prod num="" id="prod-xquery-SequenceType"><lhs>SequenceType</lhs><rhs>("empty-sequence"  "("  ")")<br/>|  (<nt def="prod-xquery-ItemType">ItemType</nt>  <nt def="prod-xquery-OccurrenceIndicator">OccurrenceIndicator</nt>?)</rhs></prod><prod num="" id="prod-xquery-OccurrenceIndicator"><lhs>OccurrenceIndicator</lhs><rhs>"?"  |  "*"  |  <nt def="prod-xquery-Plus">Plus</nt></rhs><com><phrase><xspecref ref="parse-note-occurrence-indicators" spec="XQ">gn: occurrence-indicators</xspecref></phrase></com></prod><prod num="" id="prod-xquery-ItemType"><lhs>ItemType</lhs><rhs><nt def="prod-xquery-KindTest">KindTest</nt>  |  ("item"  "("  ")")  |  <nt def="prod-xquery-AtomicType">AtomicType</nt></rhs></prod><prod num="" id="prod-xquery-AtomicType"><lhs>AtomicType</lhs><rhs><nt def="prod-xquery-QName">QName</nt></rhs></prod><prod num="" id="prod-xquery-KindTest"><lhs>KindTest</lhs><rhs><nt def="prod-xquery-DocumentTest">DocumentTest</nt><br/>|  <nt def="prod-xquery-ElementTest">ElementTest</nt><br/>|  <nt def="prod-xquery-AttributeTest">AttributeTest</nt><br/>|  <nt def="prod-xquery-SchemaElementTest">SchemaElementTest</nt><br/>|  <nt def="prod-xquery-SchemaAttributeTest">SchemaAttributeTest</nt><br/>|  <nt def="prod-xquery-PITest">PITest</nt><br/>|  <nt def="prod-xquery-CommentTest">CommentTest</nt><br/>|  <nt def="prod-xquery-TextTest">TextTest</nt><br/>|  <nt def="prod-xquery-AnyKindTest">AnyKindTest</nt></rhs></prod><prod num="" id="prod-xquery-AnyKindTest"><lhs>AnyKindTest</lhs><rhs>"node"  "("  ")"</rhs></prod><prod num="" id="prod-xquery-DocumentTest"><lhs>DocumentTest</lhs><rhs>"document-node"  "("  (<nt def="prod-xquery-ElementTest">ElementTest</nt>  |  <nt def="prod-xquery-SchemaElementTest">SchemaElementTest</nt>)?  ")"</rhs></prod><prod num="" id="prod-xquery-TextTest"><lhs>TextTest</lhs><rhs>"text"  "("  ")"</rhs></prod><prod num="" id="prod-xquery-CommentTest"><lhs>CommentTest</lhs><rhs>"comment"  "("  ")"</rhs></prod><prod num="" id="prod-xquery-PITest"><lhs>PITest</lhs><rhs>"processing-instruction"  "("  (<nt def="prod-xquery-NCName">NCName</nt>  |  <nt def="prod-xquery-StringLiteral">StringLiteral</nt>)?  ")"</rhs></prod><prod num="" id="prod-xquery-AttributeTest"><lhs>AttributeTest</lhs><rhs>"attribute"  "("  (<nt def="prod-xquery-AttribNameOrWildcard">AttribNameOrWildcard</nt>  (","  <nt def="prod-xquery-TypeName">TypeName</nt>)?)?  ")"</rhs></prod><prod num="" id="prod-xquery-AttribNameOrWildcard"><lhs>AttribNameOrWildcard</lhs><rhs><nt def="prod-xquery-AttributeName">AttributeName</nt>  |  "*"</rhs></prod><prod num="" id="prod-xquery-SchemaAttributeTest"><lhs>SchemaAttributeTest</lhs><rhs>"schema-attribute"  "("  <nt def="prod-xquery-AttributeDeclaration">AttributeDeclaration</nt>  ")"</rhs></prod><prod num="" id="prod-xquery-AttributeDeclaration"><lhs>AttributeDeclaration</lhs><rhs><nt def="prod-xquery-AttributeName">AttributeName</nt></rhs></prod><prod num="" id="prod-xquery-ElementTest"><lhs>ElementTest</lhs><rhs>"element"  "("  (<nt def="prod-xquery-ElementNameOrWildcard">ElementNameOrWildcard</nt>  (","  <nt def="prod-xquery-TypeName">TypeName</nt>  "?"?)?)?  ")"</rhs></prod><prod num="" id="prod-xquery-ElementNameOrWildcard"><lhs>ElementNameOrWildcard</lhs><rhs><nt def="prod-xquery-ElementName">ElementName</nt>  |  "*"</rhs></prod><prod num="" id="prod-xquery-SchemaElementTest"><lhs>SchemaElementTest</lhs><rhs>"schema-element"  "("  <nt def="prod-xquery-ElementDeclaration">ElementDeclaration</nt>  ")"</rhs></prod><prod num="" id="prod-xquery-ElementDeclaration"><lhs>ElementDeclaration</lhs><rhs><nt def="prod-xquery-ElementName">ElementName</nt></rhs></prod><prod num="" id="prod-xquery-AttributeName"><lhs>AttributeName</lhs><rhs><nt def="prod-xquery-QName">QName</nt></rhs></prod><prod num="" id="prod-xquery-ElementName"><lhs>ElementName</lhs><rhs><nt def="prod-xquery-QName">QName</nt></rhs></prod><prod num="" id="prod-xquery-TypeName"><lhs>TypeName</lhs><rhs><nt def="prod-xquery-QName">QName</nt></rhs></prod><prod num="" id="prod-xquery-URILiteral"><lhs>URILiteral</lhs><rhs><nt def="prod-xquery-StringLiteral">StringLiteral</nt></rhs></prod><prod num="" id="prod-xquery-RevalidationDecl"><lhs>RevalidationDecl</lhs><rhs>"declare"  "revalidation"  ("strict"  |  "lax"  |  "skip")</rhs></prod><prod num="" id="prod-xquery-InsertExprTargetChoice"><lhs>InsertExprTargetChoice</lhs><rhs>(("as"  ("first"  |  "last"))?  "into")<br/>|  "after"<br/>|  "before"</rhs></prod><prod num="" id="prod-xquery-InsertExpr"><lhs>InsertExpr</lhs><rhs>"insert"  ("node"  |  "nodes")  <nt def="prod-xquery-SourceExpr">SourceExpr</nt>  <nt def="prod-xquery-InsertExprTargetChoice">InsertExprTargetChoice</nt>  <nt def="prod-xquery-TargetExpr">TargetExpr</nt></rhs></prod><prod num="" id="prod-xquery-DeleteExpr"><lhs>DeleteExpr</lhs><rhs>"delete"  ("node"  |  "nodes")  <nt def="prod-xquery-TargetExpr">TargetExpr</nt></rhs></prod><prod num="" id="prod-xquery-ReplaceExpr"><lhs>ReplaceExpr</lhs><rhs>"replace"  ("value"  "of")?  "node"  <nt def="prod-xquery-TargetExpr">TargetExpr</nt>  "with"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-RenameExpr"><lhs>RenameExpr</lhs><rhs>"rename"  "node"  <nt def="prod-xquery-TargetExpr">TargetExpr</nt>  "as"  <nt def="prod-xquery-NewNameExpr">NewNameExpr</nt></rhs></prod><prod num="" id="prod-xquery-SourceExpr"><lhs>SourceExpr</lhs><rhs><nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-TargetExpr"><lhs>TargetExpr</lhs><rhs><nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-NewNameExpr"><lhs>NewNameExpr</lhs><rhs><nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-TransformExpr"><lhs>TransformExpr</lhs><rhs>"copy"  "$"  <nt def="prod-xquery-VarName">VarName</nt>  ":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  (","  "$"  <nt def="prod-xquery-VarName">VarName</nt>  ":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)*  "modify"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  "return"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-BlockExpr"><lhs>BlockExpr</lhs><rhs>"block"  <nt def="prod-xquery-Block">Block</nt></rhs></prod><prod num="" id="prod-xquery-Block"><lhs>Block</lhs><rhs><nt def="prod-xquery-Lbrace">Lbrace</nt>  <nt def="prod-xquery-BlockDecls">BlockDecls</nt>  <nt def="prod-xquery-BlockBody">BlockBody</nt>  <nt def="prod-xquery-Rbrace">Rbrace</nt></rhs></prod><prod num="" id="prod-xquery-BlockDecls"><lhs>BlockDecls</lhs><rhs>(<nt def="prod-xquery-BlockVarDecl">BlockVarDecl</nt>  ";")*</rhs></prod><prod num="" id="prod-xquery-BlockVarDecl"><lhs>BlockVarDecl</lhs><rhs>"declare"  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  (":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)?  (","  "$"  <nt def="prod-xquery-VarName">VarName</nt>  <nt def="prod-xquery-TypeDeclaration">TypeDeclaration</nt>?  (":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>)?)*</rhs></prod><prod num="" id="prod-xquery-BlockBody"><lhs>BlockBody</lhs><rhs><nt def="prod-xquery-Expr">Expr</nt></rhs></prod><prod num="" id="prod-xquery-AssignmentExpr"><lhs>AssignmentExpr</lhs><rhs>"$"  <nt def="prod-xquery-VarName">VarName</nt>  ":="  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-ExitExpr"><lhs>ExitExpr</lhs><rhs>"exit"  "returning"  <nt def="prod-xquery-ExprSingle">ExprSingle</nt></rhs></prod><prod num="" id="prod-xquery-WhileExpr"><lhs>WhileExpr</lhs><rhs>"while"  "("  <nt def="prod-xquery-ExprSingle">ExprSingle</nt>  ")"  <nt def="prod-xquery-WhileBody">WhileBody</nt></rhs></prod><prod num="" id="prod-xquery-WhileBody"><lhs>WhileBody</lhs><rhs><nt def="prod-xquery-Block">Block</nt></rhs></prod><prod num="" id="prod-xquery-NCName"><lhs>NCName</lhs><rhs><xnt ref="NT-NCName" spec="Names">[http://www.w3.org/TR/REC-xml-names/#NT-NCName]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-QName"><lhs>QName</lhs><rhs><xnt ref="NT-QName" spec="Names">[http://www.w3.org/TR/REC-xml-names/#NT-QName]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-QName"><lhs>QName</lhs><rhs><xnt ref="NT-QName" spec="Names">[http://www.w3.org/TR/REC-xml-names/#NT-QName]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod>
+</scrap>
+
+<div2 id="id-terminal-symbols"><head>Terminal Symbols</head><scrap headstyle="show">
+		    
+		  <head/><prod num="" id="prod-xquery-IntegerLiteral"><lhs>IntegerLiteral</lhs><rhs><nt def="prod-xquery-Digits">Digits</nt></rhs></prod><prod num="" id="prod-xquery-DecimalLiteral"><lhs>DecimalLiteral</lhs><rhs>("."  <nt def="prod-xquery-Digits">Digits</nt>)  |  (<nt def="prod-xquery-Digits">Digits</nt>  "."  []*)</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-DoubleLiteral"><lhs>DoubleLiteral</lhs><rhs>(("."  <nt def="prod-xquery-Digits">Digits</nt>)  |  (<nt def="prod-xquery-Digits">Digits</nt>  ("."  []*)?))  []  []?  <nt def="prod-xquery-Digits">Digits</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-StringLiteral"><lhs>StringLiteral</lhs><rhs>('"'  (<nt def="prod-xquery-PredefinedEntityRef">PredefinedEntityRef</nt>  |  <nt def="prod-xquery-CharRef">CharRef</nt>  |  <nt def="prod-xquery-EscapeQuot">EscapeQuot</nt>  |  [^"&amp;])*  '"')  |  ("'"  (<nt def="prod-xquery-PredefinedEntityRef">PredefinedEntityRef</nt>  |  <nt def="prod-xquery-CharRef">CharRef</nt>  |  <nt def="prod-xquery-EscapeApos">EscapeApos</nt>  |  [^'&amp;])*  "'")</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-PredefinedEntityRef"><lhs>PredefinedEntityRef</lhs><rhs>"&amp;"  ("lt"  |  "gt"  |  "amp"  |  "quot"  |  "apos")  ";"</rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com></prod><prod num="" id="prod-xquery-EscapeQuot"><lhs>EscapeQuot</lhs><rhs>'""'</rhs></prod><prod num="" id="prod-xquery-EscapeApos"><lhs>EscapeApos</lhs><rhs>"''"</rhs></prod><prod num="" id="prod-xquery-ElementContentChar"><lhs>ElementContentChar</lhs><rhs><nt def="prod-xquery-Char">Char</nt> - [{}&lt;&amp;]</rhs></prod><prod num="" id="prod-xquery-QuotAttrContentChar"><lhs>QuotAttrContentChar</lhs><rhs><nt def="prod-xquery-Char">Char</nt> - ["{}&lt;&amp;]</rhs></prod><prod num="" id="prod-xquery-AposAttrContentChar"><lhs>AposAttrContentChar</lhs><rhs><nt def="prod-xquery-Char">Char</nt> - ['{}&lt;&amp;]</rhs></prod><prod num="" id="prod-xquery-Comment"><lhs>Comment</lhs><rhs><nt def="prod-xquery-CommentStart">CommentStart</nt>  (<nt def="prod-xquery-CommentContents">CommentContents</nt>  |  <nt def="prod-xquery-Comment">Comment</nt>)*  <nt def="prod-xquery-CommentEnd">CommentEnd</nt></rhs><com><phrase><xspecref ref="ws-explicit" spec="XQ">ws: explicit</xspecref></phrase></com><com><phrase><xspecref ref="parse-note-comments" spec="XQ">gn: comments</xspecref></phrase></com></prod><prod num="" id="prod-xquery-PITarget"><lhs>PITarget</lhs><rhs><xnt ref="NT-PITarget" spec="XML">[http://www.w3.org/TR/REC-xml#NT-PITarget]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-CharRef"><lhs>CharRef</lhs><rhs><xnt ref="NT-CharRef" spec="XML">[http://www.w3.org/TR/REC-xml#NT-CharRef]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-QName"><lhs>QName</lhs><rhs><xnt ref="NT-QName" spec="Names">[http://www.w3.org/TR/REC-xml-names/#NT-QName]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-NCName"><lhs>NCName</lhs><rhs><xnt ref="NT-NCName" spec="Names">[http://www.w3.org/TR/REC-xml-names/#NT-NCName]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-S"><lhs>S</lhs><rhs><xnt ref="NT-S" spec="XML">[http://www.w3.org/TR/REC-xml#NT-S]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod><prod num="" id="prod-xquery-Char"><lhs>Char</lhs><rhs><xnt ref="NT-Char" spec="XML">[http://www.w3.org/TR/REC-xml#NT-Char]</xnt></rhs><com><phrase><xspecref ref="parse-note-xml-version" spec="XQ">gn: xml-version</xspecref></phrase></com></prod> 
+		   
+		</scrap>
+<p>The following symbols are used only in the definition of
+  terminal symbols; they are not terminal symbols in the
+  grammar of <specref ref="id-grammar"/>.</p><scrap headstyle="show">
+		    
+		  <head/><prod num="" id="prod-xquery-Digits"><lhs>Digits</lhs><rhs>[]+</rhs></prod><prod num="" id="prod-xquery-CommentContents"><lhs>CommentContents</lhs><rhs>(<nt def="prod-xquery-CommentContent">CommentContent</nt>+ - (Char* ('(:' | ':)') Char*))</rhs></prod> 
+		   
+		</scrap>
+</div2>
+
+<div2 id="id-extra-grammatical-constraints" diff="add"><head>Extra-grammatical Constraints</head>
+  <p>This section contains XQuery SX specific constraints on the EBNF productions, which are required to parse legal sentences.
+  The notes below are referenced from the right side of the production, with the notation: <emph>/* gn: &lt;id&gt; */</emph>.</p>
+<constraintnote id="parse-note-sx-reserved-function-names" type="xgc"><head>sx-reserved-function-names</head><p>
+  XQuery SX adds the term "while" to the list of names in
+  <xspecref spec="XQ" ref="id-reserved-fn-names"><?xm-replace_text {xspecref}?></xspecref>.
+  <note><p>This is a backwards incompatibility with <bibref ref="XQ10"/>.</p></note>
+</p></constraintnote>
+</div2>
+</div1>
+
+    <div1 id="id-xqsx-xqueryx">
+<head>XML Syntax (XQueryX) for XQuery Scripting Extension Proposal 1.0</head>
+
+<p>
+<bibref ref="XQX10"/> defines an XML representation of <bibref ref="XQ10"/>. 
+<bibref ref="ScriptingRequirements"/> states
+"The syntax for updates MAY have more than one syntax binding. 
+One syntax MUST be convenient for humans to read and write. 
+One syntax MUST be expressed in XML in a way that reflects
+the underlying structure of the operations."
+This appendix specifies an XML Schema that defines the
+XML representation of XQuery Scripting Extension Proposal 1.0 by representing the abstract syntax
+found in <specref ref="id-grammar"/>. 
+This XML representation for XQuery Scripting Extension Proposal 1.0 integrates
+with the XML representation for XQuery 1.0 and that for the 
+XQuery Update Facility 1.0.</p>
+
+<p>
+The XML Schema specified in this appendix accomplishes its integration by importing
+the XML Schema defined for XQueryX in <bibref ref="XQueryUpdate"/>,
+incorporating all of its type and element definitions. 
+It then extends that schema by adding definitions of new types and elements
+in a namespace belonging to the XQuery Scripting Extension Proposal 1.0 specification. 
+</p>
+
+
+<div2 id="id-xqsx-xqueryx-schema">
+<head>Schema</head>
+
+<p>
+This section specifies the XML Schema that defines the complex types and elements
+for XQueryX in support of XQuery Scripting Extension Proposal 1.0, including changes to the prolog
+and the addition of several new expressions.
+It also specifies a second XML Schema that redefines an element defined in
+XQueryX 1.0. 
+Copies of these two schemata can be found at
+<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx.xsd" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx.xsd</loc>. 
+and <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx-redef.xsd" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx-redef.xsd</loc>. 
+Please note that the content of these schemata are subject to change at any time before this document is published as a Recommendation. 
+</p>
+
+<eg xml:space="preserve">
+
+&lt;xsd:schema
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+     xmlns:xqx="http://www.w3.org/2005/XQueryX"
+     xmlns:xqxuf="http://www.w3.org/2007/xquery-update-10"
+     xmlns:xqxsx="http://www.w3.org/2008/xquery-sx-10"
+     targetNamespace="http://www.w3.org/2008/xquery-sx-10"
+     elementFormDefault="qualified" 
+     attributeFormDefault="unqualified"&gt;
+
+&lt;!-- Initial creation                  2008-03-01: Jim Melton --&gt;
+&lt;!-- Added FunctionDecl redefinition   2008-03-11: Jim Melton --&gt;
+&lt;!-- Updated to new WD grammar         2008-11-25: Jim Melton --&gt;
+&lt;!-- Reviewed, cleaned, corrections    2009-08-17: Jim Melton --&gt;
+&lt;!-- Updated to recent grammar changes 2010-02-15: Jim Melton --&gt;
+  &lt;xsd:import namespace="http://www.w3.org/2007/xquery-update-10"
+     schemaLocation="http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx-redef.xsd"/&gt;
+  &lt;xsd:import namespace="http://www.w3.org/2005/XQueryX"/&gt;
+
+  &lt;!-- Declare new type for constant declarations             --&gt;
+  &lt;!-- Corresponds to the following grammar productions:      --&gt;
+  &lt;!-- VarDecl ::= "declare" ([un]assignable variable)        --&gt;
+  &lt;!--               "$" QName TypeDeclaration?               --&gt;
+  &lt;!--               ((":=" ExprSingle) | "external")         --&gt;
+  &lt;xsd:complexType name="constDecl"&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name="constName" type="xqx:QName"/&gt;
+      &lt;xsd:element ref="xqx:typeDeclaration" minOccurs="0"/&gt;
+      &lt;xsd:choice&gt;
+        &lt;xsd:element name="varValue" type="xqx:exprWrapper"/&gt;
+        &lt;xsd:element name="external" type="xqx:emptyContent"/&gt;
+      &lt;/xsd:choice&gt;
+    &lt;/xsd:sequence&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="constDecl" type="xqxsx:constDecl"
+               substitutionGroup="xqx:prologPartTwoItem"/&gt;
+
+
+  &lt;!-- Create substitution grp for scripting extension exprs  --&gt;
+  &lt;xsd:complexType name="expr"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="xqxuf:expr"/&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;!-- Make scripting extension subst grp part of expr grp    --&gt;
+  &lt;xsd:element name="expr" type="xqxsx:expr" abstract="true"
+               substitutionGroup="xqxuf:expr"/&gt;
+
+
+  &lt;!-- AssignmentExpr:                                        --&gt;
+  &lt;!--   AssignmentExpr ::= "$" VarName ":=" ExprSingle       --&gt;
+  &lt;xsd:complexType name="assignmentExpr"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="xqxsx:expr"&gt;
+        &lt;xsd:sequence&gt;
+          &lt;xsd:element ref="xqx:positionalVariableBinding"/&gt;
+          &lt;xsd:element name="assignedExpr" type="xqx:exprWrapper"/&gt;
+        &lt;/xsd:sequence&gt;
+      &lt;/xsd:extension&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="assignmentExpr" type="xqxsx:assignmentExpr"
+               substitutionGroup="xqxsx:expr"/&gt;
+
+
+  &lt;!-- Block (1 of 3):                                        --&gt;
+  &lt;!--   BlockExpr ::= "block" Block                          --&gt;
+  &lt;!--   Block ::= "{" BlockDecls BlockBody "}"               --&gt;
+  &lt;!--   BlockDecls ::= (BlockVarDecl ";")*                   --&gt;
+  &lt;xsd:complexType name="block"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="xqxsx:expr"&gt;
+        &lt;xsd:sequence&gt;
+          &lt;xsd:element ref="xqxsx:blockVarDecl"
+                       minOccurs="0" maxOccurs="unbounded"/&gt;
+          &lt;xsd:element ref="xqxsx:blockBody"/&gt;
+        &lt;/xsd:sequence&gt;
+      &lt;/xsd:extension&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="block" type="xqxsx:block"
+               substitutionGroup="xqxsx:expr"/&gt;
+
+  &lt;!-- Block (2 of 3):                                        --&gt;
+  &lt;!--   BlockVarDecl ::=                                     --&gt;
+  &lt;!--     "declare" "$" VarName TypeDeclaration?             --&gt;
+  &lt;!--             (":=" ExprSingle)?                         --&gt;
+  &lt;!--          ("," "$" VarName TypeDeclaration?             --&gt;
+  &lt;!--             (":=" ExprSingle)? )*                      --&gt;
+  &lt;xsd:complexType name="blockVarDecl"&gt;
+      &lt;xsd:sequence minOccurs="1" maxOccurs="unbounded"&gt;
+        &lt;xsd:element name="varName" type="xqx:QName"/&gt;
+        &lt;xsd:element ref="xqx:typeDeclaration" minOccurs="0"/&gt;
+        &lt;xsd:element name="varValue" type="xqx:exprWrapper"
+                     minOccurs="0"/&gt;
+      &lt;/xsd:sequence&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="blockVarDecl" type="xqxsx:blockVarDecl"/&gt;
+
+  &lt;!-- Block (3 of 3):                                        --&gt;
+  &lt;!--   BlockBody ::= Expr                                   --&gt;
+  &lt;xsd:complexType name="blockBody"&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element ref="xqxsx:applyExpr"/&gt;
+    &lt;/xsd:sequence&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="blockBody" type="xqxsx:blockBody"/&gt;
+
+
+  &lt;!-- ExitExpr:                                              --&gt;
+  &lt;!--   ExitExpr ::= "exit" "returning" ExprSingle           --&gt;
+  &lt;xsd:complexType name="exitExpr"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="xqx:expr"&gt;
+        &lt;xsd:sequence&gt;
+          &lt;xsd:element ref="xqx:expr"/&gt;
+        &lt;/xsd:sequence&gt;
+      &lt;/xsd:extension&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="exitExpr" type="xqxsx:exitExpr"
+               substitutionGroup="xqx:expr"/&gt;
+
+
+  &lt;!-- WhileExpr:                                             --&gt;
+  &lt;!--   WhileExpr ::= "while" "(" ExprSingle ")" WhileBody   --&gt;
+  &lt;!--   WhileBody ::= Block                                  --&gt;
+  &lt;xsd:complexType name="whileExpr"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="xqxsx:expr"&gt;
+        &lt;xsd:sequence&gt;
+          &lt;xsd:element name="whileTest" type="xqx:exprWrapper"/&gt;
+          &lt;xsd:element ref="xqxsx:block"/&gt;
+        &lt;/xsd:sequence&gt;
+      &lt;/xsd:extension&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="whileExpr" type="xqxsx:whileExpr"
+               substitutionGroup="xqxsx:expr"/&gt;
+
+
+  &lt;!-- ApplyExpr:                                             --&gt;
+  &lt;!--   ApplyExpr ::= (ConcatExpr ";")+                      --&gt;
+  &lt;xsd:complexType name="applyExpr"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="xqxsx:expr"&gt;
+        &lt;xsd:sequence&gt;
+          &lt;xsd:element name="concatExpr" maxOccurs="unbounded"&gt;
+            &lt;xsd:complexType&gt;
+              &lt;xsd:sequence&gt;
+                &lt;xsd:element ref="xqx:expr" maxOccurs="unbounded"/&gt;
+              &lt;/xsd:sequence&gt;
+            &lt;/xsd:complexType&gt;
+          &lt;/xsd:element&gt;
+        &lt;/xsd:sequence&gt;
+      &lt;/xsd:extension&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:element name="applyExpr" type="xqxsx:applyExpr"
+               substitutionGroup="xqxsx:expr"/&gt;
+
+&lt;/xsd:schema&gt;
+
+
+
+&lt;?xml version="1.0"?&gt;
+&lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xqx="http://www.w3.org/2005/XQueryX"
+            xmlns:xqxuf="http://www.w3.org/2007/xquery-update-10"
+            targetNamespace="http://www.w3.org/2007/xquery-update-10"
+	          elementFormDefault="qualified" attributeFormDefault="qualified"&gt;
+
+&lt;!-- Redefine one or more components of the XQueryX XML Schema --&gt;
+&lt;!-- The redefinition starts with XQuery Update Facility 1.0   --&gt;
+&lt;!--   XQueryX instead of XQueryX 1.0                          --&gt;
+&lt;xsd:redefine schemaLocation="http://www.w3.org/2007/xquery-update-10/xquery-update-10-xqueryx.xsd"&gt;
+
+&lt;!-- Redefine the functionDecl complex type --&gt;
+  &lt;xsd:complexType name="functionDecl"&gt;
+    &lt;xsd:complexContent&gt;
+      &lt;xsd:extension base="functionDecl"&gt;
+        &lt;xsd:attribute name="simpleFunction"
+                       type="xsd:boolean" default="true"/&gt;
+        &lt;xsd:attribute name="updatingFunction"
+                       type="xsd:boolean" default="false"/&gt;
+        &lt;xsd:attribute name="sequentialFunction"
+                       type="xsd:boolean" default="false"/&gt;
+      &lt;/xsd:extension&gt;
+    &lt;/xsd:complexContent&gt;
+  &lt;/xsd:complexType&gt;
+
+&lt;/xsd:redefine&gt;
+
+&lt;/xsd:schema&gt;
+
+</eg>
+
+</div2>
+
+
+<div2 id="id-xqsx-xqueryx-stylesheet">
+<head>Stylesheet</head>
+
+<p>
+This section specifies the XSLT stylesheet that defines the semantics of XQueryX
+in support of XQuery Scripting Extension Proposal 1.0. It imports the XSLT stylesheet defined in <bibref ref="XQueryUpdate"/>,
+and provides additional templates that
+define the semantics of the XQueryX representation of XQuery Scripting Extension Proposal 1.0
+by transforming that XQueryX representation into
+the human readable syntax of XQuery Scripting Extension Proposal 1.0. 
+A copy of this stylesheet is located at
+<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx.xsl" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx.xsl</loc>. 
+Please note that the content of this stylesheet is subject to change at any time before this document is published as a Recommendation. 
+</p>
+
+<eg xml:space="preserve">
+
+&lt;xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xqx="http://www.w3.org/2005/XQueryX"
+                xmlns:xqxuf="http://www.w3.org/2007/xquery-update-10"
+                xmlns:xqxsx="http://www.w3.org/2008/xquery-sx-10"&gt;
+
+&lt;!-- Initial creation                  2008-03-01: Jim Melton --&gt;
+&lt;!-- Reviewed, cleaned, corrections    2009-08-17: Jim Melton --&gt;
+&lt;!-- Updated to recent grammar changes 2010-02-15: Jim Melton --&gt;
+
+&lt;xsl:import href="http://www.w3.org/2007/xquery-update-10/xquery-update-10-xqueryx.xsl"/&gt;
+
+
+&lt;!-- constDecl                                                --&gt;
+&lt;!-- 2010-02-15: "constant" is now "unassignable variable"    --&gt;
+&lt;xsl:template match="xqxsx:constDecl"&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:text&gt;declare unassignable variable &lt;/xsl:text&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:constName"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+
+&lt;!-- Over-ride the template for varDecl in XQueryX.xsd        --&gt;
+&lt;!-- 2010-02-15: "variable" is now "assignable variable"      --&gt;
+  &lt;xsl:template match="xqx:varDecl" priority="200"&gt;
+    &lt;xsl:text&gt;declare assignable variable &lt;/xsl:text&gt;
+    &lt;xsl:value-of select="$DOLLAR"/&gt;
+    &lt;xsl:apply-templates select="xqx:varName"/&gt;
+    &lt;xsl:apply-templates select="xqx:typeDeclaration"/&gt;
+    &lt;xsl:if test="xqx:external"&gt;
+      &lt;xsl:text&gt; external &lt;/xsl:text&gt;
+    &lt;/xsl:if&gt;
+    &lt;xsl:if test="xqx:varValue"&gt;
+      &lt;xsl:value-of select="$ASSIGN"/&gt;
+      &lt;xsl:apply-templates select="xqx:varValue"/&gt;
+    &lt;/xsl:if&gt;
+  &lt;/xsl:template&gt;
+
+
+&lt;!-- assignmentExpr                                           --&gt;
+&lt;!-- 2010-02-15: Remove 'set' keyword                         --&gt;
+&lt;xsl:template match="xqxsx:assignmentExpr"&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:apply-templates select="xqx:positionalVariableBinding"/&gt;
+  &lt;xsl:text&gt; := &lt;/xsl:text&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:assignedExpr"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+
+&lt;!-- block                                                    --&gt;
+&lt;!-- 2010-02-15: Added 'block' keyword                        --&gt;
+&lt;xsl:template match="xqxsx:block"&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:text&gt;block &lt;/xsl:text&gt;
+  &lt;xsl:value-of select="$LBRACE"/&gt;
+  &lt;xsl:value-of select="$SPACE"/&gt;
+  &lt;xsl:apply-templates/&gt;
+  &lt;xsl:value-of select="$SPACE"/&gt;
+  &lt;xsl:value-of select="$RBRACE"/&gt;
+  &lt;xsl:value-of select="$SPACE"/&gt;
+&lt;/xsl:template&gt;
+
+&lt;!-- blockVarDecl                                             --&gt;
+&lt;xsl:template match="xqxsx:blockVarDecl[position()=1 and position()=last()]"&gt;
+  &lt;xsl:text&gt;declare &lt;/xsl:text&gt;
+  &lt;xsl:apply-templates select="xqxsx:varName"/&gt;
+  &lt;xsl:if test="xqx:typeDeclaration"&gt;
+    &lt;xsl:apply-templates select="xqx:typeDeclaration"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;xsl:if test="xqxsx:varValue"&gt;
+    &lt;xsl:text&gt; := &lt;/xsl:text&gt;
+    &lt;xsl:apply-templates select="xqxsx:varValue"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;xsl:value-of select="$SEMICOLON"/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:blockVarDecl[position()=1 and position()!=last()]"&gt;
+  &lt;xsl:text&gt;declare &lt;/xsl:text&gt;
+  &lt;xsl:apply-templates select="xqxsx:varName"/&gt;
+  &lt;xsl:if test="xqx:typeDeclaration"&gt;
+    &lt;xsl:apply-templates select="xqx:typeDeclaration"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;xsl:if test="xqxsx:varValue"&gt;
+    &lt;xsl:text&gt; := &lt;/xsl:text&gt;
+    &lt;xsl:apply-templates select="xqxsx:varValue"/&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:blockVarDecl[position()&gt;1 and position()&amp;lt;last()]"&gt;
+  &lt;xsl:value-of select="$COMMA"/&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:apply-templates select="xqxsx:varName"/&gt;
+  &lt;xsl:if test="xqx:typeDeclaration"&gt;
+    &lt;xsl:apply-templates select="xqx:typeDeclaration"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;xsl:if test="xqxsx:varValue"&gt;
+    &lt;xsl:text&gt; := &lt;/xsl:text&gt;
+    &lt;xsl:apply-templates select="xqxsx:varValue"/&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:blockVarDecl[position()&gt;1 and position()=last()]"&gt;
+  &lt;xsl:value-of select="$COMMA"/&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:apply-templates select="xqxsx:varName"/&gt;
+  &lt;xsl:if test="xqx:typeDeclaration"&gt;
+    &lt;xsl:apply-templates select="xqx:typeDeclaration"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;xsl:if test="xqxsx:varValue"&gt;
+    &lt;xsl:text&gt; := &lt;/xsl:text&gt;
+    &lt;xsl:apply-templates select="xqxsx:varValue"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;xsl:value-of select="$SEMICOLON"/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:varName"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:varValue"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+&lt;!-- blockBody                                                --&gt;
+&lt;xsl:template match="xqxsx:blockBody"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:blockExpr"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+
+&lt;!-- exitExpr                                          --&gt;
+&lt;xsl:template match="xqxsx:exitExpr"&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:text&gt;exit returning &lt;/xsl:text&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+
+&lt;!-- whileExpr                                                --&gt;
+&lt;xsl:template match="xqxsx:whileExpr"&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:text&gt;while &lt;/xsl:text&gt;
+  &lt;xsl:value-of select="$LPAREN"/&gt;
+  &lt;xsl:value-of select="$SPACE"/&gt;
+  &lt;xsl:apply-templates select="xqxsx:whileTest"/&gt;
+  &lt;xsl:value-of select="$SPACE"/&gt;
+  &lt;xsl:value-of select="$RPAREN"/&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:apply-templates select="xqxsx:block"/&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:whileTest"&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+
+
+&lt;!-- applyExpr                                                --&gt;
+&lt;xsl:template match="xqxsx:applyExpr"&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+  &lt;xsl:apply-templates select="xqxsx:concatExpr"/&gt;
+  &lt;xsl:value-of select="$NEWLINE"/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="xqxsx:concatExpr"&gt;
+  &lt;xsl:apply-templates/&gt;
+  &lt;xsl:value-of select="$SEMICOLON"/&gt;
+&lt;/xsl:template&gt;
+
+
+&lt;!-- Over-ride the template for functionDecl in XQuery        --&gt;
+&lt;!--   Update Facility xquery-update-10-xqueryx.xsl           --&gt;
+  &lt;xsl:template match="xqx:functionDecl" priority="200"&gt;
+    &lt;xsl:text&gt;declare &lt;/xsl:text&gt;
+    &lt;xsl:choose&gt;
+      &lt;xsl:when test="@xqx:updatingFunction and
+                      @xqx:updatingFunction = 'true'"&gt;
+        &lt;xsl:text&gt;updating &lt;/xsl:text&gt;
+      &lt;/xsl:when&gt;
+      &lt;xsl:when test="@xqx:sequentialFunction and
+                      @xqx:sequentialFunction = 'true'"&gt;
+        &lt;xsl:text&gt;sequential &lt;/xsl:text&gt;
+      &lt;/xsl:when&gt;
+      &lt;xsl:otherwise&gt;
+        &lt;xsl:text&gt;simple &lt;/xsl:text&gt;
+      &lt;/xsl:otherwise&gt;
+    &lt;/xsl:choose&gt;
+    &lt;xsl:text&gt;function &lt;/xsl:text&gt;
+    &lt;xsl:apply-templates select="xqx:functionName"/&gt;
+    &lt;xsl:apply-templates select="xqx:paramList"/&gt;
+    &lt;xsl:apply-templates select="xqx:typeDeclaration"/&gt;
+    &lt;xsl:apply-templates select="xqx:functionBody"/&gt;
+    &lt;xsl:if test="xqx:externalDefinition"&gt;
+      &lt;xsl:text&gt; external &lt;/xsl:text&gt;
+    &lt;/xsl:if&gt;
+  &lt;/xsl:template&gt;
+
+
+
+&lt;/xsl:stylesheet&gt;
+
+</eg>
+
+</div2>
+
+
+<div2 id="id-xqsx-xqueryx-examples">
+<head>Example</head>
+
+<p>
+The following example is based on the data and queries in the use cases
+in <bibref ref="ScriptingUseCases"/>. 
+In this example, we show the English description of the query,
+the XQuery Scripting Extension solution given in <bibref ref="ScriptingUseCases"/>,
+an XQueryX solution, and the XQuery Update Facility expression
+that results from applying the Update Facility XQueryX-to-XQuery Update Facility transformation
+defined by the stylesheet in <specref ref="id-xqsx-xqueryx-stylesheet"/>
+to the Scripting Extension XQueryX solution.
+The XQuery Scripting Extension expression that is produced is presented only as a sanity-check—the
+intent of the stylesheet is not to recreate the original
+XQuery expression, but to produce <emph>a</emph> valid
+XQuery expression with the same semantics. 
+The semantics of the Scripting Extension XQueryX solution are determined by the
+semantics of the XQuery Update Facility expression that
+results from that transformation. 
+The "correctness" of that transformation is determined by
+asking the following the question:
+Can some Scripting Extension XQueryX processor QX process some
+Scripting Extension XQueryX document D1 to produce results R1,
+after which the stylesheet is used to translate D1 into an
+XQuery Scripting Extension expression E1 that, when processed by some
+XQuery Scripting Extension processor Q, produces results R2 that are equivalent
+(under some meaningful definition of "equivalent") to results R1?
+</p>
+
+<p>Comparison of the results of the Scripting Extension XQueryX-to-XQuery Scripting Extension
+transformation given in this document with the XQuery Scripting Extension solutions
+in <bibref ref="ScriptingUseCases"/> may be helpful in evaluating
+the correctness of the Update Facility XQueryX solution in each example. </p>
+
+<p>The XQuery Scripting Extension Use Cases solution given for each
+example is provided only to assist readers of this
+document in understanding the Scripting Extension XQueryX solution. 
+There is no intent to imply that this
+document specifies a "compilation" or "transformation" of
+XQuery Scripting Extension syntax into Scripting Extension XQueryX syntax. 
+</p>
+
+<p>In the following example, note that path expressions are expanded to show their
+structure. Also, note that the prefix syntax for binary operators like "and" makes the
+precedence explicit. In general, humans find it easier to read an XML representation
+that does not expand path expressions, but it is less convenient for programmatic
+representation and manipulation.  XQueryX is designed as a language that is convenient
+for production and modification by software, and not as a convenient syntax for humans to
+read and write. </p>
+
+<p>Finally, please note that white space, including new lines, have been added to
+some of the Scripting Extension XQueryX documents and
+XQuery Scripting Extension expressions for readability. 
+That additional white space is not produced by the
+Scripting Extension XQueryX-to-XQuery Scripting Extension transformation.</p>
+
+<p>This example is based on query "Q2" from <bibref ref="ScriptingUseCases"/>,
+use case "R": "Scripting Relational Data":</p>
+
+
+<div3 id="id-xqsx-xqueryx-xq-rep"><head>XQuery Representation</head>
+
+<eg xml:space="preserve">
+let $uid := doc("users.xml")/users/user_tuple[name = "Roger Smith"]/userid
+let $topbid := max(doc("bids.xml")/bids/bid_tuple[itemno = 1007]/bid)
+let $newbid := $topbid * 1.1
+return
+  if($newbid &lt;= 240) then block {
+    insert nodes
+      &lt;bid_tuple&gt;
+        &lt;userid&gt;{ data($uid) }&lt;/userid&gt;
+        &lt;itemno&gt;1002&lt;/itemno&gt;
+        &lt;bid&gt;{ $newbid }&lt;/bid&gt;
+        &lt;bid_date&gt;1999-03-03&lt;/bid_date&gt;
+      &lt;/bid_tuple&gt;
+    into doc("bids.xml")/bids;
+    exit returning &lt;new_bid&gt;{ $newbid }&lt;/new_bid&gt;;
+  } else block {
+    exit returning &lt;top_bid&gt;{ $topbid }&lt;/top_bid&gt;;
+  }
+</eg></div3>
+
+
+<div3 id="id-xqsx-xqueryx-xqx-rep"><head>XQueryX Representation</head>
+
+<eg xml:space="preserve">
+&lt;!--
+let $uid := doc("users.xml")/users/user_tuple[name = "Roger Smith"]/userid
+let $topbid := max(doc("bids.xml")/bids/bid_tuple[itemno = 1007]/bid)
+let $newbid := $topbid * 1.1
+return
+  if($newbid &lt;= 240) then {
+    insert nodes
+      &lt;bid_tuple&gt;
+        &lt;userid&gt;{ data($uid) }&lt;/userid&gt;
+        &lt;itemno&gt;1002&lt;/itemno&gt;
+        &lt;bid&gt;{ $newbid }&lt;/bid&gt;
+        &lt;bid_date&gt;1999-03-03&lt;/bid_date&gt;
+      &lt;/bid_tuple&gt;
+    into doc("bids.xml")/bids;
+    exit returning &lt;new_bid&gt;{ $newbid }&lt;/new_bid&gt;;
+  } else {
+    exit returning &lt;top_bid&gt;{ $topbid }&lt;/top_bid&gt;;
+  }
+--&gt;
+&lt;xqx:module xmlns:xqx="http://www.w3.org/2005/XQueryX"
+            xmlns:xqxuf="http://www.w3.org/2007/xquery-update-10"
+            xmlns:xqxsx="http://www.w3.org/2008/xquery-sx-10"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.w3.org/2005/XQueryX
+                                  http://www.w3.org/2005/XQueryX/xqueryx.xsd
+                                http://www.w3.org/2007/xquery-update-10
+http://www.w3.org/2007/xquery-update-10/xquery-update-10-xqueryx.xsd
+                                http://www.w3.org/2008/xquery-sx-10
+http://www.w3.org/2008/xquery-sx-10/xquery-sx-10-xqueryx.xsd"&gt;
+
+  &lt;xqx:mainModule&gt;
+    &lt;xqx:queryBody&gt;
+      &lt;xqx:flworExpr&gt;
+&lt;!-- let $uid := doc("users.xml")/users/user_tuple[name = "Roger Smith"]/userid --&gt;
+        &lt;xqx:letClause&gt;
+          &lt;xqx:letClauseItem&gt;
+            &lt;xqx:typedVariableBinding&gt;
+              &lt;xqx:varName&gt;uid&lt;/xqx:varName&gt;
+            &lt;/xqx:typedVariableBinding&gt;
+            &lt;xqx:letExpr&gt;
+              &lt;xqx:pathExpr&gt;
+                &lt;xqx:stepExpr&gt;
+                  &lt;xqx:filterExpr&gt;
+                    &lt;xqx:functionCallExpr&gt;
+                      &lt;xqx:functionName
+                        xqx:prefix="fn"&gt;doc&lt;/xqx:functionName&gt;
+                      &lt;xqx:arguments&gt;
+                        &lt;xqx:stringConstantExpr&gt;
+                          &lt;xqx:value&gt;users.xml&lt;/xqx:value&gt;
+                        &lt;/xqx:stringConstantExpr&gt;
+                      &lt;/xqx:arguments&gt;
+                    &lt;/xqx:functionCallExpr&gt;
+                  &lt;/xqx:filterExpr&gt;
+                &lt;/xqx:stepExpr&gt;
+                &lt;xqx:stepExpr&gt;
+                  &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                  &lt;xqx:nameTest&gt;users&lt;/xqx:nameTest&gt;
+                &lt;/xqx:stepExpr&gt;
+                &lt;xqx:stepExpr&gt;
+                  &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                  &lt;xqx:nameTest&gt;user-tuple&lt;/xqx:nameTest&gt;
+                  &lt;xqx:predicates&gt;
+                    &lt;xqx:equalOp&gt;
+                      &lt;xqx:firstOperand&gt;
+                        &lt;xqx:pathExpr&gt;
+                          &lt;xqx:stepExpr&gt;
+                            &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                            &lt;xqx:nameTest&gt;name&lt;/xqx:nameTest&gt;
+                          &lt;/xqx:stepExpr&gt;
+                        &lt;/xqx:pathExpr&gt;
+                      &lt;/xqx:firstOperand&gt;
+                      &lt;xqx:secondOperand&gt;
+                        &lt;xqx:stringConstantExpr&gt;
+                          &lt;xqx:value&gt;Roger Smith&lt;/xqx:value&gt;
+                        &lt;/xqx:stringConstantExpr&gt;
+                      &lt;/xqx:secondOperand&gt;
+                    &lt;/xqx:equalOp&gt;
+                  &lt;/xqx:predicates&gt;
+                &lt;/xqx:stepExpr&gt;
+                &lt;xqx:stepExpr&gt;
+                  &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                  &lt;xqx:nameTest&gt;userid&lt;/xqx:nameTest&gt;
+                &lt;/xqx:stepExpr&gt;
+              &lt;/xqx:pathExpr&gt;
+            &lt;/xqx:letExpr&gt;
+          &lt;/xqx:letClauseItem&gt;
+        &lt;/xqx:letClause&gt;
+&lt;!-- let $topbid := max(doc("bids.xml")/bids/bid_tuple[itemno = 1007]/bid) --&gt;
+        &lt;xqx:letClause&gt;
+          &lt;xqx:letClauseItem&gt;
+            &lt;xqx:typedVariableBinding&gt;
+              &lt;xqx:varName&gt;topbid&lt;/xqx:varName&gt;
+            &lt;/xqx:typedVariableBinding&gt;
+            &lt;xqx:letExpr&gt;
+              &lt;xqx:pathExpr&gt;
+                &lt;xqx:stepExpr&gt;
+                  &lt;xqx:filterExpr&gt;
+                    &lt;xqx:functionCallExpr&gt;
+                      &lt;xqx:functionName
+                        xqx:prefix="fn"&gt;max&lt;/xqx:functionName&gt;
+                      &lt;xqx:arguments&gt;
+                        &lt;xqx:pathExpr&gt;
+                          &lt;xqx:stepExpr&gt;
+                            &lt;xqx:filterExpr&gt;
+                              &lt;xqx:functionCallExpr&gt;
+                                &lt;xqx:functionName
+                                  xqx:prefix="fn"&gt;doc&lt;/xqx:functionName&gt;
+                                &lt;xqx:arguments&gt;
+                                  &lt;xqx:stringConstantExpr&gt;
+                                    &lt;xqx:value&gt;bids.xml&lt;/xqx:value&gt;
+                                  &lt;/xqx:stringConstantExpr&gt;
+                                &lt;/xqx:arguments&gt;
+                              &lt;/xqx:functionCallExpr&gt;
+                            &lt;/xqx:filterExpr&gt;
+                          &lt;/xqx:stepExpr&gt;
+                          &lt;xqx:stepExpr&gt;
+                            &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                            &lt;xqx:nameTest&gt;bids&lt;/xqx:nameTest&gt;
+                          &lt;/xqx:stepExpr&gt;
+                          &lt;xqx:stepExpr&gt;
+                            &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                            &lt;xqx:nameTest&gt;bid-tuple&lt;/xqx:nameTest&gt;
+                            &lt;xqx:predicates&gt;
+                              &lt;xqx:equalOp&gt;
+                                &lt;xqx:firstOperand&gt;
+                                  &lt;xqx:pathExpr&gt;
+                                    &lt;xqx:stepExpr&gt;
+                                      &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                                      &lt;xqx:nameTest&gt;itemno&lt;/xqx:nameTest&gt;
+                                    &lt;/xqx:stepExpr&gt;
+                                  &lt;/xqx:pathExpr&gt;
+                                &lt;/xqx:firstOperand&gt;
+                                &lt;xqx:secondOperand&gt;
+                                  &lt;xqx:integerConstantExpr&gt;
+                                    &lt;xqx:value&gt;1007&lt;/xqx:value&gt;
+                                  &lt;/xqx:integerConstantExpr&gt;
+                                &lt;/xqx:secondOperand&gt;
+                              &lt;/xqx:equalOp&gt;
+                            &lt;/xqx:predicates&gt;
+                          &lt;/xqx:stepExpr&gt;
+                          &lt;xqx:stepExpr&gt;
+                            &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                            &lt;xqx:nameTest&gt;bid&lt;/xqx:nameTest&gt;
+                          &lt;/xqx:stepExpr&gt;
+                        &lt;/xqx:pathExpr&gt;
+                      &lt;/xqx:arguments&gt;
+                    &lt;/xqx:functionCallExpr&gt;
+                  &lt;/xqx:filterExpr&gt;
+                &lt;/xqx:stepExpr&gt;
+              &lt;/xqx:pathExpr&gt;
+            &lt;/xqx:letExpr&gt;
+          &lt;/xqx:letClauseItem&gt;
+        &lt;/xqx:letClause&gt;
+&lt;!-- let $newbid := $topbid * 1.1 --&gt;
+        &lt;xqx:letClause&gt;
+          &lt;xqx:letClauseItem&gt;
+            &lt;xqx:typedVariableBinding&gt;
+              &lt;xqx:varName&gt;newbid&lt;/xqx:varName&gt;
+            &lt;/xqx:typedVariableBinding&gt;
+            &lt;xqx:letExpr&gt;
+              &lt;xqx:multiplyOp&gt;
+                &lt;xqx:firstOperand&gt;
+                  &lt;xqx:varRef&gt;
+                    &lt;xqx:name&gt;topbid&lt;/xqx:name&gt;
+                  &lt;/xqx:varRef&gt;
+                &lt;/xqx:firstOperand&gt;
+                &lt;xqx:secondOperand&gt;
+                  &lt;xqx:decimalConstantExpr&gt;
+                    &lt;xqx:value&gt;1.1&lt;/xqx:value&gt;
+                  &lt;/xqx:decimalConstantExpr&gt;
+                &lt;/xqx:secondOperand&gt;
+              &lt;/xqx:multiplyOp&gt;
+            &lt;/xqx:letExpr&gt;
+          &lt;/xqx:letClauseItem&gt;
+        &lt;/xqx:letClause&gt;
+&lt;!-- return --&gt;
+        &lt;xqx:returnClause&gt;
+&lt;!--   if($newbid &lt;= 240)        --&gt;
+          &lt;xqx:ifThenElseExpr&gt;
+            &lt;xqx:ifClause&gt;
+              &lt;xqx:lessThanOrEqualOp&gt;
+                &lt;xqx:firstOperand&gt;
+                  &lt;xqx:varRef&gt;
+                    &lt;xqx:name&gt;newbid&lt;/xqx:name&gt;
+                  &lt;/xqx:varRef&gt;
+                &lt;/xqx:firstOperand&gt;
+                &lt;xqx:secondOperand&gt;
+                  &lt;xqx:integerConstantExpr&gt;
+                    &lt;xqx:value&gt;240&lt;/xqx:value&gt;
+                  &lt;/xqx:integerConstantExpr&gt;
+                &lt;/xqx:secondOperand&gt;
+              &lt;/xqx:lessThanOrEqualOp&gt;
+            &lt;/xqx:ifClause&gt;
+&lt;!--                      then { --&gt;
+            &lt;xqx:thenClause&gt;
+              &lt;xqxsx:block&gt;
+                &lt;xqxsx:blockBody&gt;
+                  &lt;xqxsx:applyExpr&gt;
+                    &lt;xqxsx:concatExpr&gt;
+&lt;!--     insert nodes --&gt;
+                      &lt;xqxuf:insertExpr&gt;
+                        &lt;xqxuf:sourceExpr&gt;
+&lt;!--       &lt;bid_tuple&gt; --&gt;
+                          &lt;xqx:elementConstructor&gt;
+                            &lt;xqx:tagName&gt;bid_tuple&lt;/xqx:tagName&gt;
+                            &lt;xqx:elementContent&gt;
+&lt;!--         &lt;userid&gt;{ data($uid) }&lt;/userid&gt; --&gt;
+                              &lt;xqx:elementConstructor&gt;
+                                &lt;xqx:tagName&gt;userid&lt;/xqx:tagName&gt;
+                                &lt;xqx:elementContent&gt;
+                                  &lt;xqx:functionCallExpr&gt;
+                                    &lt;xqx:functionName
+                                      xqx:prefix="fn"&gt;data&lt;/xqx:functionName&gt;
+                                    &lt;xqx:arguments&gt;
+                                      &lt;xqx:varRef&gt;
+                                        &lt;xqx:name&gt;uid&lt;/xqx:name&gt;
+                                      &lt;/xqx:varRef&gt;
+                                    &lt;/xqx:arguments&gt;
+                                  &lt;/xqx:functionCallExpr&gt;
+                                &lt;/xqx:elementContent&gt;
+                              &lt;/xqx:elementConstructor&gt;
+&lt;!--         &lt;itemno&gt;1002&lt;/itemno&gt; --&gt;
+                              &lt;xqx:elementConstructor&gt;
+                                &lt;xqx:tagName&gt;itemno&lt;/xqx:tagName&gt;
+                                &lt;xqx:elementContent&gt;
+                                  &lt;xqx:integerConstantExpr&gt;
+                                    &lt;xqx:value&gt;1002&lt;/xqx:value&gt;
+                                  &lt;/xqx:integerConstantExpr&gt;
+                                &lt;/xqx:elementContent&gt;
+                              &lt;/xqx:elementConstructor&gt;
+&lt;!--         &lt;bid&gt;{ $newbid }&lt;/bid&gt; --&gt;
+                              &lt;xqx:elementConstructor&gt;
+                                &lt;xqx:tagName&gt;bid&lt;/xqx:tagName&gt;
+                                &lt;xqx:elementContent&gt;
+                                  &lt;xqx:varRef&gt;
+                                    &lt;xqx:name&gt;newbid&lt;/xqx:name&gt;
+                                  &lt;/xqx:varRef&gt;
+                                &lt;/xqx:elementContent&gt;
+                              &lt;/xqx:elementConstructor&gt;
+&lt;!--         &lt;bid_date&gt;1999-03-03&lt;/bid_date&gt; --&gt;
+                              &lt;xqx:elementConstructor&gt;
+                                &lt;xqx:tagName&gt;bid_date&lt;/xqx:tagName&gt;
+                                &lt;xqx:elementContent&gt;
+                                  &lt;xqx:stringConstantExpr&gt;
+                                    &lt;xqx:value&gt;1999-03-03&lt;/xqx:value&gt;
+                                  &lt;/xqx:stringConstantExpr&gt;
+                                &lt;/xqx:elementContent&gt;
+                              &lt;/xqx:elementConstructor&gt;
+                            &lt;/xqx:elementContent&gt;
+                          &lt;/xqx:elementConstructor&gt;
+                        &lt;/xqxuf:sourceExpr&gt;
+&lt;!--     into doc("bids.xml")/bids; --&gt;
+                        &lt;xqxuf:insertInto/&gt;
+                        &lt;xqxuf:targetExpr&gt;
+                          &lt;xqx:pathExpr&gt;
+                            &lt;xqx:stepExpr&gt;
+                              &lt;xqx:filterExpr&gt;
+                                &lt;xqx:functionCallExpr&gt;
+                                  &lt;xqx:functionName
+                                    xqx:prefix="fn"&gt;doc&lt;/xqx:functionName&gt;
+                                  &lt;xqx:arguments&gt;
+                                    &lt;xqx:stringConstantExpr&gt;
+                                      &lt;xqx:value&gt;bids.xml&lt;/xqx:value&gt;
+                                    &lt;/xqx:stringConstantExpr&gt;
+                                  &lt;/xqx:arguments&gt;
+                                &lt;/xqx:functionCallExpr&gt;
+                              &lt;/xqx:filterExpr&gt;
+                            &lt;/xqx:stepExpr&gt;
+                            &lt;xqx:stepExpr&gt;
+                              &lt;xqx:xpathAxis&gt;child&lt;/xqx:xpathAxis&gt;
+                              &lt;xqx:nameTest&gt;bids&lt;/xqx:nameTest&gt;
+                            &lt;/xqx:stepExpr&gt;
+                          &lt;/xqx:pathExpr&gt;
+                        &lt;/xqxuf:targetExpr&gt;
+                      &lt;/xqxuf:insertExpr&gt;
+                    &lt;/xqxsx:concatExpr&gt;
+&lt;!--     exit returning &lt;new_bid&gt;{ $newbid }&lt;/new_bid&gt;; --&gt;
+                    &lt;xqxsx:concatExpr&gt;
+                      &lt;xqxsx:exitExpr&gt;
+                        &lt;xqx:elementConstructor&gt;
+                          &lt;xqx:tagName&gt;new_bid&lt;/xqx:tagName&gt;
+                          &lt;xqx:elementContent&gt;
+                            &lt;xqx:varRef&gt;
+                              &lt;xqx:name&gt;newbid&lt;/xqx:name&gt;
+                            &lt;/xqx:varRef&gt;
+                          &lt;/xqx:elementContent&gt;
+                        &lt;/xqx:elementConstructor&gt;
+                      &lt;/xqxsx:exitExpr&gt;
+                    &lt;/xqxsx:concatExpr&gt;
+                  &lt;/xqxsx:applyExpr&gt;
+                &lt;/xqxsx:blockBody&gt;
+              &lt;/xqxsx:block&gt;
+            &lt;/xqx:thenClause&gt;
+&lt;!--   } else { --&gt;
+            &lt;xqx:elseClause&gt;
+&lt;!--     exit returning &lt;top_bid&gt;{ $topbid }&lt;/top_bid&gt;; --&gt;
+              &lt;xqxsx:block&gt;
+                &lt;xqxsx:blockBody&gt;
+                  &lt;xqxsx:applyExpr&gt;
+                    &lt;xqxsx:concatExpr&gt;
+                      &lt;xqxsx:exitExpr&gt;
+                        &lt;xqx:elementConstructor&gt;
+                          &lt;xqx:tagName&gt;top_bid&lt;/xqx:tagName&gt;
+                          &lt;xqx:elementContent&gt;
+                            &lt;xqx:varRef&gt;
+                              &lt;xqx:name&gt;topbid&lt;/xqx:name&gt;
+                            &lt;/xqx:varRef&gt;
+                          &lt;/xqx:elementContent&gt;
+                        &lt;/xqx:elementConstructor&gt;
+                      &lt;/xqxsx:exitExpr&gt;
+                    &lt;/xqxsx:concatExpr&gt;
+                  &lt;/xqxsx:applyExpr&gt;
+                &lt;/xqxsx:blockBody&gt;
+              &lt;/xqxsx:block&gt;
+            &lt;/xqx:elseClause&gt;
+          &lt;/xqx:ifThenElseExpr&gt;
+        &lt;/xqx:returnClause&gt;
+&lt;!-- } --&gt;
+      &lt;/xqx:flworExpr&gt;
+    &lt;/xqx:queryBody&gt;
+  &lt;/xqx:mainModule&gt;
+&lt;/xqx:module&gt;
+</eg></div3>
+
+
+<div3 id="id-xqsx-xqueryx-transformed-rep"><head>Transformed XQuery Representation</head>
+
+<p>Application of the stylesheet in <specref ref="id-xqsx-xqueryx-stylesheet"/> to the
+Update Facility XQueryX representation results in the following XQuery representation:</p>
+
+<eg xml:space="preserve">
+( let $uid:=fn:doc("users.xml")/child::users/
+        child::user-tuple[(child::name = "Roger Smith")]/
+        child::userid
+  let $topbid:=fn:max(fn:doc("bids.xml")/
+        child::bids/child::bid-tuple[(child::itemno = 1007)]/
+        child::bid)
+  let $newbid:=($topbid*1.1)
+  return
+    ( if (($newbid &lt;= 240)) then block {
+        insert nodes 
+          &lt;bid_tuple&gt;
+            &lt;userid&gt;{fn:data($uid)}&lt;/userid&gt;
+            &lt;itemno&gt;{1002}&lt;/itemno&gt;
+            &lt;bid&gt;{$newbid}&lt;/bid&gt;
+            &lt;bid_date&gt;{"1999-03-03"}&lt;/bid_date&gt;
+          &lt;/bid_tuple&gt;
+        into 
+          fn:doc("bids.xml")/child::bids;
+        exit returning &lt;new_bid&gt;{$newbid}&lt;/new_bid&gt;; }
+      else block { 
+        exit returning &lt;top_bid&gt;{$topbid}&lt;/top_bid&gt;; } )
+)
+</eg></div3>
+
+</div2>
+
+</div1>
+
+    <div1 id="id-implementation-defined-items">
+      <head>Implementation-Defined Items</head>
+      <p>The following items in this specification are implementation-defined:</p>
+      <olist>
+        <item>
+          <p>The effects of <termref def="dt-snapshot">snapshot semantics</termref> on persistent storage. 
+             For example, it is implementation-defined whether the effects of an <code>fn:put</code> function
+             are visible to an <code>fn:doc</code>, <code>fn:doc-available</code>, or <code>fn:collection</code>
+             function executed in a subsequent <termref def="dt-snapshot">snapshot</termref>.</p>
+        </item>
+        <item>
+          <p>The mechanism (if any) by which the XQuery environment exchanges parameters and results
+             with an external function.</p>
+        </item>
+      </olist>
+    </div1>
+    <div1 id="id-references">
+      <head>References</head>
+      <blist>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" id="XQ10" key="XQuery 1.0" href="http://www.w3.org/TR/xquery" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xquery/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery 1.0: An XML Query Language</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" id="XQX10" key="XML Syntax for XQuery 1.0" href="http://www.w3.org/TR/xqueryx" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xqueryx/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XML Syntax for XQuery 1.0</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" id="XDM" key="XQuery Data Model" href="http://www.w3.org/TR/xpath-datamodel/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xpath-datamodel/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery 1.0 and XPath 2.0 Data Model (XDM)</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" id="FO" key="XQuery 1.0 and XPath 2.0 Functions and Operators" href="http://www.w3.org/TR/xpath-functions/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xpath-functions/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery 1.0 and XPath 2.0 Functions and Operators</loc>,
+          W3C Recommendation, 23 January 2007.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/xquery-update-10/" id="XQueryUpdate" key="XQuery Update Facility" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xquery-update-10/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery Update Facility 1.0</loc>,
+          W3C Candidate Recommendation, March 2008.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/xquery-sx-10-requirements/" id="ScriptingRequirements" key="XQuery Scripting Requirements" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xquery-sx-10-requirements/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery Scripting Extension 1.0 Requirements</loc>,
+          W3C Working Draft, 23 March 2007.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/xquery-sx-10-use-cases/" id="ScriptingUseCases" key="XQuery Scripting Use Cases" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xquery-sx-10-use-cases/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery Scripting Extension 1.0 Use Cases</loc>,
+          W3C Working Draft 23 March 2007.</bibl>
+        <bibl xmlns:xlink="http://www.w3.org/1999/xlink" id="XQ11" key="XQuery 1.1" href="http://www.w3.org/TR/xquery" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">
+          <loc href="http://www.w3.org/TR/xquery-11/" xlink:type="simple" xlink:show="replace" xlink:actuate="onRequest">XQuery 1.1: An XML Query Language</loc>,
+          W3C Working Draft, 15 December 2009.</bibl>
+      </blist>
+    </div1>
+    <div1 id="id-errors">	
+      <head>Error Conditions</head>	
+
+      <div2 id="id-new-error-codes">
+        <head>New Error Codes</head>
+        <error-list>
+          <error spec="SX" code="0002" class="ST" type="static">
+            <p>
+              It is a static error to mix both <termref def="dt-updating-expr">updating</termref> and
+              <termref def="dt-side-effecting-expr">sequential</termref> operands in an expression.
+            </p>
+          </error>
+          <error spec="SX" code="0003" class="DY" type="dynamic">
+            <p>
+              It is a dynamic
+              error if, after applying a pending update list (using <code>upd:applyUpdates</code>),
+              the XDM instance bound to any in-scope variable does not match the static type of that variable according
+              to SequenceType matching rules.
+            </p>
+          </error>
+          <error spec="SX" code="0004" class="DY" type="dynamic">
+            <p>
+              It is an dynamic error for an external sequential function to return a non-empty <termref def="dt-pul">pending update list</termref>.
+            </p>
+          </error>
+          <error spec="SX" code="0005" class="ST" type="static">
+            <p>
+              It is a static error if two or more variables declared in the same block expression
+              have the same expanded QName.
+            </p>
+          </error>
+          <error spec="SX" code="0006" class="TY" type="type">
+            <p>
+              A reference to a variable, other than on the left-hand side of an assignment expression,
+              is an error if the variable has no value in <emph>variable values</emph>
+              when the reference is evaluated.
+            </p>
+          </error>
+          <error spec="SX" code="0007" class="ST" type="static">
+            <p>
+              The variable on the left-hand side of an assignment must have been declared in one of the following ways:
+            </p>
+            <ulist>
+              <item><p>By a block variable declaration</p></item>
+              <item><p>As a parameter to a sequential function</p></item>
+              <item><p>By a variable declaration in the Prolog <phrase diff="add">declared as <termref def="dt-assignable">assignable</termref></phrase></p></item>
+            </ulist>
+          </error>
+          <error spec="SX" code="0008" class="ST" type="static">
+            <p>
+              It is a static error if the body of a function violates the category rules for it's declared category.
+            </p>
+          </error>
+          <error spec="SX" code="0009" class="ST" type="static">
+            <p>
+              A static error is raised if the value for a
+              <code>xqsx:query-mode</code> option or pragma is not either <code>sequential</code> or <code>simple</code>.
+            </p>
+          </error>
+        </error-list>
+      </div2>
+      <div2 id="id-amended-error-codes">
+        <head>Amendments to Existing Error Codes</head>
+        <error-list>
+          <error spec="XU" code="0001" class="ST" type="static">
+            <p>
+              It is a static error for an <termref def="dt-updating-expr">updating</termref> or
+              <termref def="dt-side-effecting-expr">sequential expression</termref> to occur in the following places:
+            </p>
+            <olist>
+              <item>
+                <p>
+                  As the initializing expression of a prolog variable.
+                </p>
+              </item>
+              <item>
+                <p>
+                  As a StepExpr in a RelativePathExpr when query mode is <code>simple</code>.
+                </p>
+              </item>
+              <item>
+                <p>
+                  As the primary expression or a predicate expression of a FilterExpr or AxisStep
+                  when query mode is <code>simple</code>.
+                </p>
+              </item>
+              <item>
+                <p>
+                  In the <code>for</code>, <code>let</code>, <code>where</code>, or <code>order by</code>
+                  clauses of a FLWOR expression when query mode is <code>simple</code>.
+                </p>
+              </item>
+              <item>
+                <p>
+                  In a quantified expression clause or as the satisfies expression of a quantified expression
+                  when query mode is <code>simple</code>.
+                </p>
+              </item>
+            </olist>
+          </error>
+        </error-list>
+      </div2>
+    </div1>
+
+    <inform-div1 id="id-glossary">
+      <head>Glossary</head>
+      <?glossary?>
+    </inform-div1>
+  </back>
+</spec>

@@ -1,0 +1,342 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-areas-of-confusion" lang="en-US">
+	<title>Notes</title>
+	 <section>
+		<title>Sequences vs. Arrays</title>
+		 <para>
+			Even though JSON supports arrays, JSONiq uses a different construct as its first class citizens: sequences. Any value returned by or passed to an expression is a sequence.
+		</para>
+		 <para>
+			The main difference between sequences and arrays is that sequences are completely flat, meaning they cannot contain other sequences.
+		</para>
+		 <para>
+			Since sequences are flat, expressions of the JSONiq language just concatenate them to form bigger sequences.
+		</para>
+		 <para>
+			This is crucial to allow streaming results, for example through an HTTP session.
+		</para>
+		 <example>
+			<title>Flat sequences</title>
+			 
+<programlisting>
+( (1, 2), (3, 4) )
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					1 2 3 4
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Arrays on the other side can contain nested arrays, like in JSON.
+		</para>
+		 <example>
+			<title>Nesting arrays</title>
+			 
+<programlisting>
+[ [ 1, 2 ], [ 3, 4 ] ]
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ [ 1, 2 ], [ 3, 4 ] ]
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Many expressions return single items - actually, they really return a singleton sequence, but a singleton sequence of one item is considered the same as this item.
+		</para>
+		 <example>
+			<title>Singleton sequences</title>
+			 
+<programlisting>
+1 + 1
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					2
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			This is different for arrays: a singleton array is distinct from its unique member, like in JSON.
+		</para>
+		 <example>
+			<title>Singleton sequences</title>
+			 
+<programlisting>
+[ 1 + 1 ]
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ 2 ]
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			An array is a single item. A (non-singleton) sequence is not. This can be observed by counting the number of items in a sequence.
+		</para>
+		 <example>
+			<title>count() on an array</title>
+			 
+<programlisting>
+count([ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ])
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					1
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>count() on a sequence</title>
+			 
+<programlisting>
+count( ( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ) )
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					4
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Other than that, arrays and sequences can contain exactly the same members (atomics, arrays, objects).
+		</para>
+		 <example>
+			<title>Members of an array</title>
+			 
+<programlisting>
+[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Members of an sequence</title>
+			 
+<programlisting>
+( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } )
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					1 foo [ 1, 2, 3, 4 ] { "foo" : "bar" }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			Arrays can be converted to sequences, and vice-versa.
+		</para>
+		 <example>
+			<title>Converting an array to a sequence</title>
+			 
+<programlisting>
+[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ] []
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					1 foo [ 1, 2, 3, 4 ] { "foo" : "bar" }
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Converting a sequence to an array</title>
+			 
+<programlisting>
+[ ( 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ) ]
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ 1, "foo", [ 1, 2, 3, 4 ], { "foo" : "bar" } ]
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+	
+	 <section>
+		<title>Null vs. empty sequence</title>
+		 <para>
+			Null and the empty sequence are two different concepts.
+		</para>
+		 <para>
+			Null is an item (an atomic value), and can be a member of an array or of a sequence, or the value associated with a key in an object. Sequences cannot, as they represent the absence of any item.
+		</para>
+		 <example>
+			<title>Null values in an array</title>
+			 
+<programlisting>
+[ null, 1, null, 2 ]
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					[ null, 1, null, 2 ]
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null values in an object</title>
+			 
+<programlisting>
+{ "foo" : null }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "foo" : null }
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null values in a sequence</title>
+			 
+<programlisting>
+(null, 1, null, 2)
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					null 1 null 2
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			If an empty sequence is found as an object value, it is automatically converted to null.
+		</para>
+		 <example>
+			<title>Automatic conversion to null.</title>
+			 
+<programlisting>
+{ "foo" : () }
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					{ "foo" : null }
+				</para>
+			</formalpara>
+		</example>
+		 <para>
+			In an arithmetic opration or a comparison, if an operand is an empty sequence, an empty sequence is returned. If an operand is a null, an error is raised except for equality and inequality.
+		</para>
+		 <example>
+			<title>Empty sequence in an arithmetic operation.</title>
+			 
+<programlisting>
+() + 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null in an arithmetic operation.</title>
+			 
+<programlisting>
+null + 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					An error was raised: arithmetic operation not defined between types "js:null" and "xs:integer"
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null and empty sequence in an arithmetic operation.</title>
+			 
+<programlisting>
+null + ()
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Empty sequence in a comparison.</title>
+			 
+<programlisting>
+() eq 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null in a comparison.</title>
+			 
+<programlisting>
+null eq 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					false
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null in a comparison.</title>
+			 
+<programlisting>
+null lt 2
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+					true
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null and the empty sequence in a comparison.</title>
+			 
+<programlisting>
+null eq ()
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+		 <example>
+			<title>Null and the empty sequence in a comparison.</title>
+			 
+<programlisting>
+null lt ()
+</programlisting>
+			 <formalpara>
+				<title>Result (run with Zorba):</title>
+				<para>
+				</para>
+			</formalpara>
+		</example>
+
+	</section>
+
+</chapter>
+

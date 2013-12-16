@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Introduction_to_JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chapter-data-model">
+    <title>JSON and the JSONiq data model</title>
+    <section>
+      <title>JSON</title>
+      <para>The JSONiq query language was specifically designed for native JSON support.</para>
+      <para>
+        As stated on its home http://www.json.org, JSON is a
+        <quote>
+          lightweight data-interchange format. It is easy for
+          humans to read and write. It is easy for machines to parse and generate.
+        </quote>
+      </para>
+      <para>A JSON document is made of the following building blocks: objects, arrays, strings, numbers, booleans and nulls.</para>
+    </section>
+    <section>
+      <title>JSONiq values</title>
+      <para>JSONiq manipulates sequences of these building blocks, which are called items. Hence, a JSONiq value is a sequence of items.</para>
+      <para>Any JSONiq expression takes and returns sequences of items.</para>
+      <para>Comma-separated JSON-like building blocks is all you need to begin building your own sequences. You can mix and match!</para>
+      <example>
+        <title>A sequence</title>
+        <programlisting>
+  "foo", 2, true, { "foo", "bar" }, null, [ 1, 2, 3 ]
+        </programlisting>
+      </example>
+      <para>Sequences are flat and cannot be nested. This makes streaming possible, which is very powerful.</para>
+      <example>
+        <title>Sequences are flat</title>
+        <programlisting>
+  ( ("foo", 2), ( (true, 4, null), 6 ) )
+        </programlisting>
+      </example>
+      <para>A sequence can be empty. The empty sequence can be constructed with empty parentheses.</para>
+      <example>
+        <title>The empty sequence</title>
+        <programlisting>
+  ()
+        </programlisting>
+      </example>
+      <para>A sequence of just one item is considered the same as just this item. Whenever we say that an expression returns or takes one item, we really
+        mean that it takes a singleton sequence of one item.</para>
+      <example>
+        <title>A sequence of one item</title>
+        <programlisting>
+  ("foo")
+        </programlisting>
+      </example>
+      <para>JSONiq classifies the items mentioned above in two categories:</para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            JSON items: objects and arrays.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Atomics: strings, numbers, booleans and nulls.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section>
+      <title>Objects</title>
+      <para>An object represents a JSON object: an unordered collection of string/value
+      pairs.</para>
+      <para>Each pair consists of an atomic of type <code>string</code> and of an item.</para>
+      <para>No two pairs have the same name (using Unicode character-wise comparison.) </para>
+    </section>
+    <section>
+      <title>Arrays</title>
+      <para>An array represents a JSON array: an ordered list of items.</para>
+      <para>An array can be seen as a materialized sequence, wrapped in one single item.</para>
+    </section>
+    <section>
+      <title>Atomics</title>
+      <para>An atomic is a non-structured value that is annotated with a type.</para>
+      <para>JSONiq defines the following built-in atomic types. Note that JSON numbers correspond to
+      three different types in JSONiq.</para>
+      <itemizedlist>
+        <listitem>
+          <para>
+          <emphasis>string</emphasis>: all JSON strings. </para>
+        </listitem>
+        <listitem>
+          <para>
+          <emphasis>integer</emphasis>: all JSON numbers that are integers (no dot, no exponent),
+          infinite range.</para>
+        </listitem>
+        <listitem>
+          <para>
+          <emphasis>decimal</emphasis>: all JSON numbers that are decimals (no exponent), infinite
+          range. </para>
+        </listitem>
+        <listitem>
+          <para>
+          <emphasis>double</emphasis>: IEEE double-precision 64-bit floating point numbers
+          (corresponds to JSON numbers with an exponent). </para>
+        </listitem>
+        <listitem>
+          <para>
+          <emphasis>boolean</emphasis>: the JSON booleans true and false. </para>
+        </listitem>
+        <listitem>
+          <para>
+          <emphasis>null</emphasis>: the JSON null. </para>
+        </listitem>
+      </itemizedlist>
+      <para> JSONiq also offers many other types of atomics. They are described in Chapter <xref linkend="chapter-type-system"/>. </para>
+    </section>
+</chapter>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<book lang="en-US">
+	<xi:include href="Book_Info.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	 <xi:include href="Introduction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	 <part>
+		<title>JSON and the JSONiq Data Model</title>
+		 <xi:include href="JSON.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="JSONiqDataModel.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="JSONiqTypeSystem.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+	</part>
+	 <part>
+		<title>Construction of Items and JSON Navigation</title>
+		 <xi:include href="Construction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="Collections.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="Navigation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+	</part>
+	 <part>
+		<title>JSONiq Expressions</title>
+		 <xi:include href="BasicOperations.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="ControlFlow.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="FLWORExpressions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="TypeExpressions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+	</part>
+	 <part>
+		<title>Prolog, Modules and Functions</title>
+		 <xi:include href="Prolog.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="Modules.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+		 <xi:include href="FunctionLibrary.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+	</part>
+	 <xi:include href="AreasOfConfusion.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	 <xi:include href="Reference.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</book>
+

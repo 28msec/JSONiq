@@ -1,0 +1,332 @@
+<chapter id="chapter-basicOperations">
+  <title>Basic Operations</title>
+  <para>Now that we have shown how expressions can be composed, we can begin the tour of all JSONiq expressions. First, we introduce
+  the most basic operations.</para>
+  <section>
+    <title>Construction of Sequences</title>
+    <section>
+      <title>Comma Operator</title>
+      <para>The comma allows you to concatenate two sequences, or even single items. This operator has the lowest precedence of all,
+      so do not forget the parentheses if you would like to change this.</para>
+      <para>Also, the comma operator is associative -- in particular, sequences do not nest. You need to use arrays in order to nest.</para>
+      <example>
+        <title>Comma.</title>
+        <programlisting>
+1, 2, 3, 4, 5,
+{ "foo" : "bar" }, [ 1 ],
+1 + 1, 2 + 2,
+(1, 2, (3, 4), 5)
+      </programlisting>
+      <para>Results:</para><programlisting>1
+2
+3
+4
+5
+{
+  "foo" : "bar"
+}
+[ 1 ]
+2
+4
+1
+2
+3
+4
+5
+</programlisting></example>
+    </section>
+    <section>
+      <title>Range Operator</title>
+      <para>With the binary operator "to", you can generate larger sequences with just two integer operands.</para>
+      <para>If the left operand is greater than the right operand, an empty sequence is returned.</para>
+      <para>If an operand evaluates to something else than a single integer, an error is raised. There is one exception with the empty
+      sequence, which behaves in a particular way for most operations (see below).</para>
+      <example>
+        <title>Range operator.</title>
+        <programlisting>
+1 to 10,
+10 to 1
+      </programlisting>
+      <para>Results:</para><programlisting>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</programlisting></example>
+    </section>
+  </section>
+  <section>
+    <title>Parenthesized Expressions</title>
+    <para>Expressions take precedence on one another. For example, addition has a higher precedence than the comma. Parentheses
+    allow you to change precedence.</para>
+    <para>If the parentheses are empty, the empty sequence is produced.</para>
+    <example>
+      <title>Empty sequence.</title>
+      <programlisting>
+( 2 + 3 ) * 5,
+()
+      </programlisting>
+    <para>Results:</para><programlisting>25
+</programlisting></example>
+  </section>
+  <section>
+    <title>Arithmetics</title>
+    <para>JSONiq supports the basic four operations, as well integer division and modulo. You should keep in mind that, as is
+      the case in most programming languages, multiplicative operations have precedence over additive operations.
+      Parentheses can override it, as explained above.</para>
+    <example>
+      <title>Basic arithmetic operations with precedence override.</title>
+      <programlisting>
+1 * ( 2 + 3 ) + 7 idiv 2 - (-8) mod 2
+      </programlisting>
+    <para>Results:</para><programlisting>8
+</programlisting></example>
+    <para>Dates, times and durations are also supported in a natural way.</para>
+    <example>
+      <title>Using basic operations with dates.</title>
+      <programlisting>
+date("2013-05-01") - date("2013-04-02")
+      </programlisting>
+    <para>Results:</para><programlisting>"P29D"
+</programlisting></example>
+    <para>If any of the operands is a sequence of more than one item, an error is raised.</para>
+    <para>If any of the operands is not a number, a date, a time or a duration, or if the operands are not compatible
+    (say a number and a time), an error is raised.</para>
+    <para>Do not worry if the two operands do not have the same number type, JSONiq will do the adequate conversions.</para>
+    <example>
+      <title>Basic arithmetic operations with different, but compatible number types</title>
+      <programlisting>
+2.3e4 + 5
+      </programlisting>
+    <para>Results:</para><programlisting>23005
+</programlisting></example>
+  </section>
+  <section>
+    <title>String Concatenation</title>
+    <para>Two strings or more can be concatenated using the concatenation operator. An empty sequence is treated like an empty string.</para>
+    <example>
+      <title>String concatenation.</title>
+      <programlisting>
+"Captain" || " " || "Kirk",
+"Captain" || () || "Kirk"
+      </programlisting>
+    <para>Results:</para><programlisting>"Captain Kirk"
+"CaptainKirk"
+</programlisting></example>
+  </section>
+  <section>
+    <title>Comparison</title>
+    <para>Atomics can be compared with the usual six comparison operators
+    (equality, non-equality, lower-than, greater-than, lower-or-equal, greater-or-equal),
+    and with the same two-letter symbols as in MongoDB.</para>
+    <para>Comparison is only possible between two compatible types, otherwise, an error is raised.</para>
+    <example>
+      <title>Equality comparison.</title>
+      <programlisting>
+1 + 1 eq 2,
+1 lt 2
+      </programlisting>
+    <para>Results:</para><programlisting>true
+true
+</programlisting></example>
+    <para>null can be compared for equality or inequality to anything - it is only equal to itself so that false is returned when comparing if
+      for equality with any non-null atomic. True is returned when comparing it with non-equality with any non-null atomic.</para>
+    <example>
+      <title>Equality and non-equality comparison with null.</title>
+      <programlisting>
+1 eq null,
+"foo" ne null,
+null eq null
+      </programlisting>
+    <para>Results:</para><programlisting>false
+true
+true
+</programlisting></example>
+    <para>For ordering operators (lt, le, gt, ge), null is considered the smallest possible value (like in JavaScript).</para>
+    <example>
+      <title>Ordering comparison with null.</title>
+      <programlisting>
+null lt 1
+      </programlisting>
+    <para>Results:</para><programlisting>true
+</programlisting></example>
+    <para>Comparisons and logic operators are fundamental for a query language and for the implementation 
+      of a query processor as they impact query optimization greatly. The current comparison semantics for them
+      is carefully chosen to have the right characteristics as to enable optimization.</para>
+  </section>
+  <section>
+    <title>Empty Sequence Behavior</title>
+    <para>In range operations, arithmetics and comparisons, if an operand is the empty sequence, then the result is the
+    empty sequence as well.</para>
+    <example>
+      <title>The empty sequence used in basic operations.</title>
+      <programlisting>
+() to 10,
+1 to (),
+1 + (),
+() eq 1,
+() ge 10
+      </programlisting>
+    <para>Results:</para><programlisting/></example>
+  </section>
+    <section id="section-logics">
+    <title>Logic</title>
+    <para>JSONiq logics support is based on two-valued logics: there is just true and false and nothing else.</para>
+    <para>Non-boolean operands get automatically converted to either true or false, or an error is raised.
+      The boolean() function performs a manual conversion. The rules for conversion were designed in such a way that it
+      feels "natural". Here they are:</para>
+    <itemizedlist>
+      <listitem>
+        <para>An empty sequence is converted to false.</para>
+      </listitem>
+      <listitem>
+          <para>A singleton sequence of one null is converted to false.</para>
+      </listitem>
+      <listitem>
+        <para>A singleton sequence of one string is converted to true except the empty string which is converted to false.</para>
+      </listitem>
+      <listitem>
+        <para>A singleton sequence of one number is converted to true except zero or NaN which are converted to false.</para>
+      </listitem>
+      <listitem>
+        <para>Operand singleton sequences of any other item cannot be converted and an error is raised.</para>
+      </listitem>
+      <listitem>
+        <para>Operand sequences of more than one item cannot be converted and an error is raised.</para>
+      </listitem>
+    </itemizedlist>
+      <example>
+        <title>Conversion to booleans.</title>
+        <programlisting>
+{
+  "empty-sequence" : boolean(()),
+  "null" : boolean(null),
+  "non-empty-string" : boolean("foo"),
+  "empty-string" : boolean(""),
+  "zero" : boolean(0),
+  "not-zero" : boolean(1e42)
+},
+null and "foo"
+      </programlisting>
+      <para>Results:</para><programlisting>{
+  "empty-sequence" : false,
+  "null" : false,
+  "non-empty-string" : true,
+  "empty-string" : false,
+  "zero" : false,
+  "not-zero" : true
+}
+false
+</programlisting></example>
+      <section>
+        <title>Propositional Logic</title>
+        <para>JSONiq supports the most famous three boolean operations: conjunction, disjunction, and negation. Negation has the highest
+        precedence, then conjunction, then disjunction. Comparisons have a higher precedence than all logical operations. Parentheses can override.</para>
+      <example>
+        <title>Logics with booleans.</title>
+        <programlisting>
+true and ( true or not true ),
+1 + 1 eq 2 or not 1 + 1 eq 3
+        </programlisting>
+      <para>Results:</para><programlisting>true
+true
+</programlisting></example>
+      <para>A sequence with more than one item, or singleton objects and arrays cannot be converted to a boolean. An error is raised if
+      it is attempted.</para>
+      <para>Unlike in C++ or Java, you cannot rely on the order of evaluation of the operands of a boolean operation.
+      The following query may return true or may raise an error.</para>
+      <example>
+        <title>Non-determinism in presence of errors.</title>
+        <programlisting>
+true or (1 div 0)
+        </programlisting>
+      <para>Results:</para><programlisting>true
+</programlisting></example>
+      </section>
+    <section>
+      <title>First-Order Logic (Quantified Variables)</title>
+      <para>Given a sequence, it is possible to perform universal or existential quantification on a predicate.</para>
+      <example>
+        <title>Universal and existential quantifiers.</title>
+        <programlisting>
+every $i in 1 to 10
+  satisfies $i gt 0,
+some $i in -5 to 5, $j in 1 to 10
+  satisfies $i eq $j
+        </programlisting>
+      <para>Results:</para><programlisting>true
+true
+</programlisting></example>
+      <para>Variables can be annotated with a type. If no type is specified, item* is assumed.
+      If the type does not match, an error is raised.</para>
+      <example>
+        <title>Existential quantifier with type checking.</title>
+        <programlisting>
+some $i as integer in -5 to 5, $j as integer
+  in 1 to 10
+  satisfies $i eq $j
+        </programlisting>
+      <para>Results:</para><programlisting>true
+</programlisting></example>
+    </section>
+  </section>
+  <section>
+    <title>Builtin Functions</title>
+    <para>The syntax for function calls is similar to many other languages.</para>
+    <para>Like in C++ (namespaces) or Java (packages, classes), functions live in namespaces that are URIs.</para>
+    <para>Although it is possible to fully write the name of a function, namespace included, it can be cumbersome. Hence,
+    for convenience, a namespace can be associated with a prefix that acts as a shortcut.</para>
+    <para>JSONiq supports three sorts of functions:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Builtin functions: these have no prefix and can be called without any import.</para>
+      </listitem>
+      <listitem>
+        <para>Local functions: they are defined in the prolog, to be used in the main query. They have the prefix <emphasis>local:</emphasis>. <xref linkend="chapter-prolog"/> describes how to define your own local functions.</para>
+      </listitem>
+      <listitem>
+        <para>Imported functions: they are defined in a library module. They have the prefix corresponding to the alias to which the imported module has been bound to. <xref linkend="chapter-modules"/> describes how to define your own modules.</para>
+      </listitem>
+    </itemizedlist>   
+    <para>For now, we only introduce how to call builtin functions -- these are the simplest, since they do not need any prefix or explicit namespace.</para>   
+    <example>
+      <title>A builtin function call.</title>
+      <programlisting>
+keys({ "foo" : "bar", "bar" : "foo" }),
+concat("foo", "bar")
+   </programlisting>
+    <para>Results:</para><programlisting>"foo"
+"bar"
+"foobar"
+</programlisting></example>
+    <para>Some builtin functions perform aggregation and are particularly convenient:</para>
+    <example>
+      <title>A builtin function call.</title>
+      <programlisting>
+sum(1 to 100),
+avg(1 to 100),
+count( (1 to 100)[ $$ mod 5 eq 0 ] )
+   </programlisting>
+    <para>Results:</para><programlisting>5050
+50.5
+20
+</programlisting></example>
+    <para>Remember that JSONiq is a strongly typed language. Functions have signatures, for example sum() expects a sequence of numbers.
+    An error is raised if the actual types do not match the expected types.
+    </para>
+    <para>Also, calling a function with two parameters is different from calling a function with one parameter that is a sequence with two items.
+      For the latter, extra parentheses must be added to make sure that the sequence is taken as a single parameter.</para>
+      <example>
+        <title>Calling a function with a sequence.</title>
+        <programlisting>
+count((1, 2, 3, 4))
+   </programlisting>
+      <para>Results:</para><programlisting>4
+</programlisting></example>
+  </section>
+</chapter>

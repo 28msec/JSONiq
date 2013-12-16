@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.3. libjn:descendant-objects</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-function-library.html" title="Chapter 8. Function library" /><link rel="prev" href="ch08s02.html" title="8.2. libjn:descendant-arrays" /><link rel="next" href="ch08s04.html" title="8.4. libjn:descendant-pairs" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch08s04.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm35948704">8.3. libjn:descendant-objects</h2></div></div></div><div class="para">
+			This function returns all objects contained within the supplied items, regardless of depth.
+		</div><pre class="programlisting">
+declare function libjn:descendant-objects($sequence as item()*) as object()*
+{
+  for $item in $sequence
+  return typeswitch ($item)
+  case object() return (
+    $item,
+    libjn:descendant-objects(libjn:values($item))
+  )
+  case array() return
+    libjn:descendant-objects($item())
+  default return ()
+};
+</pre><div class="example"><h6>Example 8.2. Accessing all descendant objects</h6><div class="example-contents"><div class="para">
+				Query:
+			</div><pre class="programlisting">libjn:descendant-objects(
+  (
+    { "foo" : { "bar" : [ 1, 2 ] } },
+    [ [ { "foo" : "bar", "bar" : "foo" } ] ],
+    true(),
+    1,
+    jn:null()
+  )
+)</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+{ "foo" : { "bar" : [ 1, 2 ] } }
+{ "bar" : [ 1, 2 ] }
+{ "foo" : "bar", "bar" : "foo" }
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s02.html"><strong>Prev</strong>8.2. libjn:descendant-arrays</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch08s04.html"><strong>Next</strong>8.4. libjn:descendant-pairs</a></li></ul></body></html>

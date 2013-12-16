@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>11.7. Map Operator</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-FLWOR.html" title="Chapter 11. FLWOR Expressions" /><link rel="prev" href="ch11s06.html" title="11.6. Count Clauses" /><link rel="next" href="ch11s08.html" title="11.8. Composing FLWOR Expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch11s06.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch11s08.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp7733888">11.7. Map Operator</h2></div></div></div><div class="para">
+			JSONiq provides a shortcut for a for-return construct, automatically binding each item in the left-hand-side sequence to the context item.
+		</div><div class="example"><h6>Example 11.21. A simple map</h6><div class="example-contents"><pre class="programlisting">
+(1 to 10) ! ($$ * 2)
+</pre><pre class="programlisting">Result:
+ 2
+ 4
+ 6
+ 8
+ 10
+ 12
+ 14
+ 16
+ 18
+ 20
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 11.22. An equivalent query</h6><div class="example-contents"><pre class="programlisting">
+for $i in 1 to 10
+return $i * 2
+</pre><pre class="programlisting">Result:
+ 2
+ 4
+ 6
+ 8
+ 10
+ 12
+ 14
+ 16
+ 18
+ 20
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch11s06.html"><strong>Prev</strong>11.6. Count Clauses</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch11s08.html"><strong>Next</strong>11.8. Composing FLWOR Expressions</a></li></ul></body></html>

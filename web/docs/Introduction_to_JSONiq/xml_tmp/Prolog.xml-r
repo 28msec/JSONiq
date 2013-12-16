@@ -1,0 +1,197 @@
+<chapter id="chapter-prolog">
+  <title>Prologs</title>
+  <para>This section introduces prologs, which allows declaring functions and global variables that can then be used in the main query. A prolog also allows setting some default behaviour.</para>
+  <figure>
+    <title>MainModule</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/MainModule.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <figure>
+    <title>Prolog</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/Prolog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The prolog appears before the main query and is optional. It can contain setters and module imports, followed by function and variable declarations.</para>
+  <para>Module imports are explained in the next chapter.</para>
+  <section>
+    <title>Setters.</title>
+    <figure>
+      <title>Setter</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/Setter.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Setters allow to specify a default behaviour for various aspects of the language.</para>
+    <section>
+      <title>Default collation</title>
+      <figure>
+        <title>DefaultCollationDecl</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/DefaultCollationDecl.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>This specifies the default collation used for grouping and ordering clauses in FLWOR expressions. It can be overriden with a collation directive in these clauses.</para>
+    </section>
+    <section>
+      <title>Default ordering mode</title>
+      <figure>
+        <title>OrderingModeDecl</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/OrderingModeDecl.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>This specifies the default behaviour of from clauses, i.e., if they bind tuples in the order in which items occur in the binding sequence. It can be overriden with ordered and unordered expressions.</para>
+    </section>
+    <section>
+      <title>Default ordering behaviour for empty sequences</title>
+      <figure>
+        <title>EmptyOrderDecl</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/EmptyOrderDecl.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>This specifies whether empty sequences come first or last in an ordering clause. It can be overriden by the corresponding directives in such clauses.</para>
+    </section>
+    <section>
+      <title>Default decimal format</title>
+      <figure>
+        <title>DecimalFormatDecl</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/DecimalFormatDecl.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <figure>
+        <title>DFPropertyName</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/DFPropertyName.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>This specifies a default decimal format for the builtin function format-number().</para>
+    </section>
+  </section>
+  <section>
+    <title>Global variables</title>
+    <figure>
+      <title>VarDecl</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/VarDecl.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Variables can be declared global. Global variables are declared in the prolog.</para>
+    <example>
+      <title>Global variable</title>
+      <programlisting>
+  declare variable $obj := { "foo" : "bar" };
+  $obj
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "bar"
+}
+</programlisting></example>
+    <example>
+      <title>Global variable</title>
+      <programlisting>
+  declare variable $numbers := (1, 2, 3, 4, 5);
+  [ $numbers ]
+      </programlisting>
+    <para>Results:</para><programlisting>[ 1, 2, 3, 4, 5 ]
+</programlisting></example>
+    <para>You can specify a type for a variable. If the type does not match, an error is raised. Types will be explained later. In general, you do not need to worry too much about variable types
+      except if you want to make sure that what you bind to a variable is really what you want. In most cases, the engine will take care of types for you.</para>
+    <example>
+      <title>Global variable with a type</title>
+      <programlisting>
+  declare variable $obj as object := { "foo" : "bar" };
+  $obj
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "bar"
+}
+</programlisting></example>
+    <para>An external variable allows you to pass a value from the outside environment, which can be very useful. Each implementation can choose 
+      their own way of passing a value to an external variable. A default value for an external variable can also be supplied in case none is provided outside.</para>
+    <example>
+      <title>An external global variable</title>
+      <programlisting>
+  declare variable $obj external;
+  $obj
+      </programlisting>
+    <para>Error:</para><programlisting>"obj": variable has no value</programlisting></example>
+    <example>
+      <title>An external global variable with a default value</title>
+      <programlisting>
+  declare variable $obj external := { "foo" : "bar" };
+  $obj
+      </programlisting>
+    <para>Results:</para><programlisting>{
+  "foo" : "bar"
+}
+</programlisting></example>
+  </section>
+  <section>
+    <title>Functions</title>
+    <figure>
+      <title>VarDecl</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/FunctionDecl.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>You can define your own functions in the prolog. These user-defined functions must be prefixed with <emphasis>local:</emphasis>, both in the declaration and when called.</para>
+    <para>Remember than types are optional, and if you do not specify any, item* is assumed, both for parameters and for the return type.</para>
+    <example>
+      <title>An external global variable with a default value</title>
+      <programlisting>
+declare function local:say-hello($x) { "Hello, " || $x || "!" };
+local:say-hello("Mister Spock")
+      </programlisting>
+    <para>Results:</para><programlisting>"Hello, Mister Spock!"
+</programlisting></example>
+    <example>
+      <title>An external global variable with a default value</title>
+      <programlisting>
+declare function local:say-hello($x as string) { "Hello, " || $x || "!" };
+local:say-hello("Mister Spock")
+      </programlisting>
+    <para>Results:</para><programlisting>"Hello, Mister Spock!"
+</programlisting></example>
+    <example>
+      <title>An external global variable with a default value</title>
+      <programlisting>
+declare function local:say-hello($x as string) as string { "Hello, " || $x || "!" };
+local:say-hello("Mister Spock")
+      </programlisting>
+    <para>Results:</para><programlisting>"Hello, Mister Spock!"
+</programlisting></example>
+    <para>If you do specify types, an error is raised in case of a mismatch</para>
+    <example>
+      <title>An external global variable with a default value</title>
+      <programlisting>
+declare function local:say-hello($x) { "Hello, " || $x || "!" }; 
+local:say-hello(1)
+      </programlisting>
+    <para>Results:</para><programlisting>"Hello, 1!"
+</programlisting></example>
+  </section>
+</chapter>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 11. Expressions Dealing with Types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt03.html" title="Part III. JSONiq Expressions" /><link rel="prev" href="ch10s10.html" title="10.10. Ordered and Unordered Expressions" /><link rel="next" href="ch11s02.html" title="11.2. Treat Expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s10.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch11s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-TypeExpressions" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 11. Expressions Dealing with Types</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-TypeExpressions.html#idp37616">11.1. Instance-of Expressions</a></span></dt><dt><span class="section"><a href="ch11s02.html">11.2. Treat Expressions</a></span></dt><dt><span class="section"><a href="ch11s03.html">11.3. Castable Expressions</a></span></dt><dt><span class="section"><a href="ch11s04.html">11.4. Cast Expressions</a></span></dt><dt><span class="section"><a href="section-typeswitch.html">11.5. Typeswitch Expressions</a></span></dt></dl></div><div class="para">
+		We have already introduced the sequence type syntax. It is now time to introduce the expressions that deal with types.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idp37616">11.1. Instance-of Expressions</h2></div></div></div><div class="para">
+			A quick glimpse on this expression was already given. An instance expression can be used to tell whether a sequence matches a given sequence type, like in Java.
+		</div><div class="example"><h6>Example 11.1. Instance of expression.</h6><div class="example-contents"><pre class="programlisting">
+1 instance of integer,
+1 instance of string,
+"foo" instance of string,
+{ "foo" : "bar" } instance of object,
+({ "foo" : "bar" }, { "bar" : "foo" })
+    instance of json-item+,
+[ 1, 2, 3 ] instance of array?,
+() instance of ()
+</pre><div class="para">
+				Results:
+			</div><pre class="programlisting">true
+false
+true
+true
+true
+true
+true
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s10.html"><strong>Prev</strong>10.10. Ordered and Unordered Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch11s02.html"><strong>Next</strong>11.2. Treat Expressions</a></li></ul></body></html>

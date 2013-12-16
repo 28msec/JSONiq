@@ -1,0 +1,5 @@
+<chapter id="chapter-open-issues">
+  <title>Open Issues</title>
+  <para>The <ulink url="http://jsoniq.org/docs/xquerywithjsoniq/en-US/html/section-json-updates.html">JSON update syntax</ulink> was not integrated yet into the core language. This is planned, and the syntax will be simplified (no json keyword, dot lookup allowed here as well).</para>
+  <para>The semantics for the <ulink url="http://jsoniq.org/docs/xquerywithjsoniq/en-US/html/section-json-serialization.html">JSON serialization method</ulink> is the same as in the JSONiq Extension to XQuery. It is still under discussion how to escape special characters with the Text output method.</para>
+</chapter>

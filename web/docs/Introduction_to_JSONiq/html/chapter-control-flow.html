@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.2. Control flow expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-expressions.html" title="Chapter 9. Expressions" /><link rel="prev" href="chapter-expressions.html" title="Chapter 9. Expressions" /><link rel="next" href="ch09s02s02.html" title="9.2.2. Switch expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-expressions.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch09s02s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="section" id="chapter-control-flow" lang="en-US"><div class="titlepage"><div><div><h2 class="title" id="chapter-control-flow">9.2. Control flow expressions</h2></div></div></div><div class="para">
+		JSONiq supports control flow expressions such as if-then-else, switch and typeswitch.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm42266528">9.2.1. Conditional expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/IfExpr.png" width="444" alt="IfExpr" /></div></div><h6>Figure 9.2. IfExpr</h6></div><br class="figure-break" /><div class="para">
+			A conditional expressions allows you to pick one or another value depending on a boolean value.
+		</div><div class="example"><h6>Example 9.4. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (1 + 1 eq 2) then { "foo" : "yes" } else { "foo" : "false" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "yes" }
+</pre></div></div><br class="example-break" /><div class="para">
+			The behavior of the expression inside the if is similar to that of logical operations (two-valued logics), meaning that non-boolean values get converted to a boolean.
+		</div><div class="example"><h6>Example 9.5. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (null) then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "no" }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 9.6. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (1) then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "yes" }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 9.7. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (0) then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "no" }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 9.8. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if ("foo") then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "yes" }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 9.9. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if ("") then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "no" }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 9.10. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (()) then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "no" }
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 9.11. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (({ "foo" : "bar" }, [ 1, 2, 3, 4])) then { "foo" : "yes" } else { "foo" : "no" }
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "[JSONXQType object]": invalid argument type for function fn:boolean()</pre></div></div><br class="example-break" /><div class="para">
+			Note that the else clause is mandatory (but can be the empty sequence)
+		</div><div class="example"><h6>Example 9.12. A conditional expression</h6><div class="example-contents"><pre class="programlisting">
+if (1+1 eq 2) then { "foo" : "yes" } else ()
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">{ "foo" : "yes" }
+</pre></div></div><br class="example-break" /></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chapter-expressions.html"><strong>Prev</strong>Chapter 9. Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch09s02s02.html"><strong>Next</strong>9.2.2. Switch expressions</a></li></ul></body></html>

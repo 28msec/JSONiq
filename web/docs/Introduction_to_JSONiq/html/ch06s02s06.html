@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.2.6. Logics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-basic-operations.html" title="6.2. Basic operations" /><link rel="prev" href="ch06s02s05.html" title="6.2.5. Comparison" /><link rel="next" href="chapter-function-calls.html" title="6.3. Function Calls" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s02s05.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-function-calls.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp7077728">6.2.6. Logics</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/OrExpr.png" alt="OrExpr" /></div></div><h6>Figure 6.22. OrExpr</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/AndExpr.png" alt="AndExpr" /></div></div><h6>Figure 6.23. AndExpr</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/NotExpr.png" alt="NotExpr" /></div></div><h6>Figure 6.24. NotExpr</h6></div><br class="figure-break" /><div class="para">
+			JSONiq logics support is based on two-valued logics: just true and false.
+		</div><div class="para">
+			Non-boolean operands get automatically converted to either true or false, or an error is raised. The boolean() function performs a manual conversion.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					An empty sequence is converted to false.
+				</div></li><li class="listitem"><div class="para">
+					A singleton sequence of one null is converted to false.
+				</div></li><li class="listitem"><div class="para">
+					A singleton sequence of one string is converted to true except the empty string which is converted to false.
+				</div></li><li class="listitem"><div class="para">
+					A singleton sequence of one number is converted to true except zero or NaN which are converted to false.
+				</div></li><li class="listitem"><div class="para">
+					Operand singleton sequences of any other item cannot be converted and an error is raised.
+				</div></li><li class="listitem"><div class="para">
+					Operand sequences of more than one item cannot be converted and an error is raised.
+				</div></li></ul></div><div class="para">
+			JSONiq supports the most famous three boolean operations: conjunction, disjunction and negation. Negation has the highest precedence, then conjunction, then disjunction. Parentheses can override.
+		</div><div class="example"><h6>Example 6.48. Logics with booleans</h6><div class="example-contents"><pre class="programlisting">
+true and ( true or not true )
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.49. Logics with comparing operands</h6><div class="example-contents"><pre class="programlisting">
+1 + 1 eq 2 or 1 + 1 eq 3
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.50. Conversion of the empty sequence to false</h6><div class="example-contents"><pre class="programlisting">
+boolean(())
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.51. Conversion of null to false</h6><div class="example-contents"><pre class="programlisting">
+boolean(null)
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.52. Conversion of a string to true</h6><div class="example-contents"><pre class="programlisting">
+boolean("foo"), boolean("")
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+ false
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.53. Conversion of a number to false</h6><div class="example-contents"><pre class="programlisting">
+0 and true, not (not 1e42)
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">false
+ true
+</pre></div></div><br class="example-break" /><div class="para">
+			If the input sequence has more than one item, or is a singleton object or array, an error is raised.
+		</div><div class="example"><h6>Example 6.54. Error upon conversion of an object to a boolean</h6><div class="example-contents"><pre class="programlisting">
+{ "foo" : "bar" } or false
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: "[JSONXQType object]": invalid argument type for function fn:boolean()</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.55. Error upon conversion of a sequence of more than one item to a boolean</h6><div class="example-contents"><pre class="programlisting">
+( 1, 2, 3 ) or false
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: invalid argument type for function fn:boolean(): effective boolean value not defined for sequence of more than one item that starts with "xs:integer"</pre></div></div><br class="example-break" /><div class="para">
+			Unlike in C++ or Java, you cannot rely on the order of evaluation of the operands of a boolean operation. The following query may return true or may return an error.
+		</div><div class="example"><h6>Example 6.56. Non-determinism in presence of errors.</h6><div class="example-contents"><pre class="programlisting">
+true or (1 div 0)
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/QuantifiedExpr.png" width="444" alt="QuantifiedExpr" /></div></div><h6>Figure 6.25. QuantifiedExpr</h6></div><br class="figure-break" /><div class="para">
+			It is possible to perform a conjunction or a disjunction on a predicate for each item in a sequence.
+		</div><div class="example"><h6>Example 6.57. Universal quantifier</h6><div class="example-contents"><pre class="programlisting">
+every $i in 1 to 10 satisfies $i gt 0
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="example"><h6>Example 6.58. Existential quantifier on several variables</h6><div class="example-contents"><pre class="programlisting">
+some $i in -5 to 5, $j in 1 to 10 satisfies $i eq $j
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /><div class="para">
+			Variables can be annotated with a type. If no type is specified, item* is assumed. If the type does not match, an error is raised.
+		</div><div class="example"><h6>Example 6.59. Existential quantifier with type checking</h6><div class="example-contents"><pre class="programlisting">
+some $i as integer in -5 to 5, $j as integer in 1 to 10 satisfies $i eq $j
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">true
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch06s02s05.html"><strong>Prev</strong>6.2.5. Comparison</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-function-calls.html"><strong>Next</strong>6.3. Function Calls</a></li></ul></body></html>

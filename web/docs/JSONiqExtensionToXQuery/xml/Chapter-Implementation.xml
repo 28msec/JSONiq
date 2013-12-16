@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-implementation" lang="en-US">
+	<title>Implementation in Zorba</title>
+	 <para>
+		The present specification was implemented in the Zorba XQuery engine, with the following differences:
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				Zorba supports a specific simple object union syntax (for building objects with a dynamic number of pairs): {| Expr? |} corresponds to jn:object(Expr?) in this specification.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Zorba supports a specific accumulation syntax (for building objects with a dynamic number of pairs without throwing errors upon pair collision): {[ Expr? ]} corresponds to jn:accumulate(Expr?) in this specification.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				The empty objects syntax {} is not supported, because it collides with empty blocks in Zorba Scripting. However, {| |} can be used instead (see above).
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Zorba supports collections and indices containing JSON items as part of its data definition framework.
+			</para>
+
+		</listitem>
+		 <listitem>
+			<para>
+				Zorba ships some of the library functions in the jn: module (jn:members, jn:flatten). The others will follow in the next release.
+			</para>
+
+		</listitem>
+
+	</itemizedlist>
+
+</chapter>
+

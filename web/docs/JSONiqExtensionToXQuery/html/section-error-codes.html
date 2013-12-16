@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 11. Error codes</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1.0.3-0" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="ch10s05.html" title="10.5. Changes to ther other output methods" /><link rel="next" href="section-grammar-summary.html" title="Chapter 12. Grammar Summary" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s05.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="section-grammar-summary.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="section-error-codes" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 11. Error codes</h2></div></div></div><div class="para">
+		The JSONiq error codes are summarized here.
+	</div><div class="para">
+		<code class="code">jerr:JNDY0003</code>
+	</div><div class="para">
+		It is a dynamic error if two pairs in an object constructor or in a simple object union have the same name.
+	</div><div class="para">
+		<code class="code">jerr:JNTY0004</code>
+	</div><div class="para">
+		Arrays and objects cannot be atomized. It is a type error to call fn:data on a sequence containing an array or an object.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0005</code>
+	</div><div class="para">
+		It is a dynamic error if a pending update list contains two JSON insert update primitives on the same object and pair name.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0006</code>
+	</div><div class="para">
+		It is a dynamic error if upd:applyUpdates causes an object to contain two pairs with the same name.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0007</code>
+	</div><div class="para">
+		It is a type error if, in an updating expression, an array selector cannot be cast to xs:integer or if an object selector cannot be cast to xs:string.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0008</code>
+	</div><div class="para">
+		It is a dynamic error if the target of a JSON delete or JSON replace expression is not an array or an object. It is a dynamic error if the target of a renaming expression is not an object. It is a dynamic error if the target of an appending expression is not an array. It is a dynamic error if the target of a position-inserting expression is not an array. It is a dynamic error if the target of a non-position-inserting expression is not an object.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0009</code>
+	</div><div class="para">
+		It is a dynamic error if a pending update list contains two JSON replacing update primitives on the same object or array, and with the same selector.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0010</code>
+	</div><div class="para">
+		It is a dynamic error if a pending update list contains two JSON renaming update primitives on the same object and with the same selector.
+	</div><div class="para">
+		<code class="code">jerr:JNTY0011</code>
+	</div><div class="para">
+		It is a type error if the content sequence in a node constructor or in an XQUF insert or replace update expression contains an object or an array.
+	</div><div class="para">
+		<code class="code">jerr:JNSE0012</code>
+	</div><div class="para">
+		It is a dynamic error to serialize something else than a unique JSON item with the JSON output method if the jsoniq-multiple-top-level-items is set to no.
+	</div><div class="para">
+		<code class="code">jerr:JNSE0014</code>
+	</div><div class="para">
+		It is a dynamic error to serialize a function, a node or a standalone atomic item with the JSON output method.
+	</div><div class="para">
+		<code class="code">jerr:JNSE0015</code>
+	</div><div class="para">
+		It is a dynamic error to serialize a top-level item which is not a JSON item if the jsoniq-multiple-top-level-items serialization parameter is not set to "array".
+	</div><div class="para">
+		<code class="code">jerr:JNUP0016</code>
+	</div><div class="para">
+		It is a dynamic error if it is attempted to create a replace, delete or rename update primitive with a selector that cannot be resolved against the target array or object.
+	</div><div class="para">
+		<code class="code">jerr:JNTY0018</code>
+	</div><div class="para">
+		It is a type error if there is not exactly one supplied parameter for an object or array selector.
+	</div><div class="para">
+		<code class="code">jerr:JNUP0019</code>
+	</div><div class="para">
+		It is a dynamic error if the content expression, in an object insert expression, does not evaluate to a sequence of objects.
+	</div><div class="para">
+		<code class="code">jerr:JNTY0020</code>
+	</div><div class="para">
+		It is a dynamic error if, when calling jn:parse-json, the option "jsoniq-multiple-top-level-items" is not a boolean.
+	</div><div class="para">
+		<code class="code">jerr:JNDY0021</code>
+	</div><div class="para">
+		It is a dynamic error if parsing a string to one or several objects or arrays is not successful, or if it results in more than one item and "jsoniq-multiple-top-level-items" is false.
+	</div><div class="para">
+		<code class="code">jerr:JNSE0022</code>
+	</div><div class="para">
+		It is a dynamic error if an object or array is encountered upon serializing as XML, XHTML, HTML or Text.
+	</div><div class="para">
+		<code class="code">jerr:JNTY0023</code>
+	</div><div class="para">
+		It is a dynamic error if, when calling jn:encode-for-roundtrip or jn:decode-from-roundtrip, the value of the option "prefix" is not atomizable and castable to a string, or if the value of the option "serialization-parameters" is not an element node.
+	</div><div class="para">
+		<code class="code">jerr:JNTY0024</code>
+	</div><div class="para">
+		Arrays and objects do not have a string value. It is a type error to call fn:string on an array or an object.
+	</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch10s05.html"><strong>Prev</strong>10.5. Changes to ther other output methods</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-grammar-summary.html"><strong>Next</strong>Chapter 12. Grammar Summary</a></li></ul></body></html>

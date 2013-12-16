@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.6.5. Let clauses</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq_-_the_SQL_of_NoSQL-JSONiq-1.0-en-US-1.0.11-1" /><link rel="home" href="index.html" title="JSONiq" /><link rel="up" href="chapter-flwor.html" title="5.6. FLWOR expressions" /><link rel="prev" href="ch05s06s04.html" title="5.6.4. Group clauses" /><link rel="next" href="ch05s06s06.html" title="5.6.6. Count clauses" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s06s04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s06s06.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp21249056">5.6.5. Let clauses</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/LetClause.png" width="444" alt="LetClause" /></div></div><h6>Figure 5.41. LetClause</h6></div><br class="figure-break" /><div class="para">
+			Let bindings can be used to define aliases for any sequence, for convenience.
+		</div><div class="para">
+			For each incoming tuple, the expression in the let clause is evaluated to a sequence. A binding is added from this sequence to the let variable in each tuple. A tuple is hence produced for each incoming tuple.
+		</div><div class="example"><h6>Example 5.118. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+let $century := $x.century
+group by $century
+let $number := count($x)
+where $number gt 1
+return { "century" : $century, "count" : $number }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp48270112">Result (run with Zorba):</h5>
+					{ "century" : 24, "count" : 4 }
+				</div></div></div><br class="example-break" /><div class="para">
+			Note that it is perfectly fine to reuse a variable name and hide a variable binding.
+		</div><div class="example"><h6>Example 5.119. An order by clause.</h6><div class="example-contents"><pre class="programlisting">
+for $x in collection("captains")
+let $century := $x.century
+group by $century
+let $number := count($x)
+let $number := count(distinct-values(for $series in $x.series
+                                     return typeswitch($series)
+                                            case array return $series()
+                                            default return $series ))
+where $number gt 1
+return { "century" : $century, "number of series" : $number }
+</pre><div class="formalpara"><h5 class="formalpara" id="idp10566336">Result (run with Zorba):</h5>
+					{ "century" : 24, "number of series" : 3 }
+				</div></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s06s04.html"><strong>Prev</strong>5.6.4. Group clauses</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s06s06.html"><strong>Next</strong>5.6.6. Count clauses</a></li></ul></body></html>

@@ -1,0 +1,231 @@
+<chapter id="chapter-selectors">
+  <title>JSON Navigation</title>
+  <para>Like in JavaScript or SQL or Java, it is possible to navigate through data.</para>
+  <para>JSONiq supports:</para>
+  <itemizedlist>
+    <listitem>
+      <para>Looking up the value of a field (given its string key) in an object.</para>
+    </listitem>
+    <listitem>
+      <para>Looking up the item at a given position (integer) in an array.</para>
+    </listitem>
+    <listitem>
+      <para>Extracting all members of an array as a sequence of items.</para>
+    </listitem>
+    <listitem>
+      <para>Filtering items from a sequence, retaining only the items that match a given criterium.</para>
+    </listitem>
+  </itemizedlist>
+  <section>
+    <title>Object Navigation</title>
+    <para>The simplest way to navigate an object is similar to JavaScript. This will work as soon
+      as you do not push it too much: alphanumerical characters, dashes, underscores. The rule for unquoted
+      names is similar to keys in object constructions, and to variable names. The empty sequence is returned
+      if no key is found with the specified name.</para>
+    <example>
+      <title>Object lookup.</title>
+      <programlisting>
+{
+  "question" : "What NoSQL technology should I use?"
+}.question,
+{
+  "question" : "What NoSQL technology should I use?"
+}.answer
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+</programlisting></example>
+    <para>Since JSONiq expressions are composable, you can also use any expression for the left-hand
+      side. You might need parentheses depending on the precedence.</para>
+    <example>
+      <title>Lookup on a single-object collection.</title>
+      <programlisting>
+collection("one-object").question
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+</programlisting></example>
+    <para>The dot operator does an implicit mapping on the left-hand-side, i.e., it applies the
+      lookup in turn on each item. Lookup on any item which is not an object (arrays and atomics)
+      results in the empty sequence.</para>
+      <example>
+        <title>Object lookup with an iteration on several objects.</title>
+        <programlisting>
+({ "foo" : "bar" }, { "foo" : "bar2" } ).foo,
+{ "ids" : collection("faqs").question_id }
+      </programlisting>
+      <para>Results:</para><programlisting>"bar"
+"bar2"
+{
+  "ids" : [ 4419499, 282783, 4720508, 5453872, 6183352 ]
+}
+</programlisting></example>
+    <example>
+      <title>Object lookup on non-objects.</title>
+      <programlisting>
+"foo".foo,
+({
+  "question" : "What NoSQL technology should I use?"
+},
+ [ "question", "answer" ],
+ { "question" : "answer" },
+ "question").question
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+"answer"
+</programlisting></example>
+    <para>Of course, unquoted keys will not work for strings that are not unquoted names, e.g., if the
+      field contains a dot or begins with a digit. Then you will need quotes. If you use a more general
+      expression on the right-hand side of the dot, it must always have parentheses.</para>
+    <example>
+      <title>Quotes and parentheses for object lookup.</title>
+      <programlisting>
+{
+  "my question" : "What NoSQL technology should I use?"
+}."my question",
+{
+  "my question" : "What NoSQL technology should I use?"
+}.("my " || "question")
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+"What NoSQL technology should I use?"
+</programlisting></example>
+    <para>The value returned by the right-hand side expression is cast to string. An error is raised upon failure.
+      This value may be the empty sequence, in which case the object lookup also returns the empty sequence.</para>
+    <example>
+      <title>Object lookup with a nested expression.</title>
+      <programlisting>
+{
+  "question" : "What NoSQL technology should I use?"
+}.(),
+{
+  "1" : "What NoSQL technology should I use?"
+}.(1),
+{
+  "1" : "What NoSQL technology should I use?"
+}."1"
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+"What NoSQL technology should I use?"
+</programlisting></example>
+    <para>Variables, or a context item reference, do not need parentheses. Variables are introduced
+      in <xref linkend="section-Variables"/>, but here is a sneak peek:</para>
+    <example>
+      <title>Object lookup with a variable.</title>
+      <programlisting>
+let $field := "my " || "question"
+return { 
+  "my question" : "What technology should I use?"
+}.$field
+      </programlisting>
+    <para>Results:</para><programlisting>"What technology should I use?"
+</programlisting></example>
+  </section>
+  <section>
+    <title>Array Unboxing</title>
+    <para>The items in an array (which is an item) can be extracted as a sequence of items with the [] postfix operator.</para>
+    <para>The argument must be (a singleton sequence of) one array or the empty sequence (in which case the empty sequence
+    is returned as well.</para>
+    <example>
+      <title>Array unboxing.</title>
+      <programlisting>
+[
+  "What NoSQL technology should I use?",
+  "What is the bottleneck in MapReduce?"
+][],
+
+for $a in collection("faqs").tags
+return $a[],
+
+()[]
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+"What is the bottleneck in MapReduce?"
+"php"
+"mysql"
+"nosql"
+"cassandra"
+"sql"
+"database"
+"nosql"
+"non-relational-database"
+"nosql"
+"couchdb"
+"cassandra"
+"redis"
+"database"
+"full-text-search"
+"nosql"
+"couchdb"
+"riak"
+"database"
+"view"
+"nosql"
+"couchdb"
+</programlisting></example>
+  </section>
+  <section id="section-predicateExpressions">
+    <title>Sequence Filtering</title>
+    <para>A predicate allows filtering a sequence, keeping only items that fulfill it.</para>
+    <para>The predicate is evaluated once for each item in the left-hand-side sequence. The predicate expression can use $$ to refer
+    to the item being processed, called the context item.</para>
+    <para>If the predicate evaluates to an integer, it is matched against the item position in the left-hand
+      side sequence automatically.</para>
+    <example>
+      <title>Predicate expression for picking an item at a given position.</title>
+      <programlisting>
+(1 to 10)[5],
+(
+  "What NoSQL technology should I use?",
+  "What is the bottleneck in MapReduce?"
+)[2]
+      </programlisting>
+    <para>Results:</para><programlisting>5
+"What is the bottleneck in MapReduce?"
+</programlisting></example>
+    <para>Otherwise, the result of the predicate is converted to a boolean.</para>
+    <para>All items for which the converted predicate result evaluates to true are then output.</para>
+    <example>
+      <title>Predicate expression for filtering.</title>
+      <programlisting>
+(
+  "What NoSQL technology should I use?",
+  "What is the bottleneck in MapReduce?"
+)[contains($$, "NoSQL")],
+
+(1 to 10)[$$ mod 2 eq 0]
+      </programlisting>
+    <para>Results:</para><programlisting>"What NoSQL technology should I use?"
+2
+4
+6
+8
+10
+</programlisting></example>
+  </section>
+  <section>
+    <title>Array Navigation</title>
+    <para>Once you know how to unbox an array and to filter a sequence, array lookup comes for free. It feels very much like opening a box
+    of Swiss chocolate and then picking your favorite:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Unbox the array with [].</para>
+      </listitem>
+      <listitem>
+        <para>Pick the $i-th item in the sequence using a predicate with an integer [$i].</para>
+      </listitem>
+    </itemizedlist>
+    <example>
+      <title>Array lookup.</title>
+      <programlisting>
+[ "question", "answer" ][][2],
+{ 
+  questions: [
+    "What NoSQL technology should I use?", 
+    { "faq" : "What is the bottleneck in MapReduce?" }
+  ]
+}.questions[][2].faq
+      </programlisting>
+    <para>Results:</para><programlisting>"answer"
+"What is the bottleneck in MapReduce?"
+</programlisting></example>
+  </section>
+</chapter>

@@ -1,0 +1,25 @@
+<bookinfo id="book-UsecasesForJSONiq-JSONiq_Use_Cases">
+	<title>JSONiq Use Cases</title>
+	 <subtitle>Use cases for the JSONiq core language.</subtitle>
+	 <productname>JSONiq - the SQL of NoSQL</productname>
+	 <productnumber>1.0</productnumber>
+	 <edition>1.0.9</edition>
+	 <pubsnumber>0</pubsnumber>
+	 <abstract>
+	   <para>This document introduces some use cases for the JSONiq core language.</para>
+	   <para>These use cases were originally use cases for the JSONiq extension to XQuery
+	     (this is where it all started). They were converted to the more pleasant JSONiq core syntax.
+	   </para>
+	   <para>The queries where results are supplied were executed with 28.io.</para>
+	 </abstract>
+	 <corpauthor>
+		<inlinemediaobject>
+			<imageobject>
+			  <imagedata fileref="images/28.png" format="PNG" contentwidth="111"/>
+			</imageobject>
+
+		</inlinemediaobject>
+
+	</corpauthor>
+	 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Author_Group.xml"/>
+</bookinfo>

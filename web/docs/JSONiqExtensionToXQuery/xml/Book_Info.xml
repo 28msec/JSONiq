@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<bookinfo id="book-XQuery_with_JSONiq_extensions-XQuery_with_JSONiq_extensions" lang="en-US">
+	<title>Specification</title>
+	 <subtitle>XML and JSON: A Language To Rule Them All</subtitle>
+	 <productname>JSONiq Extension to XQuery</productname>
+	 <productnumber>1.0</productnumber>
+	 <edition>1.0.3</edition>
+	 <pubsnumber>0</pubsnumber>
+	 <abstract>
+		<para>
+			The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax that the JSONiq core.
+		</para>
+
+	</abstract>
+	 <corpauthor>
+		<inlinemediaobject>
+			<imageobject>
+				<imagedata contentwidth="111" fileref="images/28.png" format="PNG" width="444" />
+			</imageobject>
+
+		</inlinemediaobject>
+
+	</corpauthor>
+	<!--  <xi:include href="Common_Content/Legal_Notice.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  --> <xi:include href="Author_Group.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</bookinfo>
+

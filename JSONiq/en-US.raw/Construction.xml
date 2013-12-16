@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+%BOOK_ENTITIES;
+]>
+<section id="chapter-construction">
+  <title>Construction of items</title>
+  <para>
+    This will not come as a surprise since JSONiq is tailor-made: the items mentioned in the former section are constructed...
+    exactly as they are constructed in JSON. Yes, you already know some JSONiq: any JSON document is also a valid JSONiq query
+    which just "returns itself"!
+  </para>
+  <section>
+    <title>Atomic literals</title>
+    <figure>
+      <title>Literal</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/Literal.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>NumericLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/NumericLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>IntegerLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/IntegerLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>DecimalLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/DecimalLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>DoubleLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/DoubleLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>StringLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/StringLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>BooleanLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/BooleanLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>NullLiteral</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/NullLiteral.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para> The syntax for creating strings, numbers, booleans and nulls is identical to that of JSON
+      (it is actually a more flexible superset, for example leading 0s are allowed, and a decimal
+      literal can begin with a dot). Note that JSONiq distinguishes between integers (no dot, no
+      scientific notation), decimals (dot but no scientific notation) and doubles (scientific
+      notation). As expected, an integer literal creates an atomic of type integer, and so on. No
+      surprises. JSON's backslash escaping is supported in string literals. Also, like in JSON,
+      double quotes are required and single quotes are forbidden. </para>
+    <example>
+      <title>String literals</title>
+      <programlisting>
+"foo"
+      </programlisting>
+    </example>
+    <example>
+      <title>String literals with escaping</title>
+      <programlisting>
+"This is a line\nand this is a new line"
+      </programlisting>
+    </example>
+    <example>
+      <title>String literals with Unicode character escaping</title>
+      <programlisting>
+"\u0001"
+      </programlisting>
+    </example>
+    <example>
+      <title>String literals with a nested quote</title>
+      <programlisting>
+"This is a nested \"quote\""
+      </programlisting>
+    </example>
+    <example>
+      <title>Integer literals</title>
+      <programlisting>
+42
+      </programlisting>
+    </example>
+    <example>
+      <title>Decimal literals</title>
+      <programlisting>
+3.14
+      </programlisting>
+    </example>
+    <example>
+      <title>Double literals</title>
+      <programlisting>
++6.022E23
+      </programlisting>
+    </example>
+    <example>
+      <title>Boolean literals (true)</title>
+      <programlisting>
+true
+      </programlisting>
+    </example>
+    <example>
+      <title>Boolean literals (false)</title>
+      <programlisting>
+false
+      </programlisting>
+    </example>
+    <example>
+      <title>Null literals</title>
+      <programlisting>
+null
+      </programlisting>
+    </example>
+  </section>
+  <section>
+    <title>Object constructors</title>
+    <figure>
+      <title>ObjectConstructor</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/ObjectConstructor.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>PairConstructor</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/PairConstructor.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+      The syntax for creating objects is identical to that of JSON. You can use for an object key any string literal,
+      and for an object value any literal, object constructor or array constructor.
+    </para>
+    <example>
+      <title>Empty object constructors</title>
+      <programlisting>
+{}
+      </programlisting>
+    </example>
+    <example>
+      <title>Object constructors 1</title>
+      <programlisting>
+{ "foo" : "bar" }
+      </programlisting>
+    </example>
+    <example>
+      <title>Object constructors 2</title>
+      <programlisting>
+{ "foo" : [ 1, 2, 3, 4, 5, 6 ] }
+      </programlisting>
+    </example>
+    <example>
+      <title>Object constructors 3</title>
+      <programlisting>
+{ "foo" : true, "bar" : false }
+      </programlisting>
+    </example>
+    <example>
+      <title>Nested object constructors</title>
+      <programlisting>
+{ "this is a key" : { "value" : "a value" } }
+      </programlisting>
+    </example>
+    <para>
+      Oh, and like in JavaScript, if your key is simple enough (like alphanumerics, underscores, dashes, this kind of things), you
+      are welcome to omit the quotes. The strings for which quotes are not mandatory are called NCNames. This class of strings can be used for unquoted keys, for variable and function names, and for module aliases.
+    </para>
+    <example>
+      <title>Object constructors with unquoted key 1</title>
+      <programlisting>
+{ foo : "bar" }
+      </programlisting>
+    </example>
+    <example>
+      <title>Object constructors with unquoted key 2</title>
+      <programlisting>
+{ foo : [ 1, 2, 3, 4, 5, 6 ] }
+      </programlisting>
+    </example>
+    <example>
+      <title>Object constructors with unquoted key 3</title>
+      <programlisting>
+{ foo : "bar", bar : "foo" }
+      </programlisting>
+    </example>
+    <example>
+      <title>Object constructors with needed quotes around the key</title>
+      <programlisting>
+{ "but you need the quotes here" : null }
+    </programlisting>
+    </example>
+  </section>
+  <section>
+    <title>Array constructors</title>
+    <figure>
+      <title>ArrayConstructor</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/ArrayConstructor.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>Expr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/Expr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+      The syntax for creating arrays is identical to that of JSON: square brackets, comma separated literals, object constructors
+      and arrays constructors.
+    </para>
+    <example>
+      <title>Empty array constructors</title>
+      <programlisting>
+[]
+      </programlisting>
+    </example>
+    <example>
+      <title>Array constructors</title>
+      <programlisting>
+[ 1, 2, 3, 4, 5, 6 ]
+      </programlisting>
+    </example>
+    <example>
+      <title>Nested array constructors</title>
+      <programlisting>
+[ "foo", 3.14, [ "Go", "Boldly", "When", "No", "Man", "Has", "Gone", "Before" ], { "foo" : "bar" }, true, false, null ]
+      </programlisting>
+    </example>
+    <para>Square brackets are mandatory. Do not push it.</para>
+  </section>
+  <section>
+    <title>Composing constructors</title>
+    <para>Of course, JSONiq would not be very interesting if all you could do is copy and paste JSON documents.</para>
+    <para>Because JSONiq expressions are fully composable, in objects and arrays constructors, you
+      can put way more than just atomic literals, object constructors and array constructors: you
+      can put any JSONiq expression.</para>
+    <para>The following examples are just a few of many operators you can use: "to" for creating arithmetic sequences,
+      "||" for concatenating strings, "+" for adding numbers, "," for appending sequences.</para>
+    <para>In an array, the operand expression will evaluated to a sequence of items, and these items will be copied and become members
+      of the newly created array.</para>
+    <example>
+      <title>Composable array constructors</title>
+      <programlisting>
+  [ 1 to 10 ]
+    </programlisting>
+    </example>
+    <para>In an object, the expression you use for the key must evaluate to an atomic - if it is not a string, it will just be cast to it.</para>
+    <example>
+      <title>Composable object keys</title>
+      <programlisting>
+  { "foo" || "bar" : true }
+      </programlisting>
+    </example>
+    <para>An error is raised if the key expressions is not an atomic.</para>
+    <example>
+      <title>Non-atomic object keys</title>
+      <programlisting>
+  { [ 1, 2 ] : true }
+      </programlisting>
+    </example>
+    <para>And do not worry about the value expression: if it is is empty, null will be used as a value, and if it contains two items or more, they
+      will be wrapped into an array.</para>
+    <example>
+      <title>Composable object values</title>
+      <programlisting>
+  { "foo" : 1 + 1 }
+      </programlisting>
+    </example>
+    <example>
+      <title>Composable object values and automatic conversion</title>
+      <programlisting>
+  { "foo" : (), "bar" : (1, 2) }
+      </programlisting>
+    </example>
+    <para> The {| |} syntax can be used to merge several objects.</para>
+    <example>
+      <title>Merging object constructor</title>
+      <programlisting>
+  {| { "foo" : "bar" }, { "bar" : "foo" } |}
+      </programlisting>
+    </example>
+    <para>An error is raised if the operand expression does not evaluate to a sequence of
+      objects.</para>
+    <example>
+      <title>Merging object constructor with a type error</title>
+      <programlisting>
+  {| 1 |}
+      </programlisting>
+    </example>
+  </section>
+</section>

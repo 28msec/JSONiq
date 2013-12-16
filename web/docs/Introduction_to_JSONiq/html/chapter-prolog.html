@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 12. Prologs</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt04.html" title="Part IV. Prolog, Modules and Functions" /><link rel="prev" href="pt04.html" title="Part IV. Prolog, Modules and Functions" /><link rel="next" href="ch12s02.html" title="12.2. Namespaces" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="pt04.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch12s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-prolog" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 12. Prologs</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-prolog.html#idm3143264">12.1. Setters.</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-prolog.html#idm47087840">12.1.1. Default Ordering Mode</a></span></dt><dt><span class="section"><a href="chapter-prolog.html#idm39377744">12.1.2. Default Ordering Behaviour for Empty Sequences</a></span></dt><dt><span class="section"><a href="chapter-prolog.html#idp6481104">12.1.3. Default Decimal Format</a></span></dt></dl></dd><dt><span class="section"><a href="ch12s02.html">12.2. Namespaces</a></span></dt><dt><span class="section"><a href="section-globalVariables.html">12.3. Global Variables</a></span></dt><dt><span class="section"><a href="ch12s04.html">12.4. User-Defined Functions</a></span></dt></dl></div><div class="para">
+		This section introduces prologs, which allow declaring functions and global variables that can then be used in the main query. A prolog also allows setting some default behaviour.
+	</div><div class="para">
+		The prolog appears before the main query and is optional. It can contain setters and module imports, followed by function and variable declarations.
+	</div><div class="para">
+		Module imports are explained in the next chapter.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm3143264">12.1. Setters.</h2></div></div></div><div class="para">
+			Setters allow to specify a default behaviour for various aspects of the language.
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm47087840">12.1.1. Default Ordering Mode</h3></div></div></div><div class="para">
+				This specifies the default behaviour of for clauses, i.e., if they bind tuples in the order in which items occur in the binding sequence. It can be overriden with ordered and unordered expressions.
+			</div><div class="example"><h6>Example 12.1. A default ordering setter.</h6><div class="example-contents"><pre class="programlisting">
+declare ordering unordered;
+for $answer in collection("answers")
+return {
+  "owner" : $answer.owner.display_name,
+  "score" : $answer.score
+}
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">{
+  "owner" : "Ubiguchi",
+  "score" : 7
+}
+{
+  "owner" : "Rob Wells",
+  "score" : 4
+}
+{
+  "owner" : "Victor Nicollet",
+  "score" : 17
+}
+{
+  "owner" : "descent89",
+  "score" : 1
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 34
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 6
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 0
+}
+{
+  "owner" : "JasonSmith",
+  "score" : 1
+}
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm39377744">12.1.2. Default Ordering Behaviour for Empty Sequences</h3></div></div></div><div class="para">
+				This specifies whether empty sequences come first or last in an ordering clause. It can be overriden by the corresponding directives in such clauses.
+			</div><div class="example"><h6>Example 12.2. A default ordering for empty sequences.</h6><div class="example-contents"><pre class="programlisting">
+declare default order empty least;
+for $x in ({ "foo" : "bar" }, {})
+order by $x.foo
+return $x
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">{
+}
+{
+  "foo" : "bar"
+}
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp6481104">12.1.3. Default Decimal Format</h3></div></div></div><div class="para">
+				This specifies a default decimal format for the builtin function format-number().
+			</div><div class="example"><h6>Example 12.3. A default decimal format setter.</h6><div class="example-contents"><pre class="programlisting">
+declare default decimal-format
+    decimal-separator = ","
+    grouping-separator = " ";
+format-number(12345.67890, "# ###,##")
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">"12 345,68"
+</pre></div></div><br class="example-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="pt04.html"><strong>Prev</strong>Part IV. Prolog, Modules and Functions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch12s02.html"><strong>Next</strong>12.2. Namespaces</a></li></ul></body></html>

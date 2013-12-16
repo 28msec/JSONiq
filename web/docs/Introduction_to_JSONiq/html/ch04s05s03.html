@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.5.3. Try-catch expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-control-flow.html" title="4.5. Control flow expressions" /><link rel="prev" href="ch04s05s02.html" title="4.5.2. Switch expressions" /><link rel="next" href="chapter-flwor.html" title="4.6. FLWOR expressions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s05s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chapter-flwor.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp23893968">4.5.3. Try-catch expressions</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/TryCatchExpr.png" width="444" alt="TryCatchExpr" /></div></div><h6>Figure 4.34. TryCatchExpr</h6></div><br class="figure-break" /><div class="para">
+			A try catch expression evaluates the expression inside the try block and returns its resulting value.
+		</div><div class="para">
+			However, if an error is raised dynamically, the catch clause is evaluated and its result value returned.
+		</div><div class="example"><h6>Example 4.95. A try catch expression</h6><div class="example-contents"><pre class="programlisting">
+try { 1 div 0 } catch * { "division by zero!" } 
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"division by zero!"
+</pre></div></div><br class="example-break" /><div class="para">
+			Only errors raised within the lexical scope of the try block are caught.
+		</div><div class="example"><h6>Example 4.96. A try catch expression</h6><div class="example-contents"><pre class="programlisting">
+let $x := 1 div 0
+return try { $x }
+       catch * { "division by zero!" } 
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: division by zero</pre></div></div><br class="example-break" /><div class="para">
+			Errors that are detected statically within the try block are still reported statically.
+		</div><div class="example"><h6>Example 4.97. A try catch expression</h6><div class="example-contents"><pre class="programlisting">
+try { x } catch * { "syntax error" } 
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: invalid expression: syntax error, a path expression cannot begin with an axis step</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s05s02.html"><strong>Prev</strong>4.5.2. Switch expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chapter-flwor.html"><strong>Next</strong>4.6. FLWOR expressions</a></li></ul></body></html>

@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="section-jsoniq-data-model" lang="en-US">
+	<title>JSONiq Data Model</title>
+	 <para>
+		JSONiq is based on the XQuery Data Model, adding support for JSON nulls, objects and arrays. <footnote>
+		<para>
+			In the XQ-- subset of JSONiq, we will define a simpler data model that omits much of the XQuery Data Model.
+		</para>
+		</footnote>
+	</para>
+	 <para>
+		To support nulls, JSONiq adds the following atomic datatype:
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				<emphasis>js:null</emphasis>, which represents a JSON null.
+			</para>
+
+		</listitem>
+
+	</itemizedlist>
+	 <para>
+		To support JSON objects and arrays, JSONiq adds the following new items:
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				<emphasis>Object</emphasis>, which represents a JSON object. An Object contains a set of string/item pairs.
+			</para>
+		</listitem>
+		 <listitem>
+			<para>
+				<emphasis>Array</emphasis>, which represent a JSON array. An Array contains a sequence of items.
+			</para>
+		</listitem>
+
+	</itemizedlist>
+	 <para>
+		As well as the generic term (associated with an item type):
+	</para>
+	 <itemizedlist>
+		<listitem>
+			<para>
+				<emphasis>JSON Item</emphasis>, which can be an Object or an Array.
+			</para>
+		</listitem>
+
+	</itemizedlist>
+	 <section>
+		<title>Simple Datatypes</title>
+		 <para>
+			JSON's simple values can have any of the following datatypes, which are supported as primitives in JSONiq.
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					string
+				</para>
+			</listitem>
+			 <listitem>
+				<para>
+					number
+				</para>
+			</listitem>
+			 <listitem>
+				<para>
+					boolean (true, false)
+				</para>
+			</listitem>
+			 <listitem>
+				<para>
+					null
+				</para>
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			JSONiq represents a JSON string (a sequence of Unicode characters) as an xs:string. However, JSON supports strings (after resolving escaped characters) with characters of arbitrary unicode codepoints, whereas XML 1.0 and XML 1.1 only support a subset of these. It is implementation-defined if unicode characters outside of XML 1.0 or XML 1.1 are supported. Implementations which support XML 1.1 (which only excludes the null character) are encouraged to add support for the null character to provide full-fledged JSON support.
+		</para>
+		 <para>
+			JSONiq represents the JSON simple values 'true' and 'false' as <code>xs:boolean</code> values.
+		</para>
+		 <para>
+			JSONiq adds one new data type: <code>js:null</code>, derived from <code>xs:anyAtomicType</code>. <code>js:null</code> has a singleton value space containing the value <emphasis>null</emphasis> <footnote> <para>
+				(Because the typed value of all <code>js:null</code> instances is the same, nulls are always equal to each other for the purpose of value comparisons).
+			</para>
+			 </footnote>. The lexical representation of an instance of <code>js:null</code> is the string "<code>null</code>".
+		</para>
+		 <para>
+			JSON defines number as follows:
+		</para>
+		 <blockquote>
+			<para>
+				A number can be represented as integer, real, or floating point. JSON does not support octal or hex because it is minimal. It does not have values for NaN or Infinity because it does not want to be tied to any particular internal representation.
+			</para>
+		</blockquote>
+		 <para>
+			JSONiq uses XQuery's lexical representation of numbers to distinguish integer, real, and floating point numbers <footnote> <para>
+				The result of a JSONiq query may contain values such as NaN or Infinity, which cannot be serialized as JSON. These values have type <code>xs:double</code>, and are either rejected or treated in a special way during the JSON Serialization process.
+			</para>
+			 <para>
+				ECMAScript also has has Infinity and NaN, and takes a similar approach.
+			</para>
+			 </footnote>:
+		</para>
+		 
+<programlisting>NumericLiteral ::= IntegerLiteral | DecimalLiteral | DoubleLiteral</programlisting>
+		 <!--   FIXME: Switch to railroad diagrams once I know how.
+ --> <para>
+			If a numeric literal has no "." character and no e or E character, it has the atomic type <code>xs:integer</code>; if it has a "." character but no e or E character it has type <code>xs:decimal</code>; if it has an e or E character it has type <code>xs:double</code>.
+		</para>
+		 <para>
+			Number literals are mapped to atomic values according to the XML Schema specification.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>JSON Items</title>
+		 <para>
+			A JSON Item is an item. A JSON Item has an identity <footnote> <para>
+				The identity of an item is used only for updates, where it is used in the update primitives.
+			</para>
+			 </footnote> , and it can be serialized. Objects and Arrays are JSON Items <footnote> <para>
+				In this document, the words <emphasis>Object</emphasis> and <emphasis>Array</emphasis> refer to JSON constructs. Unlike objects in most programming languages, a JSON object contains only data.
+			</para>
+			 </footnote> .
+		</para>
+		 <para>
+			The diagram below shows the XQuery 3.0 type hierarchy, adding JSON Item and all types derived from it:
+		</para>
+		 <mediaobject>
+			<imageobject>
+				<imagedata fileref="images/type-hierarchy.svg" format="SVG" scalefit="1" width="100%" />
+			</imageobject>
+
+		</mediaobject>
+
+	</section>
+	
+	 <section>
+		<title>Objects</title>
+		 <para>
+			An Object represents a JSON object (a collection of string/value pairs).
+		</para>
+		 <para>
+			Objects have the following property:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>pairs</emphasis>. A set of pairs. Each pair consists of an atomic value of type <code>xs:string</code> and of an item.
+				</para>
+				 <para>
+					[ Consistency constraint: no two pairs have the same name (using <code>fn:codepoint-equal</code>). ]
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			The XQuery data model uses accessors to explain the data model. Accessors are not exposed to the user and are only used for convenience in this specification. Objects have the following accessors:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<code>jdm:keys($o as object()) as xs:string*</code>.
+				</para>
+				 <para>
+					Returns all keys in the object $o.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					<code>jdm:value($o as object(), $s as xs:string) as item()</code>.
+				</para>
+				 <para>
+					Returns the value associated with $s in the object $o.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			An Object does not have a typed value.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Arrays</title>
+		 <para>
+			An Array represents a JSON array (an ordered list of values).
+		</para>
+		 <para>
+			Arrays have the following property:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>members</emphasis>. An ordered list of items.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			Arrays have the following accessors:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<code>jdm:size($a as array()) as xs:integer</code>
+				</para>
+				 <para>
+					Returns the number of values in the array $a.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					<code>jdm:value($a as array(), $i as xs:integer) as item()</code>
+				</para>
+				 <para>
+					Returns the value at position $i in the array $a.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			An Array does not have a typed value.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>ItemTypes for JSONiq Items</title>
+		 <para>
+			In XQuery, an ItemType is used to match certain items, for example in function signatures, return types, and a variety of other expressions. JSONiq extends XQuery's ItemType as follows:
+		</para>
+		 
+<programlisting>
+      ItemType ::= -- everything so far --
+        | JSONTest
+        | StructuredItemTest
+
+      JSONTest ::= 
+          JSONItemTest
+        | JSONObjectTest
+        | JSONArrayTest
+
+      StructuredItemTest ::= "structured-item" "(" ")"
+      JSONItemTest ::= "json-item" "(" ")"
+      JSONObjectTest ::= "object" "(" ")"
+      JSONArrayTest ::= "array" "(" ")"
+</programlisting>
+		 <para>
+			The semantics of these expressions are straightforward.
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					<code>structured-item()</code> matches any node or JSON Item.
+				</para>
+			</listitem>
+			 <listitem>
+				<para>
+					<code>json-item()</code> matches any JSON Item (Object or Array).
+				</para>
+			</listitem>
+			 <listitem>
+				<para>
+					<code>object()</code> matches any Object.
+				</para>
+			</listitem>
+			 <listitem>
+				<para>
+					<code>array()</code> matches any Array.
+				</para>
+			</listitem>
+
+		</itemizedlist>
+		 <example>
+			<title>JSON Items in Function Signatures and instance-of expressions</title>
+			 <para>
+				The following function returns any Objects that are members of an Array (see below for more on array navigation).
+			</para>
+			 
+<programlisting>
+          declare function local:objects-in-array($a as array()) as object()* {
+            for $i in 1 to jn:size($a)
+            let $item := $a($i)
+            where $iteminstance of object()
+            return $item
+          };
+</programlisting>
+
+		</example>
+
+	</section>
+
+</chapter>
+

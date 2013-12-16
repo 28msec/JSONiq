@@ -1,0 +1,7 @@
+<chapter id="chapter-acknowledgements">
+  <title>Acknowledgements</title>
+  <para>The design and implementation of JSONiq is a team effort involving Dana Florescu (Oracle), Jonathan Robie (EMC), Matthias Brantner (28msec),
+    Markos Zaharioudakis (Oracle), Till Westmann (Oracle) and myself (28msec).</para>
+  <para>This book was carefully reviewed by Matthias Brantner and Federico Cavalieri (28msec).</para>
+  <para>A significant part of the introduction ("Why JSONiq?") was written by Dana Florescu.</para>
+</chapter>

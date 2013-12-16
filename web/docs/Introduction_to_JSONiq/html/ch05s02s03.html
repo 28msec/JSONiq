@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.2.3. Arithmetics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="chapter-basic-operations.html" title="5.2. Basic operations" /><link rel="prev" href="ch05s02s02.html" title="5.2.2. Parenthesized expression" /><link rel="next" href="ch05s02s04.html" title="5.2.4. String concatenation" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s02s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s02s04.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp3868144">5.2.3. Arithmetics</h3></div></div></div><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/AdditiveExpr.png" alt="AdditiveExpr" /></div></div><h6>Figure 5.16. AdditiveExpr</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/MultiplicativeExpr.png" alt="MultiplicativeExpr" /></div></div><h6>Figure 5.17. MultiplicativeExpr</h6></div><br class="figure-break" /><div class="figure"><div class="figure-contents"><div class="mediaobject"><img src="images/UnaryExpr.png" alt="UnaryExpr" /></div></div><h6>Figure 5.18. UnaryExpr</h6></div><br class="figure-break" /><div class="para">
+			JSONiq supports the basic four operations, integer division and modulo.
+		</div><div class="para">
+			Multiplicative operations have precedence over additive operations. Parentheses can override it.
+		</div><div class="example"><h6>Example 5.36. Basic arithmetic operations with precedence override</h6><div class="example-contents"><pre class="programlisting">
+1 * ( 2 + 3 ) + 7 idiv 2 - (-8) mod 2
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">8
+</pre></div></div><br class="example-break" /><div class="para">
+			Dates, times and durations are also supported in a natural way.
+		</div><div class="example"><h6>Example 5.37. Using basic operations with dates.</h6><div class="example-contents"><pre class="programlisting">
+date("2013-05-01") - date("2013-04-02")
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">"P29D"
+</pre></div></div><br class="example-break" /><div class="para">
+			If any of the operands is a sequence of more than one item, an error is raised.
+		</div><div class="example"><h6>Example 5.38. Sequence of more than one number in an addition</h6><div class="example-contents"><pre class="programlisting">
+(1, 2) + 3
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: sequence of more than one item can not be promoted to parameter type xs:anyAtomicType? of function add()</pre></div></div><br class="example-break" /><div class="para">
+			If any of the operands is not a number, a date, a time or a duration, an error is raised.
+		</div><div class="example"><h6>Example 5.39. Null in an addition</h6><div class="example-contents"><pre class="programlisting">
+1 + null
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">An error was raised: arithmetic operation not defined between types "xs:integer" and "js:null"</pre></div></div><br class="example-break" /><div class="para">
+			If one of the operands evaluates to the empty sequence, then the operation results in the empty sequence.
+		</div><div class="para">
+			Do not worry if the two operands do not have the same number type, JSONiq will do the adequate conversions.
+		</div><div class="example"><h6>Example 5.40. Basic arithmetic operations with an empty sequence</h6><div class="example-contents"><pre class="programlisting">
+() + 2
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting"></pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s02s02.html"><strong>Prev</strong>5.2.2. Parenthesized expression</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s02s04.html"><strong>Next</strong>5.2.4. String concatenation</a></li></ul></body></html>

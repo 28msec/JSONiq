@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.7.2. First-Order Logic (Quantified Variables)</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="section-logics.html" title="9.7. Logic" /><link rel="prev" href="section-logics.html" title="9.7. Logic" /><link rel="next" href="ch09s08.html" title="9.8. Builtin Functions" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="section-logics.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch09s08.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idp50819840">9.7.2. First-Order Logic (Quantified Variables)</h3></div></div></div><div class="para">
+				Given a sequence, it is possible to perform universal or existential quantification on a predicate.
+			</div><div class="example"><h6>Example 9.15. Universal quantifier</h6><div class="example-contents"><pre class="programlisting">
+  every $i in 1 to 10 satisfies $i gt 0,
+  some $i in -5 to 5, $j in 1 to 10 satisfies $i eq $j
+</pre><pre class="programlisting">Result:
+ true
+ true
+</pre></div></div><br class="example-break" /><div class="para">
+				Variables can be annotated with a type. If no type is specified, item* is assumed. If the type does not match, an error is raised.
+			</div><div class="example"><h6>Example 9.16. Existential quantifier with type checking</h6><div class="example-contents"><pre class="programlisting">
+  some $i as integer in -5 to 5, $j as integer in 1 to 10 satisfies $i eq $j
+</pre><pre class="programlisting">Result:
+ true
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="section-logics.html"><strong>Prev</strong>9.7. Logic</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch09s08.html"><strong>Next</strong>9.8. Builtin Functions</a></li></ul></body></html>

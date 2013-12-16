@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 5. Construction of Items</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSONiq-Introduction_to_JSONiq-0.1-en-US-0-0" /><link rel="home" href="index.html" title="Introduction to JSONiq" /><link rel="up" href="pt02.html" title="Part II. Construction of Items and JSON Navigation" /><link rel="prev" href="pt02.html" title="Part II. Construction of Items and JSON Navigation" /><link rel="next" href="ch05s02.html" title="5.2. Object Constructors" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="pt02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s02.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chapter-Construction" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 5. Construction of Items</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="chapter-Construction.html#idm34369312">5.1. Atomic Literals</a></span></dt><dd><dl><dt><span class="section"><a href="chapter-Construction.html#idm43184432">5.1.1. String Literals</a></span></dt><dt><span class="section"><a href="chapter-Construction.html#idm37470224">5.1.2. Number Literals.</a></span></dt><dt><span class="section"><a href="chapter-Construction.html#idm39499312">5.1.3. Boolean and Null Literals</a></span></dt></dl></dd><dt><span class="section"><a href="ch05s02.html">5.2. Object Constructors</a></span></dt><dt><span class="section"><a href="ch05s03.html">5.3. Array Constructors</a></span></dt><dt><span class="section"><a href="ch05s04.html">5.4. Composing Constructors</a></span></dt></dl></div><div class="para">
+		As we just saw, the items (objects, arrays, strings, ...) mentioned in <a class="xref" href="chapter-JSON.html">Chapter 2, <em>The JSON Syntax</em></a> are constructed exactly as they are constructed in JSON. In a way, any JSON building block is also a well-formed JSONiq query which just "returns itself" (more precisely: its counterpart in the JSONiq Data Model)!
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm34369312">5.1. Atomic Literals</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm43184432">5.1.1. String Literals</h3></div></div></div><div class="para">
+				The syntax for creating strings is identical to that of JSON. No surprise here. JSON's backslash escaping is supported, and like in JSON, double quotes are required and single quotes are forbidden.
+			</div><div class="example"><h6>Example 5.1. String literals.</h6><div class="example-contents"><pre class="programlisting">
+"foo",
+"This is a line\nand this is a new line",
+"\u0001",
+"This is a nested \"quote\""
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">"foo"
+"This is a line
+and this is a new line"
+"&amp;#x1;"
+"This is a nested "quote""
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm37470224">5.1.2. Number Literals.</h3></div></div></div><div class="para">
+				The syntax for creating numbers is identical to that of JSON.
+			</div><div class="example"><h6>Example 5.2. Number literals (integer, decimal and double literals)</h6><div class="example-contents"><pre class="programlisting">
+42,
+3.14,
+-6.022E23
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">42
+3.14
+-6.022E23
+</pre></div></div><br class="example-break" /><div class="para">
+				Well, not quite. Actually, JSONiq allows a more flexible superset. In particular:
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						leading 0s are allowed
+					</div></li><li class="listitem"><div class="para">
+						a decimal literal can begin or end with a dot
+					</div></li><li class="listitem"><div class="para">
+						a number may begin with a + sign
+					</div></li></ul></div><div class="example"><h6>Example 5.3. A more general literal syntax.</h6><div class="example-contents"><pre class="programlisting">
+042,
+.1415926535,
+42.,
++6.022E23
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">42
+0.1415926535
+42
+6.022E23
+</pre></div></div><br class="example-break" /><div class="para">
+				Remember that JSONiq distinguishes between integers (no dot, no scientific notation), decimals (dot but no scientific notation), and doubles (scientific notation). As expected, an integer literal creates an atomic of type integer, and so on. No surprises either.
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title" id="idm39499312">5.1.3. Boolean and Null Literals</h3></div></div></div><div class="para">
+				There is not much to say actually -- boolean literals build boolean atomics, the null literal builds a null atomic, so no worries here, the world is in order. You might as well want to move to the next section.
+			</div><div class="example"><h6>Example 5.4. Boolean and null literals.</h6><div class="example-contents"><pre class="programlisting">
+true,
+false,
+null
+</pre><div class="para">
+					Results:
+				</div><pre class="programlisting">true
+false
+null
+</pre></div></div><br class="example-break" /></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="pt02.html"><strong>Prev</strong>Part II. Construction of Items and JSON Navigation</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s02.html"><strong>Next</strong>5.2. Object Constructors</a></li></ul></body></html>
