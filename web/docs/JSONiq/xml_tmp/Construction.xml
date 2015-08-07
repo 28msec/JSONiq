@@ -295,6 +295,9 @@ null
     <formalpara><title>Result (run with Zorba):</title><para>An error was raised: can not atomize an array item: an array has probably been passed where an atomic value is expected (e.g., as a key, or to a function expecting an atomic item)</para></formalpara></example>
     <para>And do not worry about the value expression: if it is is empty, null will be used as a value, and if it contains two items or more, they
       will be wrapped into an array.</para>
+    <para>
+      If the colon is preceded with a question mark, then the pair will be omitted if the value expression evaluates to the empty sequence.
+    </para>
     <example>
       <title>Composable object values</title>
       <programlisting>
@@ -307,6 +310,12 @@ null
   { "foo" : (), "bar" : (1, 2) }
       </programlisting>
     <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : null, "bar" : [ 1, 2 ] }</para></formalpara></example>
+    <example>
+      <title>Optional pair (not implemented yet in Zorba)</title>
+      <programlisting>
+  { "foo" ?: (), "bar" : (1, 2) }
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: invalid expression: syntax error, unexpected "?", expecting "end of file" or "," or "}"</para></formalpara></example>
     <para> The {| |} syntax can be used to merge several objects.</para>
     <example>
       <title>Merging object constructor</title>

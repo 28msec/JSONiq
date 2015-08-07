@@ -1,0 +1,268 @@
+<section id="section-type-expressions">
+  <title>Expressions dealing with types</title>
+    <para>This section describes JSONiq types as well as the sequence type syntax.</para>
+  <section>
+    <title>Instance-of expressions</title>
+    <figure>
+      <title>InstanceofExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/InstanceofExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>An instance expression can be used to tell whether a JSONiq value matches a given sequence type.</para>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+1 instance of integer
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+1 instance of string
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>false</para></formalpara></example>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+"foo" instance of string
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+{ "foo" : "bar" } instance of object
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+({ "foo" : "bar" }, { "bar" : "foo" }) instance of json-item+
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+[ 1, 2, 3 ] instance of array?
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Instance of expression</title>
+      <programlisting>
+() instance of ()
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+  </section>
+  <section>
+    <title>Treat expressions</title>
+    <figure>
+      <title>TreatExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/TreatExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A treat expression checks that a JSONiq value matches a given sequence type. If it is not the case, an error is raised.</para>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+1 treat as integer
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>1</para></formalpara></example>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+1 treat as string
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: "xs:integer" cannot be treated as type xs:string</para></formalpara></example>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+"foo" treat as string
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>foo</para></formalpara></example>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+{ "foo" : "bar" } treat as object
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : "bar" }</para></formalpara></example>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+({ "foo" : "bar" }, { "bar" : "foo" }) treat as json-item+
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : "bar" } { "bar" : "foo" }</para></formalpara></example>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+[ 1, 2, 3 ] treat as array?
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>[ 1, 2, 3 ]</para></formalpara></example>
+    <example>
+      <title>Treat as expression</title>
+      <programlisting>
+() treat as ()
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para/></formalpara></example>
+  </section>
+  <section>
+    <title>Castable expressions</title>
+    <figure>
+      <title>CastableExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/CastableExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A castable expression checks whether a JSONiq value can be cast to a given atomic type and returns true or false accordingly. It can be used before actually casting to that type.</para>
+    <example>
+      <title>Castable as expression</title>
+      <programlisting>
+"1" castable as integer
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Castable as expression</title>
+      <programlisting>
+"foo" castable as integer
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>false</para></formalpara></example>
+    <example>
+      <title>Castable as expression</title>
+      <programlisting>
+"2013-04-02" castable as date
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+    <example>
+      <title>Castable as expression</title>
+      <programlisting>
+() castable as date
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>false</para></formalpara></example>
+    <example>
+      <title>Castable as expression</title>
+      <programlisting>
+("2013-04-02", "2013-04-03") castable as date
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>false</para></formalpara></example>
+    <para>The question mark allows for an empty sequence.</para>
+    <example>
+      <title>Castable as expression</title>
+      <programlisting>
+() castable as date?
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
+  </section>
+  <section>
+    <title>Cast expressions</title>
+    <figure>
+      <title>CastExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/CastExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A cast expression casts a JSONiq value to a given atomic type. The resulting value is annotated with this type.</para>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+"1" cast as integer
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>1</para></formalpara></example>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+"foo" cast as integer
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: "foo": value of type xs:string is not castable to type xs:integer</para></formalpara></example>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+"2013-04-02" cast as date
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>2013-04-02</para></formalpara></example>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+() cast as date
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: empty sequence can not be cast to type with quantifier '1'</para></formalpara></example>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+("2013-04-02", "2013-04-03") cast as date
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: sequence of more than one item can not be cast to type with quantifier '1' or '?'</para></formalpara></example>
+    <para>The question mark allows for an empty sequence.</para>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+() cast as date?
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para/></formalpara></example>
+    <example>
+      <title>Cast as expression</title>
+      <programlisting>
+"2013-04-02" cast as date?
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>2013-04-02</para></formalpara></example>
+  </section>
+  <section>
+    <title>Typeswitch expressions</title>
+    <figure>
+      <title>TypeswitchExpr</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/TypeswitchExpr.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <figure>
+      <title>CaseClause</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/CaseClause.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A typeswitch expressions tests if the value resulting from the first operand matches a given list of types. The expression corresponding to
+      the first matching case is finally evaluated. If there is no match, the expression in the default clause is evaluated.</para>
+    <example>
+      <title>Typeswitch expression</title>
+      <programlisting>
+typeswitch("foo")
+case integer return "integer"
+case string return "string"
+case object return "object"
+default return "other"
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>string</para></formalpara></example>
+    <para>In each clause, it is possible to bind the value of the first operand to a variable.</para>
+    <example>
+      <title>Typeswitch expression</title>
+      <programlisting>
+typeswitch("foo")
+case $i as integer return $i + 1
+case $s as string return $s || "foo"
+case $o as object return [ $o ]
+default $d return $d
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>foofoo</para></formalpara></example>
+    <para>The vertical bar can be used to allow several types in the same case clause.</para>
+    <example>
+      <title>Typeswitch expression</title>
+      <programlisting>
+typeswitch("foo")
+case $a as integer | string return { "integer or string" : $a }
+case $o as object return [ $o ]
+default $d return $d
+      </programlisting>
+    <formalpara><title>Result (run with Zorba):</title><para>{ "integer or string" : "foo" }</para></formalpara></example>
+  </section>
+</section>

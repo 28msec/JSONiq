@@ -19,8 +19,8 @@ do
   echo Compiling book: $spec...
   publican build -formats pdf,html,html-single --langs en-US;
 done
-#for spec in "${SPECS[@]}"
-#do
-  #rm -rf $SPEC_PATH/web/docs/$spec/*
-  #cp -r $SPEC_PATH/$spec/tmp/en-US/* $SPEC_PATH/web/docs/$spec/
-#done
+for spec in "${SPECS[@]}"
+do
+  rm -rf $SPEC_PATH/web/docs/$spec/*
+  cp -r $SPEC_PATH/$spec/tmp/en-US/* $SPEC_PATH/web/docs/$spec/
+done

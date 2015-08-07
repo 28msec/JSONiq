@@ -8,6 +8,22 @@
 	<simpara>
 		<revhistory>
 		  <revision>
+		    <revnumber>1-12</revnumber>
+		    <date>Triday Aug 7th, 2015</date>
+		    <author>
+		      <firstname>Ghislain</firstname>
+		      <surname>Fourny</surname>
+		      <email>g@28.io</email>
+		    </author>
+		    <revdescription>
+		      <simplelist>
+		        <member>
+		          Added ?: syntax.
+		        </member>
+		      </simplelist>
+		    </revdescription>
+		  </revision>
+		  <revision>
 		    <revnumber>1-11</revnumber>
 		    <date>Tuesday Aug 13th, 2013</date>
 		    <author>
