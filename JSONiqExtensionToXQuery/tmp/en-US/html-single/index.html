@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Specification</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 3.2.1" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1-3" /><meta name="description" content="The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax that the JSONiq core." /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><div class="book"><div class="titlepage"><div><div class="producttitle"><span class="productname">JSONiq Extension to XQuery</span> <span class="productnumber">1.0</span></div><div><h1 class="title"><a id="idm139692521501584"></a>Specification</h1></div><div><h2 class="subtitle">XML and JSON: A Language To Rule Them All</h2></div><p class="edition">Edition 1.0.3</p><div><h3 class="corpauthor">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Specification</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 3.2.1" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1-4" /><meta name="description" content="The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax that the JSONiq core." /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><div class="book"><div class="titlepage"><div><div class="producttitle"><span class="productname">JSONiq Extension to XQuery</span> <span class="productnumber">1.0</span></div><div><h1 class="title"><a id="idm139680622146720"></a>Specification</h1></div><div><h2 class="subtitle">XML and JSON: A Language To Rule Them All</h2></div><p class="edition">Edition 1.0.4</p><div><h3 class="corpauthor">
 		<span class="inlinemediaobject"><img src="images/28.png" width="111" /></span>
 
 	</h3></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Jonathan</span> <span class="surname">Robie</span></h3><code class="email"><a class="email" href="mailto:jonathan.robie@gmail.com">jonathan.robie@gmail.com</a></code></div><div class="author"><h3 class="author"><span class="firstname">Ghislain</span> <span class="surname">Fourny</span></h3><code class="email"><a class="email" href="mailto:ghislain.fourny@28msec.com">ghislain.fourny@28msec.com</a></code></div><div class="author"><h3 class="author"><span class="firstname">Matthias</span> <span class="surname">Brantner</span></h3><code class="email"><a class="email" href="mailto:matthias.brantner@28msec.com">matthias.brantner@28msec.com</a></code></div><div class="author"><h3 class="author"><span class="firstname">Daniela</span> <span class="surname">Florescu</span></h3><code class="email"><a class="email" href="mailto:dana.florescu@oracle.com">dana.florescu@oracle.com</a></code></div><div class="author"><h3 class="author"><span class="firstname">Till</span> <span class="surname">Westmann</span></h3><code class="email"><a class="email" href="mailto:till.westmann@28msec.com">till.westmann@28msec.com</a></code></div><div class="author"><h3 class="author"><span class="firstname">Markos</span> <span class="surname">Zaharioudakis</span></h3><code class="email"><a class="email" href="mailto:markos.zaharioudakis@oracle.com">markos.zaharioudakis@oracle.com</a></code></div><div class="editor"><h4 class="editedby">Edited by</h4><h3 class="editor"><span class="firstname">Jonathan</span> <span class="surname">Robie</span></h3><code class="email"><a class="email" href="mailto:jonathan.robie@gmail.com">jonathan.robie@gmail.com</a></code></div><div class="editor"><h4 class="editedby">Edited by</h4><h3 class="editor"><span class="firstname">Ghislain</span> <span class="surname">Fourny</span></h3><code class="email"><a class="email" href="mailto:ghislain.fourny@28msec.com">ghislain.fourny@28msec.com</a></code></div></div></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
 			The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax that the JSONiq core.
-		</div></div></div></div></div><div class="toc"><dl class="toc"><dt><span class="chapter"><a href="#section-status">1. Status</a></span></dt><dt><span class="chapter"><a href="#section-introduction">2. Introduction</a></span></dt><dt><span class="chapter"><a href="#section-jsoniq-data-model">3. JSONiq Data Model</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692516697392">3.1. Simple Datatypes</a></span></dt><dt><span class="section"><a href="#idm139692518141168">3.2. JSON Items</a></span></dt><dt><span class="section"><a href="#idm139692573118368">3.3. Objects</a></span></dt><dt><span class="section"><a href="#idm139692572781328">3.4. Arrays</a></span></dt><dt><span class="section"><a href="#idm139692572772256">3.5. ItemTypes for JSONiq Items</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-json-value-construction">4. Construction of JSON values</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692502911392">4.1. Array Constructors</a></span></dt><dt><span class="section"><a href="#idm139692568373760">4.2. Object Constructors</a></span></dt><dt><span class="section"><a href="#idm139692521918416">4.3. Strings</a></span></dt><dt><span class="section"><a href="#idm139692507467584">4.4. Numbers</a></span></dt><dt><span class="section"><a href="#idm139692507464800">4.5. Booleans</a></span></dt><dt><span class="section"><a href="#idm139692507463392">4.6. Null</a></span></dt><dt><span class="section"><a href="#idm139692565516784">4.7. Boolean and null literals</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-json-navigation">5. Navigation in JSON content</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692507314000">5.1. Object lookup</a></span></dt><dt><span class="section"><a href="#idm139692519182976">5.2. Object key listing</a></span></dt><dt><span class="section"><a href="#idm139692556408672">5.3. Array lookup</a></span></dt><dt><span class="section"><a href="#idm139692565338736">5.4. Array unboxing</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-builtin-functions">6. Builtin functions and operators</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692522734016">6.1. fn:boolean (aka Effective Boolean Value)</a></span></dt><dt><span class="section"><a href="#idm139692560831984">6.2. fn:collection</a></span></dt><dt><span class="section"><a href="#idm139692560978448">6.3. fn:data (aka Atomization)</a></span></dt><dt><span class="section"><a href="#idm139692506238976">6.4. fn:string (aka string value)</a></span></dt><dt><span class="section"><a href="#idm139692506858480">6.5. fn:trace</a></span></dt><dt><span class="section"><a href="#idm139692506856992">6.6. jn:decode-from-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139692506348144">6.7. jn:encode-for-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139692572787584">6.8. jn:json-doc</a></span></dt><dt><span class="section"><a href="#idm139692572784800">6.9. jn:keys</a></span></dt><dt><span class="section"><a href="#idm139692563546880">6.10. jn:members</a></span></dt><dt><span class="section"><a href="#idm139692563541680">6.11. jn:null</a></span></dt><dt><span class="section"><a href="#idm139692563539312">6.12. jn:parse-json</a></span></dt><dt><span class="section"><a href="#idm139692563528160">6.13. jn:size</a></span></dt><dt><span class="section"><a href="#idm139692563523248">6.14. Changes to cast semantics</a></span></dt><dt><span class="section"><a href="#idm139692563520304">6.15. Changes to arithmetic operation semantics</a></span></dt><dt><span class="section"><a href="#idm139692563515440">6.16. Changes to value comparison semantics</a></span></dt><dt><span class="section"><a href="#idm139692563510592">6.17. Changes to general comparison semantics</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-json-updates">7. JSON updates</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692552798912">7.1. JSON udpate primitives</a></span></dt><dt><span class="section"><a href="#idm139692568385440">7.2. Update syntax: new updating expressions</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692568384224">7.2.1. Deleting expressions</a></span></dt><dt><span class="section"><a href="#idm139692517793440">7.2.2. Inserting expressions</a></span></dt><dt><span class="section"><a href="#idm139692520005168">7.2.3. Renaming expressions</a></span></dt><dt><span class="section"><a href="#idm139692519997504">7.2.4. Replacing expressions</a></span></dt><dt><span class="section"><a href="#idm139692558946960">7.2.5. Appending expressions</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#section-function-library">8. Function library</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692558834320">8.1. libjn:accumulate</a></span></dt><dt><span class="section"><a href="#idm139692517898688">8.2. libjn:descendant-arrays</a></span></dt><dt><span class="section"><a href="#idm139692569320416">8.3. libjn:descendant-objects</a></span></dt><dt><span class="section"><a href="#idm139692515681840">8.4. libjn:descendant-pairs</a></span></dt><dt><span class="section"><a href="#idm139692563845728">8.5. libjn:flatten</a></span></dt><dt><span class="section"><a href="#idm139692521873520">8.6. libjn:intersect</a></span></dt><dt><span class="section"><a href="#idm139692560114112">8.7. libjn:project</a></span></dt><dt><span class="section"><a href="#idm139692558402656">8.8. libjn:remove-keys</a></span></dt><dt><span class="section"><a href="#idm139692558397152">8.9. libjn:values</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-combining-xml-and-json">9. Combining XML and JSON</a></span></dt><dt><span class="chapter"><a href="#section-json-serialization">10. JSON Serialization</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692522816416">10.1. New serialization parameters</a></span></dt><dt><span class="section"><a href="#idm139692519695488">10.2. Changes to sequence normalization</a></span></dt><dt><span class="section"><a href="#idm139692507255568">10.3. The JSON output method</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692561190576">10.3.1. Serialization of a sequence of items</a></span></dt><dt><span class="section"><a href="#idm139692569299216">10.3.2. Serialization of individual JSON values</a></span></dt><dt><span class="section"><a href="#idm139692521868208">10.3.3. Influence of other serialization parameters upon the JSON output method</a></span></dt></dl></dd><dt><span class="section"><a href="#idm139692569279040">10.4. The JSON-XML-hybrid output method</a></span></dt><dt><span class="section"><a href="#idm139692507517600">10.5. Changes to ther other output methods</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-error-codes">11. Error codes</a></span></dt><dt><span class="chapter"><a href="#section-grammar-summary">12. Grammar Summary</a></span></dt><dt><span class="chapter"><a href="#section-implementation">13. Implementation in Zorba</a></span></dt><dt><span class="appendix"><a href="#appe-JSONiq-Revision_History">A. Revision History</a></span></dt><dt><span class="index"><a href="#idm139692519498576">Index</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-status"></a>Chapter 1. Status</h1></div></div></div><div class="para">
+		</div></div></div></div></div><div class="toc"><dl class="toc"><dt><span class="chapter"><a href="#section-status">1. Status</a></span></dt><dt><span class="chapter"><a href="#section-introduction">2. Introduction</a></span></dt><dt><span class="chapter"><a href="#section-jsoniq-data-model">3. JSONiq Data Model</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680639283680">3.1. Simple Datatypes</a></span></dt><dt><span class="section"><a href="#idm139680641307920">3.2. JSON Items</a></span></dt><dt><span class="section"><a href="#idm139680641300880">3.3. Objects</a></span></dt><dt><span class="section"><a href="#idm139680688870240">3.4. Arrays</a></span></dt><dt><span class="section"><a href="#idm139680688861168">3.5. ItemTypes for JSONiq Items</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-json-value-construction">4. Construction of JSON values</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680645718880">4.1. Array Constructors</a></span></dt><dt><span class="section"><a href="#idm139680686311712">4.2. Object Constructors</a></span></dt><dt><span class="section"><a href="#idm139680678383824">4.3. Strings</a></span></dt><dt><span class="section"><a href="#idm139680712135920">4.4. Numbers</a></span></dt><dt><span class="section"><a href="#idm139680712133136">4.5. Booleans</a></span></dt><dt><span class="section"><a href="#idm139680712131728">4.6. Null</a></span></dt><dt><span class="section"><a href="#idm139680712130320">4.7. Boolean and null literals</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-json-navigation">5. Navigation in JSON content</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680678297536">5.1. Object lookup</a></span></dt><dt><span class="section"><a href="#idm139680685942912">5.2. Object key listing</a></span></dt><dt><span class="section"><a href="#idm139680685937088">5.3. Array lookup</a></span></dt><dt><span class="section"><a href="#idm139680639589600">5.4. Array unboxing</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-builtin-functions">6. Builtin functions and operators</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680687621568">6.1. fn:boolean (aka Effective Boolean Value)</a></span></dt><dt><span class="section"><a href="#idm139680622470992">6.2. fn:collection</a></span></dt><dt><span class="section"><a href="#idm139680678669712">6.3. fn:data (aka Atomization)</a></span></dt><dt><span class="section"><a href="#idm139680685394768">6.4. fn:string (aka string value)</a></span></dt><dt><span class="section"><a href="#idm139680637910304">6.5. fn:trace</a></span></dt><dt><span class="section"><a href="#idm139680637908816">6.6. jn:decode-from-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139680641288960">6.7. jn:encode-for-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139680622843744">6.8. jn:json-doc</a></span></dt><dt><span class="section"><a href="#idm139680622840960">6.9. jn:keys</a></span></dt><dt><span class="section"><a href="#idm139680622833296">6.10. jn:members</a></span></dt><dt><span class="section"><a href="#idm139680622828096">6.11. jn:null</a></span></dt><dt><span class="section"><a href="#idm139680622825728">6.12. jn:parse-json</a></span></dt><dt><span class="section"><a href="#idm139680622814576">6.13. jn:size</a></span></dt><dt><span class="section"><a href="#idm139680622809664">6.14. Changes to cast semantics</a></span></dt><dt><span class="section"><a href="#idm139680622806720">6.15. Changes to arithmetic operation semantics</a></span></dt><dt><span class="section"><a href="#idm139680622801856">6.16. Changes to value comparison semantics</a></span></dt><dt><span class="section"><a href="#idm139680622797008">6.17. Changes to general comparison semantics</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-json-updates">7. JSON updates</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680654758080">7.1. JSON udpate primitives</a></span></dt><dt><span class="section"><a href="#idm139680639391936">7.2. Update syntax: new updating expressions</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680639390720">7.2.1. Deleting expressions</a></span></dt><dt><span class="section"><a href="#idm139680625794160">7.2.2. Inserting expressions</a></span></dt><dt><span class="section"><a href="#idm139680680372224">7.2.3. Renaming expressions</a></span></dt><dt><span class="section"><a href="#idm139680680364480">7.2.4. Replacing expressions</a></span></dt><dt><span class="section"><a href="#idm139680636973152">7.2.5. Appending expressions</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#section-function-library">8. Function library</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680684849856">8.1. libjn:accumulate</a></span></dt><dt><span class="section"><a href="#idm139680639256048">8.2. libjn:descendant-arrays</a></span></dt><dt><span class="section"><a href="#idm139680623582768">8.3. libjn:descendant-objects</a></span></dt><dt><span class="section"><a href="#idm139680657730592">8.4. libjn:descendant-pairs</a></span></dt><dt><span class="section"><a href="#idm139680642549152">8.5. libjn:flatten</a></span></dt><dt><span class="section"><a href="#idm139680642543968">8.6. libjn:intersect</a></span></dt><dt><span class="section"><a href="#idm139680627209728">8.7. libjn:project</a></span></dt><dt><span class="section"><a href="#idm139680692541376">8.8. libjn:remove-keys</a></span></dt><dt><span class="section"><a href="#idm139680692535872">8.9. libjn:values</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-combining-xml-and-json">9. Combining XML and JSON</a></span></dt><dt><span class="chapter"><a href="#section-json-serialization">10. JSON Serialization</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680688597344">10.1. New serialization parameters</a></span></dt><dt><span class="section"><a href="#idm139680678515568">10.2. Changes to sequence normalization</a></span></dt><dt><span class="section"><a href="#idm139680639162912">10.3. The JSON output method</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680638623296">10.3.1. Serialization of a sequence of items</a></span></dt><dt><span class="section"><a href="#idm139680678216656">10.3.2. Serialization of individual JSON values</a></span></dt><dt><span class="section"><a href="#idm139680622499712">10.3.3. Influence of other serialization parameters upon the JSON output method</a></span></dt></dl></dd><dt><span class="section"><a href="#idm139680637468832">10.4. The JSON-XML-hybrid output method</a></span></dt><dt><span class="section"><a href="#idm139680636664688">10.5. Changes to ther other output methods</a></span></dt></dl></dd><dt><span class="chapter"><a href="#section-error-codes">11. Error codes</a></span></dt><dt><span class="chapter"><a href="#section-grammar-summary">12. Grammar Summary</a></span></dt><dt><span class="chapter"><a href="#section-implementation">13. Implementation in Zorba</a></span></dt><dt><span class="appendix"><a href="#appe-JSONiq-Revision_History">A. Revision History</a></span></dt><dt><span class="index"><a href="#idm139680640533344">Index</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-status"></a>Chapter 1. Status</h1></div></div></div><div class="para">
 		The JSONiq extension to XQuery allows processing XML and JSON natively and with a single language. This extension is based on the same data model as the core JSONiq and is based on the same logical concepts. Because of the complexity of the XQuery grammar, the JSONiq extension to XQuery has a less pleasant syntax that the JSONiq core:
 	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 				Object lookup is done with the same syntax as dynamic function calls (because the dot is allowed in variable names and XPath name tests).
@@ -52,8 +52,8 @@
 		The namespace <code class="code">http://jsoniq.org/updates</code> is used for the names of update primitives defined by this specification. This namespace is not exposed to the user. For convenience, this document uses the prefix <code class="code">jupd:</code> for names in this namespace. For instance, the update primitive <code class="code">jupd:delete-from-object</code> is in this namespace.
 	</div><div class="para">
 		Accessors used in JSONiq Data Model use the <code class="code">jdm:</code> prefix. These functions are not exposed to the user and are for explanatory purposes of the data model within this document only. The <code class="code">jdm:</code> prefix is not associated with a namespace.
-	</div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-jsoniq-data-model"></a>Chapter 3. JSONiq Data Model</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692516697392">3.1. Simple Datatypes</a></span></dt><dt><span class="section"><a href="#idm139692518141168">3.2. JSON Items</a></span></dt><dt><span class="section"><a href="#idm139692573118368">3.3. Objects</a></span></dt><dt><span class="section"><a href="#idm139692572781328">3.4. Arrays</a></span></dt><dt><span class="section"><a href="#idm139692572772256">3.5. ItemTypes for JSONiq Items</a></span></dt></dl></div><div class="para">
-		JSONiq is based on the XQuery Data Model, adding support for JSON nulls, objects and arrays. <a id="idm139692560730656"></a><a href="#ftn.idm139692560730656" class="footnote"><sup class="footnote">[1]</sup></a>
+	</div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-jsoniq-data-model"></a>Chapter 3. JSONiq Data Model</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680639283680">3.1. Simple Datatypes</a></span></dt><dt><span class="section"><a href="#idm139680641307920">3.2. JSON Items</a></span></dt><dt><span class="section"><a href="#idm139680641300880">3.3. Objects</a></span></dt><dt><span class="section"><a href="#idm139680688870240">3.4. Arrays</a></span></dt><dt><span class="section"><a href="#idm139680688861168">3.5. ItemTypes for JSONiq Items</a></span></dt></dl></div><div class="para">
+		JSONiq is based on the XQuery Data Model, adding support for JSON nulls, objects and arrays. <a id="idm139680637576256"></a><a href="#ftn.idm139680637576256" class="footnote"><sup class="footnote">[1]</sup></a>
 	</div><div class="para">
 		To support nulls, JSONiq adds the following atomic datatype:
 	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
@@ -68,7 +68,7 @@
 		As well as the generic term (associated with an item type):
 	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 				<span class="emphasis"><em>JSON Item</em></span>, which can be an Object or an Array.
-			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692516697392"></a>3.1. Simple Datatypes</h2></div></div></div><div class="para">
+			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680639283680"></a>3.1. Simple Datatypes</h2></div></div></div><div class="para">
 			JSON's simple values can have any of the following datatypes, which are supported as primitives in JSONiq.
 		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 					string
@@ -83,22 +83,22 @@
 		</div><div class="para">
 			JSONiq represents the JSON simple values 'true' and 'false' as <code class="code">xs:boolean</code> values.
 		</div><div class="para">
-			JSONiq adds one new data type: <code class="code">js:null</code>, derived from <code class="code">xs:anyAtomicType</code>. <code class="code">js:null</code> has a singleton value space containing the value <span class="emphasis"><em>null</em></span> <a id="idm139692517671568"></a><a href="#ftn.idm139692517671568" class="footnote"><sup class="footnote">[2]</sup></a>. The lexical representation of an instance of <code class="code">js:null</code> is the string "<code class="code">null</code>".
+			JSONiq adds one new data type: <code class="code">js:null</code>, derived from <code class="code">xs:anyAtomicType</code>. <code class="code">js:null</code> has a singleton value space containing the value <span class="emphasis"><em>null</em></span> <a id="idm139680638268016"></a><a href="#ftn.idm139680638268016" class="footnote"><sup class="footnote">[2]</sup></a>. The lexical representation of an instance of <code class="code">js:null</code> is the string "<code class="code">null</code>".
 		</div><div class="para">
 			JSON defines number as follows:
 		</div><div class="blockquote"><blockquote class="blockquote"><div class="para">
 				A number can be represented as integer, real, or floating point. JSON does not support octal or hex because it is minimal. It does not have values for NaN or Infinity because it does not want to be tied to any particular internal representation.
 			</div></blockquote></div><div class="para">
-			JSONiq uses XQuery's lexical representation of numbers to distinguish integer, real, and floating point numbers <a id="idm139692520165248"></a><a href="#ftn.idm139692520165248" class="footnote"><sup class="footnote">[3]</sup></a>:
+			JSONiq uses XQuery's lexical representation of numbers to distinguish integer, real, and floating point numbers <a id="idm139680638102896"></a><a href="#ftn.idm139680638102896" class="footnote"><sup class="footnote">[3]</sup></a>:
 		</div><pre class="programlisting">NumericLiteral ::= IntegerLiteral | DecimalLiteral | DoubleLiteral</pre><div class="para">
 			If a numeric literal has no "." character and no e or E character, it has the atomic type <code class="code">xs:integer</code>; if it has a "." character but no e or E character it has type <code class="code">xs:decimal</code>; if it has an e or E character it has type <code class="code">xs:double</code>.
 		</div><div class="para">
 			Number literals are mapped to atomic values according to the XML Schema specification.
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692518141168"></a>3.2. JSON Items</h2></div></div></div><div class="para">
-			A JSON Item is an item. A JSON Item has an identity <a id="idm139692518140080"></a><a href="#ftn.idm139692518140080" class="footnote"><sup class="footnote">[4]</sup></a> , and it can be serialized. Objects and Arrays are JSON Items <a id="idm139692518139104"></a><a href="#ftn.idm139692518139104" class="footnote"><sup class="footnote">[5]</sup></a> .
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680641307920"></a>3.2. JSON Items</h2></div></div></div><div class="para">
+			A JSON Item is an item. A JSON Item has an identity <a id="idm139680641306752"></a><a href="#ftn.idm139680641306752" class="footnote"><sup class="footnote">[4]</sup></a> , and it can be serialized. Objects and Arrays are JSON Items <a id="idm139680641305776"></a><a href="#ftn.idm139680641305776" class="footnote"><sup class="footnote">[5]</sup></a> .
 		</div><div class="para">
 			The diagram below shows the XQuery 3.0 type hierarchy, adding JSON Item and all types derived from it:
-		</div><div class="mediaobject"><object data="images/type-hierarchy.svg" type="image/svg+xml" width="100%"> </object></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692573118368"></a>3.3. Objects</h2></div></div></div><div class="para">
+		</div><div class="mediaobject"><object data="images/type-hierarchy.svg" type="image/svg+xml" width="100%"> </object></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680641300880"></a>3.3. Objects</h2></div></div></div><div class="para">
 			An Object represents a JSON object (a collection of string/value pairs).
 		</div><div class="para">
 			Objects have the following property:
@@ -118,7 +118,7 @@
 					Returns the value associated with $s in the object $o.
 				</div></li></ul></div><div class="para">
 			An Object does not have a typed value.
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692572781328"></a>3.4. Arrays</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680688870240"></a>3.4. Arrays</h2></div></div></div><div class="para">
 			An Array represents a JSON array (an ordered list of values).
 		</div><div class="para">
 			Arrays have the following property:
@@ -136,7 +136,7 @@
 					Returns the value at position $i in the array $a.
 				</div></li></ul></div><div class="para">
 			An Array does not have a typed value.
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692572772256"></a>3.5. ItemTypes for JSONiq Items</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680688861168"></a>3.5. ItemTypes for JSONiq Items</h2></div></div></div><div class="para">
 			In XQuery, an ItemType is used to match certain items, for example in function signatures, return types, and a variety of other expressions. JSONiq extends XQuery's ItemType as follows:
 		</div><pre class="programlisting">
       ItemType ::= -- everything so far --
@@ -162,7 +162,7 @@
 					<code class="code">object()</code> matches any Object.
 				</div></li><li class="listitem"><div class="para">
 					<code class="code">array()</code> matches any Array.
-				</div></li></ul></div><div class="example"><a id="idm139692518919248"></a><p class="title"><strong>Example 3.1. JSON Items in Function Signatures and instance-of expressions</strong></p><div class="example-contents"><div class="para">
+				</div></li></ul></div><div class="example"><a id="idm139680642067808"></a><p class="title"><strong>Example 3.1. JSON Items in Function Signatures and instance-of expressions</strong></p><div class="example-contents"><div class="para">
 				The following function returns any Objects that are members of an Array (see below for more on array navigation).
 			</div><pre class="programlisting">
           declare function local:objects-in-array($a as array()) as object()* {
@@ -171,19 +171,19 @@
             where $iteminstance of object()
             return $item
           };
-</pre></div></div><br class="example-break" /></div><div class="footnotes"><br /><hr width="100" align="left" /><div id="ftn.idm139692560730656" class="footnote"><div class="para"><a href="#idm139692560730656" class="para"><sup class="para">[1] </sup></a>
+</pre></div></div><br class="example-break" /></div><div class="footnotes"><br /><hr width="100" align="left" /><div id="ftn.idm139680637576256" class="footnote"><div class="para"><a href="#idm139680637576256" class="para"><sup class="para">[1] </sup></a>
 			In the XQ-- subset of JSONiq, we will define a simpler data model that omits much of the XQuery Data Model.
-		</div></div><div id="ftn.idm139692517671568" class="footnote"><div class="para"><a href="#idm139692517671568" class="para"><sup class="para">[2] </sup></a>
+		</div></div><div id="ftn.idm139680638268016" class="footnote"><div class="para"><a href="#idm139680638268016" class="para"><sup class="para">[2] </sup></a>
 				(Because the typed value of all <code class="code">js:null</code> instances is the same, nulls are always equal to each other for the purpose of value comparisons).
-			</div></div><div id="ftn.idm139692520165248" class="footnote"><div class="para"><a href="#idm139692520165248" class="para"><sup class="para">[3] </sup></a>
+			</div></div><div id="ftn.idm139680638102896" class="footnote"><div class="para"><a href="#idm139680638102896" class="para"><sup class="para">[3] </sup></a>
 				The result of a JSONiq query may contain values such as NaN or Infinity, which cannot be serialized as JSON. These values have type <code class="code">xs:double</code>, and are either rejected or treated in a special way during the JSON Serialization process.
 			</div><div class="para">
 				ECMAScript also has has Infinity and NaN, and takes a similar approach.
-			</div></div><div id="ftn.idm139692518140080" class="footnote"><div class="para"><a href="#idm139692518140080" class="para"><sup class="para">[4] </sup></a>
+			</div></div><div id="ftn.idm139680641306752" class="footnote"><div class="para"><a href="#idm139680641306752" class="para"><sup class="para">[4] </sup></a>
 				The identity of an item is used only for updates, where it is used in the update primitives.
-			</div></div><div id="ftn.idm139692518139104" class="footnote"><div class="para"><a href="#idm139692518139104" class="para"><sup class="para">[5] </sup></a>
+			</div></div><div id="ftn.idm139680641305776" class="footnote"><div class="para"><a href="#idm139680641305776" class="para"><sup class="para">[5] </sup></a>
 				In this document, the words <span class="emphasis"><em>Object</em></span> and <span class="emphasis"><em>Array</em></span> refer to JSON constructs. Unlike objects in most programming languages, a JSON object contains only data.
-			</div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-value-construction"></a>Chapter 4. Construction of JSON values</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692502911392">4.1. Array Constructors</a></span></dt><dt><span class="section"><a href="#idm139692568373760">4.2. Object Constructors</a></span></dt><dt><span class="section"><a href="#idm139692521918416">4.3. Strings</a></span></dt><dt><span class="section"><a href="#idm139692507467584">4.4. Numbers</a></span></dt><dt><span class="section"><a href="#idm139692507464800">4.5. Booleans</a></span></dt><dt><span class="section"><a href="#idm139692507463392">4.6. Null</a></span></dt><dt><span class="section"><a href="#idm139692565516784">4.7. Boolean and null literals</a></span></dt></dl></div><div class="para">
+			</div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-value-construction"></a>Chapter 4. Construction of JSON values</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680645718880">4.1. Array Constructors</a></span></dt><dt><span class="section"><a href="#idm139680686311712">4.2. Object Constructors</a></span></dt><dt><span class="section"><a href="#idm139680678383824">4.3. Strings</a></span></dt><dt><span class="section"><a href="#idm139680712135920">4.4. Numbers</a></span></dt><dt><span class="section"><a href="#idm139680712133136">4.5. Booleans</a></span></dt><dt><span class="section"><a href="#idm139680712131728">4.6. Null</a></span></dt><dt><span class="section"><a href="#idm139680712130320">4.7. Boolean and null literals</a></span></dt></dl></div><div class="para">
 		JSONiq Constructors create Objects, and Arrays. If an Object Constructor or an Array Constructor contains only literal data, as a rule of thumb, the syntax is the same as the JSON serialization. Constructors can also contain XQuery expressions to create content as the result of a query.
 	</div><div class="para">
 		Here is the syntax for object and array constructors:
@@ -203,9 +203,9 @@
       PairConstructor ::=  ExprSingle (":" | "?:") ExprSingle
 </pre><div class="para">
 		XQuery expressions can occur within JSON constructors, and JSON constructors can occur within XQuery expressions. The semantics of such expressions are discussed in <a class="xref" href="#section-combining-xml-and-json">Chapter 9, <em>Combining XML and JSON</em></a>.
-	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692502911392"></a>4.1. Array Constructors</h2></div></div></div><div class="para">
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680645718880"></a>4.1. Array Constructors</h2></div></div></div><div class="para">
 			The expression in an Array Constructor, if present, evaluates to a sequence of zero or more items. The members of the constructed array are copies of these items, in the same order.
-		</div><div class="example"><a id="idm139692564382208"></a><p class="title"><strong>Example 4.1. Array Constructors</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680639134736"></a><p class="title"><strong>Example 4.1. Array Constructors</strong></p><div class="example-contents"><div class="para">
 				An Array Constructor:
 			</div><pre class="programlisting">
         [ "Sunday",
@@ -233,7 +233,7 @@
 				Result:
 			</div><pre class="programlisting">
         [ 10, 11, 12, 13, 14, 15 ]
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692568373760"></a>4.2. Object Constructors</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680686311712"></a>4.2. Object Constructors</h2></div></div></div><div class="para">
 			An Object Constructor is made of Pair Constructors. Each Pair Constructor creates a single string/item pair as follows: 
 			<div class="itemizedlist"><ul><li class="listitem"><div class="para">
 						The string is the result of evaluating the left operand, atomizing it, checking that it results in a single atomic item, and casting it to <code class="code">xs:string</code>. Errors such as <code class="code">jerr:JNTY0004</code> or <code class="code">err:XPTY0004</code> may be raised upon failure of one of these steps.
@@ -247,7 +247,7 @@
 
 		</div><div class="para">
 			An object is constructed, the pairs property of which comprise all pairs generated by the pair constructors. An error <code class="code">jerr:JNDY0003</code> is raised if two pairs have the same name (the comparison is made using <code class="code">fn:codepoint-equal</code>).
-		</div><div class="example"><a id="idm139692518926592"></a><p class="title"><strong>Example 4.2. Object Constructors</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680637156336"></a><p class="title"><strong>Example 4.2. Object Constructors</strong></p><div class="example-contents"><div class="para">
 				An Object Constructor with literal data:
 			</div><pre class="programlisting">
           {
@@ -290,7 +290,7 @@
 			A JSON item cannot be a child of an XML element or attribute. If a JSON item is used in the content expression of an XQuery constructor, the result will raise an error, as described in <a class="xref" href="#section-combining-xml-and-json">Chapter 9, <em>Combining XML and JSON</em></a>.
 		</div><div class="para">
 			There is also a syntax for dynamic object construction, which merges all the objects returned by the inner expression into a single object with a so-called "simple object union". A simple object union creates a new object, the pairs property of which is obtained by accumulating the pairs of all operand objects. An error <code class="code">jerr:JNDY0003</code> is raised if two pairs with the same name are encountered.
-		</div><div class="example"><a id="idm139692521923952"></a><p class="title"><strong>Example 4.3. Dynamically building an object</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680678389360"></a><p class="title"><strong>Example 4.3. Dynamically building an object</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">
           let $object1 := { "Captain" : "Kirk" }
@@ -328,25 +328,25 @@
             "Friday" : 6,
             "Saturday" : 7
           }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692521918416"></a>4.3. Strings</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680678383824"></a>4.3. Strings</h2></div></div></div><div class="para">
 			Strings can be constructed using XQuery String Literals.
-		</div><div class="example"><a id="idm139692507469120"></a><p class="title"><strong>Example 4.4. JSON String construction</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680712137456"></a><p class="title"><strong>Example 4.4. JSON String construction</strong></p><div class="example-contents"><pre class="programlisting">
           "This is a string"
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692507467584"></a>4.4. Numbers</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680712135920"></a>4.4. Numbers</h2></div></div></div><div class="para">
 			Numbers can be constructed using XQuery Integer, Decimal and Double literals.
-		</div><div class="example"><a id="idm139692507466336"></a><p class="title"><strong>Example 4.5. JSON Number construction</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680712134672"></a><p class="title"><strong>Example 4.5. JSON Number construction</strong></p><div class="example-contents"><pre class="programlisting">
           42
           3.14
           6.022E23
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692507464800"></a>4.5. Booleans</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680712133136"></a>4.5. Booleans</h2></div></div></div><div class="para">
 			Booleans can be constructed using the XQuery builtin functions fn:true() and fn:false().
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692507463392"></a>4.6. Null</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680712131728"></a>4.6. Null</h2></div></div></div><div class="para">
 			Null can be constructed using the new builtin function jn:null().
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692565516784"></a>4.7. Boolean and null literals</h2></div></div></div><div class="para">
-			A new option <code class="code">jn:jsoniq-boolean-and-null-literals</code> is available ("yes" or "no"), that activates or deactivates the interpretation of a standalone NameTest "true", "false" or "null" (meaning: occurring as a PathExpr, i.e., no slashes, no axes) as boolean and null literals. By default, it is set to "yes". <a id="idm139692565515008"></a><a href="#ftn.idm139692565515008" class="footnote"><sup class="footnote">[6]</sup></a>
-		</div></div><div class="footnotes"><br /><hr width="100" align="left" /><div id="ftn.idm139692565515008" class="footnote"><div class="para"><a href="#idm139692565515008" class="para"><sup class="para">[6] </sup></a>
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680712130320"></a>4.7. Boolean and null literals</h2></div></div></div><div class="para">
+			A new option <code class="code">jn:jsoniq-boolean-and-null-literals</code> is available ("yes" or "no"), that activates or deactivates the interpretation of a standalone NameTest "true", "false" or "null" (meaning: occurring as a PathExpr, i.e., no slashes, no axes) as boolean and null literals. By default, it is set to "yes". <a id="idm139680641351536"></a><a href="#ftn.idm139680641351536" class="footnote"><sup class="footnote">[6]</sup></a>
+		</div></div><div class="footnotes"><br /><hr width="100" align="left" /><div id="ftn.idm139680641351536" class="footnote"><div class="para"><a href="#idm139680641351536" class="para"><sup class="para">[6] </sup></a>
 				If this feature is activated, a relative path expression that tests for an element named <code class="code">true</code>, <code class="code">false</code>, or <code class="code">null</code> must use the <code class="code">./</code> construct, as in <code class="code">./true</code>.
-			</div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-navigation"></a>Chapter 5. Navigation in JSON content</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692507314000">5.1. Object lookup</a></span></dt><dt><span class="section"><a href="#idm139692519182976">5.2. Object key listing</a></span></dt><dt><span class="section"><a href="#idm139692556408672">5.3. Array lookup</a></span></dt><dt><span class="section"><a href="#idm139692565338736">5.4. Array unboxing</a></span></dt></dl></div><div class="para">
+			</div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-navigation"></a>Chapter 5. Navigation in JSON content</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680678297536">5.1. Object lookup</a></span></dt><dt><span class="section"><a href="#idm139680685942912">5.2. Object key listing</a></span></dt><dt><span class="section"><a href="#idm139680685937088">5.3. Array lookup</a></span></dt><dt><span class="section"><a href="#idm139680639589600">5.4. Array unboxing</a></span></dt></dl></div><div class="para">
 		It is possible to navigate through JSON items using the dynamic function call syntax. The dynamic function call syntax is extended to handle object and array selection as follows:
 	</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 				An implicit iteration is performed on the left-hand-side sequence. <code class="code">$sequence($params)</code> is equivalent to:
@@ -364,13 +364,13 @@
 							If it is an atomic or an XML node, the dynamic function call if unary or 0-ary always returns the empty sequence. An error <code class="code">jerr:JNTY0018</code> is raised if there is more than one parameter.
 						</div></li></ul></div>
 
-			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692507314000"></a>5.1. Object lookup</h2></div></div></div><div class="para">
+			</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680678297536"></a>5.1. Object lookup</h2></div></div></div><div class="para">
 			If the dynamic function call is unary and the left-hand-side is an object, the semantics applied is that of object lookup and is as follows.
 		</div><div class="para">
 			The unique parameter is cast to a string $s (an error is raised according to the semantics of casting if this fails).
 		</div><div class="para">
 			If $s is in <code class="code">jdm:keys($o)</code> then <code class="code">$o($s)</code> returns the value of the pair with the name <code class="code">$s</code>, i.e. <code class="code">jdm:value($o, $s)</code>. Otherwise (i.e., it has no key matching <code class="code">$s</code>), an empty sequence is returned.
-		</div><div class="example"><a id="idm139692572963888"></a><p class="title"><strong>Example 5.1. Object lookup</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680682042704"></a><p class="title"><strong>Example 5.1. Object lookup</strong></p><div class="example-contents"><div class="para">
 				Retrieving a Pair by its name:
 			</div><div class="para">
 				Query:
@@ -393,11 +393,11 @@
 				Result:
 			</div><pre class="programlisting">
           { "eyes" : "blue", "hair" : "brown" }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692519182976"></a>5.2. Object key listing</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680685942912"></a>5.2. Object key listing</h2></div></div></div><div class="para">
 			If the dynamic function call is 0-ary and the left-hand-side is an object, the semantics applied is that of key listing and is as follows.
 		</div><div class="para">
 			<code class="code">jdm:keys($o)</code> is returned.
-		</div><div class="example"><a id="idm139692556412128"></a><p class="title"><strong>Example 5.2. Object key listing</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680685940544"></a><p class="title"><strong>Example 5.2. Object key listing</strong></p><div class="example-contents"><div class="para">
 				Retrieving the keys of an object:
 			</div><div class="para">
 				Query:
@@ -408,7 +408,7 @@
 				Result:
 			</div><pre class="programlisting">
         eyes hair
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692556408672"></a>5.3. Array lookup</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680685937088"></a>5.3. Array lookup</h2></div></div></div><div class="para">
 			If the dynamic function call is unary and the left-hand-side is an array, the semantics applied is that of array lookup and is as follows.
 		</div><div class="para">
 			The unique parameter is cast to an integer $i (an error is raised according to the semantics of casting if this fails).
@@ -416,7 +416,7 @@
 			If $i is comprised between 1 and <code class="code">jdm:size($a)</code>, then <code class="code">$a($i)</code> returns the value of the pair at position <code class="code">$i</code>, i.e., <code class="code">jdm:value($a, $i)</code>.
 		</div><div class="para">
 			Otherwise (i.e., if <code class="code">$i</code> is an invalid position), an empty sequence is returned.
-		</div><div class="example"><a id="idm139692518636912"></a><p class="title"><strong>Example 5.3. Array lookup</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680645740000"></a><p class="title"><strong>Example 5.3. Array lookup</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">
         let $wd := ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -450,11 +450,11 @@
 				Result:
 			</div><pre class="programlisting">
         tuesday
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692565338736"></a>5.4. Array unboxing</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680639589600"></a>5.4. Array unboxing</h2></div></div></div><div class="para">
 			If the dynamic function call is 0-ary and the left-hand-side is an array, the semantics applied is that of array unboxing and is as follows.
 		</div><div class="para">
 			<code class="code">for $i in 1 to jdm:size($a) return $a($i)</code> is returned.
-		</div><div class="example"><a id="idm139692565336400"></a><p class="title"><strong>Example 5.4. Array unboxing</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680639587264"></a><p class="title"><strong>Example 5.4. Array unboxing</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">
         let $wd := ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -480,9 +480,9 @@
 				Result:
 			</div><pre class="programlisting">
         [ "mercury", "venus", "earth", "mars" ] [ "monday", "tuesday", "wednesday", "thursday" ]
-</pre></div></div><br class="example-break" /></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-builtin-functions"></a>Chapter 6. Builtin functions and operators</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692522734016">6.1. fn:boolean (aka Effective Boolean Value)</a></span></dt><dt><span class="section"><a href="#idm139692560831984">6.2. fn:collection</a></span></dt><dt><span class="section"><a href="#idm139692560978448">6.3. fn:data (aka Atomization)</a></span></dt><dt><span class="section"><a href="#idm139692506238976">6.4. fn:string (aka string value)</a></span></dt><dt><span class="section"><a href="#idm139692506858480">6.5. fn:trace</a></span></dt><dt><span class="section"><a href="#idm139692506856992">6.6. jn:decode-from-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139692506348144">6.7. jn:encode-for-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139692572787584">6.8. jn:json-doc</a></span></dt><dt><span class="section"><a href="#idm139692572784800">6.9. jn:keys</a></span></dt><dt><span class="section"><a href="#idm139692563546880">6.10. jn:members</a></span></dt><dt><span class="section"><a href="#idm139692563541680">6.11. jn:null</a></span></dt><dt><span class="section"><a href="#idm139692563539312">6.12. jn:parse-json</a></span></dt><dt><span class="section"><a href="#idm139692563528160">6.13. jn:size</a></span></dt><dt><span class="section"><a href="#idm139692563523248">6.14. Changes to cast semantics</a></span></dt><dt><span class="section"><a href="#idm139692563520304">6.15. Changes to arithmetic operation semantics</a></span></dt><dt><span class="section"><a href="#idm139692563515440">6.16. Changes to value comparison semantics</a></span></dt><dt><span class="section"><a href="#idm139692563510592">6.17. Changes to general comparison semantics</a></span></dt></dl></div><div class="para">
+</pre></div></div><br class="example-break" /></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-builtin-functions"></a>Chapter 6. Builtin functions and operators</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680687621568">6.1. fn:boolean (aka Effective Boolean Value)</a></span></dt><dt><span class="section"><a href="#idm139680622470992">6.2. fn:collection</a></span></dt><dt><span class="section"><a href="#idm139680678669712">6.3. fn:data (aka Atomization)</a></span></dt><dt><span class="section"><a href="#idm139680685394768">6.4. fn:string (aka string value)</a></span></dt><dt><span class="section"><a href="#idm139680637910304">6.5. fn:trace</a></span></dt><dt><span class="section"><a href="#idm139680637908816">6.6. jn:decode-from-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139680641288960">6.7. jn:encode-for-roundtrip</a></span></dt><dt><span class="section"><a href="#idm139680622843744">6.8. jn:json-doc</a></span></dt><dt><span class="section"><a href="#idm139680622840960">6.9. jn:keys</a></span></dt><dt><span class="section"><a href="#idm139680622833296">6.10. jn:members</a></span></dt><dt><span class="section"><a href="#idm139680622828096">6.11. jn:null</a></span></dt><dt><span class="section"><a href="#idm139680622825728">6.12. jn:parse-json</a></span></dt><dt><span class="section"><a href="#idm139680622814576">6.13. jn:size</a></span></dt><dt><span class="section"><a href="#idm139680622809664">6.14. Changes to cast semantics</a></span></dt><dt><span class="section"><a href="#idm139680622806720">6.15. Changes to arithmetic operation semantics</a></span></dt><dt><span class="section"><a href="#idm139680622801856">6.16. Changes to value comparison semantics</a></span></dt><dt><span class="section"><a href="#idm139680622797008">6.17. Changes to general comparison semantics</a></span></dt></dl></div><div class="para">
 		JSONiq defines a couple of basic builtin functions. Two of them define the atomized value and the effective boolean value of JSON items, and the others are for JSON navigation.
-	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692522734016"></a>6.1. fn:boolean (aka Effective Boolean Value)</h2></div></div></div><div class="para">
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680687621568"></a>6.1. fn:boolean (aka Effective Boolean Value)</h2></div></div></div><div class="para">
 			In XQuery, sequences can be converted to a boolean value. The effective boolean value is defined by invoking <code class="code">fn:boolean</code>.
 		</div><div class="para">
 			<code class="code">fn:boolean($arg as item()*) as xs:boolean</code>
@@ -492,7 +492,7 @@
 					If $arg is a sequence whose first item is an object or an array, <code class="code">fn:boolean</code> returns true.
 				</div></li><li class="listitem"><div class="para">
 					If $arg is a singleton value of type <code class="code">js:null</code>, <code class="code">fn:boolean</code> returns false.
-				</div></li></ul></div><div class="example"><a id="idm139692517549312"></a><p class="title"><strong>Example 6.1. Effective Boolean Value of JSONiq items</strong></p><div class="example-contents"><pre class="programlisting">
+				</div></li></ul></div><div class="example"><a id="idm139680623597456"></a><p class="title"><strong>Example 6.1. Effective Boolean Value of JSONiq items</strong></p><div class="example-contents"><pre class="programlisting">
           Examples
           EBV( jn:null() )         	    false
           EBV( { } )                    true
@@ -501,35 +501,35 @@
           EBV( { "foo": 3 } )	          true
           EBV ( [1] )	                  true
           EBV ( ( [1], jn:null() ) )    true
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692560831984"></a>6.2. fn:collection</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622470992"></a>6.2. fn:collection</h2></div></div></div><div class="para">
 			This is a standard function in XQuery. JSONiq extends the function to also allow collections that contains JSON items, in an implementation-dependent order
 		</div><div class="para">
 			<code class="code">fn:collection($uri as xs:string?) as structured-item()*</code>
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692560978448"></a>6.3. fn:data (aka Atomization)</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680678669712"></a>6.3. fn:data (aka Atomization)</h2></div></div></div><div class="para">
 			In XQuery, sequences can be atomized. Atomization is defined by invoking fn:data.
 		</div><div class="para">
 			<code class="code">fn:data($arg as item()*) as xs:anyAtomicType*</code>
 		</div><div class="para">
 			The error conditions of <code class="code">fn:data($arg)</code> are extended as follows. An error is raised (<code class="code">jerr:JNTY0004</code>) if an item in the sequence is an object or an array.
-		</div><div class="example"><a id="idm139692507471232"></a><p class="title"><strong>Example 6.2. Atomization of JSONiq items</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680641941856"></a><p class="title"><strong>Example 6.2. Atomization of JSONiq items</strong></p><div class="example-contents"><pre class="programlisting">
           fn:data( {"foo" : 3} )		          jerr:JNTY0004
           fn:data( [1] )			                jerr:JNTY0004
           fn:data( {"foo" : 3, "bar" : 4 } )	jerr:JNTY0004
           fn:data( { } )			                jerr:JNTY0004
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692506238976"></a>6.4. fn:string (aka string value)</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680685394768"></a>6.4. fn:string (aka string value)</h2></div></div></div><div class="para">
 			In XQuery, items can have string values, which can be obtained by invoking fn:string. Objects and arrays do not have a string value.
 		</div><div class="para">
 			<code class="code">fn:string($arg as item()?) as xs:string</code>
 		</div><div class="para">
 			The error conditions of <code class="code">fn:string($arg)</code> are extended as follows. An error is raised (<code class="code">jerr:JNTY0024</code>) if the item is an object or an array.
-		</div><div class="example"><a id="idm139692507333264"></a><p class="title"><strong>Example 6.3. Atomization of JSONiq items</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680637912096"></a><p class="title"><strong>Example 6.3. Atomization of JSONiq items</strong></p><div class="example-contents"><pre class="programlisting">
           fn:string( {"foo" : 3} )		          jerr:JNTY0024
           fn:string( [1] )			                jerr:JNTY0024
           fn:string( {"foo" : 3, "bar" : 4 } )	jerr:JNTY0024
           fn:string( { } )			                jerr:JNTY0024
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692506858480"></a>6.5. fn:trace</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680637910304"></a>6.5. fn:trace</h2></div></div></div><div class="para">
 			The default serialization method is changed to JSON-XML-hybrid.
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692506856992"></a>6.6. jn:decode-from-roundtrip</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680637908816"></a>6.6. jn:decode-from-roundtrip</h2></div></div></div><div class="para">
 			This function decodes non-JSON types previously encoded with <code class="code">jn:encode-for-roundtrip.</code>
 		</div><div class="para">
 			<code class="code">jn:decode-from-roundtrip($items as item()*) as item()*</code>
@@ -565,7 +565,7 @@
 					If this type is xs:QName, xs:NOTATION or a subtype thereof, then the atomic value to be built is a qualified name. The namespace and local name are built from the value (an EQName) of the field "[$prefix]value", and the prefix is built from the field "[$prefix]prefix" (empty if absent). An error <code class="code">jerr:JNTY0023</code> if this does not succeed (value is not an EQName, prefix is not an NCName).
 				</div></li></ul></div><div class="para">
 			An object that is not an Encoded Object is mapped to an object with the same keys, and the associated values are mapped recursively.
-		</div><div class="example"><a id="idm139692518958208"></a><p class="title"><strong>Example 6.4. Encoding non-native JSON for roundtripping.</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680686352128"></a><p class="title"><strong>Example 6.4. Encoding non-native JSON for roundtripping.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">
         jn:decode-from-roundtrip(
@@ -597,7 +597,7 @@
           "date" : xs:date("1066-10-14"),
           "user" : hat:hatSize("M")
         }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692506348144"></a>6.7. jn:encode-for-roundtrip</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680641288960"></a>6.7. jn:encode-for-roundtrip</h2></div></div></div><div class="para">
 			This function recursively encodes non-JSON types in such a way that they can be serialized as JSON while keeping roundtrip capability.
 		</div><div class="para">
 			The following computations are made with respect to the static context of the caller, so that the schema type definitions are available.
@@ -661,7 +661,7 @@
 						A field "[$prefix]prefix" containing the prefix of the qualified name (only if there is such a prefix).
 					</div></li></ul></div>
 
-		</div><div class="example"><a id="idm139692572795376"></a><p class="title"><strong>Example 6.5. Mapping non-JSON values</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680638806752"></a><p class="title"><strong>Example 6.5. Mapping non-JSON values</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">
         {
@@ -730,15 +730,15 @@
             "Q{http://jsoniq.org/roundtrip}value" : "Q{http://jsoniq.org/roundtrip}value" 
           }
         }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692572787584"></a>6.8. jn:json-doc</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622843744"></a>6.8. jn:json-doc</h2></div></div></div><div class="para">
 			This function returns the JSON node associated with the supplied URI. It has the same semantics as <code class="code">fn:doc</code>, except that it returns an Object or an Array.
 		</div><div class="para">
 			<code class="code">jn:json-doc($uri as xs:string?) as json-item()?</code>
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692572784800"></a>6.9. jn:keys</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622840960"></a>6.9. jn:keys</h2></div></div></div><div class="para">
 			This function returns all keys of all objects in the supplied sequence, using the jdm:keys accessor, with duplicates eliminated. The order in which the keys are returned is implementation-dependent but must be stable within a snapshot. Non-objects in the input sequence are ignored.
 		</div><div class="para">
 			<code class="code">jn:keys($arg as item()*) as xs:string*</code>
-		</div><div class="example"><a id="idm139692563552064"></a><p class="title"><strong>Example 6.6. Getting all keys in a sequence</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680622838480"></a><p class="title"><strong>Example 6.6. Getting all keys in a sequence</strong></p><div class="example-contents"><pre class="programlisting">
           let $seq := ("foo", [ 1, 2, 3 ], { "a" : 1, "b" : 2 }, { "a" : 3, "c" : 4 })
           return jn:keys($seq)
 </pre><div class="para">
@@ -758,7 +758,7 @@
 			</div><pre class="programlisting">
             { "eyes" : "blue" }
             { "hair" : "fuchsia" }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563546880"></a>6.10. jn:members</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622833296"></a>6.10. jn:members</h2></div></div></div><div class="para">
 			This functions returns all values that are in all arrays of an input sequence, preserving the order. Non-arrays in the input sequence are ignored.
 		</div><pre class="programlisting">
         declare function jn:members($arg as item()*) as item()* {
@@ -766,17 +766,17 @@
           for $position in 1 to jn:size($array)
           return $array($position)
         };
-</pre><div class="example"><a id="idm139692563544784"></a><p class="title"><strong>Example 6.7. Retrieving the members of an array</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680622831200"></a><p class="title"><strong>Example 6.7. Retrieving the members of an array</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">
           let $planets :=  ( "foo", { "foo" : "bar "}, [ "mercury", "venus", "earth", "mars" ], [ 1, 2, 3 ])
           return jn:members($planets)</pre><div class="para">
 				Result:
-			</div><pre class="programlisting">mercury venus earth mars 1 2 3</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563541680"></a>6.11. jn:null</h2></div></div></div><div class="para">
+			</div><pre class="programlisting">mercury venus earth mars 1 2 3</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622828096"></a>6.11. jn:null</h2></div></div></div><div class="para">
 			This function returns the JSON null.
 		</div><div class="para">
 			<code class="code">jn:null() as js:null</code>
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563539312"></a>6.12. jn:parse-json</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622825728"></a>6.12. jn:parse-json</h2></div></div></div><div class="para">
 			This function has the same semantics as fn:parse-xml(), except that it parses the string as JSON (not XML), and returns a sequence of objects or arrays rather than an XML document.
 		</div><div class="para">
 			<code class="code">jn:parse-json($arg as xs:string?, $options as object()) as json-item()*</code>
@@ -790,7 +790,7 @@
 			If <code class="code">$options("jsoniq-multiple-top-level-items")</code> is true, then jn:parse-json recognizes and parses sequences of objects and arrays, with no separation other than whitespaces.
 		</div><div class="para">
 			If parsing is not successful, then <code class="code">jerr:JNDY0021</code> is raised. Parsing is considered in particular to be non-successful if <code class="code">$options("jsoniq-multiple-top-level-items")</code> is false and there is extra content after parsing a single abject or array.
-		</div><div class="example"><a id="idm139692563530656"></a><p class="title"><strong>Example 6.8. Parsing JSON items.</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680622817072"></a><p class="title"><strong>Example 6.8. Parsing JSON items.</strong></p><div class="example-contents"><pre class="programlisting">
 parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&amp;quot; : &amp;quot;foo&amp;quot;} [ 1, 2, 3 ]")
 </pre><div class="para">
 				Result:
@@ -798,24 +798,24 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 { "foo" : "bar" }
 { "bar" : "foo" }
 [ 1, 2, 3 ]
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563528160"></a>6.13. jn:size</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622814576"></a>6.13. jn:size</h2></div></div></div><div class="para">
 			This function returns the size of the supplied array using the jdm:size accessor (or the empty sequence if the empty sequence is provided).
 		</div><div class="para">
 			<code class="code">jn:size(array()?) as xs:integer?</code>
-		</div><div class="example"><a id="idm139692563525824"></a><p class="title"><strong>Example 6.9. Retrieving the size of an array</strong></p><div class="example-contents"><pre class="programlisting">
+		</div><div class="example"><a id="idm139680622812240"></a><p class="title"><strong>Example 6.9. Retrieving the size of an array</strong></p><div class="example-contents"><pre class="programlisting">
           let $a := [1 to 10]
           return jn:size($a)
 </pre><div class="para">
 				Result:
-			</div><pre class="programlisting">10</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563523248"></a>6.14. Changes to cast semantics</h2></div></div></div><div class="para">
+			</div><pre class="programlisting">10</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622809664"></a>6.14. Changes to cast semantics</h2></div></div></div><div class="para">
 			The semantics of casts is changed as follows.
 		</div><div class="para">
 			No value of an atomic type different than js:null (or derived) can be cast to js:null. An error <code class="code">err:XPTY0004</code> is raised instead.
 		</div><div class="para">
 			A js:null can still be cast to xs:string or xs:untypedAtomic as specified in the XPath function specification, which leads to its canonical representation "null".
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563520304"></a>6.15. Changes to arithmetic operation semantics</h2></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622806720"></a>6.15. Changes to arithmetic operation semantics</h2></div></div></div><div class="para">
 			The semantics of arithmetic operations is changed as follows. If one of the operands is null, an type error <code class="code">err:XPTY0004</code> is raised.
-		</div><div class="example"><a id="idm139692563518480"></a><p class="title"><strong>Example 6.10. Addition</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680622804896"></a><p class="title"><strong>Example 6.10. Addition</strong></p><div class="example-contents"><div class="para">
 				Query
 			</div><pre class="programlisting">
         null + 1
@@ -823,11 +823,11 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 				Result
 			</div><pre class="programlisting">
         Error.
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563515440"></a>6.16. Changes to value comparison semantics</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622801856"></a>6.16. Changes to value comparison semantics</h2></div></div></div><div class="para">
 			The semantics of value comparison is changed as follows.
 		</div><div class="para">
 			Null is considered equal to itself, unequal to any other atomic items, and smaller than any other atomic item.
-		</div><div class="example"><a id="idm139692563513568"></a><p class="title"><strong>Example 6.11. Value comparison</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680622799984"></a><p class="title"><strong>Example 6.11. Value comparison</strong></p><div class="example-contents"><div class="para">
 				Query
 			</div><pre class="programlisting">
         1 eq null, null eq null, 1 ne null, null lt 1
@@ -835,11 +835,11 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 				Result
 			</div><pre class="programlisting">
         false true true true
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563510592"></a>6.17. Changes to general comparison semantics</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680622797008"></a>6.17. Changes to general comparison semantics</h2></div></div></div><div class="para">
 			The semantics of general comparison is changed as follows.
 		</div><div class="para">
 			After atomization, if one of the operands is the null atomic item, the other item is not cast, and pair-wise comparison is done using the modified semantics of value comparison.
-		</div><div class="example"><a id="idm139692563508640"></a><p class="title"><strong>Example 6.12. General comparison: equality</strong></p><div class="example-contents"><div class="para">
+		</div><div class="example"><a id="idm139680622795056"></a><p class="title"><strong>Example 6.12. General comparison: equality</strong></p><div class="example-contents"><div class="para">
 				Query
 			</div><pre class="programlisting">
         (null, 2) = (1, 3)
@@ -847,11 +847,11 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 				Result
 			</div><pre class="programlisting">
         false
-</pre></div></div><br class="example-break" /></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-updates"></a>Chapter 7. JSON updates</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692552798912">7.1. JSON udpate primitives</a></span></dt><dt><span class="section"><a href="#idm139692568385440">7.2. Update syntax: new updating expressions</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692568384224">7.2.1. Deleting expressions</a></span></dt><dt><span class="section"><a href="#idm139692517793440">7.2.2. Inserting expressions</a></span></dt><dt><span class="section"><a href="#idm139692520005168">7.2.3. Renaming expressions</a></span></dt><dt><span class="section"><a href="#idm139692519997504">7.2.4. Replacing expressions</a></span></dt><dt><span class="section"><a href="#idm139692558946960">7.2.5. Appending expressions</a></span></dt></dl></dd></dl></div><div class="para">
+</pre></div></div><br class="example-break" /></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-updates"></a>Chapter 7. JSON updates</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680654758080">7.1. JSON udpate primitives</a></span></dt><dt><span class="section"><a href="#idm139680639391936">7.2. Update syntax: new updating expressions</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680639390720">7.2.1. Deleting expressions</a></span></dt><dt><span class="section"><a href="#idm139680625794160">7.2.2. Inserting expressions</a></span></dt><dt><span class="section"><a href="#idm139680680372224">7.2.3. Renaming expressions</a></span></dt><dt><span class="section"><a href="#idm139680680364480">7.2.4. Replacing expressions</a></span></dt><dt><span class="section"><a href="#idm139680636973152">7.2.5. Appending expressions</a></span></dt></dl></dd></dl></div><div class="para">
 		JSONiq introduces new update primitives for updating Objects and Arrays. Update primitives can be generated with new JSONiq updating expressions.
 	</div><div class="para">
 		An individual function may create an invalid JSON instance; however, an updating query must produce a valid JSON instance once the entire query is evaluated, or an error is raised and the entire update fails, leaving the instance in its original state.
-	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692552798912"></a>7.1. JSON udpate primitives</h2></div></div></div><div class="para">
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680654758080"></a>7.1. JSON udpate primitives</h2></div></div></div><div class="para">
 			The following new update primitives are introduced.
 		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 					<code class="code">jupd:insert-into-object($o as object(), $p as object())</code>
@@ -907,9 +907,9 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 					First, before applying any update, each update primitive (except the jupd:insert-into-object primitives, which do not have any target) locks onto its target by resolving the selector on the object or array it updates. If the selector is resolved to the empty sequence, the update primitive is ignored in step 2. After this operation, each of these update primitives will contain a reference to either the pair (for an object) or the value (for an array) on or relatively to which it operates
 				</div></li><li class="listitem"><div class="para">
 					Then each update primitive is applied, using the target references that were resolved at step 1. The order in which they are applied is not relevant and does not affect the final instance of the data model. After applying all updates, an error <code class="code">jerr:JNUP0006</code> is raised upon pair name collision within the same object.
-				</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692568385440"></a>7.2. Update syntax: new updating expressions</h2></div></div></div><div class="para">
+				</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680639391936"></a>7.2. Update syntax: new updating expressions</h2></div></div></div><div class="para">
 			The following syntax is introduced for updates.
-		</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692568384224"></a>7.2.1. Deleting expressions</h3></div></div></div><pre class="programlisting">
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680639390720"></a>7.2.1. Deleting expressions</h3></div></div></div><pre class="programlisting">
             JSONDeleteExpr ::= "delete" "json" PrimaryExpr ( "(" ExprSingle ")" )+ 
 </pre><div class="para">
 				PrimaryExpr followed by all "(" ExprSingle ")" except the last one, is evaluated according to the semantics of dynamic function calls. It must return a single object $o or a single array $a. Otherwise, <code class="code">jerr:JNUP0008</code> is raised. After this evaluation, two cases can appear for interpreting the last "(" ExprSingle ")":
@@ -927,14 +927,14 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 						$i is atomized and cast to xs:integer (<code class="code">jerr:JNUP0007</code> is raised upon failure).
 					</div><div class="para">
 						Creates the update primitive <code class="code">jupd:delete-from-array($a, $i)</code>. An error <code class="code">JNUP:0016</code> is raised if $i is out of the range of the array $a.
-					</div></li></ul></div><div class="example"><a id="idm139692517796944"></a><p class="title"><strong>Example 7.1. Deleting from an object and from an array</strong></p><div class="example-contents"><pre class="programlisting">
+					</div></li></ul></div><div class="example"><a id="idm139680625797664"></a><p class="title"><strong>Example 7.1. Deleting from an object and from an array</strong></p><div class="example-contents"><pre class="programlisting">
              delete json $o("foo")
              delete json $a(2)
 </pre></div></div><br class="example-break" /><div class="para">
 				Note:
 			</div><div class="para">
 				If <code class="code">$o($s)</code> or <code class="code">$a($i)</code> resolves to an empty sequence, the produced update primitive will have no effect.
-			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692517793440"></a>7.2.2. Inserting expressions</h3></div></div></div><pre class="programlisting">
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680625794160"></a>7.2.2. Inserting expressions</h3></div></div></div><pre class="programlisting">
             JSONInsertExpr ::= "insert" "json" ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
                              | "insert" "json" PairConstructor ("," Pair Constructor)* "into" ExprSingle
 </pre><div class="para">
@@ -967,10 +967,10 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 						$i is atomized and cast to xs:integer (<code class="code">jerr:JNUP0007</code> is raised upon failure).
 					</div><div class="para">
 						Makes a copy of all items in $c and creates the update primitive <code class="code">jupd:insert-into-array($a, $i, $c)</code>
-					</div></li></ul></div><div class="example"><a id="idm139692520006832"></a><p class="title"><strong>Example 7.2. Inserting into an array or an object</strong></p><div class="example-contents"><pre class="programlisting">
+					</div></li></ul></div><div class="example"><a id="idm139680680373888"></a><p class="title"><strong>Example 7.2. Inserting into an array or an object</strong></p><div class="example-contents"><pre class="programlisting">
               insert json (1, 2, 3) into $a at position 3
               insert json { "foo": 3, "bar":4 } into $o
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692520005168"></a>7.2.3. Renaming expressions</h3></div></div></div><pre class="programlisting">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680680372224"></a>7.2.3. Renaming expressions</h3></div></div></div><pre class="programlisting">
             JSONRenameExpr ::= "rename" "json" PrimaryExpr  ( "(" ExprSingle ")" )+ "as" ExprSingle
 </pre><div class="para">
 				(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)
@@ -982,9 +982,9 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 				$s is atomized and cast to xs:string (<code class="code">jerr:JNUP0007</code> is raised upon failure).
 			</div><div class="para">
 				Creates the update primitive <code class="code">jupd:rename-in-object($o, $s, $n)</code>. An error <code class="code">JNUP:0016</code> is raised if $o does not contain a pair with the key $s.
-			</div><div class="example"><a id="idm139692519999072"></a><p class="title"><strong>Example 7.3. Renaming an object pair</strong></p><div class="example-contents"><pre class="programlisting">
+			</div><div class="example"><a id="idm139680680366048"></a><p class="title"><strong>Example 7.3. Renaming an object pair</strong></p><div class="example-contents"><pre class="programlisting">
               rename json $o("foo") as "bar"
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692519997504"></a>7.2.4. Replacing expressions</h3></div></div></div><pre class="programlisting">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680680364480"></a>7.2.4. Replacing expressions</h3></div></div></div><pre class="programlisting">
             JSONReplaceExpr ::= "replace" "json" "value" "of" PrimaryExpr ( "(" ExprSingle ")" )+ "with" ExprSingle
 </pre><div class="para">
 				PrimaryExpr followed by all "(" ExprSingle ")" except the last one, is evaluated according to the semantics of dynamic function calls. It must return a single object $o or a single array $a. Otherwise, <code class="code">jerr:JNUP0008</code> is raised. After this evaluation, two cases can appear for interpreting the last "(" ExprSingle ")":
@@ -1006,10 +1006,10 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 						$c is postprocessed in the same way as values in a pair constructor, i.e., if $c is the empty sequence, it is replaced with the atomic value null, and if it is a sequence of more than one item, an array is created with all items in this sequence and in the same order. Ultimately, in all cases, $c will be a single item.
 					</div><div class="para">
 						Makes a copy of $c and creates the update primitive <code class="code">jupd:replace-in-array($a, $i, $c)</code>. An error <code class="code">JNUP:0016</code> is raised if $i is out of the range of array $a.
-					</div></li></ul></div><div class="example"><a id="idm139692558948624"></a><p class="title"><strong>Example 7.4. Replace a value in an object or in an array</strong></p><div class="example-contents"><pre class="programlisting">
+					</div></li></ul></div><div class="example"><a id="idm139680636974816"></a><p class="title"><strong>Example 7.4. Replace a value in an object or in an array</strong></p><div class="example-contents"><pre class="programlisting">
               replace json value of $o("foo") with 5
               replace json value of $a(3) with 25
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692558946960"></a>7.2.5. Appending expressions</h3></div></div></div><pre class="programlisting">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680636973152"></a>7.2.5. Appending expressions</h3></div></div></div><pre class="programlisting">
             JSONAppendExpr ::= "append" "json" ExprSingle "into" ExprSingle
 </pre><div class="para">
 				(for explanatory purposes, suboperands are replaced with a variable containing the result of their evaluation)
@@ -1019,11 +1019,11 @@ parse-json("{&amp;quot;foo&amp;quot; : &amp;quot;bar&amp;quot;} {&amp;quot;bar&a
 				$a must be an array. Otherwise, <code class="code">jerr:JNUP0008</code> is raised.
 			</div><div class="para">
 				Creates the update primitive <code class="code">insert-into-array($a, $a()+1, $c)</code>
-			</div><div class="example"><a id="idm139692558942352"></a><p class="title"><strong>Example 7.5. Appending values to an array</strong></p><div class="example-contents"><pre class="programlisting">
+			</div><div class="example"><a id="idm139680636968544"></a><p class="title"><strong>Example 7.5. Appending values to an array</strong></p><div class="example-contents"><pre class="programlisting">
               append json (1,2) into $a
-</pre></div></div><br class="example-break" /></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-function-library"></a>Chapter 8. Function library</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692558834320">8.1. libjn:accumulate</a></span></dt><dt><span class="section"><a href="#idm139692517898688">8.2. libjn:descendant-arrays</a></span></dt><dt><span class="section"><a href="#idm139692569320416">8.3. libjn:descendant-objects</a></span></dt><dt><span class="section"><a href="#idm139692515681840">8.4. libjn:descendant-pairs</a></span></dt><dt><span class="section"><a href="#idm139692563845728">8.5. libjn:flatten</a></span></dt><dt><span class="section"><a href="#idm139692521873520">8.6. libjn:intersect</a></span></dt><dt><span class="section"><a href="#idm139692560114112">8.7. libjn:project</a></span></dt><dt><span class="section"><a href="#idm139692558402656">8.8. libjn:remove-keys</a></span></dt><dt><span class="section"><a href="#idm139692558397152">8.9. libjn:values</a></span></dt></dl></div><div class="para">
+</pre></div></div><br class="example-break" /></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-function-library"></a>Chapter 8. Function library</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680684849856">8.1. libjn:accumulate</a></span></dt><dt><span class="section"><a href="#idm139680639256048">8.2. libjn:descendant-arrays</a></span></dt><dt><span class="section"><a href="#idm139680623582768">8.3. libjn:descendant-objects</a></span></dt><dt><span class="section"><a href="#idm139680657730592">8.4. libjn:descendant-pairs</a></span></dt><dt><span class="section"><a href="#idm139680642549152">8.5. libjn:flatten</a></span></dt><dt><span class="section"><a href="#idm139680642543968">8.6. libjn:intersect</a></span></dt><dt><span class="section"><a href="#idm139680627209728">8.7. libjn:project</a></span></dt><dt><span class="section"><a href="#idm139680692541376">8.8. libjn:remove-keys</a></span></dt><dt><span class="section"><a href="#idm139680692535872">8.9. libjn:values</a></span></dt></dl></div><div class="para">
 		This section defines a function library on top of JSONiq. These functions are not part of the JSONiq core, because the latter is intended to be minimal.
-	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692558834320"></a>8.1. libjn:accumulate</h2></div></div></div><div class="para">
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680684849856"></a>8.1. libjn:accumulate</h2></div></div></div><div class="para">
 			This function dynamically builds an object, like jn:object, except that it does not throw an error upon pair collision. Instead, it accumulates them into an array. Non-object items in the input sequence are ignored.
 		</div><pre class="programlisting">
 declare function libjn:accumulate($sequence as item()*) as object()
@@ -1032,7 +1032,7 @@ declare function libjn:accumulate($sequence as item()*) as object()
     for $key in $sequence() return { $key : $sequence($key) }
   |}
 };
-</pre></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692517898688"></a>8.2. libjn:descendant-arrays</h2></div></div></div><div class="para">
+</pre></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680639256048"></a>8.2. libjn:descendant-arrays</h2></div></div></div><div class="para">
 			This function returns all arrays contained within the supplied items, regardless of depth.
 		</div><pre class="programlisting">
 declare function libjn:descendant-arrays($sequence as item()*) as array()*
@@ -1047,7 +1047,7 @@ declare function libjn:descendant-arrays($sequence as item()*) as array()*
     libjn:descendant-arrays(libjn:values($item))
   default return ()
 };
-</pre><div class="example"><a id="idm139692564356272"></a><p class="title"><strong>Example 8.1. Accessing all descendant arrays</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680641525120"></a><p class="title"><strong>Example 8.1. Accessing all descendant arrays</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:descendant-arrays(
   (
@@ -1063,7 +1063,7 @@ declare function libjn:descendant-arrays($sequence as item()*) as array()*
 [ 1, 2 ]
 [ [ { "foo" : "bar", "bar" : "foo" } ] ]
 [ { "foo" : "bar", "bar" : "foo" } ]
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692569320416"></a>8.3. libjn:descendant-objects</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680623582768"></a>8.3. libjn:descendant-objects</h2></div></div></div><div class="para">
 			This function returns all objects contained within the supplied items, regardless of depth.
 		</div><pre class="programlisting">
 declare function libjn:descendant-objects($sequence as item()*) as object()*
@@ -1078,7 +1078,7 @@ declare function libjn:descendant-objects($sequence as item()*) as object()*
     libjn:descendant-objects($item())
   default return ()
 };
-</pre><div class="example"><a id="idm139692517575264"></a><p class="title"><strong>Example 8.2. Accessing all descendant objects</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680638159504"></a><p class="title"><strong>Example 8.2. Accessing all descendant objects</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:descendant-objects(
   (
@@ -1094,7 +1094,7 @@ declare function libjn:descendant-objects($sequence as item()*) as object()*
 { "foo" : { "bar" : [ 1, 2 ] } }
 { "bar" : [ 1, 2 ] }
 { "foo" : "bar", "bar" : "foo" }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692515681840"></a>8.4. libjn:descendant-pairs</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680657730592"></a>8.4. libjn:descendant-pairs</h2></div></div></div><div class="para">
 			This function returns all descendant pairs within the supplied items.
 		</div><pre class="programlisting">
         declare function libjn:descendant-pairs($sequence as item()*)
@@ -1112,7 +1112,7 @@ declare function libjn:descendant-objects($sequence as item()*) as object()*
             libjn:descendant-pairs($item())
           default return ()
         };
-</pre><div class="example"><a id="idm139692560815136"></a><p class="title"><strong>Example 8.3. Accessing all descendant pairs</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680642407552"></a><p class="title"><strong>Example 8.3. Accessing all descendant pairs</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:descendant-pairs(
   (
@@ -1129,7 +1129,7 @@ declare function libjn:descendant-objects($sequence as item()*) as object()*
 { "bar" : [ 1, 2 ] }
 { "foo" : "bar" }
 { "bar" : "foo" }
-</pre></div></div><br class="example-break" /><div class="example"><a id="idm139692563848832"></a><p class="title"><strong>Example 8.4. Query all pairs with a given name.</strong></p><div class="example-contents"><div class="para">
+</pre></div></div><br class="example-break" /><div class="example"><a id="idm139680638120704"></a><p class="title"><strong>Example 8.4. Query all pairs with a given name.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:descendant-pairs({
   "first" : 1,
@@ -1141,7 +1141,7 @@ declare function libjn:descendant-objects($sequence as item()*) as object()*
 				Result:
 			</div><pre class="programlisting">
         1 a
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692563845728"></a>8.5. libjn:flatten</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680642549152"></a>8.5. libjn:flatten</h2></div></div></div><div class="para">
 			This function recursively "flattens" the supplied (top-level) arrays, leaving non-arrays unchanged.
 		</div><pre class="programlisting">
 declare function libjn:flatten($sequence as item()*) as item()*
@@ -1152,7 +1152,7 @@ declare function libjn:flatten($sequence as item()*) as item()*
     case array() return libjn:flatten($item())
     default return $item
 };
-</pre><div class="example"><a id="idm139692521876672"></a><p class="title"><strong>Example 8.5. Flattening arrays.</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680642547120"></a><p class="title"><strong>Example 8.5. Flattening arrays.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:flatten(
   (
@@ -1167,7 +1167,7 @@ declare function libjn:flatten($sequence as item()*) as item()*
 				Result:
 			</div><pre class="programlisting">
 { "foo" : { "bar" : [ 1, 2 ] } } 1 2 { "foo" : "bar", "bar" : "foo" } 3 4 true 1 null
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692521873520"></a>8.6. libjn:intersect</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680642543968"></a>8.6. libjn:intersect</h2></div></div></div><div class="para">
 			This function returns an object that only contains keys shared by all input objects, and associates to each of these keys the corresponding values in the input objects (wrapped in an array if more than one). Non-objects are ignored.
 		</div><pre class="programlisting">
 declare function libjn:intersect($sequence as item()*) as object()
@@ -1180,7 +1180,7 @@ declare function libjn:intersect($sequence as item()*) as object()
     return { $key : $objects($key) }
   |}
 };
-</pre><div class="example"><a id="idm139692560117264"></a><p class="title"><strong>Example 8.6. Intersecting objects.</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680627212880"></a><p class="title"><strong>Example 8.6. Intersecting objects.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:intersect(
   (
@@ -1196,7 +1196,7 @@ declare function libjn:intersect($sequence as item()*) as object()
 				Result:
 			</div><pre class="programlisting">
 { "foo" : [ { "bar" : [ 1, 2 ] }, "bar" ] }
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692560114112"></a>8.7. libjn:project</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680627209728"></a>8.7. libjn:project</h2></div></div></div><div class="para">
 			This function iterates on the input sequence. It projects objects by filtering their pairs and leaves non-objects intact.
 		</div><pre class="programlisting">
 declare function libjn:project($sequence as item()*, $keys as xs:string*) as item()*
@@ -1210,7 +1210,7 @@ declare function libjn:project($sequence as item()*, $keys as xs:string*) as ite
          |}
          default return $item
 };
-</pre><div class="example"><a id="idm139692560111920"></a><p class="title"><strong>Example 8.7. Projecting objects.</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680627207536"></a><p class="title"><strong>Example 8.7. Projecting objects.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:project(
   (
@@ -1235,7 +1235,7 @@ declare function libjn:project($sequence as item()*, $keys as xs:string*) as ite
 			</div><pre class="programlisting">
 { "Captain" : "Kirk", "First Officer" : "Spock" }
 [ 1, 2, 3, 4 ] { "Captain" : "Archer" } true 1 null
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692558402656"></a>8.8. libjn:remove-keys</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680692541376"></a>8.8. libjn:remove-keys</h2></div></div></div><div class="para">
 			This function iterates on the input sequence. It removes the pairs with the given keys from all objects and leaves non-objects intact.
 		</div><pre class="programlisting">
 declare function libjn:remove-keys($sequence as item()*, $keys as xs:string*) as item()*
@@ -1249,7 +1249,7 @@ declare function libjn:remove-keys($sequence as item()*, $keys as xs:string*) as
          |}
          default return $item
 };
-</pre><div class="example"><a id="idm139692558400448"></a><p class="title"><strong>Example 8.8. Projecting objects.</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680692539168"></a><p class="title"><strong>Example 8.8. Projecting objects.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:remove-keys(
   (
@@ -1273,14 +1273,14 @@ declare function libjn:remove-keys($sequence as item()*, $keys as xs:string*) as
 				Result:
 			</div><pre class="programlisting">
 { "Engineer" : "Scott" } [ 1, 2, 3, 4 ] { "Engineer" : "Trip" } true 1 null
-</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692558397152"></a>8.9. libjn:values</h2></div></div></div><div class="para">
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680692535872"></a>8.9. libjn:values</h2></div></div></div><div class="para">
 			This function returns all values in the supplied objects. Non-objects are ignored.
 		</div><pre class="programlisting">
         declare function libjn:values($sequence as item()*) as item()* {
           for $item in $sequence
           return $item() ! $item(.)
         };
-</pre><div class="example"><a id="idm139692558395280"></a><p class="title"><strong>Example 8.9. Extracting all values from objects.</strong></p><div class="example-contents"><div class="para">
+</pre><div class="example"><a id="idm139680678739888"></a><p class="title"><strong>Example 8.9. Extracting all values from objects.</strong></p><div class="example-contents"><div class="para">
 				Query:
 			</div><pre class="programlisting">libjn:values(
   (
@@ -1307,7 +1307,7 @@ Kirk Spock Scott Archer Trip
 		JSONiq is designed to allow XML and JSON to be used in the same query.
 	</div><div class="para">
 		The syntax of JSONiq allows JSON constructors to contain XML values, and allows JSON constructors to occur in XML constructors. JSON does not support XML nodes or types, and XML does not support Objects or Arrays, but JSONiq allows Objects and Arrays to contain XML nodes, and defines rules for using JSONiq nodes in XML content expressions.
-	</div><div class="example"><a id="idm139692560780144"></a><p class="title"><strong>Example 9.1. XML in JSON</strong></p><div class="example-contents"><div class="para">
+	</div><div class="example"><a id="idm139680635314320"></a><p class="title"><strong>Example 9.1. XML in JSON</strong></p><div class="example-contents"><div class="para">
 			Both XML nodes and atomic values may occur in the values of Objects.
 		</div><pre class="programlisting">
         {
@@ -1321,7 +1321,7 @@ Kirk Spock Scott Archer Trip
 		</div><pre class="programlisting">[ xs:date("1066-10-14"), &lt;mercury&gt;Hg&lt;/mercury&gt;
 , "ice cream" ]</pre></div></div><br class="example-break" /><div class="para">
 		JSONiq does not allow XML nodes to contain Objects and Arrays. If an XQuery element content sequence, the value of the enclosed expression of an attribute, or the value of the content expression of a computed constructor contains an Object or Array, an error <code class="code">jerr:JNTY0011</code> is raised.
-	</div><div class="example"><a id="idm139692569358752"></a><p class="title"><strong>Example 9.2. Objects in XML Constructors</strong></p><div class="example-contents"><div class="para">
+	</div><div class="example"><a id="idm139680639236800"></a><p class="title"><strong>Example 9.2. Objects in XML Constructors</strong></p><div class="example-contents"><div class="para">
 			Objects can be indirectly used in the content expression of any XQuery constructor.
 		</div><div class="para">
 			Query:
@@ -1331,24 +1331,24 @@ Kirk Spock Scott Archer Trip
         return &lt;x&gt;{ $x }&lt;/x&gt;
 
 </pre><div class="para">
-			An Array can also be used in the content expression.<a id="idm139692568456000"></a><a href="#ftn.idm139692568456000" class="footnote"><sup class="footnote">[7]</sup></a>:
+			An Array can also be used in the content expression.<a id="idm139680688881280"></a><a href="#ftn.idm139680688881280" class="footnote"><sup class="footnote">[7]</sup></a>:
 		</div><pre class="programlisting">
         &lt;svg&gt;&lt;polygon stroke="blue" points="(jnlib:flatten([ [10,10], [20,10], [20,20], [10,20] ])}" /&gt;&lt;/svg&gt;
 
 </pre><div class="para">
 			Here is the result of the above query:
 		</div><pre class="programlisting">&lt;svg&gt;&lt;polygon stroke="blue" points="10 10 20 10 20 20 10 20" /&gt;&lt;/svg&gt;
-</pre></div></div><br class="example-break" /><div class="footnotes"><br /><hr width="100" align="left" /><div id="ftn.idm139692568456000" class="footnote"><div class="para"><a href="#idm139692568456000" class="para"><sup class="para">[7] </sup></a>
+</pre></div></div><br class="example-break" /><div class="footnotes"><br /><hr width="100" align="left" /><div id="ftn.idm139680688881280" class="footnote"><div class="para"><a href="#idm139680688881280" class="para"><sup class="para">[7] </sup></a>
 				The data in this example is taken from an example on Stefan Goessner's JSONT site (<a href="http://goessner.net/articles/jsont/">http://goessner.net/articles/jsont/</a>).
-			</div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-serialization"></a>Chapter 10. JSON Serialization</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139692522816416">10.1. New serialization parameters</a></span></dt><dt><span class="section"><a href="#idm139692519695488">10.2. Changes to sequence normalization</a></span></dt><dt><span class="section"><a href="#idm139692507255568">10.3. The JSON output method</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139692561190576">10.3.1. Serialization of a sequence of items</a></span></dt><dt><span class="section"><a href="#idm139692569299216">10.3.2. Serialization of individual JSON values</a></span></dt><dt><span class="section"><a href="#idm139692521868208">10.3.3. Influence of other serialization parameters upon the JSON output method</a></span></dt></dl></dd><dt><span class="section"><a href="#idm139692569279040">10.4. The JSON-XML-hybrid output method</a></span></dt><dt><span class="section"><a href="#idm139692507517600">10.5. Changes to ther other output methods</a></span></dt></dl></div><div class="para">
+			</div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-json-serialization"></a>Chapter 10. JSON Serialization</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#idm139680688597344">10.1. New serialization parameters</a></span></dt><dt><span class="section"><a href="#idm139680678515568">10.2. Changes to sequence normalization</a></span></dt><dt><span class="section"><a href="#idm139680639162912">10.3. The JSON output method</a></span></dt><dd><dl><dt><span class="section"><a href="#idm139680638623296">10.3.1. Serialization of a sequence of items</a></span></dt><dt><span class="section"><a href="#idm139680678216656">10.3.2. Serialization of individual JSON values</a></span></dt><dt><span class="section"><a href="#idm139680622499712">10.3.3. Influence of other serialization parameters upon the JSON output method</a></span></dt></dl></dd><dt><span class="section"><a href="#idm139680637468832">10.4. The JSON-XML-hybrid output method</a></span></dt><dt><span class="section"><a href="#idm139680636664688">10.5. Changes to ther other output methods</a></span></dt></dl></div><div class="para">
 		JSONiq defines two new output methods: "JSON" and "JSON-XML-hybrid". The JSON output method outputs guaranteed JSON (application/json) with the small exception that it may also output a sequence of objects and arrays (as seems to be standard practice, for example, in REST APIs). The JSON-XML-hybrid method allows serializing mixed sequences of JSON items and XML nodes for convenience. The JSON-XML-hybrid method is the default output method.
-	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692522816416"></a>10.1. New serialization parameters</h2></div></div></div><div class="para">
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680688597344"></a>10.1. New serialization parameters</h2></div></div></div><div class="para">
 			One new serialization parameter is introduced:
 		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 					<code class="code">jsoniq-multiple-top-level-items</code> (one of: "yes", "no"):
 				</div><div class="para">
 					Specifies if multiple items are allowed. Default is "yes".
-				</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692519695488"></a>10.2. Changes to sequence normalization</h2></div></div></div><div class="para">
+				</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680678515568"></a>10.2. Changes to sequence normalization</h2></div></div></div><div class="para">
 			The XQuery and XSLT serialization specification performs sequence normalization before serializing an XDM instance. The result is a sequence of exactly one document node.
 		</div><div class="para">
 			JSONiq extends sequence normalization as follows:
@@ -1356,13 +1356,13 @@ Kirk Spock Scott Archer Trip
 			The final step of building a document node with all items as its children is only done for adjacent XML nodes. JSON objects and arrays in the input sequence are left untouched.
 		</div><div class="para">
 			This means that the final result of sequence normalization will be a sequence of objects, arrays and document nodes.
-		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692507255568"></a>10.3. The JSON output method</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692561190576"></a>10.3.1. Serialization of a sequence of items</h3></div></div></div><div class="para">
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680639162912"></a>10.3. The JSON output method</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680638623296"></a>10.3.1. Serialization of a sequence of items</h3></div></div></div><div class="para">
 				If the normalized sequence does not consist exclusively of JSON arrays and objects, an error <code class="code">jerr:JNSE0014</code> is raised.
 			</div><div class="para">
 				If jsoniq-multiple-top-level-items is set to "no" and the sequence to be serialized does not consist of a single object or array, an error <code class="code">jerr:JNSE0012</code> is raised.
 			</div><div class="para">
 				If jsoniq-multiple-top-level-items is set to "yes", then the JSON items in the sequence are serialized one by one as specified below, in the same order and without any separating character (except whitespaces, depending on the indent parameter).
-			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692569299216"></a>10.3.2. Serialization of individual JSON values</h3></div></div></div><div class="para">
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680678216656"></a>10.3.2. Serialization of individual JSON values</h3></div></div></div><div class="para">
 				This section specifies how JSON items as well as JSON atomic values are serialized.
 			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 						Object
@@ -1404,7 +1404,7 @@ Kirk Spock Scott Archer Trip
 						All other atomic values are output as if they were of value <code class="code">xs:string</code> (i.e., as a JSON string).
 					</div></li><li class="listitem"><div class="para">
 						An error jerr:JNSE0014 is raised if an XML node or a function is encountered.
-					</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139692521868208"></a>10.3.3. Influence of other serialization parameters upon the JSON output method</h3></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="idm139692521867440"></a>10.3.3.1. JSON output method: the indent parameter</h4></div></div></div><div class="para">
+					</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm139680622499712"></a>10.3.3. Influence of other serialization parameters upon the JSON output method</h3></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="idm139680622498944"></a>10.3.3.1. JSON output method: the indent parameter</h4></div></div></div><div class="para">
 					Like for the XML output method, the indent parameter controls if the serializer is allowed to add extra whitespaces to make the output easier to read. If the indent parameter has the value "yes", the serializer may output additional whitespaces characters outside of JSON literals. If the indent parameter has the value "no", the serializer may not output any whitespaces outside of JSON literals.
 				</div><div class="para">
 					If the indent parameter is set to yes, the algorithm for adding whitespaces is allowed to add them at the following places, and only at these places:
@@ -1428,13 +1428,13 @@ Kirk Spock Scott Archer Trip
 					In particular, no whitespaces may be added inside JSON literals (strings, numbers, booleans, nulls).
 				</div><div class="para">
 					If the indent parameter is set to no, no whitespace may be output to any of the places mentioned above.
-				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="idm139692569283072"></a>10.3.3.2. JSON output method: the byte-order-mark parameter</h4></div></div></div><div class="para">
+				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="idm139680637472864"></a>10.3.3.2. JSON output method: the byte-order-mark parameter</h4></div></div></div><div class="para">
 					The byte-order-mark parameter is applicable to the JSON output method and has the same semantics as for the XML output method.
-				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="idm139692569281536"></a>10.3.3.3. JSON output method: the use-character-maps parameter</h4></div></div></div><div class="para">
+				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="idm139680637471328"></a>10.3.3.3. JSON output method: the use-character-maps parameter</h4></div></div></div><div class="para">
 					The use-character-maps parameter is applicable to the JSON output method and has the same semantics as for the XML output method.
 				</div><div class="para">
 					Like for the XML output method, the result of serialization using the JSON output method is not guaranteed to be well-formed JSON if character maps have been specified.
-				</div></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692569279040"></a>10.4. The JSON-XML-hybrid output method</h2></div></div></div><div class="para">
+				</div></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680637468832"></a>10.4. The JSON-XML-hybrid output method</h2></div></div></div><div class="para">
 			This method serializes a sequence of items to a stream of objects, arrays, XML nodes and text as follows:
 		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
 					An object or array is serialized according to the JSON output method (the value of jsoniq-multiple-top-level-items is irrelevant), with the exception that no error is raised if an XML node is found as a value in an object or a member of an array. Instead, the XML node is serialized to a JSON string as described below for document nodes.
@@ -1442,7 +1442,7 @@ Kirk Spock Scott Archer Trip
 					A document node is serialized according to the xml output method and the corresponding serialization parameters (except that the parameters setting declaration and doctypes are ignored, and no doctype or XML declaration is output).
 				</div></li><li class="listitem"><div class="para">
 					The item serialization outputs are not separated by any spaces in the final output (except if the indent parameter is set, in which case the serializer is free to insert whitespaces).
-				</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692507517600"></a>10.5. Changes to ther other output methods</h2></div></div></div><div class="para">
+				</div></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139680636664688"></a>10.5. Changes to ther other output methods</h2></div></div></div><div class="para">
 			The other outputs methods (XML, HTML, XHTML, Text) are changed as follows: if the normalized sequence does not consist of exactly one document node, then <code class="code">jerr:JNSE0022</code> is raised.
 		</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-error-codes"></a>Chapter 11. Error codes</h1></div></div></div><div class="para">
 		The JSONiq error codes are summarized here.
@@ -1586,7 +1586,10 @@ Kirk Spock Scott Archer Trip
 			</div></li><li class="listitem"><div class="para">
 				Zorba ships some of the library functions in the jn: module (jn:members, jn:flatten). The others will follow in the next release.
 			</div></li></ul></div></div><div class="appendix"><div class="titlepage"><div><div><h1 class="title"><a id="appe-JSONiq-Revision_History"></a>Revision History</h1></div></div></div><div class="para"><p></p>
-		<div class="revhistory"><table summary="Revision History"><tr><th align="left" valign="top" colspan="3"><strong>Revision History</strong></th></tr><tr><td align="left">Revision 1-3</td><td align="left">Tue Aug 13 2013</td><td align="left"><span class="author"><span class="firstname">Ghislain</span> <span class="surname">Fourny</span></span></td></tr><tr><td align="left" colspan="3">
+		<div class="revhistory"><table summary="Revision History"><tr><th align="left" valign="top" colspan="3"><strong>Revision History</strong></th></tr><tr><td align="left">Revision 1-4</td><td align="left">Fri Aug 7 2015</td><td align="left"><span class="author"><span class="firstname">Ghislain</span> <span class="surname">Fourny</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td> Add ?: syntax. </td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 1-3</td><td align="left">Tue Aug 13 2013</td><td align="left"><span class="author"><span class="firstname">Ghislain</span> <span class="surname">Fourny</span></span></td></tr><tr><td align="left" colspan="3">
 					<table border="0" summary="Simple list" class="simplelist"><tr><td> Added more examples for library functions. </td></tr><tr><td> Completed signature of keys() and size() with return types. </td></tr><tr><td> Simplified code in libjn:remove-keys() and libjn:project(). </td></tr><tr><td> Moved all fixes for JSON vs. JDM lexical representation mismatch to the serialization layer. </td></tr></table>
 
 				</td></tr><tr><td align="left">Revision 1-2</td><td align="left">Thu Aug 8 2013</td><td align="left"><span class="author"><span class="firstname">Ghislain</span> <span class="surname">Fourny</span></span></td></tr><tr><td align="left" colspan="3">
@@ -1732,4 +1735,4 @@ Kirk Spock Scott Archer Trip
 
 				</td></tr></table></div>
 
-	</div></div><div class="index"><div class="titlepage"><div><div><h1 class="title"><a id="idm139692519498576"></a>Index</h1></div></div></div><div class="index"></div></div></div></body></html>
+	</div></div><div class="index"><div class="titlepage"><div><div><h1 class="title"><a id="idm139680640533344"></a>Index</h1></div></div></div><div class="index"></div></div></div></body></html>

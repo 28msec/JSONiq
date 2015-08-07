@@ -21,6 +21,24 @@ TODO:
 ** XQ- - strings are JSON strings, XQ++ strings are XQuery strings, conversion between the two
 
  --> <revision>
+				<revnumber>1-4</revnumber>
+				 <date>Fri Aug 7 2015</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member> Add ?: syntax. </member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
 				<revnumber>1-3</revnumber>
 				 <date>Tue Aug 13 2013</date>
 				 <author>

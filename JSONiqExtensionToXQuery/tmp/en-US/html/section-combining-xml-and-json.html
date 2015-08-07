@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 9. Combining XML and JSON</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 3.2.1" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1-3" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="ch08s09.html" title="8.9. libjn:values" /><link rel="next" href="section-json-serialization.html" title="Chapter 10. JSON Serialization" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="ch08s09.html"><strong>Prev</strong></a></li><li class="home">Specification</li><li class="next"><a accesskey="n" href="section-json-serialization.html"><strong>Next</strong></a></li></ul><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-combining-xml-and-json"></a>Chapter 9. Combining XML and JSON</h1></div></div></div><div class="para">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 9. Combining XML and JSON</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 3.2.1" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1-4" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="index.html" title="Specification" /><link rel="prev" href="ch08s09.html" title="8.9. libjn:values" /><link rel="next" href="section-json-serialization.html" title="Chapter 10. JSON Serialization" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="ch08s09.html"><strong>Prev</strong></a></li><li class="home">Specification</li><li class="next"><a accesskey="n" href="section-json-serialization.html"><strong>Next</strong></a></li></ul><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="section-combining-xml-and-json"></a>Chapter 9. Combining XML and JSON</h1></div></div></div><div class="para">
 		JSONiq is designed to allow XML and JSON to be used in the same query.
 	</div><div class="para">
 		The syntax of JSONiq allows JSON constructors to contain XML values, and allows JSON constructors to occur in XML constructors. JSON does not support XML nodes or types, and XML does not support Objects or Arrays, but JSONiq allows Objects and Arrays to contain XML nodes, and defines rules for using JSONiq nodes in XML content expressions.
-	</div><div class="example"><a id="idm139692565599680"></a><p class="title"><strong>Example 9.1. XML in JSON</strong></p><div class="example-contents"><div class="para">
+	</div><div class="example"><a id="idm139680636714112"></a><p class="title"><strong>Example 9.1. XML in JSON</strong></p><div class="example-contents"><div class="para">
 			Both XML nodes and atomic values may occur in the values of Objects.
 		</div><pre class="programlisting">
         {
@@ -17,7 +17,7 @@
 		</div><pre class="programlisting">[ xs:date("1066-10-14"), &lt;mercury&gt;Hg&lt;/mercury&gt;
 , "ice cream" ]</pre></div></div><br class="example-break" /><div class="para">
 		JSONiq does not allow XML nodes to contain Objects and Arrays. If an XQuery element content sequence, the value of the enclosed expression of an attribute, or the value of the content expression of a computed constructor contains an Object or Array, an error <code class="code">jerr:JNTY0011</code> is raised.
-	</div><div class="example"><a id="idm139692561127648"></a><p class="title"><strong>Example 9.2. Objects in XML Constructors</strong></p><div class="example-contents"><div class="para">
+	</div><div class="example"><a id="idm139680685481360"></a><p class="title"><strong>Example 9.2. Objects in XML Constructors</strong></p><div class="example-contents"><div class="para">
 			Objects can be indirectly used in the content expression of any XQuery constructor.
 		</div><div class="para">
 			Query:
@@ -27,13 +27,13 @@
         return &lt;x&gt;{ $x }&lt;/x&gt;
 
 </pre><div class="para">
-			An Array can also be used in the content expression.<a id="idm139692560113584"></a><a href="#ftn.idm139692560113584" class="footnote"><sup class="footnote">[7]</sup></a>:
+			An Array can also be used in the content expression.<a id="idm139680685249792"></a><a href="#ftn.idm139680685249792" class="footnote"><sup class="footnote">[7]</sup></a>:
 		</div><pre class="programlisting">
         &lt;svg&gt;&lt;polygon stroke="blue" points="(jnlib:flatten([ [10,10], [20,10], [20,20], [10,20] ])}" /&gt;&lt;/svg&gt;
 
 </pre><div class="para">
 			Here is the result of the above query:
 		</div><pre class="programlisting">&lt;svg&gt;&lt;polygon stroke="blue" points="10 10 20 10 20 20 10 20" /&gt;&lt;/svg&gt;
-</pre></div></div><br class="example-break" /><div class="footnotes"><br /><hr /><div id="ftn.idm139692560113584" class="footnote"><div class="para"><a href="#idm139692560113584" class="para"><sup class="para">[7] </sup></a>
+</pre></div></div><br class="example-break" /><div class="footnotes"><br /><hr /><div id="ftn.idm139680685249792" class="footnote"><div class="para"><a href="#idm139680685249792" class="para"><sup class="para">[7] </sup></a>
 				The data in this example is taken from an example on Stefan Goessner's JSONT site (<a href="http://goessner.net/articles/jsont/">http://goessner.net/articles/jsont/</a>).
 			</div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s09.html"><strong>Prev</strong>8.9. libjn:values</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-json-serialization.html"><strong>Next</strong>Chapter 10. JSON Serialization</a></li></ul></body></html>
