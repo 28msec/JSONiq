@@ -1,0 +1,26 @@
+<appendix id="jdm-xdm">
+  <title>JSONiq Traversal Primitives</title> 
+
+  <para>This appendix defines a set of primitives used to define traversal operations in JSONiq.</para>
+
+  <itemizedlist>
+    <listitem>
+      <para><emphasis>j:pairs($object as object-node()) as pair-node()*</emphasis></para>
+      <para>Returns the pair nodes that are children of the object <code>$object</code>.</para>
+    </listitem>
+    <listitem>
+      <para><emphasis>j:name($pair as pair-node()) as xs:string</emphasis></para>
+      <para>Returns the name of the pair node <code>$pair</code>.</para>
+    </listitem>
+    <listitem>
+      <para><emphasis>j:value($pair as pair-node()) as node()</emphasis></para>
+      <para>Returns the value of the pair node <code>$pair</code>.</para>
+    </listitem>
+    <listitem>
+      <para><emphasis>j:members($array as array-node()) as node()*</emphasis></para>
+      <para>Returns the members of the array node <code>$array</code>.</para>
+    </listitem>
+  </itemizedlist>
+
+</appendix>
+

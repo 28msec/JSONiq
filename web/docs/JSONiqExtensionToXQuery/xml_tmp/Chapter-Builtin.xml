@@ -136,56 +136,64 @@
       This function decodes non-JSON types previously encoded with <code>jn:encode-for-roundtrip.</code>
     </para>
     <para>
-      <code>jn:decode-from-roundtrip($items as json-item()*) as item()*</code>
+      <code>jn:decode-from-roundtrip($items as item()*) as item()*</code>
     </para>
     <para>
-      <code>jn:decode-from-roundtrip($items as json-item()*, $options as object()) as item()*</code>
+      <code>jn:decode-from-roundtrip($items as item()*, $options as object()) as item()*</code>
     </para>
     <para>
-      Calling the unary version of the function defaults the value of the second parameter (<code>$options</code>)
-      to
-      <programlisting>
-        { "prefix" : "Q{http://jsoniq.org/roundtrip}" }
-      </programlisting>
+      There is one optional parameter than can be supplied using the $options object.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>prefix</emphasis> (string): The prefix of the strings used to for the encoding (default: "Q{http://jsoniq.org/roundtrip}").</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      The above optional parameter is refered to as $prefix for convenience.
     </para>
     <para>
-      <code>$options("prefix")</code> must be atomizable and castable to a string.
+      Error <code>err:XPTY0004</code> is raised in case one this parameter is of incorrect type.
     </para>
     <para>
-      Error <code>jerr:JNTY0023</code> is raised if one of the above type criterion is not met.
+      Non-JSON values are encoded to a special object containing two required fields "[$prefix]type" (xs:string) and "[$prefix]value" (xs:string), and two optional
+      fields "[$prefix]prefix" (xs:string) and "[$prefix]encoding-level (xs:integer, strictly positive). An object that has the two required fields, and that has no other field that these
+      four fields, and whose values match the types, is called an Encoded Object.
     </para>
     <para>
       This function maps each item of the input sequence to a new item in the output sequence, preserving order.
     </para>
     <para>
-      For convenience, the map is defined recursively from item() to item(), even though the initial items must be objects or arrays.
+      For convenience, the map is defined recursively from item() to item().
     </para>
     <para>
-      It maps an array to an array the members of which are mapped resursively.
+      An array is mapped to an array the members of which are mapped resursively.
     </para>
     <para>
-      It maps atomic values and XML nodes to themselves.
+      Atomic values and XML nodes are mapped to themselves.
     </para>
     <para>
-      If the supplied item is an object, it first checks if it has two pairs named "[$prefix]type" and "[$prefix]value" where [$prefix] stands
-      for the value of <code>$options("prefix")</code>.
+      An object is mapped depending on whether it is an Encoded Object (according to the above definition).
     </para>
     <para>
-      If such is the case, then if the value of the first pair is "node()", it parses the value
-      of the second pair to an XML node that is returned by the function.
+      An Encoded Object whose "[$prefix]type" field is "document-node()", "element()", "text()",
+      "comment()" or "processing-instruction()" is mapped to the XML node optained by parsing the field "[$prefix]value". An error
+      <code>jerr:JNTY0023</code> is raised if the obtained node does not match the specified type.
     </para>
     <para>
-      Otherwise, an atomic item is built, with the type specified by the value of the first pair (read as an EQName, with xs: automatically recognized as the
-      XSD namespace). If this type is not xs:QName, xs:NOTATION or a subtype thereof, the atomic value is built from the lexical representation specified 
-      by the value of the pair named "[$prefix]value".
+      An Encoded Object whose "[$prefix]type" field is another string is mapped to an atomic item with the type specified by the value of the field "[$prefix]type"
+      (read as an EQName, with xs: automatically recognized as the XSD namespace).
     </para>
-    <para>
+    <itemizedlist>
+      <listitem><para>If this type is not xs:QName, xs:NOTATION or a subtype thereof, the atomic value is by casting the string in the field
+        "[$prefix]value" to this type. An error <code>jerr:JNTY0023</code> if this case does not succeed.</para></listitem>
+      <listitem><para>
       If this type is xs:QName, xs:NOTATION or a subtype thereof, then the atomic value to be built is a qualified name.
-      The namespace and local name are built from the value (an EQName) of the pair named "[$prefix]value", and the prefix is built from a third pair
-      named "[$prefix]prefix" (empty if absent).
-    </para>
+      The namespace and local name are built from the value (an EQName) of the field "[$prefix]value", and the prefix is built from the field
+      "[$prefix]prefix" (empty if absent). An error <code>jerr:JNTY0023</code> if this does not succeed (value is not an EQName, prefix is not an NCName).</para></listitem>
+    </itemizedlist>
     <para>
-      If the object does not fit the above criterion, it is mapped to an object with the same keys, and the associated values are
+      An object that is not an Encoded Object is mapped to an object with the same keys, and the associated values are
       mapped recursively.
     </para>
     <example>
@@ -235,76 +243,84 @@
       are available.
     </para>
     <para>
-      <code>jn:encode-for-roundtrip($items as item()*) as json-item()*</code>
+      <code>jn:encode-for-roundtrip($items as item()*) as item()*</code>
     </para>
     <para>
-      <code>jn:encode-for-roundtrip($items as item()*, $options as object()) as json-item()*</code>
+      <code>jn:encode-for-roundtrip($items as item()*, $options as object()?) as item()*</code>
     </para>
     <para>
-      Calling the unary version of the function defaults the value of the second parameter (<code>$options</code>)
-      to
-      <programlisting>
-        {
-          "prefix" : "Q{http://jsoniq.org/roundtrip}"
-          "serialization-parameters" : <![CDATA[
+      There are two optional parameters than can be supplied using the $options object.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>prefix</emphasis> (string): The prefix of the strings used to for the encoding (default: "Q{http://jsoniq.org/roundtrip}").</para>
+      </listitem>
+      <listitem>
+        <para><emphasis>serialization-parameters</emphasis> (element node): The serialization parameters for any nested XML (as specified
+        in the XQuery 3.0 specifications). By default:</para>
+        <programlisting>
+        <![CDATA[
             <serialization-parameters xmlns="http://www.w3.org/2010/xslt-xquery-serialization">
               <omit-xml-declaration value="yes" />
             </serialization-parameters>]]>
-        }
-      </programlisting>
+        </programlisting>
+      </listitem>
+    </itemizedlist>
+    <para>
+      The above optional parameters are refered to as $prefix and $serialization-parameters for convenience.
     </para>
     <para>
-      <code>$options("prefix")</code> must be atomizable and castable to a string.</para>
-    <para>
-      <code>$options("serialization-parameters")</code> must be a node.
-    </para>
-    <para>
-      Error <code>jerr:JNTY0023</code> is raised if one of the above two type criteria is not met.
+      Error <code>err:XPTY0004</code> is raised in case one of the parameters is of incorrect type.
     </para>
     <para>
       This function maps each item of the input sequence to a new item in the output sequence, preserving order.
     </para>
     <para>
-      For convenience, the map is defined recursively from item() to item(), even though the signature of the function expects
-      JSON items in the output sequence. The map preserves JSON native atomic values in general, however if such a value appears at the top-level
-      in the input sequence, it is not treated as such and is mapped to an object like any other atomic item.
+      For convenience, the map is defined recursively from item() to item().
     </para>
     <para>
-      It maps an object to an object with the same keys, the associated values being obtained by a recursive call on the original values.
+      Non-JSON values are encoded to a special object containing two required fields "[$prefix]type" (xs:string) and "[$prefix]value" (xs:string), and two optional
+      fields "[$prefix]prefix" (xs:string) and "[$prefix]encoding-level (xs:integer, strictly positive). An object that has the two required fields, and that has no other field that these
+      four fields, and whose values match the types, is called an Encoded Object.
     </para>
     <para>
-      It maps an array to an array the members of which are obtained by a recursive call on the members of the original array.
+      An object that is not an Encoded Object is mapped to an object with the same keys,
+      and the associated values are obtained by a recursive call on the original values.
+    </para>
+    <para>
+      An object that is an Encoded Object is left unchanged, except for the field "[$prefix]encoding-level" that is increased by 1
+      if it exists, or set to 2 if it is absent. This ensures round-trippability of already encoded data.
+    </para>
+    <para>
+      An array is mapped to an array. Its members are obtained with a recursive call on the members of the original array.
     </para>
     <para> JSON native atomic values (of type exactly xs:double (except infinites and NaN),
       xs:decimal (except integers), xs:integer, xs:string, xs:boolean or js:null) are mapped to
       themselves. </para>
     <para>
-      XML nodes are mapped to an object with two pairs:
+      XML nodes are mapped to an Encoded Object with two pairs:
       <itemizedlist>
         <listitem>
-          <para> A pair named "[$prefix]type" (where [$prefix] is
-            replaced with the value of the parameter $prefix) and with the value "document-node()", "element()", "text()",
-            "comment()" or "processing-instruction()", depending on the node kind (note that if it is an attribute or namespace node,
-            <code>err:SENR0001</code> will be raised by the step below).</para>
+          <para> A pair named "[$prefix]type" and with the value "document-node()", "element()", "text()",
+            "comment()" or "processing-instruction()", depending on the node kind. If it is an attribute or namespace node,
+            <code>err:SENR0001</code> will be raised by the step below.</para>
         </listitem>
         <listitem>
-          <para> A pair named "[$prefix]value" (where [$prefix] is replaced with the value  of <code>$options("prefix")</code>)
+          <para> A pair named "[$prefix]value"
             and whose value is a serialization of the XML node according to the
-            XML output method and with the serialization parameters specified by <code>$options("serialization-parameters")</code>.
+            XML output method and with the serialization parameters specified by $serialization-parameters.
           </para>
         </listitem>
       </itemizedlist>
     </para>
-    <para> Non-native atomic values that are not qualified names (i.e., neither xs:QName nor xs:NOTATION nor subtypes) are mapped to an object with two
-      pairs: <itemizedlist>
+    <para> Non-native atomic values that are not qualified names (i.e., neither xs:QName nor xs:NOTATION nor subtypes) are mapped to an Encoded Object with two
+      fields: <itemizedlist>
         <listitem>
-          <para> A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the
-            parameter $prefix) and whose value is the EQName of the atomic type (The XSD namespace
+          <para> A field "[$prefix]type" containing the EQName of the atomic type (The XSD namespace
             may be simply output with the xs: prefix). </para>
         </listitem>
         <listitem>
-          <para> A pair named "[$prefix]value" (where [$prefix] is replaced with the value of
-              <code>$options("prefix")</code> and whose value is the lexical representation of the
+          <para> A field "[$prefix]value" containing the lexical representation of the
             atomic value. </para>
         </listitem>
       </itemizedlist>
@@ -312,18 +328,15 @@
     <para> Non-native atomic values that are qualified names (i.e., xs:QName or xs:NOTATION or
       subtypes) are mapped to an object with two or three pairs: <itemizedlist>
         <listitem>
-          <para> A pair named "[$prefix]type" (where [$prefix] is replaced with the value of the
-            parameter $prefix) and whose value is the EQName of the atomic type (The XSD namespace
+          <para> A field "[$prefix]type" containing the EQName of the atomic type (The XSD namespace
             may be simply output with the xs: prefix). </para>
         </listitem>
         <listitem>
-          <para> A pair named "[$prefix]value" (where [$prefix] is replaced with the value of
-              <code>$options("prefix")</code> and whose value is the EQName corresponding to the
+          <para> A field "[$prefix]value" containing the EQName corresponding to the
             qualified name (which includes namespace and local name). </para>
         </listitem>
         <listitem>
-          <para> A pair named "[$prefix]prefix" (where [$prefix] is replaced with the value of
-              <code>$options("prefix")</code> and whose value is the prefix of the qualified name
+          <para> A field "[$prefix]prefix" containing the prefix of the qualified name
             (only if there is such a prefix). </para>
         </listitem>
       </itemizedlist>

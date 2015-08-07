@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-<!ENTITY % BOOK_ENTITIES SYSTEM "JSONiq.ent">
+<!ENTITY % BOOK_ENTITIES SYSTEM "XQueryWithJSONiqExtensions.ent">
 %BOOK_ENTITIES;
 ]>
 <appendix id="appe-JSONiq-Revision_History">
@@ -22,7 +22,7 @@ TODO:
 -->
 
       <revision>
-        <revnumber>1.0.3</revnumber>
+        <revnumber>1-3</revnumber>
         <date>Tue Aug 13 2013</date>
         <author>
           <firstname>Ghislain</firstname>
@@ -48,7 +48,7 @@ TODO:
       </revision>
 
       <revision>
-        <revnumber>1.0.2</revnumber>
+        <revnumber>1-2</revnumber>
         <date>Thu Aug 8 2013</date>
         <author>
           <firstname>Ghislain</firstname>
@@ -75,7 +75,7 @@ TODO:
       </revision>
 
       <revision>
-        <revnumber>1.0.1</revnumber>
+        <revnumber>1-1</revnumber>
         <date>Mon Jul 22 2013</date>
         <author>
           <firstname>Ghislain</firstname>

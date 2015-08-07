@@ -1,0 +1,165 @@
+<appendix id="jdm-xdm">
+  <title>Extensions to the XDM</title>
+
+  <para>This appendix contains the extensions to the XQuery Data Model
+  (XDM) needed to support JSONiq in an existing XQuery processor. Most
+  of the properties of most nodes are not needed, and accessors for
+  these properties return the empty sequence.</para>
+
+  <para>JSONiq adds the following types:</para>
+
+  <itemizedlist>
+    <listitem><para><emphasis>json:null</emphasis>, which represents a JSON null.</para></listitem>
+    <listitem><para><emphasis>json-item</emphasis>, the base class for Pair, Object, and Array.</para></listitem>
+    <listitem><para><emphasis>Pair</emphasis> and the derived types <emphasis>Object-Pair</emphasis> and <emphasis>Array-Pair</emphasis>, which represent index/value pairs in Objects, and index/value pairs in Arrays.</para></listitem>
+    <listitem><para><emphasis>Object</emphasis>, which represents a JSON object. An Object contains an unordered sequence of Object-Pairs.</para></listitem>
+    <listitem><para><emphasis>Array</emphasis>, which represent a JSON array. An Array contains a sequence of Array-Pairs.</para></listitem>
+  </itemizedlist>
+
+  <section>
+    <title>Simple Datatypes</title>
+
+    <para>
+      JSON's simple values can have any of the following datatypes,
+      which are supported as primitives in JSONiq.
+    </para>
+
+    <itemizedlist>
+      <listitem><para>string</para></listitem>
+      <listitem><para>number</para></listitem>
+      <listitem><para>true</para></listitem>
+      <listitem><para>false</para></listitem>
+      <listitem><para>null</para></listitem>
+    </itemizedlist>
+
+    <para>
+      JSONiq represents a JSON string as an xs:string.
+    </para>
+
+    <para>
+      JSONiq represents the JSON simple values 'true' and 'false' as
+      xs:boolean values, and treats 'true' and 'false' as reserved
+      keywords.
+    </para>
+
+    <para>JSONiq adds one new data type: <code>json:null</code>, derived from <code>xs:anyAtomicType</code>, where the prefix <code>json</code> is bound to the namespace URI <code>"jsoniq.org/types"</code>. The typed value of an instance of <code>json:null</code> is the string <code>"null"</code>. The string value of an instance of <code>json:null</code> is the same as its type value. (Because the typed value of all <code>json:null</code> instances is the same, nulls are always equal to each other for the purpose of value comparisons). The Extended Boolean Value of a <code>json:null</code> is <code>false</code>.</para>
+
+    <para>
+      JSON defines number as follows:
+    </para>
+
+    <blockquote><para>
+      A number can be represented as integer, real, or floating
+      point. JSON does not support octal or hex because it is minimal. It
+      does not have values for NaN or Infinity because it does not want
+      to be tied to any particular internal representation.
+    </para></blockquote>
+
+    <para>
+      JSONiq uses XQuery's lexical representation of numbers to distinguish
+      integer, real, and floating point numbers:
+    </para>
+
+    <programlisting>NumericLiteral ::= IntegerLiteral | DecimalLiteral | DoubleLiteral</programlisting>
+
+    <para>If a numeric literal has no "." character and no e or E
+    character, it has type <code>xs:integer</code>; if it has a "."
+    character but no e or E character it has type
+    <code>xs:decimal</code>; if it has an e or E character it has
+    type <code>xs:double</code>.</para>
+
+    <para>The result of a JSONiq query may contain values such as NaN
+    or Infinity, which can not be serialized as JSON. These values are
+    converted during the serialization
+    process.<footnote><para>ECMAScript also has has Infinity and NaN,
+    and takes a similar approach. The JSON serialization conventions
+    for JSONiq have not yet been specified.</para></footnote></para>
+
+  </section>
+
+
+  <section>
+    <title>JSON-item</title>
+    <para>JSON-item is the base class for Object, Array, and Pair. JSON-item is derived from item. A JSON-item has identity, and it can be serialized.<footnote><para>FIXME: Comparisons and JSON-item. If we say they can't be used in comparisons at all, then pairs can't be used as boxed values.</para></footnote></para>
+
+  </section>
+
+  <section>
+    <title>Pair</title>
+
+    <para>Pair is a base type that serves as the base type of Object-Pair and Array-Pair. Pair is derived from JSON-item. A Pair defines the following accessors.</para>
+
+    <itemizedlist>
+      <listitem><para><emphasis>value() as item()*</emphasis>, the value of the pair.</para></listitem>
+      <listitem><para><emphasis>string-value() as xs:string</emphasis>, possibly empty. Returns the string-value of the pair's value.</para></listitem>
+      <listitem><para><emphasis>typed-value as xs:item()*</emphasis>, possibly empty. Returns the typed-value of the pair's value.</para></listitem>
+      <listitem><para><emphasis>collection() as object() | array()</emphasis>, possibly empty. Returns the Object or Array that contains the Pair.</para></listitem>
+    </itemizedlist>
+
+  <para>An Pair can be invoked using dynamic function invocation. If <code>$p</code> is an Pair, then <code>$p($k)</code> is evaluated as follows:</para>
+
+  <itemizedlist>
+    <listitem><para>if <code>value($p)</code> is an Array, returns <code>json:array-lookup(value($p), $k)</code>.</para></listitem>
+    <listitem><para>if <code>value($p)</code> is an Object, returns <code>json:object-lookup(value($p), $k)</code>.</para></listitem>
+    <listitem><para>Otherwise, returns the empty sequence.</para></listitem>
+  </itemizedlist>
+
+  </section>
+
+
+  <section>
+    <title>Object-Pair</title>
+
+    <para>Object-Pair represents a name/value pair in an Object. In addition to the accessors defined in Pair, it defines the following accessors:</para>
+
+    <itemizedlist>
+      <listitem><para><emphasis>name() as xs:string</emphasis>, the name of the name/value pair.</para></listitem>
+    </itemizedlist>
+  </section>
+
+
+  <section>
+    <title>Array-Pair</title>
+
+    <para>Array-Pair represents a index/value pair in an Array. In addition to the accessors defined in Pair, it defines the following accessors:</para>
+
+    <itemizedlist>
+      <listitem><para><emphasis>index() as xs:integer</emphasis>, the index of the index/value pair.</para></listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Object</title>
+
+    <para>Objects encapsulate JSON objects. Objects have the following accessors:</para>
+
+    <itemizedlist>
+      <listitem><para><emphasis>pairs() as pair-item()*</emphasis>, an unordered sequence of zero or more Object-Pairs.</para></listitem>
+    </itemizedlist>
+
+    <para>An Object can be invoked using dynamic function invocation. If <code>$o</code> is an Object, then <code>$o("n")</code> evaluates to <code>json:object-lookup($o, "n")</code>, which is defined as follows:</para>
+
+    <para><emphasis>json:object-lookup($o as object-item(), $name as xs:string() as item()</emphasis></para>
+    <para>If <code>$o</code> contains a Pair such that the name is equal to $name, returns that Pair. Otherwise, returns the empty sequence.</para>
+
+  </section>
+
+
+  <section>
+    <title>Array</title>
+
+    <para>Arrays encapsulate JSON arrays. Arrays have the following properties:</para>
+
+    <itemizedlist>
+      <listitem><para><emphasis>pairs() as pair-item()()*</emphasis>, an ordered sequence of zero or more Array-Pairs.</para></listitem>
+    </itemizedlist>
+
+    <para>An Array can be invoked using dynamic function invocation. If <code>$a</code> is an Array, then <code>$a($i)</code> evaluates to <code>json:array-lookup($a, $i)</code>, which is defined as follows:</para>
+
+    <para><emphasis>json:array-lookup($o as array-item(), $index as xs:integer as item()</emphasis></para>
+    <para>If <code>$o</code> contains a Pair such that the index is equal to $index, returns that Pair. Otherwise, returns the empty sequence.</para>
+
+
+  </section>
+
+</appendix>

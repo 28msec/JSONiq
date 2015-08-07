@@ -1,6 +1,6 @@
 * {
-	widows: 2 !important;
-	orphans: 2 !important;
+	widows: 4 !important;
+	orphans: 4 !important;
 }
 
 body, h1, h2, h3, h4, h5, h6, pre, li, div {
@@ -11,9 +11,9 @@ body {
 	background-color: white;
 	margin:0 auto;
 	font-family: "liberation sans", "Myriad ", "Bitstream Vera Sans", "Lucida Grande", "Luxi Sans", "Trebuchet MS", helvetica, verdana, arial, sans-serif;
-	font-size:12px;
-	max-width:55em;
-	color:black;
+	font-size: 14px;
+	max-width: 770px;
+	color: black;
 }
 
 body.toc_embeded {
@@ -23,14 +23,14 @@ body.toc_embeded {
 
 object.toc, iframe.toc {
 	/*for web hosting system only*/
-	border-style:none;
-	position:fixed;
-	width:290px;
-	height:99.99%;
-	top:0;
-	left:0;
+	border-style: none;
+	position: fixed;
+	width: 290px;
+	height: 99.99%;
+	top: 0;
+	left: 0;
 	z-index: 100;
-	border-style:none;
+	border-style: none;
 	border-right:1px solid #999;
 }
 
@@ -43,14 +43,14 @@ body.notoc {
 iframe.notoc {
 	border-style:none;
 	border: none;
-	padding: 0em;
+	padding: 0px;
 	position:fixed;
 	width: 21px;
 	height: 29px;
 	top: 0px;
 	left:0;
 	overflow: hidden;
-	margin: 0em;
+	margin: 0px;
 	margin-left: -3px;
 }
 /* End hide web menu */
@@ -63,13 +63,18 @@ body.desktop {
 body.desktop .book > .toc {
 	display:block;
 	width:24em;
-	height:99%;
+	height:99.99%;
 	position:fixed;
 	overflow:auto;
 	top:0px;
 	left:0px;
-	padding-left:1em;
+/*	padding-left:1em; */
 	background-color:#EEEEEE;
+	font-size: 12px;
+}
+
+body.pdf {
+	max-width: 100%;
 }
 
 .toc {
@@ -97,14 +102,26 @@ div {
 }
 
 div.section {
-	padding-top:1em;
+	page-break-inside: avoid;
 }
 
-p, div.para, div.formalpara {
-	padding-top:0px;
-	margin-top:0.3em;
-	padding-bottom:0px;
-	margin-bottom:1em;
+p, div.para {
+	padding-top: 0px;
+	margin-top: 0.3em;
+	padding-bottom: 0px;
+	margin-bottom: 1em;
+}
+
+div.formalpara {
+	padding-top: 0px;
+	margin-top: 1em;
+	padding-bottom: 0px;
+	margin-bottom: 1em;
+}
+
+.varlistentry div.para {
+	page-break-before: avoid;
+
 }
 
 /*Links*/
@@ -113,9 +130,13 @@ a {
 }
 
 a:link {
-	text-decoration:none;
+	text-decoration: none;
 	border-bottom: 1px dotted ;
 	color:#3366cc;
+}
+
+body.pdf a:link {
+	word-wrap: break-word;
 }
 
 a:visited {
@@ -142,44 +163,51 @@ div.longdesc-link {
 /*headings*/
 h1, h2, h3, h4, h5, h6 {
 	color: #336699;
-	margin-top: 0em;
-	margin-bottom: 0em;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	background-color: transparent;
+	margin-bottom: 0px;
+	margin-top: 20px;
 	page-break-inside: avoid;
 	page-break-after: avoid;
+	word-wrap: break-word;
 }
 
 h1 {
-	font-size:2.0em;
+	font-size: 22px;
 }
 
 .titlepage h1.title {
-	font-size: 3.0em;
-	padding-top: 1em;
 	text-align:left;
 }
 
 .book > .titlepage h1.title {
-	text-align:center;
+	text-align: center;
 }
 
-.article > .titlepage h1.title {
-	text-align:center;
+.article > .titlepage h1.title,
+.article > .titlepage h2.title {
+	text-align: center;
 }
 
 .set .titlepage > div > div > h1.title {
-	text-align:center;
+	text-align: center;
 }
 
-.producttitle {
-	margin-top: 0em;
-	margin-bottom: 0em;
-	font-size: 3.0em;
-	font-weight: bold;
-	background: #003d6e url(../images/h1-bg.png) top left repeat-x;
-	color: white;
+.part > .titlepage h1.title {
 	text-align: center;
-	padding: 0.7em;
+	font-size: 24px;
+}
+
+div.producttitle {
+	margin-top: 0px;
+	margin-bottom: 20px;
+	font-size: 48px;
+	font-weight: bold;
+/* 	background: #003d6e url(../images/h1-bg.png) top left repeat-x; */
+	color:  #336699;
+	text-align: center;
+	padding-top: 12px;
 }
 
 .titlepage .corpauthor {
@@ -188,66 +216,88 @@ h1 {
 }
 
 .section h1.title {
-	font-size: 1.6em;
-	padding: 0em;
+	font-size: 18px;
+	padding: 0px;
 	color: #336699;
 	text-align: left;
 	background: white;
 }
 
 h2 {
-	font-size:1.6em;
+	font-size: 20px;
+	margin-top: 30px;
 }
 
 
-h2.subtitle, h3.subtitle {
+div.subtitle, h2.subtitle, h3.subtitle {
 	margin-top: 1em;
 	margin-bottom: 1em;
-	font-size: 1.4em;
+	font-size: 18px;
 	text-align: center;
 }
 
-.preface > div > div > div > h2.title {
+div.subtitle {
+	color:  #336699;
+	font-weight: bold;
+}
+
+h1.legalnotice {
+	font-size: 24px;
+}
+
+.preface > div > div > div > h2.title,
+.preface > div > div > div > h1.title {
 	margin-top: 1em;
-	font-size: 2.0em;
+	font-size: 24px;
 }
 
 .appendix h2 {
-	margin-top: 1em;
-	font-size: 2.0em;
+	font-size: 24px;
 }
 
 
 
 h3 {
-	font-size:1.3em;
-	padding-top:0em;
-	padding-bottom:0em;
+	font-size: 14px;
+	padding-top:0px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 }
 h4 {
-	font-size:1.1em;
-	padding-top:0em;
-	padding-bottom:0em;
+	font-size: 14px;
+	padding-top:0px;
+	padding-bottom:0px;
 }
 
 h5 {
-	font-size:1em;
+	font-size: 14px;
 }
 
 h6 {
-	font-size:1em;
-}
-
-h5.formalpara {
-	font-size:1em;
-	margin-top:2em;
-	margin-bottom:.8em;
+	font-size: 14px;
+	margin-bottom: 0px;
 }
 
 .abstract h6 {
 	margin-top:1em;
 	margin-bottom:.5em;
-	font-size:2em;
+	font-size: 24px;
+}
+
+.index > div > div > div > h2.title {
+	font-size: 24px;
+}
+
+.chapter > div > div > div > h2.title {
+	font-size: 24px;
+}
+
+.section > div > div > div > h2.title {
+	font-size: 21px;
+}
+
+.section > div > div > div > h3.title {
+	font-size: 17px;
 }
 
 /*element rules*/
@@ -256,17 +306,16 @@ hr {
 	border-style:none;
 	border-top: 1px dotted #ccc;
 	width:100%;
-	margin-top: 3em;
 }
 
 /* web site rules */
 ul.languages, .languages li {
 	display:inline;
-	padding:0em;
+	padding:0px;
 }
 
 .languages li a {
-	padding:0em .5em;
+	padding:0px .5em;
 	text-decoration: none;
 }
 
@@ -302,17 +351,17 @@ ul.languages {
 }
 
 a.version {
-	font-size:2em;
+	font-size: 20px;
 	text-decoration:none;
 	width:100%;
 	display:block;
-	padding:1em 0em .2em 0em;
+	padding:1em 0px .2em 0px;
 	clear:both;
 }
 
 a.version:before {
 	content:"Version";
-	font-size:smaller;
+	font-size: smaller;
 }
 
 a.version:visited, a.version:link {
@@ -347,7 +396,7 @@ a.version:focus, a.version:hover {
 	position:absolute;
 	left:170px;
 	top:0px;
-	font-size:smaller;
+	font-size: smaller;
 }
 
 .books .pdf:link, .books .pdf:visited {
@@ -375,7 +424,7 @@ a.version:focus, a.version:hover {
 
 .products li a {
 	width:300px;
-	padding:.5em 0em;
+	padding:.5em 0px;
 }
 
 .products ul {
@@ -390,7 +439,7 @@ a.version:focus, a.version:hover {
 .revhistory table {
 	background-color:transparent;
 	border-color:#fff;
-	padding:0em;
+	padding:0px;
 	margin: 0;
 	border-collapse:collapse;
 	border-style:none;
@@ -398,7 +447,7 @@ a.version:focus, a.version:hover {
 
 .revhistory td {
 	text-align :left;
-	padding:0em;
+	padding:0px;
 	border: none;
 	border-top: 1px solid #fff;
 	font-weight: bold;
@@ -424,25 +473,32 @@ a.version:focus, a.version:hover {
 	text-align: center;
 }
 
-h3.author {
-	margin: 0em;
-	padding: 0em;
-	padding-top: 1em;
+div.author div.author,
+div.translator div.translator,
+div.othercredit div.othercredit,
+div.editor div.editor,
+div.contrib div.contrib {
+	margin: 0px;
+	padding: 0px;
+	margin-top: 12px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #336699;
 }
 
-.authorgroup h4 {
-	padding: 0em;
-	margin: 0em;
-	padding-top: 1em;
-	margin-top: 1em;
+div.editedby {
+	margin-top: 15px;
+	margin-bottom: -0.8em;
 }
 
-.author, 
-.editor, 
-.translator, 
-.othercredit,
-.contrib {
+div.authorgroup .author, 
+div.authorgroup.editor, 
+div.authorgroup.translator, 
+div.authorgroup.othercredit,
+div.authorgroup.contrib {
 	display: block;
+	font-size: 14px;
+	page-break-inside: avoid;
 }
 
 .revhistory .author {
@@ -455,8 +511,8 @@ h3.author {
 
 
 .othercredit {
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .releaseinfo {
@@ -485,7 +541,7 @@ h3.author {
 	padding-left: 2.6em;
 }
 
-.answer label, .question label {
+.answer .label, .question .label {
 	float:left;
 	font-weight:bold;
 }
@@ -624,27 +680,27 @@ ol.upperroman {
 
 dt {
 	font-weight:bold;
-	margin-bottom:0em;
-	padding-bottom:0em;
+	margin-bottom:0px;
+	padding-bottom:0px;
 }
 
 dd {
-	margin:0em;
+	margin:0px;
 	margin-left:2em;
-	padding-top:0em;
+	padding-top:0px;
 	padding-bottom: 1em;
 }
 
 li {
-	padding-top:0px;
-	margin-top:0em;
-	padding-bottom:0px;
-	margin-bottom:0.4em;
+	padding-top: 0px;
+	margin-top: 0px;
+	padding-bottom: 0px;
+/*	margin-bottom: 16px; */
 }
 
 li p, li div.para {
 	padding-top:0px;
-	margin-top:0em;
+	margin-top:0px;
 	padding-bottom:0px;
 	margin-bottom:0.3em;
 }
@@ -653,21 +709,26 @@ li p, li div.para {
 img {
 	display:block;
 	margin: 2em 0;
+	max-width: 100%;
 }
 
-.inlinemediaobject, .inlinemediaobject img {
+.inlinemediaobject,
+.inlinemediaobject img,
+.inlinemediaobject object {
 	display:inline;
-	margin:0em;
+	margin:0px;
+	overflow: hidden;
 }
 
-.figure img {
+.figure img,
+.mediaobject img {
 	display:block;
 	margin:0;
 	page-break-inside: avoid;
 }
 
 .figure .title {
-	margin:0em;
+	margin:0px;
 	margin-bottom:2em;
 	padding:0px;
 }
@@ -690,7 +751,7 @@ img {
 }
 
 .prompt {
-	padding:0em .3em;
+	padding:0px .3em;
 }
 
 /*user interface styles*/
@@ -700,22 +761,39 @@ img {
 .guibutton, .guilabel {
 	font-family: "liberation mono", "bitstream vera mono", "dejavu mono", monospace;
 	font-weight: bold;
-	white-space: nowrap;
 }
 
 .example {
 	background-color: #ffffff;
 	border-left: 3px solid #aaaaaa;
-	padding-top: 1em;
+	padding-top: 1px;
 	padding-bottom: 0.1em;
+	padding-left: 1em;
 }
 
-.example h6 {
-	padding-left: 10px;
+.equation {
+	border-left: 3px solid #aaaaaa;
+	background-color: #ffffff;
+	padding-top: 1px;
+	padding-bottom: 0.1em;
+	padding-left: 1em;
+}
+
+.equation-contents {
+	margin-left: 4em;
+}
+
+div.title {
+	margin-bottom: 1em;
+	font-weight: 14px;
+	font-weight: bold;
+	color: #336699;
+	page-break-inside: avoid;
+	page-break-after: avoid;
+	word-wrap: break-word;
 }
 
 .example-contents {
-	padding-left: 10px;
 	background-color: #ffffff;
 }
 
@@ -745,13 +823,26 @@ img {
 	font-weight: inherit;
 }
 
+.toc H1 {
+	font-weight: bold;
+}
+
+
+div.programlisting {
+	white-space: pre-wrap; /* css-3 */
+	white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
 pre {
 	font-family:"liberation mono", "bitstream vera mono", "dejavu mono", monospace;
 	display:block;
 	background-color: #f5f5f5;
 	color: #000000;
-	border: 1px solid #aaaaaa;
-	margin-bottom: 0.3em;
+/*	border: 1px solid #aaaaaa; */
+	margin-bottom: 1em;
 	padding:.5em 1em;
 	white-space: pre-wrap; /* css-3 */
 	white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
@@ -759,7 +850,21 @@ pre {
 	white-space: -o-pre-wrap; /* Opera 7 */
 	word-wrap: break-word; /* Internet Explorer 5.5+ */
 	font-size: 0.9em;
+	border-style:none;
+	box-shadow: 0 2px 5px #AAAAAA inset;
+	-moz-box-shadow:  0 2px 5px #AAAAAA inset;
+	-webkit-box-shadow: 0 2px 5px #AAAAAA inset;
+	-o-box-shadow: 0 2px 5px #AAAAAA inset;
 }
+
+body.pdf pre {
+	border: 1px solid #AAAAAA;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+}
+
 
 pre .replaceable, 
 pre .keycap {
@@ -767,7 +872,6 @@ pre .keycap {
 
 code {
 	font-family:"liberation mono", "bitstream vera mono", "dejavu mono", monospace;
-/*	white-space: nowrap;*/
 	white-space: pre-wrap;
 	word-wrap: break-word;
 	font-weight:bold;
@@ -780,6 +884,12 @@ code {
 	white-space: -pre-wrap; /* Opera 4-6 */
 	white-space: -o-pre-wrap; /* Opera 7 */
 	word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+code.email {
+	font-weight: normal;
+	font-family: "liberation sans", "Myriad ", "Bitstream Vera Sans", "Lucida Grande", "Luxi Sans", "Trebuchet MS", helvetica, verdana, arial, sans-serif;
+
 }
 
 /*Notifications*/
@@ -800,8 +910,8 @@ div.important:before {
 
 div.warning, div.note, div.important {
 	color: black;
-	margin: 0em;
-	padding: 0em;
+	margin: 0px;
+	padding: 0px;
 	background: none;
 	background-color: white;
 	margin-bottom: 1em;
@@ -809,26 +919,26 @@ div.warning, div.note, div.important {
 	page-break-inside: avoid;
 }
 
-div.warning h2, div.note h2,div.important h2 {
-	margin: 0em;
-	padding: 0em;
+div.admonition_header p {
+	margin: 0px;
+	padding: 0px;
 	color: #eeeeec;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	height: 1.4em;
 	line-height: 1.4em;
-	font-size: 1.4em;
+	font-size: 17px;
 	display:inline;
 }
 
 div.admonition_header {
 	clear: both;
-	margin: 0em;
-	padding: 0em;
-	margin-top: -3.3em;
+	margin: 0px;
+	padding: 0px;
+	margin-top: -40px;
 	padding-left: 58px;
-	line-height: 1.0em;
-	font-size: 1.0em;
+	line-height: 1.0px;
+	font-size: 1.0px;
 }
 
 div.warning div.admonition_header {
@@ -849,16 +959,16 @@ div.important div.admonition_header {
 div.warning p, div.warning div.para,
 div.note p, div.note div.para,
 div.important p, div.important div.para {
-	padding: 0em;
-	margin: 0em;
+	padding: 0px;
+	margin: 0px;
 }
 
 div.admonition {
 	border: none;
 	border-left: 1px solid #aaaaaa;
 	border-right: 1px solid #aaaaaa;
-	padding:0em;
-	margin:0em;
+	padding:0px;
+	margin:0px;
 	padding-top: 1.5em;
 	padding-bottom: 1em;
 	padding-left: 2em;
@@ -874,7 +984,7 @@ div.admonition {
 	display:block;
 	height:45px;
 	padding-bottom:1em;
-	margin:0em;
+	margin:0px;
 }
 
 #title a.left{
@@ -885,7 +995,7 @@ div.admonition {
 #title a.left img{
 	border:none;
 	float:left;
-	margin:0em;
+	margin:0px;
 	margin-top:.7em;
 }
 
@@ -896,7 +1006,7 @@ div.admonition {
 #title a.right img {
 	border:none;
 	float:right;
-	margin:0em;
+	margin:0px;
 	margin-top:.7em;
 }
 
@@ -906,12 +1016,16 @@ div.table {
 }
 
 table {
-	border:1px solid #6c614b;
+	border: 1px solid #444;
 	width:100%;
 	border-collapse:collapse;
+	table-layout: fixed;
+	word-wrap: break-word;
 }
 
-table.simplelist, .calloutlist table {
+table.blockquote,
+table.simplelist,
+.calloutlist table {
 	border-style: none;
 }
 
@@ -930,27 +1044,35 @@ table tr.even td {
 	background-color:#f5f5f5;
 }
 
+tr:nth-child(even) {
+	background-color: #eeeeee;
+
+}
+
+
 table th p:first-child, table td p:first-child, table  li p:first-child,
 table th div.para:first-child, table td div.para:first-child, table  li div.para:first-child {
-	margin-top:0em;
-	padding-top:0em;
+	margin-top:0px;
+	padding-top:0px;
 	display:inline;
 }
 
 th, td {
 	border-style:none;
 	vertical-align: top;
-	border: 1px solid #000;
+/* 	border: 1px solid #000; */
 }
 
-.simplelist th, .simplelist td {
+.blockquote td, 
+.simplelist th,
+.simplelist td {
 	border: none;
 }
 
 table table td {
 	border-bottom:1px dotted #aaa;
 	background-color:white;
-	padding:.6em 0em;
+	padding:.6em 0px;
 }
 
 table table {
@@ -1003,7 +1125,7 @@ th.dbkey {
 span.book {
 	margin-top:4em;
 	display:block;
-	font-size:11pt;
+	font-size: 11pt;
 }
 
 span.book a{
@@ -1011,7 +1133,6 @@ span.book a{
 }
 span.chapter {
 	display:block;
-	margin-top:0.5em;
 }
 
 table.simplelist td, .calloutlist table td {
@@ -1049,12 +1170,21 @@ table.simplelist td, .calloutlist table td {
 	color:#333;
 }
 
+dl {
+	margin-top: 0px;
+	margin-left: 28px;
+}
+
+.toc dl {
+	margin-left: 10px;
+}
+
 /*index*/
 .glossary h3, 
 .index h3 {
-	font-size: 2em;
+	font-size: 20px;
 	color:#aaa;
-	margin:0em;
+	margin:0px;
 }
 
 .indexdiv {
@@ -1071,7 +1201,7 @@ table.simplelist td, .calloutlist table td {
 .index dl dl dt {
 	color:#777;
 	font-weight:normal;
-	padding-top:0em;
+	padding-top:0px;
 }
 
 .index dl dl dt:before {
@@ -1081,21 +1211,23 @@ table.simplelist td, .calloutlist table td {
 
 /*changes*/
 .footnote {
-	font-size: .7em;
-	margin:0em;
-	color:#222;
+	font-size: 10px;
+	margin: 0px;
+	color: #222;
+}
+
+.footnotes {
+	margin-bottom: 60px;
 }
 
 table .footnote {
 }
 
 sup {
-	color:#999;
-	margin:0em;
-	padding:0em;
-	line-height: .4em;
-	font-size: 1em;
-	padding-left:0em;
+	margin:0px;
+	padding:0px;
+	font-size: 10px;
+	padding-left:0px;
 }
 
 .footnote {
@@ -1103,10 +1235,26 @@ sup {
 }
 
 .footnote sup  {
-	color:#e3dcc0;
-	position:absolute;
+	color: black;
 	left: .4em;
 }
+
+.footnote a:link,
+.footnote a:visited {
+	text-decoration:none;
+	border: none;
+}
+
+.footnote .para sup  {
+/*	position:absolute; */
+	vertical-align:text-bottom;
+}
+
+a.footnote {
+	padding-right: 0.5em;
+	text-decoration:none;
+	border: none;
+} 
 
 .footnote sup a:link, 
 .footnote sup a:visited {
@@ -1119,11 +1267,11 @@ sup {
 }
 
 .footnote p,.footnote div.para {
-	padding-left:2em;
+	padding-left:1em;
 }
 
 .footnote a:link, 
-.footnote a:visited {
+.footnote a:visited before{
 	color:#00537c;
 }
 
@@ -1131,18 +1279,51 @@ sup {
 }
 
 /**/
-div.chapter {
-	margin-top:3em;
-	page-break-inside: avoid;
+.pdf-break {
+	page-break-before: always;
 }
 
-div.preface {
+div.legalnotice {
+	page-break-before: always;
+}
+
+div.abstract {
+	page-break-before: always;
+/*	page-break-after: always;*/
+}
+
+div.chapter {
+	page-break-before: always;
+}
+
+
+div.titlepage {
 	page-break-inside: avoid;
+	page-break-after: avoid;
+}
+
+div.preface, div.part {
+	page-break-before: always;
+}
+
+div.appendix {
+	page-break-before: always;
 }
 
 div.section {
-	margin-top:1em;
 	page-break-inside: auto;
+	page-break-before: auto;
+	page-break-after: auto;
+}
+
+
+dt.varlistentry {
+	page-break-inside: avoid;
+	page-break-after: avoid;
+}
+
+dd {
+	page-break-before: avoid;
 }
 
 div.note .replaceable, 
@@ -1154,9 +1335,9 @@ div.warning .keycap
 {
 }
 
-ul li p:last-child, ul li div.para:last-child {
-	margin-bottom:0em;
-	padding-bottom:0em;
+ul li p:last-child, ul li para:last-child {
+	margin-bottom:0px;
+	padding-bottom:0px;
 }
 
 /*document navigation*/
@@ -1168,21 +1349,29 @@ ul li p:last-child, ul li div.para:last-child {
 
 .docnav {
 	list-style:none;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 	position:relative;
 	width:100%;
 	padding-bottom:2em;
 	padding-top:1em;
+        height:2.5em;
+        line-height:2.5em;
+/*
 	border-top:1px dotted #ccc;
+        background-color: rgba(240, 240, 240, 0.9);
+-webkitbox-shadow: 0px .15em .5em rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px .15em .5em rgba(0,0,0,0.2);
+       box-shadow: 0px .15em .5em rgba(0,0,0,0.2);
+*/
 }
 
 .docnav li {
 	list-style:none;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 	display:inline;
-	font-size:.8em;
+	font-size: 14px;
 }
 
 .docnav li:before {
@@ -1191,12 +1380,19 @@ ul li p:last-child, ul li div.para:last-child {
 
 .docnav li.previous, .docnav li.next {
 	position:absolute;
-	top:1em;
+	top:1.5em;
 }
 
 .docnav li.up, .docnav li.home {
-	margin:0em 1.5em;
+	margin:0px 1.5em;
 }
+
+.docnav.top li.home {
+	color: #336699;
+	font-size: 22pt;
+	font-weight: bold;
+}
+
 
 .docnav li.previous {
 	left:0px;
@@ -1209,8 +1405,8 @@ ul li p:last-child, ul li div.para:last-child {
 }
 
 .docnav li.previous strong, .docnav li.next strong {
-	height:22px;
-	display:block;
+	height: 17px;
+	display: block;
 }
 
 .docnav {
@@ -1219,34 +1415,30 @@ ul li p:last-child, ul li div.para:last-child {
 }
 
 .docnav li.next a strong {
-	background:  url(../images/stock-go-forward.png) top right no-repeat;
+	background:  url(../images/stock-go-forward.png) right 120% no-repeat;
 	padding-top:3px;
 	padding-bottom:4px;
 	padding-right:28px;
-	font-size:1.2em;
 }
 
 .docnav li.previous a strong {
-	background: url(../images/stock-go-back.png) top left no-repeat;
+	background: url(../images/stock-go-back.png) left 120% no-repeat;
 	padding-top:3px;
 	padding-bottom:4px;
 	padding-left:28px;
 	padding-right:0.5em;
-	font-size:1.2em;
 }
 
 .docnav li.home a strong {
 	background: url(../images/stock-home.png) top left no-repeat;
 	padding:5px;
 	padding-left:28px;
-	font-size:1.2em;
 }
 
 .docnav li.up a strong {
 	background: url(../images/stock-go-up.png) top left no-repeat;
 	padding:5px;
 	padding-left:28px;
-	font-size:1.2em;
 }
 
 .docnav a:link, .docnav a:visited {
@@ -1258,7 +1450,7 @@ ul li p:last-child, ul li div.para:last-child {
 }
 
 .docnav a {
-	max-width: 10em;
+	max-width: 10px;
 	overflow:hidden;
 }
 
@@ -1277,25 +1469,25 @@ ul.docnav {
 /* Reports */
 .reports ul {
 	list-style:none;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .reports li{
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .reports li.odd {
 	background-color: #eeeeee;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .reports dl {
 	display:inline;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 	float:right;
 	margin-right: 17em;
 	margin-top:-1.3em;
@@ -1303,21 +1495,21 @@ ul.docnav {
 
 .reports dt {
 	display:inline;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .reports dd {
 	display:inline;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 	padding-right:.5em;
 }
 
 .reports h2, .reports h3{
 	display:inline;
 	padding-right:.5em;
-	font-size:10pt;
+	font-size: 14px;
 	font-weight:normal;
 }
 
@@ -1326,16 +1518,16 @@ ul.docnav {
 	float:right;
 	width:16em;
 	background:#c00 url(../images/shine.png) top left repeat-x;
-	margin:0em;
+	margin:0px;
 	margin-top:-1.3em;
-	padding:0em;
+	padding:0px;
 	border:none;
 }
 
 /*uniform*/
 body.results, body.reports {
 	max-width:57em ;
-	padding:0em;
+	padding:0px;
 }
 
 /*Progress Bar*/
@@ -1365,25 +1557,25 @@ div.progress span.fuzzy {
 
 .results ul {
 	list-style:none;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .results li{
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .results li.odd {
 	background-color: #eeeeee;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .results dl {
 	display:inline;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 	float:right;
 	margin-right: 17em;
 	margin-top:-1.3em;
@@ -1391,21 +1583,21 @@ div.progress span.fuzzy {
 
 .results dt {
 	display:inline;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 }
 
 .results dd {
 	display:inline;
-	margin:0em;
-	padding:0em;
+	margin:0px;
+	padding:0px;
 	padding-right:.5em;
 }
 
 .results h2, .results h3 {
 	display:inline;
 	padding-right:.5em;
-	font-size:10pt;
+	font-size: 14px;
 	font-weight:normal;
 }
 
@@ -1414,9 +1606,9 @@ div.progress span.fuzzy {
 	float:right;
 	width:16em;
 	background:#c00 url(../images/shine.png) top left repeat-x;
-	margin:0em;
+	margin:0px;
 	margin-top:-1.3em;
-	padding:0em;
+	padding:0px;
 	border:none;
 }
 
@@ -1444,7 +1636,7 @@ pre {
 	background-color: transparent;
 	margin-top: 1em;
 	margin-bottom: 1em;
-	font-size: 1.4em;
+	font-size: 20px;
 	font-weight: bold;
 	text-align: center;
 }
@@ -1491,15 +1683,15 @@ dl:after {
 }
 
 .toc dd {
-	padding-bottom: 0em;
+	padding-bottom: 0px;
 	margin-bottom: 1em;
 	padding-left: 1.3em;
-	margin-left: 0em;
+	margin-left: 0px;
 }
 
 div.toc > dl > dt {
-	padding-bottom: 0em;
-	margin-bottom: 0em;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 	margin-top: 1em;
 }
 
@@ -1513,16 +1705,23 @@ div.toc > dl > dt {
 }
 
 .calloutlist img, .callout {
-	padding: 0em;
-	margin: 0em;
+	padding: 0px;
+	margin: 0px;
 	width: 12pt;
 	display: inline;
 	vertical-align: middle;
 }
 
+li.step > a:first-child {
+	display: none;
+}
+
 .stepalternatives {
 	list-style-image: none;
-	list-style-type: none;
+	list-style-type: upper-alpha;
+}
+.task {
+/*	page-break-inside: avoid; */
 }
 
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.9. libjn:values</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 3.2.1" /><meta name="package" content="JSONiq_Extension_to_XQuery-Specification-1.0-en-US-1-3" /><link rel="home" href="index.html" title="Specification" /><link rel="up" href="section-function-library.html" title="Chapter 8. Function library" /><link rel="prev" href="ch08s08.html" title="8.8. libjn:remove-keys" /><link rel="next" href="section-combining-xml-and-json.html" title="Chapter 9. Combining XML and JSON" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="ch08s08.html"><strong>Prev</strong></a></li><li class="home">Specification</li><li class="next"><a accesskey="n" href="section-combining-xml-and-json.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm139692552654976"></a>8.9. libjn:values</h2></div></div></div><div class="para">
+			This function returns all values in the supplied objects. Non-objects are ignored.
+		</div><pre class="programlisting">
+        declare function libjn:values($sequence as item()*) as item()* {
+          for $item in $sequence
+          return $item() ! $item(.)
+        };
+</pre><div class="example"><a id="idm139692552653104"></a><p class="title"><strong>Example 8.9. Extracting all values from objects.</strong></p><div class="example-contents"><div class="para">
+				Query:
+			</div><pre class="programlisting">libjn:values(
+  (
+    {
+      "Captain" : "Kirk",
+      "First Officer" : "Spock",
+      "Engineer" : "Scott"
+    },
+    [ 1, 2, 3, 4 ]
+    {
+      "Captain" : "Archer",
+      "Engineer" : "Trip",
+    },
+    true(),
+    1,
+    jn:null()
+  )
+)
+</pre><div class="para">
+				Result:
+			</div><pre class="programlisting">
+Kirk Spock Scott Archer Trip
+</pre></div></div><br class="example-break" /></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s08.html"><strong>Prev</strong>8.8. libjn:remove-keys</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="section-combining-xml-and-json.html"><strong>Next</strong>Chapter 9. Combining XML and JSON</a></li></ul></body></html>
