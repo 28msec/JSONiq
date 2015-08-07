@@ -130,7 +130,7 @@ ObjectConstructor
          ::=  "{" ( PairConstructor ("," PairConstructor)* )? "}"
          | "{|" Expr "|}"
 PairConstructor
-         ::=  ( ExprSingle | NCName ) ":" ExprSingle
+         ::=  ( ExprSingle | NCName ) (":" | "?") ExprSingle
 ArrayConstructor
          ::=  "[" Expr? "]"
 SequenceType
