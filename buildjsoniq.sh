@@ -1,5 +1,5 @@
 #!/bin/bash
-SPEC_PATH=/Users/systemsgroup/code/box/JSONiq-specs
+SPEC_PATH=/home/gislenius/github/JSONiq
 
 if [ -z $1 ]
 then
@@ -8,34 +8,19 @@ else
   SPECS=$1
 fi
 
-cd /Users/systemsgroup/code/box
-
-echo --------------------
-echo Executing queries...
-echo --------------------
-cd $SPEC_PATH/JSONiq
-zorba -f -q compute.xq
-cd $SPEC_PATH/JSONiq-usecases
-zorba -f -q compute.xq
-cd $SPEC_PATH/Introduction_to_JSONiq
-zorba -f -q compute.xq
-
-echo ------------------
-echo Compiling books...
-echo ------------------
-cd /Users/systemsgroup/code/box
-
-for spec in "${SPECS[@]}"
-do	
-  vagrant ssh -c "cd /vagrant/JSONiq-specs/$spec; publican build -formats pdf,html,html-single --langs en-US";
-done
-
-echo -------------------
-echo Creating archive...
-echo -------------------
-
 for spec in "${SPECS[@]}"
 do
-  rm -rf $SPEC_PATH/web/docs/$spec/*
-  cp -r $SPEC_PATH/$spec/tmp/en-US/* $SPEC_PATH/web/docs/$spec/
+  if [ $spec = "JSONiq" -o $spec = "JSONiq-usecases" -o $spec = "Introduction_to_JSONiq" ]
+  then
+    echo Executing queries...
+    docker run -v $SPEC_PATH/$spec:/queries zorba -f -q compute.xq
+  fi
+  cd $SPEC_PATH/$spec;
+  echo Compiling book: $spec...
+  publican build -formats pdf,html,html-single --langs en-US;
 done
+#for spec in "${SPECS[@]}"
+#do
+  #rm -rf $SPEC_PATH/web/docs/$spec/*
+  #cp -r $SPEC_PATH/$spec/tmp/en-US/* $SPEC_PATH/web/docs/$spec/
+#done

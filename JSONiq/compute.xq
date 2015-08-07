@@ -1,8 +1,8 @@
 xquery version "3.0";
 import module namespace file = "http://expath.org/ns/file";
-import module namespace reflection = "http://www.zorba-xquery.com/modules/reflection";
-import module namespace ddl = "http://www.zorba-xquery.com/modules/store/dynamic/collections/ddl";
-import module namespace dml = "http://www.zorba-xquery.com/modules/store/dynamic/collections/dml";
+import module namespace reflection = "http://zorba.io/modules/reflection";
+import module namespace ddl = "http://zorba.io/modules/store/dynamic/collections/ddl";
+import module namespace dml = "http://zorba.io/modules/store/dynamic/collections/dml";
 
 declare namespace err = "http://www.w3.org/2005/xqt-errors";
 declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
@@ -43,12 +43,12 @@ let $output := copy $input := $xml
                       let $query := replace($query, 'import module namespace other= "http://www.example.com/my-module";', 'import module namespace other= "http://www.example.com/my-module" at "library-module.xquery";')
                       return insert nodes <formalpara><title>Result (run with Zorba):</title>
                                            <para>{try { reflection:eval("jsoniq version &quot;3.0&quot;; " ||
-                                                                                 'import module namespace dml = "http://www.zorba-xquery.com/modules/store/dynamic/collections/dml";' ||
+                                                                                 'import module namespace dml = "http://zorba.io/modules/store/dynamic/collections/dml";' ||
                                                                                  $query) ! serialize(.) } catch * { "An error was raised: " || $err:description } }</para>
                                            </formalpara> as last into $example
                return $input
 let $text := serialize($output, <output:serialization-parameters/>)
 let $text := replace($text, '([a-zA-Z0-9-]*)#([0-9])', '<ulink url="http://www.zorba-xquery.com/html/modules/w3c/xpath#$1-$2">$1#$2</ulink>')
-return file:write("en-US/" || $f, $text, <output:serialization-parameters><output:method value="text"/></output:serialization-parameters>)
+return file:write-text("en-US/" || $f, $text)
 ,
 dml:collection(xs:QName("one-object"))

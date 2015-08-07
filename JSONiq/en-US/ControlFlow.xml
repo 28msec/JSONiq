@@ -61,7 +61,7 @@ if (()) then { "foo" : "yes" } else { "foo" : "no" }
       <programlisting>
 if (({ "foo" : "bar" }, [ 1, 2, 3, 4])) then { "foo" : "yes" } else { "foo" : "no" }
         </programlisting>
-    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: "[JSONXQType object]": invalid argument type for function fn:boolean()</para></formalpara></example>
+    <formalpara><title>Result (run with Zorba):</title><para>{ "foo" : "yes" }</para></formalpara></example>
     <para>Note that the else clause is mandatory (but can be the empty sequence)</para>
     <example>
       <title>A conditional expression</title>
@@ -164,6 +164,6 @@ return try { $x }
       <programlisting>
 try { x } catch * { "syntax error" } 
       </programlisting>
-    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: invalid expression: syntax error, a path expression cannot begin with an axis step</para></formalpara></example>
+    <formalpara><title>Result (run with Zorba):</title><para>syntax error</para></formalpara></example>
   </section>
 </section>

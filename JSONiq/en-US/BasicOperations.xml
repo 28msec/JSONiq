@@ -320,7 +320,7 @@ boolean("foo"), boolean("")
       <programlisting>
 { "foo" : "bar" } or false
       </programlisting>
-    <formalpara><title>Result (run with Zorba):</title><para>An error was raised: "[JSONXQType object]": invalid argument type for function fn:boolean()</para></formalpara></example>
+    <formalpara><title>Result (run with Zorba):</title><para>true</para></formalpara></example>
     <para>If the input sequence has more than one item, and the first item is not an object or array, an error is raised.</para>
     <example>
       <title>Error upon conversion of a sequence of more than one item, not beginning with a JSON item, to a boolean</title>

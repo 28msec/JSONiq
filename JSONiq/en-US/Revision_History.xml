@@ -3,7 +3,7 @@
 	<simpara>
 		<revhistory>
 		  <revision>
-		    <revnumber>1.0.11</revnumber>
+		    <revnumber>1-11</revnumber>
 		    <date>Tuesday Aug 13th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -25,7 +25,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.10</revnumber>
+		    <revnumber>1-10</revnumber>
 		    <date>Thursday Aug 8th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -44,7 +44,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.9</revnumber>
+		    <revnumber>1-9</revnumber>
 		    <date>Monday July 22th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -64,7 +64,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.8</revnumber>
+		    <revnumber>1-8</revnumber>
 		    <date>Tuesday June 18th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -82,7 +82,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.7</revnumber>
+		    <revnumber>1-7</revnumber>
 		    <date>Monday May 27th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -97,7 +97,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.6</revnumber>
+		    <revnumber>1-6</revnumber>
 		    <date>Friday May 24th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -111,7 +111,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.5</revnumber>
+		    <revnumber>1-5</revnumber>
 		    <date>Thursday May 2nd, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -126,7 +126,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.4</revnumber>
+		    <revnumber>1-4</revnumber>
 		    <date>Monday April 8th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -141,7 +141,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.3</revnumber>
+		    <revnumber>1-3</revnumber>
 		    <date>Thursday April 4th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -155,7 +155,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.2</revnumber>
+		    <revnumber>1-2</revnumber>
 		    <date>Thursday April 4th, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
@@ -171,7 +171,7 @@
 		    </revdescription>
 		  </revision>
 		  <revision>
-		    <revnumber>1.0.1</revnumber>
+		    <revnumber>1-1</revnumber>
 		    <date>Tuesday April 2nd, 2013</date>
 		    <author>
 		      <firstname>Ghislain</firstname>
