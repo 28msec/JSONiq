@@ -1060,7 +1060,7 @@ ObjectConstructor ::=  "{" PairConstructorList? "}"
 
 PairConstructorList ::= PairConstructor ("," PairConstructor)*
 
-PairConstructor ::=  (ExprSingle | NCName) ":" ExprSingle
+PairConstructor ::=  (ExprSingle | NCName) (":" | "?:") ExprSingle
       
 ArrayConstructor ::=  "[" Expr? "]"
       
