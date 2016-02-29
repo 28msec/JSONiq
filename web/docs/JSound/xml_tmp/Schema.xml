@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Schema">
+  <title>Schema Documents</title>
+  <section>
+    <title>Scope</title>
+    <para>Schema Documents have a namespace and define multiple Types in this namespace.</para>
+  </section>
+  <section>
+    <title>Schema Document properties</title>
+    <para>Schema Documents are (serialized) JSON objects which have the following properties</para>
+    <itemizedlist>
+      <listitem>
+        <para>$namespace (JSON string): the namespace (URI) in which the types defined in this Schema Document live.</para>
+      </listitem>
+      <listitem>
+        <para>$about (JSON value): free content (documentation, comments, ...).</para>
+      </listitem>
+      <listitem>
+        <para>$imports (JSON array of objects) : used to import Types located in other Schema Documents (i.e., in other Namespaces).
+        Imports are not recursive, i.e., importing a Schema Document does not import the further Schema Documents that it may itself import.</para>
+        <para>Each JSON object in this JSON array has the following properties:</para>
+        <itemizedlist>
+          <listitem>
+            <para>$namespace (JSON string): the namespace in which the Types being imported live.</para>
+          </listitem>
+          <listitem>
+            <para>$location (JSON string): a hint about where to find the Schema Document for this namespace.</para>
+          </listitem>
+          <listitem>
+            <para>$prefix (JSON string): the prefix used in Qualified Names to refer to Types in the above namespace. Must not contain a colon.</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>$types (JSON array of objects representing Types) : the Types defined in this document. How these objects look like is explained in subsequent sections.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
+    <title>Examples</title>
+    <para>This Schema Document defines two Atomic Types in the "http://www.example.com/my-schema" namespace and with the local names "small-number" and "big-number".</para>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "atomic",
+      "$name" : "small-number",
+      "$baseType" : "integer",
+      "$enumeration" : [ 1, 2, 4, 8 ]
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "Q{http://www.example.com/my-schema}big-number",
+      "$baseType" : "integer",
+      "$enumeration" : [ 1000, 2000, 4000, 8000 ]
+    }
+  ]
+}
+    </programlisting>
+    <para>This Schema Document defines one Object Type in the "http://www.example.com/my-new-schema" namespace named "small-and-big".</para>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-new-schema",
+  "$imports" : [
+    {
+      "$namespace" : "http://www.example.com/my-schema",
+      "$prefix" : "other"
+    }
+  ],
+  "$types" : [
+    {
+      "$kind" : "object",
+      "$name" : "small-and-big",
+      "$content" : {
+        "small" : { "$type" : "other:small-number" },
+        "big" : { "$type" : "other:big-number", "$optional" : true }
+      }
+    }
+  ]
+}
+    </programlisting>
+    <para>Given this set of two Schema Documents, the following JSON object:</para>
+    <programlisting>
+{
+  "small" : 4
+}
+    </programlisting>
+    <para>is valid against the Type named "Q{http://www.example.com/my-new-schema}small-and-big".</para>
+    <para>This JSON object is not valid, because the value associated with "big" is not in the value space of the
+    Type "Q{http://www.example.com/my-schema}big-number".</para>
+    <programlisting>
+{
+  "small" : 4,
+  "big" : 3
+}
+    </programlisting>
+  </section>
+  <section>
+    <title>Type Names and references to Types</title>
+    <para>Type Names are Qualified Names, made of a namespace and of a local name, as described in the former chapter.</para>
+    <para>Types names are used to (optionally) name Types, or to refer to another Type as a base type.</para>
+    <para>
+      References to Types that are defined in the same Schema Document can be referred to with no prefix as well: the namespace is that of the defining Schema Document.
+      If there is a collision with Builtin Type names, the locally defined Type has precedence (the Builtin Type is hidden).
+    </para>
+  </section>
+  <section>
+    <title>Types</title>
+    <para>
+      There are four kinds of Types: atomic, object, array and union.
+    </para>
+    <para>
+      Types are either Builtin, in which case their name is in no namespace, or Derived.
+    </para>
+    <para>The topmost Type is builtin and is named "item".</para>
+    <para>The topmost Object Type is builtin and is named "object".</para>
+    <para>The topmost Array Type is builtin and is named "array".</para>
+    <para>The topmost Atomic Type is builtin and is named "atomic". There are many further Builtin Atomic Types.</para>
+    <para>
+      Derived Types are always defined by restricting the value space of a
+      <emphasis>base type</emphasis> by means of <emphasis>facets</emphasis>. They have a JSON object representation.
+    </para>
+    <para>
+      Derived Object Types are always directly derived from "object".
+      Derived Array Types are always directly derived from "array".
+      Derived Union Types are always directly derived from "item".
+      Derived Atomic Types may be derived from any other Atomic Type.
+    </para>
+  </section>
+  <section>
+    <title>Derived Type properties</title>
+    <para>A Derived Type has the following properties:</para>
+    <itemizedlist>
+      <listitem>
+        <para>$kind (JSON string): the kind of the Type. One of "atomic, "object", "array", "union".</para>
+      </listitem>
+      <listitem>
+        <para>$name (JSON string): a string containing the Qualified Name (as defined above) of this Type.</para>
+      </listitem>
+      <listitem>
+        <para>$baseType (JSON string): a string containing the Qualified Name of the Type which is the base type of this Type.</para>
+      </listitem>
+      <listitem>
+        <para>$about (JSON value): free content (documentation, comments, ...).</para>
+      </listitem>
+      <listitem>
+        <para>various facets properties. Which facets are available defines on the $kind of the Type.</para>
+      </listitem>
+    </itemizedlist>
+    <para>There are the following constraints on these properties:</para>
+    <itemizedlist>
+      <listitem>
+        <para>$name is optional and must live in the namespace of the Schema Document in which this Type is defined.</para>
+      </listitem>
+      <listitem>
+        <para>A prefix may not appear twice in the $imports.</para>
+      </listitem>
+      <listitem>
+        <para>Types defined directly in the top-level $types array must be named.</para>
+      </listitem>
+      <listitem>
+        <para>$baseType must refer to a known Type - builtin, in the same Schema Document or in an imported Schema Document. In particular,
+        if a prefix is used, it must be bound to an imported namespace.</para>
+      </listitem>
+      <listitem>
+        <para>If $kind is "object", $baseType must be "object" if provided.</para>
+      </listitem>
+      <listitem>
+        <para>If $kind is "array", $baseType must be "array" if provided.</para>
+      </listitem>
+      <listitem>
+        <para>If $kind is "union", $baseType must be "item" if provided.</para>
+      </listitem>
+      <listitem>
+        <para>If $kind is "atomic", $baseType must be the Qualified Name of an existing Atomic Type.</para>
+      </listitem>
+    </itemizedlist>
+    <para>Here is an example of an invalid Schema Document, because it does not fulfill many of the above constraints.</para>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "atomic",
+      "$name" : "type1",
+      "$baseType" : "unbound:type", (: prefix is not bound :)
+      "$maxInclusive" : 4
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "Q{http://www.example.com/other}type2", (: the namespace must match that of the Schema document :)
+      "$baseType" : "integer",
+      "$maxInclusive" : 4
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "Q{http://www.example.com/my-schema}type3",
+      "$baseType" : "object", (: base type MUST also be an atomic type :)
+      "$maxInclusive" : 4
+    },
+    {
+      "$kind" : "object",
+      "$name" : "object1",
+      "$baseType" : "type1" (: base type MUST be "object":)
+      "$content" : {}
+    },
+    {
+      "$kind" : "object",
+      "$name" : "object2",
+      "$baseType" : "object1" (: base type MUST be "object":)
+    }
+  ]
+}
+    </programlisting>
+    <para>There are two facets common to all types:</para>
+    <itemizedlist>
+      <listitem>
+        <para>$enumeration (array of JSON values): Constrains a value space to a specified set of values.</para>
+      </listitem>
+      <listitem>
+        <para>$constraints (array of JSON strings): Constrains a value space to the values for which a set of JSONiq queries evaluates to true. In these JSONiq queries, the context item is bound to the Serialized Instance being validated, after parsing.</para>
+      </listitem>
+    </itemizedlist>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "object"
+      (: "$baseType" : "object" is implicit :)
+      "$name" : "two-objects",
+      "$enumeration" : [ { "foo" : "bar" }, {} ] (: only these two objects :)
+    },
+    {
+      "$kind" : "array"
+      (: "$baseType" : "array" is implicit :)
+      "$name" : "uniform-array",
+      "$constraints" : [ "every $i in 1 to size($$) satisfies deep-equals($$($i), $$(1))" ]  (: all members must be the same :)
+    },
+  ]
+}
+    </programlisting>
+    <para>The following JSON object is valid against Q{http://www.example.com/my-schema}two-objects.</para>
+    <programlisting>
+{ "foo" : "bar" }
+    </programlisting>
+    <para>The following JSON array is valid against Q{http://www.example.com/my-schema}uniform-array.</para>
+    <programlisting>
+[ 42, 42, 42 ]
+    </programlisting>
+  </section>
+</chapter>

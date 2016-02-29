@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<bookinfo id="book-JSound-JSound">
+	<title>JSound</title>
+	 <subtitle>short description</subtitle>
+	 <productname>JSound - Sound JSON data</productname>
+	 <productnumber>0.1</productnumber>
+	 <edition>0.1.1</edition>
+	 <pubsnumber>0</pubsnumber>
+	 <abstract>
+		<para>
+			This document is a description of the JSound, the JSON schema definition language. It describes how to declare constraints on the structure of JSON documents.
+		</para>
+
+	</abstract>
+	 <corpauthor>
+		<inlinemediaobject>
+			<imageobject>
+				<imagedata fileref="images/28.png" format="PNG" width="444" />
+			</imageobject>
+
+		</inlinemediaobject>
+
+	</corpauthor>
+	 <!--   <xi:include href="Common_Content/Legal_Notice.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />   --> <xi:include href="Author_Group.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</bookinfo>
+

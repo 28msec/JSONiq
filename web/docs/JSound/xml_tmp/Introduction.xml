@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Introduction">
+	<title>Introduction</title>
+  <para>
+    Over the past decade, the need for more flexible and scalable databases has greatly increased. The NoSQL universe
+    brings many new ideas on how to build both scalable data storage and scalable computing infrastructures.
+  </para>
+  <para>
+    XML and <ulink
+      url="http://www.json.org/">JSON</ulink> are probably the most popular two data formats that emerged. While XML reached a level of maturity
+    that gives it an enterprise-ready status, JSON databases are still in their early stages. Scalable data stores
+    (like <ulink
+      url="http://www.mongodb.org/">MongoDB</ulink>) are already available. <ulink
+        url="http://www.jsoniq.org/">JSONiq</ulink> brings SQL-like query capabilities to JSON. The last missing piece
+    for a full-fledged JSON database is a way to make sure that the data stored is consistent and sound. This is where
+    schemas come into play.
+  </para>
+  <para>
+    Many lessons can be learned from 40 years of relational databases history and 15 years of XML.
+    The goal of this document is to introduce a schema language, JSound, which is much simpler than XML Schema, just like JSON syntax is
+    much simpler than XML syntax.
+  </para>
+  
+	<section>
+		<title>Requirements</title>
+		<para>
+      The JSound schema definition language is based on the following requirements:
+		</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          A schema document must be a well-formed JSON document in the sense that it parses against the JSON grammar.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          A schema document must be valid in the sense that there is a JSound metaschema document against which all
+          schema documents (including itself) are valid.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+        While the schema definition language is greatly inspired from XML Schema, it must avoid its complexity. It must
+        be simpler and more readable.
+      </para>
+      </listitem>
+      <listitem>
+        <para>
+          JSound must support most of the <ulink
+            url="http://www.w3.org/TR/xmlschema11-2/#built-in-datatypes">XML Schema primitive
+            atomic types</ulink>, as many of them are very useful and completely orthogonal to XML.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          JSound must avoid the XML Schema model of restriction/extension of structured types. Instead, it must
+          support a different model of subtyping based on classical object-oriented inheritance. In JSound, a subtype's value space
+          must always be a subset of its base type's value space.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          It must be possible to mark string/value pairs in an object type as optional or to specify a
+          default value in case of absence.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          It should be possible, given a JSON document, to turn it into a schema against which it is valid with minimal
+          changes.
+        </para>
+      </listitem>
+    </itemizedlist>
+	</section>
+
+</chapter>

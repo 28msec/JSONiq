@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.4. Atomic facets</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound-JSound-0.1-en-US-0.1.3-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="chap-Atomic.html" title="Chapter 4. Atomic Types" /><link rel="prev" href="ch04s03.html" title="4.3. Builtin Atomic Types" /><link rel="next" href="chap-Object.html" title="Chapter 5. Object Types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chap-Object.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm43830496">4.4. Atomic facets</h2></div></div></div><div class="para">
+			Restriction is done using the general facets, or the following atomic facets (they must be available for the base type).
+		</div><div class="para">
+			These facets are defined in XML Schema 1.1. For convenience, the summary from the XML Schema 1.1 specification is provided below. Which primitive type has which facets is defined in XML Schema 1.1 as well.
+		</div><div class="para">
+			The following atomic facets are available for the primitive types string, anyURI, base64Binary, hexBinary:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-length">$length</a> (integer): Constraining a value space to values with a specific number of units of length, where units of length varies depending on the base type.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-minLength">$minLength</a> (integer): Constraining a value space to values with at least a specific number of units of length, where units of length varies depending on the base type.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-maxLength">$maxLength</a> (integer): Constraining a value space to values with at most a specific number of units of length, where units of length varies depending on the base type.
+				</div></li></ul></div><div class="para">
+			The following atomic facets are available for the primitive types date, dateTime, time, gYear, gYearMonth, gMonth, gMonthDay, gDay, duration, decimal, double, float:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-maxInclusive">$maxInclusive</a> (atomic): Constraining a value space to values with a specific inclusive upper bound.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-maxExclusive">$maxExclusive</a> (atomic): Constraining a value space to values with a specific exclusive upper bound.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-minExclusive">$minExclusive</a> (atomic): Constraining a value space to values with a specific exclusive lower bound.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-minInclusive">$minInclusive</a> (atomic): Constraining a value space to values with a specific inclusive lower bound.
+				</div></li></ul></div><div class="para">
+			The following atomic facets are available for the primitive type decimal:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-totalDigits">$totalDigits</a> (integer): Restricting the magnitude and arithmetic precision of values in the value spaces of decimal and datatypes derived from it.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-fractionDigits">$fractionDigits</a> (integer): Placing an upper limit on the arithmetic precision of decimal values.
+				</div></li></ul></div><div class="para">
+			The following atomic facets are available for the primitive types date, dateTime, time:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-explicitTimezone">$explicitTimezone</a> ("required", "prohibited" or "optional"): Requiring or prohibiting the time zone offset in date/time datatypes.
+				</div></li></ul></div><div class="para">
+			The following atomic facets are available for all primitive types (including boolean and null):
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#rf-pattern">$pattern</a> (string): Constraining a value space to values that are denoted by literals which match each of a set of regular expressions.
+				</div></li></ul></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s03.html"><strong>Prev</strong>4.3. Builtin Atomic Types</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chap-Object.html"><strong>Next</strong>Chapter 5. Object Types</a></li></ul></body></html>

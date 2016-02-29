@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chap-Array" lang="en-US">
+	<title>Array Types</title>
+	 <section>
+		<title>Scope</title>
+		 <para>
+			Array Types match arrays.
+		</para>
+		 <para>
+			There is one builtin topmost Array Type "array".
+		</para>
+		 <para>
+			An Array Type can be defined by restricting the value space of "array" by specifying a layout (type of the members) or size bounds. A restriction can also be made with the general Types facets $enumeration and $constraints.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Examples</title>
+		 
+<programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "array",
+      "$content" : [ "string" ],
+      "$name" : "strings"
+    },
+    {
+      "$kind" : "array",
+      "$content" : [ "string" ],
+      "$maxLength" : 5,
+      "$name" : "less-than-five-members"
+    },
+    {
+      "$kind" : "array",
+      "$content" : [ "integer" ],
+      "$constraints" : [ "every $i in $$ satisfies $i le 10" ],
+      "$name" : "all-less-than-ten"
+    }
+  ]
+}</programlisting>
+		 <para>
+			[ "foo " "bar" ] is valid against the Type named "Q{http://www.example.com/my-schema}strings" but not [ 1, 2, "foo" ].
+		</para>
+		 
+<literallayout>
+</literallayout>
+		 <para>
+			[ "foo " "bar" ] is valid against the Type named "Q{http://www.example.com/my-schema}less-than-five-members" but not [ "foo", "foo", "foo", "foo", "foo", "foo" ].
+		</para>
+		 
+<literallayout>
+</literallayout>
+		 <para>
+			[ 1, 3, 5 ] is valid against the Type named "Q{http://www.example.com/my-schema}all-less-than-ten" but not [ 1, 3, 72 ].
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Builtin Array Type</title>
+		 <para>
+			There is one topmost, builtin Array Type named <emphasis>array</emphasis>, against which all arrays are valid.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Array facets</title>
+		 <para>
+			Restriction is done using the general facets, or the following array facets.
+		</para>
+		 <para>
+			JSound supports the following array facets.
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					$content (singleton array of one string or object) : the name of a Type (Qualified Name in a string) or the type itself (an object) that all members must match.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					$minLength (integer) : the minimum length.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					$maxLength (integer) : the maximum length.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+
+	</section>
+	
+	<!-- 
+  <section>
+    <title>Validity of an instance against an Array Type.</title>
+    <para>Atomics and objects are not valid against any Array Type.</para>
+    <para>An array A is valid against an Array Type T if all of the following assertions are fulfilled:</para>
+    <itemizedlist>
+      <listitem>
+        <para>If {base type definition} is present, A is valid against it.</para>
+        <para>If {member type definition} is present, each member of A matches the {member type definition} Type component.</para>
+        <para>All queries in {constraints} evaluate to true when the context item is bound to A.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+ -->
+</chapter>
+

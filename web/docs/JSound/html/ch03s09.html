@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>3.9. JSON representation of the Object Schema Type against which the JSON representations of all Atomic Schema Types are valid.</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound_-_Sound_JSON_data-JSound-0.1-en-US-0.1.1-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="chap-Atomic.html" title="Chapter 3. Atomic Types" /><link rel="prev" href="ch03s08.html" title="3.8. Validity of an instance against an Atomic Schema Type." /><link rel="next" href="chap-Object.html" title="Chapter 4. Object Types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s08.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chap-Object.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm40495312">3.9. JSON representation of the Object Schema Type against which the JSON representations of all Atomic Schema Types are valid.</h2></div></div></div><pre class="programlisting"> 
+{
+  "$name" : "atomic-schema-type",
+  "$union" : [
+    "string",
+    {
+      "$object" : {
+        "$$atomic" : { "$type" : "#atomic-schema-type" },
+        "$$name" : { "$type" : "string",
+                     "$optional" : true },
+        "$$length" : { "$type" : "integer",
+                       "$optional" : true },
+        "$$minLength" : { "$type" : "integer",
+                          "$optional" : true },
+        "$$maxLength" : { "$type" : "integer",
+                          "$optional" : true },
+        "$$totalDigits" : { "$type" : "integer",
+                            "$optional" : true },
+        "$$fractionDigits" : { "$type" : "integer",
+                               "$optional" : true },
+        "$$pattern" : { "$type" : "string",
+                        "$optional" : true },
+        "$$enumeration" : { "$type" : { "$array" : [ "anyAtomicType" ] },
+                            "$optional" : true },
+        "$$whitespace" : { "$type" : { "$atomic" : "string",
+                                       "$enum" : [ "collapse", "preserve", "replace" ] },
+                           "$optional" : true },
+        "$$maxInclusie" : { "$type" : "anyAtomicType",
+                            "$optional" : true },
+        "$$maxExclusie" : { "$type" : "anyAtomicType",
+                            "$optional" : true },
+        "$$minExclusie" : { "$type" : "anyAtomicType",
+                            "$optional" : true },
+        "$$minInclusie" : { "$type" : "anyAtomicType",
+                            "$optional" : true },
+        "$$explicitTimezone" : { "$type" : { "$atomic" : "string",
+                                 "$enum" : [ "required", "prohibited", "optional" ] },
+                                 "$optional" : true },
+        "$$constraints" : { "$type" : { "$array" : [ "string" ],
+                            "$optional" : true },
+      }
+    }
+  ]
+}
+      
+</pre></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s08.html"><strong>Prev</strong>3.8. Validity of an instance against an Atomic Sc...</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chap-Object.html"><strong>Next</strong>Chapter 4. Object Types</a></li></ul></body></html>

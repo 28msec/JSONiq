@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>4.3. Builtin Atomic Types</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound-JSound-0.1-en-US-0.1.3-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="chap-Atomic.html" title="Chapter 4. Atomic Types" /><link rel="prev" href="ch04s02.html" title="4.2. Examples" /><link rel="next" href="ch04s04.html" title="4.4. Atomic facets" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch04s04.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm33348976">4.3. Builtin Atomic Types</h2></div></div></div><div class="para">
+			A number of builtin Atomic Types are predefined. Most of them have counterparts in XML Schema 1.1, because they are very useful also in JSON (for example : dates, times, ...). In particular, they have the same value space, the same lexical space, the same lexical mapping and (for primitive types) the same associated set of atomic facets.
+		</div><div class="para">
+			Some of these builtin types are primitive and marked as such below. Others are derived from another builtin type.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#string">string</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#anyURI">anyURI</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#base64Binary">base64Binary</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#hexBinary">hexBinary</a> (primitive).
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#date">date</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#dateTime">dateTime</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#time">time</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">dateTimeStamp</a> (derived from dateTime),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#gYear">gYear</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#gYearMonth">gYearMonth</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#gMonth">gMonth</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#gMonthDay">gMonthDay</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#gDay">gDay</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#duration">duration</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#dayTimeDuration">dayTimeDuration</a> (derived from duration),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#yearMonthDuration">yearMonthDuration</a> (derived from duration),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#decimal">decimal</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#integer">integer</a> (derived from decimal),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#long">long</a> (derived from integer),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#int">int</a> (derived from long),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#short">short</a> (derived from int),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#byte">byte</a> (derived from short),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#double">double</a> (primitive),
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#float">float</a> (primitive).
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://www.w3.org/TR/xmlschema11-2/#boolean">boolean</a> (primitive)
+				</div></li><li class="listitem"><div class="para">
+					null (primitive), which has a singleton value space containing the JSON null value with the lexical representation "null".
+				</div></li></ul></div><div class="para">
+			There is also a special builtin type <span class="emphasis"><em>atomic</em></span>, which is a supertype of all primitive types and, by transition, of all atomic types.
+		</div><div class="para">
+			The lexical namespace of dateTime as defined in XML Schema 1.1 is a superset of the date representation defined in <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15">ECMAScript</a>. In addition, JSound extends the lexical representation of respectively date, time, dateTime defined above, to allow the format defined in <a href="http://tools.ietf.org/html/rfc2822#page-14">RFC 2822</a> (nonterminals date, time, date-time respectively). This is because many JavaScript implementations do so.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch04s02.html"><strong>Prev</strong>4.2. Examples</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch04s04.html"><strong>Next</strong>4.4. Atomic facets</a></li></ul></body></html>

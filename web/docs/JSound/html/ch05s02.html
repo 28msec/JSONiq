@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.2. Examples</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound-JSound-0.1-en-US-0.1.3-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="chap-Object.html" title="Chapter 5. Object Types" /><link rel="prev" href="chap-Object.html" title="Chapter 5. Object Types" /><link rel="next" href="ch05s03.html" title="5.3. Builtin Object Type" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="chap-Object.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch05s03.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm31632160">5.2. Examples</h2></div></div></div><div class="para">
+			Against the following Object Type:
+		</div><pre class="programlisting">
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+     "$kind" : "object",
+     "$content" : {
+       "foo" : {
+         "$type" : "string",
+       }
+     },
+     "$open" : false,
+     "$name" : "only-foo"
+    },
+    {
+      "$kind" : "object",
+      "$content" : {
+        "foo" : {
+          "$type" : "string",
+        },
+        "bar" : {
+         "$type" : "boolean",
+         "$optional" : true
+       }
+     }
+    "$name" : "foo-bar-and-arrays"
+    }
+  ]
+}
+</pre><div class="para">
+			The objects { "foo" : "bar" } and { "foo" : "foo" } are valid against the Type named "Q{http://www.example.com/my-schema}only-foo" because the foo pairs are strings.
+		</div><div class="para">
+			The object {} is not because the foo pair is missing.
+		</div><div class="para">
+			The object { "foo" : "bar", "bar" : "foo" } is not because no other pair than "foo" is allowed (closed Object Type).
+		</div><div class="para">
+			Against the Type named "Q{http://www.example.com/my-schema}only-foo":
+		</div><div class="para">
+			The objects { "foo" : "bar", "foobar" : [ "foo" ] } and { "foo" : "bar", "bar" : true } are valid because the foo pairs are strings, bar is optional and the Object Type is $open.
+		</div><div class="para">
+			The objects {} and { "bar" : "foo" } and { "foo" : "bar", "bar" : "foo" } are not because the foo pair is missing or the bar pair is not a boolean.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="chap-Object.html"><strong>Prev</strong>Chapter 5. Object Types</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="ch05s03.html"><strong>Next</strong>5.3. Builtin Object Type</a></li></ul></body></html>

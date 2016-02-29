@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-SchemaSchema">
+  <title>Schema of Schemas</title>
+  <programlisting> 
+{
+  "$namespace" : "http://www.jsound.org/schemaschema",
+  "$types" : [
+    {
+      "$kind" : "object",
+      "$name" : "atomic-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "atomic" ]
+          }
+        },
+        "$$name" :             { "$type" : "qualified-name", "$optional" : true },
+        "$$baseType" :         { "$type" : "qualified-name" }
+        "$$pattern" :          { "$type" : "string", "$optional" : true },
+        "$$length" :           { "$type" : "integer","$optional" : true },
+        "$$minLength" :        { "$type" : "integer","$optional" : true },
+        "$$maxLength" :        { "$type" : "integer","$optional" : true },
+        "$$totalDigits" :      { "$type" : "integer","$optional" : true },
+        "$$fractionDigits" :   { "$type" : "integer","$optional" : true },
+        "$$maxInclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$maxExclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$minExclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$minInclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$explicitTimezone" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "required", "prohibited", "optional" ]
+          },
+          "$optional" : true
+        },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" : [ "atomic" ] },
+          "$optional" : true
+        },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", "$content" : [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "object-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "object" ]
+          }
+        },
+        "$$name" : { "$type" : "qualified-name", "$optional" : true },
+        "$$content" : {
+          "$type" : {
+            "$kind" : "object",
+            "$constraints" : [ "every $key in keys($$) satisfies $$.$key instance of pair-descriptor" ]
+          }
+          "$optional" : true
+        },
+        "$$open" : { "$type" : "boolean", $optional" : true },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" : [ "atomic" ] },
+          "$optional" : true
+        },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", "$content" : [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "pair-descriptor"
+      "$content" : {
+        "$$type" : { "$type" : "type-or-reference" },
+        "$$optional" : { "$type" : "boolean", "$default" : "false" }
+        "$$default" : { "$type" : "item", "$optional" : true }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "array-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "array" ]
+          }
+        },
+        "$$name" : { "$type" : "qualified-name", "$optional" : true },
+        "$$content" : {
+          "$type" : {
+            "$kind" : "array",
+            "$content" : [ "type-or-reference" ],
+            "$minLength" : 1,
+            "$maxLength" : 1
+          }
+        },
+        "$$minLength" : { "$type" : "integer", "$optional" : true },
+        "$$maxLength" : { "$type" : "integer", "$optional" : true },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" : [ "atomic" ] },
+          "$optional" : true
+        },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", "$content" : [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "union-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "union" ]
+          }
+        },
+        "$$name" : { "$type" : "qualified-name", "$optional" : true },
+        "$$content" : { "$type" : { "$kind" : "array", "$content" : [ "type-or-reference" ] } },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" :  [ "atomic" ] },
+          "$optional" : true },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", $content" :  [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "qualified-name",
+      "$baseType" : "string",
+      "$pattern" : "([^:${}]+:|Q{[^${}]+})?[^:${}]+"
+    },
+    {
+      "$kind" : "union",
+      "$name" : "type-or-reference",
+      "$content" : [ "qualified-name", "atomic-type", "object-type", "array-type", "union-type" ]
+    }
+  ]
+}
+  </programlisting>
+</chapter>

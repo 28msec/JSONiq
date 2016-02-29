@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Types">
+	<title>Schema Types and Schema Type Components</title>
+  <para>There are four kinds of Schema Types: Atomic, Object, Array and Union.
+  Object Types match JSON objects. Array Types match JSON arrays. Union Types match any JSON value which matches at least one
+  of the member types of the Union Type.</para>
+  <section>
+    <title>Atomic Schema Types</title>
+    <para>
+      Atomic Schema Types match JSON leaf values, i.e., not objects and arrays.
+    </para>
+    <para>
+      Atomic Schema Types have a lexical space (set of literals denoting the values), a value space (set of actual values), and a lexical mapping which maps the former into the latter.
+    </para>
+    <para>
+      An Atomic Schema Type can be either builtin or derived from another Atomic Schema Type.
+    </para>
+    <section>
+      <title>Builtin Atomic Schema Types</title>
+      <para>
+        A number of builtin Atomic Schema Types are predefined. These types are identical to their counterparts in
+        XML Schema 1.1 (they are all atomic types in the sense of XML Schema 1.1). In particular, they have the
+        same value space, the same lexical space, the same lexical mapping and (for primitive types) the
+        same associated set of facets.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>Topmost: anyAtomicType.</para>
+        </listitem>
+        <listitem>
+          <para>Strings: string, anyURI.</para>
+        </listitem>
+        <listitem>
+          <para>Numbers: decimal, integer, long , int, short, byte, double, float.</para>
+        </listitem>
+        <listitem>
+          <para>Booleans: boolean.</para>
+        </listitem>
+        <listitem>
+          <para>Dates and Times : date, dateTime, time, dateTimeStamp, gDay, gMonth, gMonthDay, gYear, gYearMonth.</para>
+        </listitem>
+        <listitem>
+          <para>Durations : duration, dayTimeDuration, yearMonthDuration.</para>
+        </listitem>
+        <listitem>
+          <para>Binaries : base64Binary, hexBinary.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section>
+      <title>Derived Atomic Schema Types</title>
+      <para>
+        It is possible to define new Atomic Schema Types that are derived (directly or indirectly) from builtin
+        Atomic Schema Types by restricting the value (and lexical) space.
+      </para>
+      <para>
+        Derived Atomic Schema Types may or may not have a name.
+      </para>
+      <para>
+        Restriction is done using the facets that are available for the base type (i.e., that are available for 
+        the type among the ancestors which is a primitive type, right below anyAtomicType in the type hierarchy).
+      </para>
+    </section>
+    <section>
+      <title>Atomic Schema Type Definition component</title>
+      <para>An Atomic Schema Type is fully defined with the following properties. These are a subset of the properties
+      of Simple Type Definition components in XML Schema.</para>
+      <itemizedlist>
+        <listitem>
+          <para>{name} : a string. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>{target namespace} : a string containing a URI. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>{base type definition} : a Atomic Schema Type Definition component. Required, except for anyAtomicType, which has none.</para>
+        </listitem>
+        <listitem>
+          <para>{facets} : a set of Constraining Facet components (identical to XML Schema 1.1).</para>
+        </listitem>
+        <listitem>
+          <para>{fundamental facets} : a set of Fundamental Facet components (identical to XML Schema 1.1).</para>
+        </listitem>
+        <listitem>
+          <para>{constraints} : a set of JSONiq queries (possibly empty).</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+  <section>
+    <title>Object Schema Types</title>
+    <para>Object Schema Types match JSON objects.</para>
+    <para>There are no builtin Object Schema Types.</para>
+    <para>An Object Schema Type can either be defined by specifying its layout, or by restricting from another
+      Object Schema Type.</para>
+    <para>In all cases, a restriction can be made with a JSONiq query that must evaluate to true.</para>
+    <section>
+      <title>Object Schema Type Definition component</title>
+      <para>An Object Schema Type is fully defined with the following properties.</para>
+      <itemizedlist>
+        <listitem>
+          <para>{name} : a string. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>{target namespace} : a string containing a URI. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>One of:</para>
+          <itemizedlist>
+            <listitem>
+              <para>{base type definition} : an Object Schema Type Definition component.</para>
+            </listitem>
+            <listitem>
+              <para>{pair descriptors} : a list of Pair Descriptor components.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>{constraints} : a set of JSONiq queries (possibly empty).</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section>
+      <title>Pair Descriptor component</title>
+      <para>An Pair Descriptor is fully defined with the following properties.</para>
+      <itemizedlist>
+        <listitem>
+          <para>{key} : a string.</para>
+        </listitem>
+        <listitem>
+          <para>{value type} : a (Atomic, Object, Array or Union) Schema Type
+            Definition component.</para>
+        </listitem>
+        <listitem>
+          <para>{optional} : a boolean.</para>
+        </listitem>
+        <listitem>
+          <para>{default value} : a JSON value which is valid against the {value type} component. Optional. Must be
+          absent if {optional} is false.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+  <section>
+    <title>Array Schema Types</title>
+    <para>Array Schema Types match JSON arrays.</para>
+    <para>There are no builtin Array Schema Types.</para>
+    <para>An Array Schema Type can either be defined by specifying the type of its members, or by restricting from another
+      Array Schema Type.</para>
+    <para>In all cases, a restriction can be made with a JSONiq query that must evaluate to true.</para>
+    <section>
+      <title>Array Schema Type Definition component</title>
+      <para>An Array Schema Type is fully defined with the following properties.</para>
+      <itemizedlist>
+        <listitem>
+          <para>{name} : a string. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>{target namespace} : a string containing a URI. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>One of:</para>
+          <itemizedlist>
+            <listitem>
+              <para>{base type definition} : an Array Schema Type Definition component.</para>
+            </listitem>
+            <listitem>
+              <para>{member type definition} : a (Atomic, Object, Array or Union) Schema Type
+                Definition component.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>{constraints} : a set of JSONiq queries (possibly empty).</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+  <section>
+    <title>Union Schema Types</title>
+    <para>The value space of a Union Schema Type is the union of the value spaces of all its member types.</para>
+    <section>
+      <title>Union Schema Type Definition component</title>
+      <para>An Union Schema Type is fully defined with the following properties.</para>
+      <itemizedlist>
+        <listitem>
+          <para>{name} : a string. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>{target namespace} : a string containing a URI. Optional.</para>
+        </listitem>
+        <listitem>
+          <para>{member type definitions} : a set of (Atomic, Object, Array or Union) Schema Type
+            Definition  components (possibly empty).</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+  
+</chapter>

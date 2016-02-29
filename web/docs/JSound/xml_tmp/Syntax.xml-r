@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Syntax">
+	<title>Syntactic representation of Schema components</title>
+  <para>A Schema Type component can be built using either a JSON object representation (to define a new Schema Type) or a string representation (to refer to an existing type).</para>
+  <para>A set of Pair Descriptor components can be built using a JSON object representation. Each pair in this object corresponds to one Pair Descriptor component.</para>
+  <section>
+    <title>JSON representation of an Atomic Type Schema Component</title>
+    <para>An Atomic Type Schema Component can be built from a JSON object as follows:</para>
+    <itemizedlist>
+      <listitem>
+        <para>{name} : the value associated with the key "$name".</para>
+      </listitem>
+      <listitem>
+        <para>{target namespace} : the target namespace of the Schema in which this Schema Type is defined.</para>
+      </listitem>
+      <listitem>
+        <para>{base type definition} : the value associated with the key "$atomic".</para>
+      </listitem>
+      <listitem>
+        <para>{facets} : the value associated with the facet keys:</para>
+        <itemizedlist>
+          <listitem>
+            <para>$length</para>
+          </listitem>
+          <listitem>
+            <para>$minLength</para>
+          </listitem>
+          <listitem>
+            <para>$maxLength</para>
+          </listitem>
+          <listitem>
+            <para>$pattern</para>
+          </listitem>
+          <listitem>
+            <para>$enumeration</para>
+          </listitem>
+          <listitem>
+            <para>$whiteSpace</para>
+          </listitem>
+          <listitem>
+            <para>$maxInclusive</para>
+          </listitem>
+          <listitem>
+            <para>$maxExclusive</para>
+          </listitem>
+          <listitem>
+            <para>$minExclusive</para>
+          </listitem>
+          <listitem>
+            <para>$minInclusive</para>
+          </listitem>
+          <listitem>
+            <para>$totalDigits</para>
+          </listitem>
+          <listitem>
+            <para>$fractionDigits</para>
+          </listitem>
+          <listitem>
+            <para>$explicitTimezone.</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>{fundamental facets} : derived from {facets}, {base type definition} as described in XML Schema.</para>
+      </listitem>
+      <listitem>
+        <para>{constraints} : the JSONiq query associated (as a string) with the key "$constraint".</para>
+      </listitem>
+    </itemizedlist>
+    <para>Examples</para>
+    <literallayout>
+{
+  "$atomic" : "string"
+}
+    </literallayout>
+    <literallayout>
+{
+  "$atomic" : "string"
+  "$name" : "my-type"
+}
+    </literallayout>
+    <literallayout>
+{
+  "$atomic" : "string"
+  "$enum" : [ "N/A", "CA", "WA", "OR" ]
+}
+    </literallayout>
+  </section>
+  <section>
+    <title>JSON representation of an Object Type Schema Component</title>
+    <para>An Object Type Schema Component can be built from a JSON object as follows:</para>
+    <itemizedlist>
+      <listitem>
+        <para>{name} : the value associated with the key "$name".</para>
+      </listitem>
+      <listitem>
+        <para>{target namespace} : the target namespace of the Schema in which this Schema Type is defined.</para>
+      </listitem>
+      <listitem>
+        <para>{base type definition} : the type that has the name associated with the key "$object", if it is a string.</para>
+      </listitem>
+      <listitem>
+        <para>{pair descriptors} : the Pair Descriptors represented by the pairs of the object (if it is one) associated with the key "$object".</para>
+      </listitem>
+      <listitem>
+        <para>{constraints} : the JSONiq query associated (as a string) with the key "$constraint".</para>
+      </listitem>
+    </itemizedlist>
+    <para>Examples</para>
+    <literallayout>
+{
+  "$object" : {
+                "foo" : {
+                  "$value" : "string",
+                  "$optional" : true
+                }
+              } (: see pair descriptor representation :)
+  "$name" : "my-object-type"
+}
+    </literallayout>
+    <literallayout>
+{
+  "$object" : "#my-object-type"
+  "$constraints" : "$$.foo eq \"bar\""
+}
+    </literallayout>
+  </section>
+  <section>
+    <title>JSON representation of a Pair Descriptor</title>
+    <para>A Pair Descriptor can be built from a JSON pair { $key : $object } as follows:</para>
+    <itemizedlist>
+      <listitem>
+        <para>{key} : The string $key.</para>
+      </listitem>
+      <listitem>
+        <para>{value type} : The Schema Type Definition component represented by $object.value.</para>
+      </listitem>
+      <listitem>
+        <para>{optional} : The boolean $object.optional.</para>
+      </listitem>
+      <listitem>
+        <para>{default value} : The value $object.default.</para>
+      </listitem>
+    </itemizedlist>
+    <para>Examples</para>
+    <literallayout>
+"foo" : { "$value" : "string",
+          "$optional" : true,
+          "$default" : "bar" }
+    </literallayout>
+    <literallayout>
+"foo" : { "$value" : { "$atomic" : "string", "$enum" : [ "foo", "bar" ] },
+          "$optional" : false }
+    </literallayout>
+  </section>
+  <section>
+    <title>JSON representation of an Array Type Schema Component</title>
+    <para>An Array Type Schema Component can be built from a JSON object as follows:</para>
+    <itemizedlist>
+      <listitem>
+        <para>{name} : the value associated with the key "$name".</para>
+      </listitem>
+      <listitem>
+        <para>{target namespace} : the target namespace of the Schema in which this Schema Type is defined.</para>
+      </listitem>
+      <listitem>
+        <para>{base type definition} : the type that has the name associated with the key "$array", if it is a string.</para>
+      </listitem>
+      <listitem>
+        <para>{member type definition} : the Schema Type Components that are associated with the unique member of the array associated with the key "$array" if it is one.</para>
+      </listitem>
+      <listitem>
+        <para>{constraints} : the JSONiq query associated (as a string) with the key "$constraint".</para>
+      </listitem>
+    </itemizedlist>
+    <para>Examples</para>
+    <literallayout>
+{
+  "$array" : [ "string" ]
+  "$name" : "my-array"
+}
+    </literallayout>
+    <literallayout>
+{
+  "$array" : "#my-array-type"
+  "$constraints" : "$$(1) eq \"bar\""
+}
+    </literallayout>
+  </section>
+  <section>
+    <title>Reference to a Schema Type</title>
+    <para>Instead of a JSON representation, it is possible to reference a named type with a string whenever a JSON object representation is expected.</para> 
+    <para>Builtin types can be refered to with their name.</para>
+    <para>Named types defined in the same Schema can be refered to with a URI fragment, i.e., a # followed by their name.</para>
+    <para>Named types defined in another Schema can be refered to with the Schema URI, followed by a fragment indicating their name.</para>
+    <literallayout>
+"string"
+"#my-type"
+"http://www.example.com/schema#my-external-type"
+    </literallayout>
+  </section>
+</chapter>
