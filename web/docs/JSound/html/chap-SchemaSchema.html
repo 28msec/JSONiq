@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 9. Schema of Schemas</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound-JSound-0.1-en-US-0.1.3-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="index.html" title="JSound" /><link rel="prev" href="ch08s02.html" title="8.2. Annotation" /><link rel="next" href="appe-JSound-Revision_History.html" title="Appendix A. Revision History" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s02.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="appe-JSound-Revision_History.html"><strong>Next</strong></a></li></ul><div xml:lang="en-US" class="chapter" id="chap-SchemaSchema" lang="en-US"><div class="titlepage"><div><div><h2 class="title">Chapter 9. Schema of Schemas</h2></div></div></div><pre class="programlisting"> 
+{
+  "$namespace" : "http://www.jsound.org/schemaschema",
+  "$types" : [
+    {
+      "$kind" : "object",
+      "$name" : "atomic-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "atomic" ]
+          }
+        },
+        "$$name" :             { "$type" : "qualified-name", "$optional" : true },
+        "$$baseType" :         { "$type" : "qualified-name" }
+        "$$pattern" :          { "$type" : "string", "$optional" : true },
+        "$$length" :           { "$type" : "integer","$optional" : true },
+        "$$minLength" :        { "$type" : "integer","$optional" : true },
+        "$$maxLength" :        { "$type" : "integer","$optional" : true },
+        "$$totalDigits" :      { "$type" : "integer","$optional" : true },
+        "$$fractionDigits" :   { "$type" : "integer","$optional" : true },
+        "$$maxInclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$maxExclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$minExclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$minInclusive" :     { "$type" : "atomic", "$optional" : true },
+        "$$explicitTimezone" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "required", "prohibited", "optional" ]
+          },
+          "$optional" : true
+        },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" : [ "atomic" ] },
+          "$optional" : true
+        },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", "$content" : [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "object-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "object" ]
+          }
+        },
+        "$$name" : { "$type" : "qualified-name", "$optional" : true },
+        "$$content" : {
+          "$type" : {
+            "$kind" : "object",
+            "$constraints" : [ "every $key in keys($$) satisfies $$.$key instance of pair-descriptor" ]
+          }
+          "$optional" : true
+        },
+        "$$open" : { "$type" : "boolean", $optional" : true },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" : [ "atomic" ] },
+          "$optional" : true
+        },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", "$content" : [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "pair-descriptor"
+      "$content" : {
+        "$$type" : { "$type" : "type-or-reference" },
+        "$$optional" : { "$type" : "boolean", "$default" : "false" }
+        "$$default" : { "$type" : "item", "$optional" : true }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "array-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "array" ]
+          }
+        },
+        "$$name" : { "$type" : "qualified-name", "$optional" : true },
+        "$$content" : {
+          "$type" : {
+            "$kind" : "array",
+            "$content" : [ "type-or-reference" ],
+            "$minLength" : 1,
+            "$maxLength" : 1
+          }
+        },
+        "$$minLength" : { "$type" : "integer", "$optional" : true },
+        "$$maxLength" : { "$type" : "integer", "$optional" : true },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" : [ "atomic" ] },
+          "$optional" : true
+        },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", "$content" : [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "object",
+      "$name" : "union-type",
+      "$content" : {
+        "$$kind" : {
+          "$type" : {
+            "$kind" : "atomic",
+            "$baseType" : "string",
+            "$enumeration" : [ "union" ]
+          }
+        },
+        "$$name" : { "$type" : "qualified-name", "$optional" : true },
+        "$$content" : { "$type" : { "$kind" : "array", "$content" : [ "type-or-reference" ] } },
+        "$$enumeration" : {
+          "$type" : { "$kind" : "array", $content" :  [ "atomic" ] },
+          "$optional" : true },
+        "$$constraints" : {
+          "$type" : { "$kind" : "array", $content" :  [ "string" ] },
+          "$optional" : true
+        }
+      }
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "qualified-name",
+      "$baseType" : "string",
+      "$pattern" : "([^:${}]+:|Q{[^${}]+})?[^:${}]+"
+    },
+    {
+      "$kind" : "union",
+      "$name" : "type-or-reference",
+      "$content" : [ "qualified-name", "atomic-type", "object-type", "array-type", "union-type" ]
+    }
+  ]
+}
+</pre></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch08s02.html"><strong>Prev</strong>8.2. Annotation</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="appe-JSound-Revision_History.html"><strong>Next</strong>Appendix A. Revision History</a></li></ul></body></html>

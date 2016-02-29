@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Concepts">
+	<title>Concepts</title>
+  <section>
+    <title>Candidate Instance</title>
+    <para>
+      This is a JDM (JSONiq Data Model) value. A Candidate Instance may or not be valid against a Schema Type.
+    </para>
+    <para>
+      In the JSONiq Data Model, instances can be objects, arrays, or atomics.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>An object has an unordered list of string/value pairs. A top-level object is also referred to as a "JSON document".</para>
+      </listitem>
+      <listitem>
+        <para>An array has an ordered list of values.</para>
+      </listitem>
+      <listitem>
+        <para>An atomic has a value annotated with an atomic type.</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      Typically, the Candidate Instance will have been freshly parsed and will only have atomics of type string, integer, decimal, double, boolean and null.
+      Integer, decimal and double values correspond to parsed JSON numbers, depending on the presence of dots and scientific notation.
+    </para>
+  </section>
+  <section>
+    <title>Annotated Instance</title>
+    <para>
+      An Annotated Instance is a "Post-validation JDM Instance", i.e., it corresponds to a Candidate Instance that has been recursively
+      annotated after going through the Annotation process against a Type.
+    </para>
+  </section>
+  <section>
+    <title>Schema Document</title>
+    <para>
+      A Schema Document is a JSON document which defines Types against which Candidate Instances are being validated.
+      A Schema Document is also a Candidate Instance and must be valid against the Meta Schema Type.
+    </para>
+  </section>
+  <section>
+    <title>Meta Schema Document</title>
+    <para>
+      A Meta Schema Document is a JSON document that defines the Type against which all Schema Documents are valid including itself.
+    </para>
+  </section>
+  <section>
+    <title>Type</title>
+    <para>
+      A Schema Document defines Types, which may or may not be anonymous. A Candidate Instance may or may not be valid against a
+      Type. A Candidate Instance can be annotated against a Type, which results in a Data Model Instance.
+      There are four kinds of Types: Atomic, Array, Object and Union.
+      Types are represented with objects that are nested in a Schema Document. Named Types can also be referred to with
+      Qualified Names.
+    </para>
+  </section>
+  <section>
+    <title>Namespace</title>
+    <para>
+      A JSound Schema Document is associated with a Namespace, and all types that it defines live in that Namespace. However, Namespaces in JSound
+      are much closer to C++ namespaces or Java packages than to XML namespaces. Prefixes may still, but must not be, used as convenient
+      shorcuts to avoid writing long URIs.
+    </para>
+  </section>
+  <section>
+    <title>Qualified Name</title>
+    <para>
+      Type names are Qualified Names, which are made of a namespace and of a local name. Local names must be unique in a namespace,
+      but not across namespaces -- like in C++ or Java. Qualified Names have the following string representation: "Q{&lt;namespace>}&lt;local name>". For example:
+      "Q{http://www.example.com/types}small-integer"
+    </para>
+    <para>
+      For convenience, Namespaces that are imported can be bound to prefixes in the containing Schema Document,
+      and the prefix can be used as a shortcut to the full namespace like so: "&lt;prefix>:&lt;local name>".
+      If the prefix "my" is bound to the Namespace "http://www.example.com/types" in the Schema Document,
+      the above example can also be represented as "my:small-integer".
+    </para>
+    <para>
+      Builtin Type names are special in that they are in no Namespace and can also be represented with no prefix : "integer".
+    </para>
+  </section>
+  <section>
+    <title>Validation</title>
+    <para>
+      A Candidate Instance can be validated against a Type.
+      The Validation action takes a Candidate Instance and a Type (typically, a set of Schema Documents and the name of a Type defined in one of them).
+      It results in a boolean that describes
+      whether the Candidate Instance is valid against the Type given its definition in the set of Schema Documents.
+      If the Candidate Instance is not valid, a list of errors is provided that describes how the
+      Candidate Instance is not conforming to the Type.
+    </para>
+  </section>
+  <section>
+    <title>Annotation</title>
+    <para>
+      Annotation is the action of passing a Candidate Instance through a Schema Type (identified with a name in a set of of Schema
+      Documents)
+      and recursively:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        annotating an object or an array with the current Schema Type as well as determining against which Schema Type the object pair values
+        or array members will be annotated.
+      </para>
+      <para>
+        casting an atomic to the current Schema Type.
+      </para>
+    </listitem>
+  </itemizedlist>
+  <para>
+      Note that this action is independent of Validation: The two actions can be performed in tandem but
+      they are not required. As the Validation action, the Annotation action takes a Candidate Instance, a Type  (typically, a set of
+      Schema Documents and the name of a Type defined in one of them) and results in a set of annotations on the Instance that describe the Types which
+      the nested Instances match.
+      This action also works on Instances that validate partially. When a Type cannot be found that matches
+      a given nested Candidate Instance, a special annotation is used.
+    </para>
+  </section>
+  <section>
+    <title>Meta Keys</title>
+    <para>
+      Schema Documents mix keys that are describing actual data fields (actual keys) and keys that define
+      the Types (meta keys).
+      To make the distinction between the two, we use the $ (dollar sign) to represent the meta keys. In order to
+      use $ in actual keys one should use the escaped version by doubling the $ character.
+      This is consistent with other JSON meta languages.</para>
+  </section>
+  
+</chapter>

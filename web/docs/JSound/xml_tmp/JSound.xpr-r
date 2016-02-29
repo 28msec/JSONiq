@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="14.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="JSound.xpr">
+        <file name="Author_Group.xml"/>
+        <file name="Book_Info.xml"/>
+        <file name="Concepts.xml"/>
+        <file name="Introduction.xml"/>
+        <file name="JSound.ent"/>
+        <file name="JSound.xml"/>
+        <file name="Preface.xml"/>
+        <file name="Revision_History.xml"/>
+        <file name="Syntax.xml"/>
+        <file name="Types.xml"/>
+    </projectTree>
+</project>

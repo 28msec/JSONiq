@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Union">
+  <title>Union Types</title>
+  <section>
+    <title>Scope</title>
+    <para>The value space of a Union Type is the union of the value spaces of all its member types.</para>
+    <para>There is no Builtin Union Type. All Union Types have directly the topmost "item" as their base type and
+    restrict the value space by specifying the $content facet. General facets can also be used.</para>
+  </section>
+  <section>
+    <title>Examples</title>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+    "$kind" : "union",
+    "$content" : [ "string", { "$kind" : "array", "$content" : [ "integer" ] } ],
+    "$name" : "string-or-integer-array"
+    },
+    {
+    "$kind" : "union",
+    "$content" : [ "string", { "$kind" : "array", "$content" : [ "integer" ] } ],
+    "$enumeration" : [ "foo", [ 1, 2, 3, 4 ] ], 
+    "$name" : "just-two"
+    }
+  ]
+}
+    </programlisting>
+    <para>"foo", "bar" and [ 1, 2, 3 ] are valid against the Type named "Q{http://www.example.com/my-schema}string-or-integer-array" but 3.14 and true are not.</para>
+    <para>"foo", and [ 1, 2, 3, 4 ] are valid against the Type named "Q{http://www.example.com/my-schema}just-two" but [ 1 ] and "bar" are not.</para>
+  </section>
+  <section>
+    <title>Union facets</title>
+    <para>
+      The specification of member types is done using one (compulsory) union facet, and optionally general facets.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>$content (array of (string or object) ) : each member in the array is the name of a Type
+          (Qualified Name in a string) or the member type itself (an object).</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+</chapter>

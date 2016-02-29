@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE authorgroup PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<authorgroup lang="en-US">
+	<author>
+		<firstname>Cezar</firstname>
+		 <surname>Andrei</surname>
+		 <email>cezar.andrei@oracle.com</email>
+
+	</author>
+	 <author>
+		<firstname>Ghislain</firstname>
+		 <surname>Fourny</surname>
+		 <email>ghislain.fourny@28msec.com</email>
+
+	</author>
+	 <author>
+		<firstname>Daniela</firstname>
+		 <surname>Florescu</surname>
+		 <email>dana.florescu@oracle.com</email>
+
+	</author>
+	 <editor>
+		<firstname>Ghislain</firstname>
+		 <surname>Fourny</surname>
+		 <affiliation>
+			<orgname>28msec, Inc.</orgname>
+
+		</affiliation>
+		 <email>ghislain.fourny@28msec.com</email>
+
+	</editor>
+</authorgroup>
+

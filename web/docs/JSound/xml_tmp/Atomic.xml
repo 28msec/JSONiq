@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "JSound.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Atomic">
+  <title>Atomic Types</title>
+  <section>
+    <title>Scope</title>
+    <para>
+      Atomic Types match atomics (JSON leaf values: strings, numbers, booleans, nulls).
+    </para>
+    <para>
+      Atomic Types have a lexical space (a set of literals denoting the values), a value space (a set of actual values),
+      and a lexical mapping which maps the former into the latter.
+    </para>
+    <para>
+      An Atomic Type can be either the topmost <emphasis>atomic</emphasis>, or a <emphasis>primitive</emphasis> builtin type,
+      or a builtin type <emphasis>derived</emphasis> from a primitive type, or a user-defined type <emphasis>derived</emphasis>
+      from any other Atomic Type (except <emphasis>atomic</emphasis>).
+    </para>
+    <para>A Derived Atomic Type can be defined by restricting the value space of another Atomic Type by specifying
+      atomic facets. A restriction can also be made with the general facets $enumeration and $constraints.</para>
+  </section>
+  <section>
+    <title>Examples</title>
+    <para>Given the following Schema Document:</para>
+    <programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "atomic",
+      "$name" : "foo-and-bar",
+      "$baseType" : "string",
+      "$enumeration" : [ "foo", "bar" ]
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "digits",
+      "$baseType" : "integer",
+      "$minInclusive" : 1,
+      "$maxExclusive" : 10
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "few-digits",
+      "$baseType" : "my:digits",
+      "$enumeration" : [ 4, 6 ]
+    }
+  ]
+}
+    </programlisting>
+    <para>The strings "foo" and "bar" are valid against Type named "Q{http://www.example.com/my-schema}foo-and-bar". The string "foobar" and the array [ "foo", "bar" ] are not.</para>
+    <para>The atomics (integers) 2 and 7 are valid against the Type named "Q{http://www.example.com/my-schema}digits".
+      The string "2", the integer  0 and the array [ "foo", "bar" ] are not.</para>
+    <para>The integer 4 is valid against the Type named "Q{http://www.example.com/my-schema}few-digits".
+      The integer 2, the integer 0 and the array [ "foo", "bar" ] are not.</para>
+  </section>
+  <section>
+    <title>Builtin Atomic Types</title>
+    <para>
+      A number of builtin Atomic Types are predefined. Most of them have counterparts in
+      XML Schema 1.1, because they are very useful also in JSON (for example : dates, times, ...).
+      In particular, they have the same value space, the same lexical space, the same lexical mapping and (for primitive types) the
+      same associated set of atomic facets.
+    </para>
+    <para>
+      Some of these builtin types are primitive and marked as such below. Others are derived from another builtin type.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#string">string</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#anyURI">anyURI</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#base64Binary">base64Binary</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#hexBinary">hexBinary</ulink> (primitive).</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#date">date</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#dateTime">dateTime</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#time">time</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">dateTimeStamp</ulink> (derived from dateTime),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#gYear">gYear</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#gYearMonth">gYearMonth</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#gMonth">gMonth</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#gMonthDay">gMonthDay</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#gDay">gDay</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#duration">duration</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#dayTimeDuration">dayTimeDuration</ulink> (derived from duration),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#yearMonthDuration">yearMonthDuration</ulink> (derived from duration),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#decimal">decimal</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#integer">integer</ulink> (derived from decimal),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#long">long</ulink> (derived from integer),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#int">int</ulink> (derived from long),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#short">short</ulink> (derived from int),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#byte">byte</ulink> (derived from short),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#double">double</ulink> (primitive),</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#float">float</ulink> (primitive).</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#boolean">boolean</ulink> (primitive)</para>
+      </listitem>
+      <listitem>
+        <para>null (primitive), which has a singleton value space containing the JSON null value with the lexical representation "null".</para>
+      </listitem>
+    </itemizedlist>
+    <para>There is also a special builtin type <emphasis>atomic</emphasis>, which is a supertype of all primitive types and, by transition,
+      of all atomic types.</para>
+    <para>The lexical namespace of dateTime as defined in XML Schema 1.1 is a superset of the date representation defined in
+      <ulink url="http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15">ECMAScript</ulink>. In addition, JSound extends the lexical representation
+      of respectively date, time, dateTime defined above, to allow the format defined in <ulink url="http://tools.ietf.org/html/rfc2822#page-14">RFC 2822</ulink>
+      (nonterminals date, time, date-time respectively). This is because many JavaScript implementations do so.
+    </para>
+  </section>
+  <section>
+    <title>Atomic facets</title>
+    <para>
+      Restriction is done using the general facets, or the following atomic facets (they must be available for the base type).
+    </para>
+    <para>These facets are defined in XML Schema 1.1. For convenience, the summary from the XML Schema 1.1
+      specification is provided below. Which primitive type has which facets is defined in XML Schema 1.1 as well.</para>
+    <para>The following atomic facets are available for the primitive types string, anyURI, base64Binary, hexBinary:</para>
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-length">$length</ulink> (integer): Constraining a value space to values with a specific number of units of length, where units of length varies depending on the base type.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-minLength">$minLength</ulink> (integer): Constraining a value space to values with at least a specific number of units of length, where units of length varies depending on the base type.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-maxLength">$maxLength</ulink> (integer): Constraining a value space to values with at most a specific number of units of length, where units of length varies depending on the base type.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The following atomic facets are available for the primitive types date, dateTime, time, gYear, gYearMonth, gMonth, gMonthDay, gDay, duration, decimal, double, float:</para>
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-maxInclusive">$maxInclusive</ulink> (atomic): Constraining a value space to values with a specific inclusive upper bound.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-maxExclusive">$maxExclusive</ulink> (atomic): Constraining a value space to values with a specific exclusive upper bound.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-minExclusive">$minExclusive</ulink> (atomic): Constraining a value space to values with a specific exclusive lower bound.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-minInclusive">$minInclusive</ulink> (atomic): Constraining a value space to values with a specific inclusive lower bound.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The following atomic facets are available for the primitive type decimal:</para>
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-totalDigits">$totalDigits</ulink> (integer): Restricting the magnitude and arithmetic precision of values in the value spaces of decimal and datatypes derived from it.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-fractionDigits">$fractionDigits</ulink> (integer): Placing an upper limit on the arithmetic precision of decimal values.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The following atomic facets are available for the primitive types date, dateTime, time:</para>
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-explicitTimezone">$explicitTimezone</ulink> ("required", "prohibited" or "optional"): Requiring or prohibiting the time zone offset in date/time datatypes.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The following atomic facets are available for all primitive types (including boolean and null):</para>
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.w3.org/TR/xmlschema11-2/#rf-pattern">$pattern</ulink> (string): Constraining a value space to values that are denoted by literals which match each of a set of regular expressions.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+</chapter>

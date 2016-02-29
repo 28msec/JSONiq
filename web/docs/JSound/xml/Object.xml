@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chap-Object" lang="en-US">
+	<title>Object Types</title>
+	 <section>
+		<title>Scope</title>
+		 <para>
+			Object Types match objects.
+		</para>
+		 <para>
+			There is one builtin Object Type: "object" which is the direct base type of all other Object Types.
+		</para>
+		 <para>
+			An Object Type can be defined by restricting the value space of "object" by specifying a layout (type of the pairs, optional or not, ...). A restriction can also be made with the general Types facets $enumeration and $constraints.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Examples</title>
+		 <para>
+			Against the following Object Type:
+		</para>
+		 
+<programlisting>
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+     "$kind" : "object",
+     "$content" : {
+       "foo" : {
+         "$type" : "string",
+       }
+     },
+     "$open" : false,
+     "$name" : "only-foo"
+    },
+    {
+      "$kind" : "object",
+      "$content" : {
+        "foo" : {
+          "$type" : "string",
+        },
+        "bar" : {
+         "$type" : "boolean",
+         "$optional" : true
+       }
+     }
+    "$name" : "foo-bar-and-arrays"
+    }
+  ]
+}
+</programlisting>
+		 <para>
+			The objects { "foo" : "bar" } and { "foo" : "foo" } are valid against the Type named "Q{http://www.example.com/my-schema}only-foo" because the foo pairs are strings.
+		</para>
+		 <para>
+			The object {} is not because the foo pair is missing.
+		</para>
+		 <para>
+			The object { "foo" : "bar", "bar" : "foo" } is not because no other pair than "foo" is allowed (closed Object Type).
+		</para>
+		 <para>
+			Against the Type named "Q{http://www.example.com/my-schema}only-foo":
+		</para>
+		 <para>
+			The objects { "foo" : "bar", "foobar" : [ "foo" ] } and { "foo" : "bar", "bar" : true } are valid because the foo pairs are strings, bar is optional and the Object Type is $open.
+		</para>
+		 <para>
+			The objects {} and { "bar" : "foo" } and { "foo" : "bar", "bar" : "foo" } are not because the foo pair is missing or the bar pair is not a boolean.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Builtin Object Type</title>
+		 <para>
+			There is one topmost, builtin Object Type named <emphasis>object</emphasis>, against which all objects are valid.
+		</para>
+		 <para>
+			This topmost type can be seen as having its $content facet as the empty object, and its $open facet as true.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Object facets</title>
+		 <para>
+			Restriction is done using the general facets, or the following object facets. For the moment, restriction can only be made on the topmost object type, but this will be relaxed later.
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					$content (object): the layout definition. Each pair in $content is called a field descriptor. The value in each field descriptor has the following properties.
+				</para>
+				 <itemizedlist>
+					<listitem>
+						<para>
+							$type (string or object) - required: the name of a Type (Qualified Name in a string) or the type itself (an object) that the value must match.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							$optional (boolean) - optional: indicates that the pair is optional. Default is false.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							$default (item) - optional: indicates a default value to be taken the value is missing in the Serialized Instance. $optional is then ignored.
+						</para>
+						 <para>
+							However, if this value is an object with a pair named $computed (which must be associated with a string), then the JSONiq query in $content.$default.$computed is executed upon Annotation, with the context item bound to the Candidate Instance being matched against the containing Object Type. It must result in one item, which is the default value for the Pair Descriptor.
+						</para>
+
+					</listitem>
+
+				</itemizedlist>
+				 <para>
+					An object $o is valid against the $content facet if the following conditions are met:
+				</para>
+				 <itemizedlist>
+					<listitem>
+						<para>
+							For each pair $k : $v in the field descriptor such that $v."$optional" is false and $v."$default" is absent, there must be a pair named $k in $o.
+						</para>
+
+					</listitem>
+					 <listitem>
+						<para>
+							For each pair $k : $v in the field descriptor, if $o.$k exists, then $o.$k must be valid against the Type $v."$type".
+						</para>
+
+					</listitem>
+
+				</itemizedlist>
+
+			</listitem>
+			 <listitem>
+				<para>
+					$open (boolean) : specifies whether pairs not specified in $content are to be accepted. The default is the same as the $baseType (true if $baseType is object).
+				</para>
+				 <para>
+					All objects are valid against the $open facet if it is set to true.
+				</para>
+				 <para>
+					If it is set to false, an object $o is valid against the $open facet if all its keys appear in $content, or in the $content of a super type.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			The object facets must fulfill the following consistency constraints against the super types (i.e., in the transitive closure of the $baseType relationship).
+		</para>
+		 <para>
+			These constraints make sure that the new value space is a subset of the base type's value space.
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					If the $baseType's $open property is false, then $open cannot be set back to true.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Field descriptors on new keys may only be defined in $content if the $baseType's $open property is true.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Field descriptors on keys that were already defined in a super type are only allowed if they are more restrictive, i.e., $type must be a subtype of the $type associated to this key by the closest super type which does so.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					If a field descriptor redefines a key that was not $optional in the closest super type, $optional cannot be set back to true.
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			Note: since currently, the $baseType must be "object", these constraints are always fulfilled.
+		</para>
+
+	</section>
+
+</chapter>
+

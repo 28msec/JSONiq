@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<appendix id="appe-JSound-Revision_History" lang="en-US">
+	<title>Revision History</title>
+	 <simpara>
+		<revhistory>
+			<revision>
+				<revnumber>0.1.3</revnumber>
+				 <date>Mon Jun 3, 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Added constraints on $content and $open for objects, to ensure proper object-oriented inheritance. But for the moment, object derivation is limited to the topmost type, so that these constraints are trivially fulfilled.</member>
+						 <member>Fixed typos.</member>
+						 <member>Cleaned up Schema Schema.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>0.1.2</revnumber>
+				 <date>Thu May 30 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>Annotating an atomic means casting it.</member>
+						 <member>The lexical space of date/dateTime/time was extended to support RFC 2822.</member>
+						 <member>Local types have no prefix.</member>
+						 <member>The URI Qualified Name syntax may also be used to reference types.</member>
+						 <member>$optional is ignored if a $default is provided for a pair.</member>
+						 <member>Added $about field to Schema and Types for free content.</member>
+						 <member>The Input of the Validation and Annotation processes is now a JDM instance (typically freshly parsed).</member>
+						 <member>$layout and $member-types were renamed to $content</member>
+						 <member>The special key $any was removed from object $content. JSONiq constraints can be used instead.</member>
+						 <member>Default values can be computed with a JSONiq query.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+			 <revision>
+				<revnumber>0.1.2</revnumber>
+				 <date>Wed May 29 2013</date>
+				 <author>
+					<firstname>Ghislain</firstname>
+					 <surname>Fourny</surname>
+					 <email>g@28.io</email>
+
+				</author>
+				 <revdescription>
+					<simplelist>
+						<member>First Working Draft.</member>
+
+					</simplelist>
+
+				</revdescription>
+
+			</revision>
+
+		</revhistory>
+
+	</simpara>
+</appendix>
+

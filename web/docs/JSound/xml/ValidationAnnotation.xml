@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<chapter id="chap-Operations" lang="en-US">
+	<title>Validation and Annotation</title>
+	 <section>
+		<title>Validation</title>
+		 <para>
+			A Candidate Instance is valid against a Builtin Type if it is in its value space.
+		</para>
+		 <para>
+			A Candidate Instance is valid against a Derived Type if it is valid against its $baseType (recursively) and if it is valid against all facets.
+		</para>
+
+	</section>
+	
+	 <section>
+		<title>Annotation</title>
+		 <para>
+			A Candidate Instance is annotated against an Atomic Type as follows:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					If it is valid against the Type (which implies that it is an atomic value), it is cast to the Atomic Type.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Otherwise, it is replaced with an object with the fields $invalid (true), $expected (Atomic Type name), $value (the Candidate Instance)
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			A Candidate Instance is annotated against an Object Type $t as follows:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					If it is valid against the Type (which implies that it is an object), it is annotated with the Object Type's Qualified Name (if it has any).
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					If it is valid against the Type, each pair value associated with a key $key is annotated recursively against the Types described with $t."$content".$key."$type". For missing pairs for which a $t."$content".$key."$default" value is provided, a new pair with the (possibly computed) $default value is added.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Otherwise, it is replaced with an object with the fields $invalid (true), $expected (Object Type name), $value (the Candidate Instance)
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			A Candidate Instance is annotated against an Array Type $t as follows:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					If it is valid against the Type (which implies that it is an array), it is annotated with the Array Type's Qualified Name (if it has any).
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					If it is valid against the Type, each member is annotated recursively against the Type described with $t."$content"(1).
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Otherwise, it is replaced with an object with the fields $invalid (true), $expected (Array Type name), $value (the Candidate Instance)
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+		 <para>
+			A Candidate Instance is annotated against a Union Type $t as follows:
+		</para>
+		 <itemizedlist>
+			<listitem>
+				<para>
+					If it is valid against the Type, then it is annotated against the first Type of $t."$content"() against which the Candidate Instance is valid.
+				</para>
+
+			</listitem>
+			 <listitem>
+				<para>
+					Otherwise, it is replaced with an object with the fields $invalid (true), $expected (Union Type name), $value (the Candidate Instance)
+				</para>
+
+			</listitem>
+
+		</itemizedlist>
+
+	</section>
+
+</chapter>
+

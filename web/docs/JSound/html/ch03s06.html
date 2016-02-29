@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>3.6. Derived Type properties</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound-JSound-0.1-en-US-0.1.3-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="chap-Schema.html" title="Chapter 3. Schema Documents" /><link rel="prev" href="ch03s05.html" title="3.5. Types" /><link rel="next" href="chap-Atomic.html" title="Chapter 4. Atomic Types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s05.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chap-Atomic.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm33386944">3.6. Derived Type properties</h2></div></div></div><div class="para">
+			A Derived Type has the following properties:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					$kind (JSON string): the kind of the Type. One of "atomic, "object", "array", "union".
+				</div></li><li class="listitem"><div class="para">
+					$name (JSON string): a string containing the Qualified Name (as defined above) of this Type.
+				</div></li><li class="listitem"><div class="para">
+					$baseType (JSON string): a string containing the Qualified Name of the Type which is the base type of this Type.
+				</div></li><li class="listitem"><div class="para">
+					$about (JSON value): free content (documentation, comments, ...).
+				</div></li><li class="listitem"><div class="para">
+					various facets properties. Which facets are available defines on the $kind of the Type.
+				</div></li></ul></div><div class="para">
+			There are the following constraints on these properties:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					$name is optional and must live in the namespace of the Schema Document in which this Type is defined.
+				</div></li><li class="listitem"><div class="para">
+					A prefix may not appear twice in the $imports.
+				</div></li><li class="listitem"><div class="para">
+					Types defined directly in the top-level $types array must be named.
+				</div></li><li class="listitem"><div class="para">
+					$baseType must refer to a known Type - builtin, in the same Schema Document or in an imported Schema Document. In particular, if a prefix is used, it must be bound to an imported namespace.
+				</div></li><li class="listitem"><div class="para">
+					If $kind is "object", $baseType must be "object" if provided.
+				</div></li><li class="listitem"><div class="para">
+					If $kind is "array", $baseType must be "array" if provided.
+				</div></li><li class="listitem"><div class="para">
+					If $kind is "union", $baseType must be "item" if provided.
+				</div></li><li class="listitem"><div class="para">
+					If $kind is "atomic", $baseType must be the Qualified Name of an existing Atomic Type.
+				</div></li></ul></div><div class="para">
+			Here is an example of an invalid Schema Document, because it does not fulfill many of the above constraints.
+		</div><pre class="programlisting">
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "atomic",
+      "$name" : "type1",
+      "$baseType" : "unbound:type", (: prefix is not bound :)
+      "$maxInclusive" : 4
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "Q{http://www.example.com/other}type2", (: the namespace must match that of the Schema document :)
+      "$baseType" : "integer",
+      "$maxInclusive" : 4
+    },
+    {
+      "$kind" : "atomic",
+      "$name" : "Q{http://www.example.com/my-schema}type3",
+      "$baseType" : "object", (: base type MUST also be an atomic type :)
+      "$maxInclusive" : 4
+    },
+    {
+      "$kind" : "object",
+      "$name" : "object1",
+      "$baseType" : "type1" (: base type MUST be "object":)
+      "$content" : {}
+    },
+    {
+      "$kind" : "object",
+      "$name" : "object2",
+      "$baseType" : "object1" (: base type MUST be "object":)
+    }
+  ]
+}
+</pre><div class="para">
+			There are two facets common to all types:
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					$enumeration (array of JSON values): Constrains a value space to a specified set of values.
+				</div></li><li class="listitem"><div class="para">
+					$constraints (array of JSON strings): Constrains a value space to the values for which a set of JSONiq queries evaluates to true. In these JSONiq queries, the context item is bound to the Serialized Instance being validated, after parsing.
+				</div></li></ul></div><pre class="programlisting">
+{
+  "$namespace" : "http://www.example.com/my-schema",
+  "$types" : [
+    {
+      "$kind" : "object"
+      (: "$baseType" : "object" is implicit :)
+      "$name" : "two-objects",
+      "$enumeration" : [ { "foo" : "bar" }, {} ] (: only these two objects :)
+    },
+    {
+      "$kind" : "array"
+      (: "$baseType" : "array" is implicit :)
+      "$name" : "uniform-array",
+      "$constraints" : [ "every $i in 1 to size($$) satisfies deep-equals($$($i), $$(1))" ]  (: all members must be the same :)
+    },
+  ]
+}
+</pre><div class="para">
+			The following JSON object is valid against Q{http://www.example.com/my-schema}two-objects.
+		</div><pre class="programlisting">
+{ "foo" : "bar" }
+</pre><div class="para">
+			The following JSON array is valid against Q{http://www.example.com/my-schema}uniform-array.
+		</div><pre class="programlisting">
+[ 42, 42, 42 ]
+</pre></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch03s05.html"><strong>Prev</strong>3.5. Types</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chap-Atomic.html"><strong>Next</strong>Chapter 4. Atomic Types</a></li></ul></body></html>

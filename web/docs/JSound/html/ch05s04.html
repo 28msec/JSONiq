@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.4. Object facets</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 2.8" /><meta name="package" content="JSound-JSound-0.1-en-US-0.1.3-0" /><link rel="home" href="index.html" title="JSound" /><link rel="up" href="chap-Object.html" title="Chapter 5. Object Types" /><link rel="prev" href="ch05s03.html" title="5.3. Builtin Object Type" /><link rel="next" href="chap-Array.html" title="Chapter 6. Array Types" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_left.png" alt="Product Site" /></a><a class="right" href="https://fedorahosted.org/publican"><img src="Common_Content/images/image_right.png" alt="Documentation Site" /></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s03.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="chap-Array.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title" id="idm31404800">5.4. Object facets</h2></div></div></div><div class="para">
+			Restriction is done using the general facets, or the following object facets. For the moment, restriction can only be made on the topmost object type, but this will be relaxed later.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					$content (object): the layout definition. Each pair in $content is called a field descriptor. The value in each field descriptor has the following properties.
+				</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+							$type (string or object) - required: the name of a Type (Qualified Name in a string) or the type itself (an object) that the value must match.
+						</div></li><li class="listitem"><div class="para">
+							$optional (boolean) - optional: indicates that the pair is optional. Default is false.
+						</div></li><li class="listitem"><div class="para">
+							$default (item) - optional: indicates a default value to be taken the value is missing in the Serialized Instance. $optional is then ignored.
+						</div><div class="para">
+							However, if this value is an object with a pair named $computed (which must be associated with a string), then the JSONiq query in $content.$default.$computed is executed upon Annotation, with the context item bound to the Candidate Instance being matched against the containing Object Type. It must result in one item, which is the default value for the Pair Descriptor.
+						</div></li></ul></div><div class="para">
+					An object $o is valid against the $content facet if the following conditions are met:
+				</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+							For each pair $k : $v in the field descriptor such that $v."$optional" is false and $v."$default" is absent, there must be a pair named $k in $o.
+						</div></li><li class="listitem"><div class="para">
+							For each pair $k : $v in the field descriptor, if $o.$k exists, then $o.$k must be valid against the Type $v."$type".
+						</div></li></ul></div></li><li class="listitem"><div class="para">
+					$open (boolean) : specifies whether pairs not specified in $content are to be accepted. The default is the same as the $baseType (true if $baseType is object).
+				</div><div class="para">
+					All objects are valid against the $open facet if it is set to true.
+				</div><div class="para">
+					If it is set to false, an object $o is valid against the $open facet if all its keys appear in $content, or in the $content of a super type.
+				</div></li></ul></div><div class="para">
+			The object facets must fulfill the following consistency constraints against the super types (i.e., in the transitive closure of the $baseType relationship).
+		</div><div class="para">
+			These constraints make sure that the new value space is a subset of the base type's value space.
+		</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					If the $baseType's $open property is false, then $open cannot be set back to true.
+				</div></li><li class="listitem"><div class="para">
+					Field descriptors on new keys may only be defined in $content if the $baseType's $open property is true.
+				</div></li><li class="listitem"><div class="para">
+					Field descriptors on keys that were already defined in a super type are only allowed if they are more restrictive, i.e., $type must be a subtype of the $type associated to this key by the closest super type which does so.
+				</div></li><li class="listitem"><div class="para">
+					If a field descriptor redefines a key that was not $optional in the closest super type, $optional cannot be set back to true.
+				</div></li></ul></div><div class="para">
+			Note: since currently, the $baseType must be "object", these constraints are always fulfilled.
+		</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="ch05s03.html"><strong>Prev</strong>5.3. Builtin Object Type</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="chap-Array.html"><strong>Next</strong>Chapter 6. Array Types</a></li></ul></body></html>

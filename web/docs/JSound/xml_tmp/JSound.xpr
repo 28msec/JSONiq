@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="14.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options>
+            <serialized version="14.1" xml:space="preserve">
+                <map>
+                    <entry>
+                        <String>validation.scenarios</String>
+                        <validationScenario-array/>
+                    </entry>
+                </map>
+            </serialized>
+        </options>
+    </meta>
+    <projectTree name="JSound.xpr">
+        <file name="Array.xml"/>
+        <file name="Atomic.xml"/>
+        <file name="Author_Group.xml"/>
+        <file name="Book_Info.xml"/>
+        <file name="Concepts.xml"/>
+        <file name="Introduction.xml"/>
+        <file name="JSound.ent"/>
+        <file name="JSOuNdness.xml"/>
+        <file name="Object.xml"/>
+        <file name="Preface.xml"/>
+        <file name="Revision_History.xml"/>
+        <file name="Schema.xml"/>
+        <file name="SchemaSchema.xml"/>
+        <file name="Union.xml"/>
+        <file name="ValidationAnnotation.xml"/>
+    </projectTree>
+</project>
