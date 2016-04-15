@@ -34,7 +34,7 @@
       JSONRenameExpr ::= "rename" "json" PrimaryExpr  ( "(" ExprSingle ")" )+
                          "as" ExprSingle
       
-      JSONReplaceExpr ::= "replace" "json" "value" "of"
+      JSONReplaceExpr ::= "replace" "value" "of" "json"
                           PrimaryExpr ( "(" ExprSingle ")" )+
                           "with" ExprSingle
       

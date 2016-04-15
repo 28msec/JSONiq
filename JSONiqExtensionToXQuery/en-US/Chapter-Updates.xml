@@ -319,7 +319,7 @@
           <title>Replacing expressions</title>
           
           <programlisting>
-            JSONReplaceExpr ::= "replace" "json" "value" "of" PrimaryExpr ( "(" ExprSingle ")" )+ "with" ExprSingle
+            JSONReplaceExpr ::= "replace" "value" "of" "json" PrimaryExpr ( "(" ExprSingle ")" )+ "with" ExprSingle
           </programlisting>
           
           <para>
@@ -334,7 +334,7 @@
           
           <itemizedlist>
             <listitem>
-              <para><code>replace json value of $o($s) with $c</code></para>
+              <para><code>replace value of json $o($s) with $c</code></para>
               <para>
                 $s is atomized and cast to xs:string (<code>jerr:JNUP0007</code> is raised upon failure).
               </para>
@@ -349,7 +349,7 @@
               </para>
             </listitem>
             <listitem>
-              <para><code>replace json value of $a($i) with $c</code></para>
+              <para><code>replace value of json $a($i) with $c</code></para>
               <para>
                 $i is atomized and cast to xs:integer (<code>jerr:JNUP0007</code> is raised upon failure).
               </para>
@@ -369,8 +369,8 @@
             <title>Replace a value in an object or in an array</title>
             
             <programlisting>
-              replace json value of $o("foo") with 5
-              replace json value of $a(3) with 25
+              replace value of json $o("foo") with 5
+              replace value of json $a(3) with 25
             </programlisting>
           </example>
         </section>
